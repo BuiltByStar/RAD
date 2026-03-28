@@ -10,35 +10,39 @@ export default function AboutPage() {
       background="red"
     >
       <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Identity"
-            title="RAD is built to feel established from day one."
-            description="The v1 site uses current media carefully, with overlays, spacing, and type doing the heavy lifting so the brand feels intentional."
-          />
-          <div className="narrative-grid">
-            <article className="data-card">
-              <h3>Competitive</h3>
-              <p>
-                The site centers titles, roster growth, and match-ready tone
-                rather than generic lifestyle branding.
+        <SectionHeading
+          eyebrow="Identity"
+          title="RAD is built to feel established from day one."
+          description="The v1 site uses current media carefully, with overlays, spacing, and type doing the heavy lifting so the brand feels intentional."
+        />
+        <div className="grid-3">
+          <article className="rad-card">
+            <div className="rad-card__body">
+              <h3 className="card-title">Competitive</h3>
+              <p className="card-desc">
+                The site centers titles, roster growth, and match-ready tone rather than
+                generic lifestyle branding.
               </p>
-            </article>
-            <article className="data-card">
-              <h3>Editorial</h3>
-              <p>
-                A real content system gives RAD a place for announcements,
-                recaps, and future storytelling.
+            </div>
+          </article>
+          <article className="rad-card">
+            <div className="rad-card__body">
+              <h3 className="card-title">Editorial</h3>
+              <p className="card-desc">
+                A real content system gives RAD a place for announcements, recaps, and
+                future storytelling.
               </p>
-            </article>
-            <article className="data-card">
-              <h3>Replaceable Media</h3>
-              <p>
-                Logos, hero videos, wallpapers, and art can all improve later
-                without changing the design system.
+            </div>
+          </article>
+          <article className="rad-card">
+            <div className="rad-card__body">
+              <h3 className="card-title">Replaceable Media</h3>
+              <p className="card-desc">
+                Logos, hero videos, wallpapers, and art can all improve later without
+                changing the design system.
               </p>
-            </article>
-          </div>
+            </div>
+          </article>
         </div>
       </section>
     </PageShell>

@@ -25,7 +25,7 @@ export function PageShell({
           <p className="section-copy">{description}</p>
         </div>
       </section>
-      <div className="page-content">{children}</div>
+      <div className="page-content container">{children}</div>
     </main>
   );
 }

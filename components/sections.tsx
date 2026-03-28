@@ -2,7 +2,9 @@ import Link from "next/link";
 
 import type { Partner, Person, Team } from "@/lib/site-data";
 
-type SectionHeadingProps = {
+// ─── Section Heading ──────────────────────────────────────────────────────────
+
+type SectionHeadProps = {
   eyebrow: string;
   title: string;
   description: string;
@@ -10,20 +12,20 @@ type SectionHeadingProps = {
   actionLabel?: string;
 };
 
-export function SectionHeading({
+export function SectionHead({
   eyebrow,
   title,
   description,
   actionHref,
   actionLabel
-}: SectionHeadingProps) {
+}: SectionHeadProps) {
   return (
-    <div className="section-heading">
+    <div className="section-head">
       <div>
         <p className="eyebrow">{eyebrow}</p>
         <h2>{title}</h2>
       </div>
-      <div className="section-heading-meta">
+      <div className="section-meta">
         <p className="section-copy">{description}</p>
         {actionHref && actionLabel ? (
           <Link className="text-link" href={actionHref}>
@@ -35,52 +37,48 @@ export function SectionHeading({
   );
 }
 
-export function TeamGrid({ teams }: { teams: Team[] }) {
+// ─── Team Grid ────────────────────────────────────────────────────────────────
+
+export function TeamSection({ teams }: { teams: Team[] }) {
   return (
-    <div className="card-grid card-grid-three">
+    <div className="grid-3">
       {teams.map((team) => (
-        <article key={team.slug} className="data-card">
-          <div className="card-topline">
-            <span className="card-status">{team.status}</span>
-            <span>{team.game}</span>
+        <article key={team.slug} className="rad-card">
+          <div className="rad-card__body">
+            <div className="card-topline">
+              <span className="card-status">{team.status}</span>
+              <span>{team.game}</span>
+            </div>
+            <h3 className="card-title">{team.name}</h3>
+            <p className="card-desc">{team.description}</p>
           </div>
-          <h3>{team.name}</h3>
-          <p className="section-copy" style={{ marginTop: "0.6rem" }}>{team.description}</p>
         </article>
       ))}
     </div>
   );
 }
 
-export function PeopleGrid({
-  people,
-  variant = "roster"
-}: {
-  people: Person[];
-  variant?: "roster" | "staff";
-}) {
+// ─── People Grid ──────────────────────────────────────────────────────────────
+
+export function PeopleSection({ people, variant: _variant }: { people: Person[]; variant?: string }) {
   return (
-    <div className="card-grid">
+    <div className="grid-2">
       {people.map((person) => (
-        <article key={`${variant}-${person.name}`} className="profile-card">
+        <article key={person.name} className="rad-card profile-card">
           <div className="profile-visual">
             <div className="profile-glow" />
-            <span>{person.name.slice(0, 2)}</span>
+            <span className="profile-initials">{person.name.slice(0, 2)}</span>
           </div>
           <div className="profile-meta">
-            <p className="eyebrow">{person.group}</p>
-            <h3 style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)", marginBottom: "0.3rem" }}>
-              {person.name}
-            </h3>
+            <p className="profile-group">{person.group}</p>
+            <h3 className="profile-name">{person.name}</h3>
             <p className="profile-role">{person.role}</p>
-            <p className="section-copy" style={{ fontSize: "0.88rem", marginTop: "0.4rem" }}>
-              {person.descriptor}
-            </p>
+            <p className="profile-desc">{person.descriptor}</p>
             {person.socials?.length ? (
               <div className="profile-links">
-                {person.socials.map((social) => (
-                  <a key={social.label} href={social.href}>
-                    {social.label}
+                {person.socials.map((s) => (
+                  <a key={s.label} href={s.href}>
+                    {s.label}
                   </a>
                 ))}
               </div>
@@ -92,21 +90,23 @@ export function PeopleGrid({
   );
 }
 
-export function PartnerGrid({ partners }: { partners: Partner[] }) {
+// ─── Partners ─────────────────────────────────────────────────────────────────
+
+export function PartnerSection({ partners }: { partners: Partner[] }) {
   return (
-    <div className="partner-grid">
+    <div className="grid-2">
       {partners.map((partner) => (
         <article key={partner.name} className="partner-card">
           <div className="partner-mark">
             {partner.name === "GoWild" ? (
-              <img src="/assets/Gowild.png" alt="GoWild" style={{ maxWidth: "120px" }} />
+              <img src="/assets/Gowild.png" alt="GoWild" style={{ maxWidth: "110px" }} />
             ) : (
               <span>{partner.name}</span>
             )}
           </div>
-          <div>
+          <div className="partner-info">
             <p className="eyebrow">{partner.tier}</p>
-            <p className="partner-card p">{partner.description}</p>
+            <p>{partner.description}</p>
           </div>
         </article>
       ))}
@@ -114,19 +114,28 @@ export function PartnerGrid({ partners }: { partners: Partner[] }) {
   );
 }
 
-export function ContactGrid({
+// ─── Contact / Community ──────────────────────────────────────────────────────
+
+export function ContactSection({
   channels
 }: {
   channels: { label: string; value: string; href: string }[];
 }) {
   return (
     <div className="contact-grid">
-      {channels.map((channel) => (
-        <a key={channel.label} className="contact-card" href={channel.href}>
-          <p className="eyebrow">{channel.label}</p>
-          <strong>{channel.value}</strong>
+      {channels.map((ch) => (
+        <a key={ch.label} href={ch.href} className="contact-tile">
+          <p className="eyebrow">{ch.label}</p>
+          <strong>{ch.value}</strong>
         </a>
       ))}
     </div>
   );
 }
+
+// ─── Backwards-compat aliases for inner pages ─────────────────────────────────
+export { SectionHead as SectionHeading };
+export { TeamSection as TeamGrid };
+export { PeopleSection as PeopleGrid };
+export { PartnerSection as PartnerGrid };
+export { ContactSection as ContactGrid };

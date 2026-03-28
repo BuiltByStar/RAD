@@ -138,7 +138,7 @@ export function ContactForm({ enabled }: ContactFormProps) {
       </label>
       <div className="form-footer">
         <p className={`form-status form-status-${status.type}`}>{status.message}</p>
-        <button className="button button-primary" type="submit" disabled={!enabled || isSubmitting}>
+        <button className="btn btn-primary" type="submit" disabled={!enabled || isSubmitting}>
           {isSubmitting ? "Submitting..." : "Send Inquiry"}
         </button>
       </div>
