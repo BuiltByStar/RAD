@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 
+import { IntroAnimation } from "@/components/intro-animation";
+import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
+
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap"
+});
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-display",
+  display: "swap"
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
@@ -29,8 +46,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
         <div className="site-background" />
+        <IntroAnimation />
+        <ScrollRevealInit />
         <SiteHeader />
         {children}
         <SiteFooter />

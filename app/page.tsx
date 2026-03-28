@@ -16,6 +16,8 @@ export default async function HomePage() {
 
   return (
     <main className="page-main">
+
+      {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="hero-section">
         <div className="hero-video-shell">
           <video
@@ -31,14 +33,14 @@ export default async function HomePage() {
         </div>
         <div className="hero-overlay" />
         <div className="hero-lights" />
+        <div className="hero-noise" />
         <div className="container hero-grid">
           <div className="hero-copy">
             <p className="eyebrow">RAD Esports</p>
             <h1>Built for pressure, content, and the next stage of competition.</h1>
-            <p className="section-copy hero-copy-text">
-              RAD launches with a cinematic brand shell, a flexible roster
-              system, and a real editorial layer that can scale as better media
-              and new divisions arrive.
+            <p className="hero-copy-text">
+              RAD launches with a cinematic brand shell, a flexible roster system,
+              and a real editorial layer that scales as better media and new divisions arrive.
             </p>
             <div className="hero-actions">
               <Link className="button button-primary" href="/content">
@@ -58,8 +60,8 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="hero-brand-stack">
-            <div className="hero-brand-layer hero-brand-back" />
-            <div className="hero-brand-layer hero-brand-mid" />
+            <div className="hero-brand-glow" />
+            <div className="hero-brand-ring" />
             <img
               src="/assets/RadNewLogoWordmarkRed.png"
               alt="RAD Esports"
@@ -69,12 +71,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section">
+      {/* ── About ─────────────────────────────────────────────────────────── */}
+      <section className="section" data-reveal>
         <div className="container">
           <SectionHeading
             eyebrow="About"
             title="A launch-ready org shell with room to grow."
-            description="The site is intentionally built so rosters, sponsors, and premium media can improve later without a structural rebuild."
+            description="Built so rosters, sponsors, and premium media can improve later without a structural rebuild."
             actionHref="/about"
             actionLabel="More on RAD"
           />
@@ -93,7 +96,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section section-tinted">
+      {/* ── Teams ─────────────────────────────────────────────────────────── */}
+      <section className="section section-tinted" data-reveal>
         <div className="container">
           <SectionHeading
             eyebrow="Teams"
@@ -106,13 +110,14 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section">
+      {/* ── Roster ────────────────────────────────────────────────────────── */}
+      <section className="section" data-reveal>
         <div className="container split-highlight">
           <div>
             <SectionHeading
               eyebrow="Roster"
               title="Player cards that work now and scale later."
-              description="Without relying on finished player portraits, the roster grid still feels intentional and premium through branded placeholder treatments."
+              description="Without relying on finished player portraits, the roster grid still feels intentional and premium."
               actionHref="/roster"
               actionLabel="Full roster"
             />
@@ -123,16 +128,17 @@ export default async function HomePage() {
             <div className="promo-copy">
               <p className="eyebrow">Featured Visual</p>
               <h3>Launch with current media. Upgrade without redesign.</h3>
-              <p>
-                The art direction is already wired for higher-end renders, but
-                the current pack is strong enough to ship v1 with confidence.
+              <p className="section-copy">
+                The art direction is wired for higher-end renders, but the current
+                pack is strong enough to ship v1 with confidence.
               </p>
             </div>
           </aside>
         </div>
       </section>
 
-      <section className="section section-dark">
+      {/* ── Content ───────────────────────────────────────────────────────── */}
+      <section className="section section-dark" data-reveal>
         <div className="container">
           <SectionHeading
             eyebrow="Content"
@@ -167,7 +173,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section">
+      {/* ── Staff ─────────────────────────────────────────────────────────── */}
+      <section className="section" data-reveal>
         <div className="container">
           <SectionHeading
             eyebrow="Staff"
@@ -180,7 +187,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section section-tinted">
+      {/* ── Partners ──────────────────────────────────────────────────────── */}
+      <section className="section section-tinted" data-reveal>
         <div className="container">
           <SectionHeading
             eyebrow="Partners"
@@ -193,7 +201,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section community-section">
+      {/* ── Community ─────────────────────────────────────────────────────── */}
+      <section className="section community-section" data-reveal>
         <div className="community-media">
           <video autoPlay muted loop playsInline poster="/assets/RadRivals_Wallpaper_Black.png">
             <source src="/assets/DiscordRadPFPAnimated.mp4" type="video/mp4" />
@@ -212,6 +221,7 @@ export default async function HomePage() {
           <ContactGrid channels={contactChannels} />
         </div>
       </section>
+
     </main>
   );
 }

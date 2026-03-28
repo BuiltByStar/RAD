@@ -27,7 +27,7 @@ export function SectionHeading({
         <p className="section-copy">{description}</p>
         {actionHref && actionLabel ? (
           <Link className="text-link" href={actionHref}>
-            {actionLabel}
+            {actionLabel} →
           </Link>
         ) : null}
       </div>
@@ -41,11 +41,11 @@ export function TeamGrid({ teams }: { teams: Team[] }) {
       {teams.map((team) => (
         <article key={team.slug} className="data-card">
           <div className="card-topline">
-            <span>{team.status}</span>
+            <span className="card-status">{team.status}</span>
             <span>{team.game}</span>
           </div>
           <h3>{team.name}</h3>
-          <p>{team.description}</p>
+          <p className="section-copy" style={{ marginTop: "0.6rem" }}>{team.description}</p>
         </article>
       ))}
     </div>
@@ -69,9 +69,13 @@ export function PeopleGrid({
           </div>
           <div className="profile-meta">
             <p className="eyebrow">{person.group}</p>
-            <h3>{person.name}</h3>
+            <h3 style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)", marginBottom: "0.3rem" }}>
+              {person.name}
+            </h3>
             <p className="profile-role">{person.role}</p>
-            <p>{person.descriptor}</p>
+            <p className="section-copy" style={{ fontSize: "0.88rem", marginTop: "0.4rem" }}>
+              {person.descriptor}
+            </p>
             {person.socials?.length ? (
               <div className="profile-links">
                 {person.socials.map((social) => (
@@ -95,14 +99,14 @@ export function PartnerGrid({ partners }: { partners: Partner[] }) {
         <article key={partner.name} className="partner-card">
           <div className="partner-mark">
             {partner.name === "GoWild" ? (
-              <img src="/assets/Gowild.png" alt="GoWild" />
+              <img src="/assets/Gowild.png" alt="GoWild" style={{ maxWidth: "120px" }} />
             ) : (
               <span>{partner.name}</span>
             )}
           </div>
           <div>
             <p className="eyebrow">{partner.tier}</p>
-            <p>{partner.description}</p>
+            <p className="partner-card p">{partner.description}</p>
           </div>
         </article>
       ))}
