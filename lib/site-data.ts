@@ -32,11 +32,8 @@ export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/teams", label: "Teams" },
-  { href: "/roster", label: "Roster" },
-  { href: "/staff", label: "Staff" },
   { href: "/content", label: "Content" },
-  { href: "/partners", label: "Partners" },
-  { href: "/contact", label: "Contact" }
+  { href: "/partners", label: "Partners" }
 ];
 
 export const teams: Team[] = [
@@ -47,7 +44,7 @@ export const teams: Team[] = [
     description:
       "RAD's lead division built for fast, coordinated team fights and big-stage moments.",
     status: "Featured",
-    featured: true
+    featured: false
   },
   {
     name: "VALORANT",

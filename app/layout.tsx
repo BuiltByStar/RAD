@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 
 import { CustomCursor } from "@/components/custom-cursor";
-import { IntroAnimation } from "@/components/intro-animation";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -50,7 +49,6 @@ export default function RootLayout({
       <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
         <div className="site-background" />
         <CustomCursor />
-        <IntroAnimation />
         <ScrollRevealInit />
         <SiteHeader />
         {children}

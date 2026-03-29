@@ -20,9 +20,12 @@ export default async function HomePage() {
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="at-hero">
         <div className="at-hero-video-shell">
-          <video autoPlay muted loop playsInline>
-            <source src="/assets/DiscordRadBannerAnimated_960.mp4" type="video/mp4" />
-          </video>
+          <img 
+            src="/assets/RadRivals_Wallpaper_Red.png" 
+            alt="RAD Esports Background" 
+            className="hero-video"
+            style={{ opacity: 0.4 }}
+          />
         </div>
         <div className="at-hero-overlay" />
 
@@ -79,8 +82,8 @@ export default async function HomePage() {
       <section className="at-stats">
         <div className="container">
           <div className="at-stats-grid">
-            {stats.map((s) => (
-              <div key={s.label} className="at-stat-block">
+            {stats.map((s, idx) => (
+              <div key={s.label} className="at-stat-block" data-reveal data-delay={idx + 1}>
                 <div className="at-stat-value">{s.value}</div>
                 <div className="at-stat-label">{s.label}</div>
               </div>
@@ -92,13 +95,13 @@ export default async function HomePage() {
       {/* ── ROSTER ────────────────────────────────────────────────── */}
       <section className="at-roster">
         <div className="container">
-          <div className="at-section-row">
+          <div className="at-section-row" data-reveal>
             <p className="at-section-label">Active Roster</p>
             <Link href="/roster" className="at-link-arrow">View all →</Link>
           </div>
           <div className="at-roster-list">
             {players.map((player, i) => (
-              <div key={player.name} className="at-roster-item">
+              <div key={player.name} className="at-roster-item" data-reveal>
                 <span className="at-roster-idx">0{i + 1}</span>
                 <div className="at-roster-info">
                   <h3 className="at-roster-name">{player.name}</h3>
@@ -115,16 +118,18 @@ export default async function HomePage() {
       {/* ── CONTENT ───────────────────────────────────────────────── */}
       <section className="at-content">
         <div className="container">
-          <div className="at-section-row">
+          <div className="at-section-row" data-reveal>
             <p className="at-section-label">Latest Content</p>
             <Link href="/content" className="at-link-arrow">Browse all →</Link>
           </div>
           <div className="at-content-grid">
-            {latestPosts.slice(0, 3).map((post) => (
+            {latestPosts.slice(0, 3).map((post, idx) => (
               <Link
                 key={post.slug}
                 href={`/content/${post.slug}`}
                 className="at-post-tile"
+                data-reveal
+                data-delay={idx + 1}
               >
                 <span className="at-post-cat">{post.category}</span>
                 <h3 className="at-post-title">{post.title}</h3>
@@ -173,12 +178,12 @@ export default async function HomePage() {
       <section className="at-partners">
         <div className="container">
           <div className="at-partners-inner">
-            <span className="at-section-label" style={{ marginBottom: 0 }}>
+            <span className="at-section-label" style={{ marginBottom: 0 }} data-reveal>
               Partners
             </span>
             <div className="at-partners-logos">
-              {partners.map((p) => (
-                <a key={p.name} href={p.href} className="at-partner-item">
+              {partners.map((p, idx) => (
+                <a key={p.name} href={p.href} className="at-partner-item" data-reveal data-delay={idx + 1}>
                   {p.name === "GoWild" ? (
                     <img
                       src="/assets/Gowild.png"
