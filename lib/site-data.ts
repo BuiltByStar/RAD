@@ -34,6 +34,10 @@ export type ContactChannel = {
   href: string;
 };
 
+export const discordInviteUrl = "https://discord.com/invite/radgg";
+export const discordServerId = "1363584103479513198";
+export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId}&theme=dark`;
+
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
@@ -165,6 +169,11 @@ export const stats = [
 ];
 
 export const contactChannels: ContactChannel[] = [
+  {
+    label: "Discord",
+    value: "discord.com/invite/radgg",
+    href: discordInviteUrl
+  },
   {
     label: "Email",
     value: "Radrocketow@gmail.com",

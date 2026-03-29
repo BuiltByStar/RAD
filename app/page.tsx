@@ -4,6 +4,8 @@ import { DivisionsShowcase } from "@/components/divisions-showcase";
 import { MarqueeStrip } from "@/components/marquee-strip";
 import {
   contactChannels,
+  discordInviteUrl,
+  discordWidgetUrl,
   partners,
   players,
   stats,
@@ -155,29 +157,50 @@ export default async function HomePage() {
             <source src="/assets/DiscordRadPFPAnimated.mp4" type="video/mp4" />
           </video>
         </div>
-        <div className="at-community-content">
-          <h2 className="at-community-title">
-            Join<br />The<br /><em>Community.</em>
-          </h2>
-          <p className="at-community-body">
-            Discord-ready motion, site-ready atmosphere. Get in early and
-            be part of something building from the ground up.
-          </p>
-          <div className="at-community-channels">
-            {contactChannels.map((ch) => (
-              <a key={ch.label} href={ch.href} className="at-channel-item">
-                <span className="at-channel-label">{ch.label}</span>
-                <span className="at-channel-value">{ch.value}</span>
+        <div className="at-community-shell">
+          <div className="at-community-content">
+            <p className="at-section-label">Discord</p>
+            <h2 className="at-community-title">
+              Join<br />The<br /><em>Community.</em>
+            </h2>
+            <p className="at-community-body">
+              The RAD server is live now. Get in early for announcements,
+              clips, team conversation, and the direct community pulse while the
+              org keeps building upward.
+            </p>
+            <div className="at-community-channels">
+              {contactChannels.map((ch) => (
+                <a key={ch.label} href={ch.href} className="at-channel-item">
+                  <span className="at-channel-label">{ch.label}</span>
+                  <span className="at-channel-value">{ch.value}</span>
+                </a>
+              ))}
+            </div>
+            <div className="at-community-actions">
+              <a className="btn btn-primary" href={discordInviteUrl}>
+                Join Discord
               </a>
-            ))}
+              <a className="btn btn-secondary" href="https://x.com/RADesport">
+                Follow on X
+              </a>
+            </div>
           </div>
-          <a
-            className="btn btn-primary"
-            href="https://x.com/RADesport"
-            style={{ marginTop: "2.5rem" }}
-          >
-            Follow RAD
-          </a>
+
+          <div className="at-discord-panel">
+            <div className="at-discord-panel-head">
+              <span className="at-discord-dot" />
+              <p>Live Server Widget</p>
+            </div>
+            <iframe
+              src={discordWidgetUrl}
+              title="RAD Discord Server"
+              width="100%"
+              height="420"
+              allowTransparency={true}
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+              className="at-discord-widget"
+            />
+          </div>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { contactChannels, navLinks } from "@/lib/site-data";
+import { contactChannels, discordInviteUrl, navLinks } from "@/lib/site-data";
 
 function SocialIcon() {
   return (
@@ -55,9 +55,9 @@ export function SiteFooter() {
 
       <div className="container footer-bottom">
         <p>© {new Date().getFullYear()} RAD Esports — V1 Launch Build</p>
-        <a className="footer-discord-badge" href="https://x.com/RADesport">
+        <a className="footer-discord-badge" href={discordInviteUrl}>
           <SocialIcon />
-          Follow on X
+          Join Discord
         </a>
       </div>
     </footer>
