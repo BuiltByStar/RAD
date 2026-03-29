@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Html, ContactShadows, Environment, MeshDistortMaterial } from "@react-three/drei";
+import { Float, Html, ContactShadows, Environment, MeshDistortMaterial, Text3D, Center } from "@react-three/drei";
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
 
@@ -99,31 +99,43 @@ function NavNode({
 function HubModel() {
   const groupRef = useRef<THREE.Group>(null);
   
-  // Rotate the entire network slowly
+  // Oscillate the entire network so the text always faces forward
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.15;
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.6;
       groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
     }
   });
 
   return (
     <group ref={groupRef}>
-      {/* Central Red Core */}
-      <mesh scale={1.2}>
-        <icosahedronGeometry args={[1, 0]} />
-        <MeshDistortMaterial
-            color="#8c0000"
-            envMapIntensity={2}
-            clearcoat={1}
-            metalness={0.9}
-            roughness={0.1}
-            distort={0.4}
-            speed={2}
-            emissive="#4a0000"
-            emissiveIntensity={0.5}
-        />
-      </mesh>
+      {/* Central 3D 'RAD' Text Core */}
+      <Center>
+        <Text3D
+          font="https://unpkg.com/three@0.149.0/examples/fonts/helvetiker_bold.typeface.json"
+          size={1.8}
+          height={0.6}
+          curveSegments={12}
+          bevelEnabled
+          bevelThickness={0.08}
+          bevelSize={0.04}
+          bevelOffset={0}
+          bevelSegments={5}
+        >
+          RAD
+          <MeshDistortMaterial
+              color="#8c0000"
+              envMapIntensity={2}
+              clearcoat={1}
+              metalness={0.9}
+              roughness={0.1}
+              distort={0.1} // reduced so text is readable
+              speed={2}
+              emissive="#4a0000"
+              emissiveIntensity={0.5}
+          />
+        </Text3D>
+      </Center>
       
       {/* Clickable routing points radiating from the center */}
       {navNodes.map((node) => (
