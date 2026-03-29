@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Environment, Float, MeshDistortMaterial, ContactShadows, Sparkles } from "@react-three/drei";
+import { Environment, Float, MeshDistortMaterial, ContactShadows, Sparkles, Line } from "@react-three/drei";
 import * as THREE from "three";
 
 function Lightning() {
@@ -11,10 +11,10 @@ function Lightning() {
   useFrame(() => {
     if (!lightRef.current) return;
     // 1-2% chance every frame for a flash
-    if (Math.random() > 0.985) {
-      lightRef.current.intensity = 15 + Math.random() * 15;
+    if (Math.random() > 0.96) {
+      lightRef.current.intensity = 20 + Math.random() * 30; // Stronger flash!
     } else {
-      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, 0, 0.2);
+      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, 0, 0.3);
     }
   });
 
@@ -30,25 +30,95 @@ function Lightning() {
   );
 }
 
+function CrackedMonolith({ hovered }: { hovered: boolean }) {
+  const innerRef = useRef<THREE.Mesh>(null);
+  const outerRef = useRef<THREE.Mesh>(null);
+  const wireRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+    
+    // Abstract, volatile rotations inside
+    if (innerRef.current) {
+        innerRef.current.rotation.y = -t * 0.8;
+        innerRef.current.rotation.x = t * 0.4;
+    }
+    // Glitchy wireframe pulse
+    if (wireRef.current) {
+        wireRef.current.rotation.y = t * 1.2;
+        // erratic jittering scale
+        const s = 1.05 + Math.random() * 0.03; 
+        wireRef.current.scale.set(s, s, s);
+    }
+  });
+
+  const activeScale = hovered ? 1.05 : 1;
+
+  return (
+    <group scale={activeScale}>
+        {/* The unstable energy core */}
+        <mesh ref={innerRef} scale={0.75}>
+            <octahedronGeometry args={[2, 0]} />
+            <MeshDistortMaterial
+                color="#e60000"
+                envMapIntensity={2}
+                clearcoat={1}
+                metalness={1}
+                roughness={0.2}
+                distort={0.5}
+                speed={8}
+                emissive="#e60000"
+                emissiveIntensity={0.8}
+            />
+        </mesh>
+        
+        {/* Dark fractured shell */}
+        <mesh ref={outerRef}>
+          <icosahedronGeometry args={[2.1, 0]} />
+          <MeshDistortMaterial
+            color="#040008"
+            envMapIntensity={1}
+            clearcoat={1}
+            metalness={0.9}
+            roughness={0.1}
+            distort={0.2}
+            speed={2}
+            transparent
+            opacity={0.85}
+          />
+        </mesh>
+
+        {/* Crackling wireframe envelope */}
+        <mesh ref={wireRef} scale={1.05}>
+          <icosahedronGeometry args={[2.2, 1]} />
+          <meshBasicMaterial color="#d8b4fe" wireframe transparent opacity={0.25} />
+        </mesh>
+    </group>
+  );
+}
+
 export function Scene() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
 
-  // Animate the monolith based on mouse position
+  // Animate the monolith based on mouse AND scroll position
   useFrame((state) => {
-    if (!meshRef.current) return;
+    if (!groupRef.current) return;
     
-    // Gentle floating and rotation
+    // Parallax floating and rotation
     const t = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = Math.sin(t / 4) / 4;
-    meshRef.current.rotation.y = t / 4;
-    meshRef.current.position.y = Math.sin(t / 1.5) / 10;
+    const scrollY = window.scrollY || 0;
+    
+    // As the user scrolls down, the monolith rotates slightly and floats dynamically
+    groupRef.current.rotation.x = Math.sin(t / 4) / 4 + scrollY * 0.0005;
+    groupRef.current.rotation.y = t / 4 + scrollY * 0.001;
+    groupRef.current.position.y = Math.sin(t / 1.5) / 10 + scrollY * 0.001; // Shifts up as we scroll!
     
     // Parallax effect with mouse
     const pointerX = (state.pointer.x * Math.PI) / 8;
     const pointerY = (state.pointer.y * Math.PI) / 8;
     
-    // Smooth interpolation towards pointer (creating a subtle parallax)
+    // Smooth interpolation towards pointer
     state.camera.position.x += (pointerX - state.camera.position.x) * 0.05;
     state.camera.position.y += (pointerY - state.camera.position.y) * 0.05;
     state.camera.lookAt(0, 0, 0);
@@ -66,35 +136,15 @@ export function Scene() {
 
       <Lightning />
 
-      {/* Main Geometry: "Obsidian Monolith" */}
-      {/* Positioned slightly to the right to frame the centered/left text properly */}
+      {/* Main Geometry: "Cracked Monolith" */}
       <Float speed={2} rotationIntensity={0.5} floatIntensity={1} position={[2.5, -0.5, -2]}>
-        <mesh
-          ref={meshRef}
+        <group
+          ref={groupRef}
           onPointerOver={() => setHovered(true)}
           onPointerOut={() => setHovered(false)}
-          scale={hovered ? 1.05 : 1}
         >
-          {/* Icosahedron creates a nice crystalline gem shape */}
-          <icosahedronGeometry args={[2, 0]} />
-          
-          <MeshDistortMaterial
-            color="#080808"
-            envMapIntensity={1}
-            clearcoat={1}
-            clearcoatRoughness={0.1}
-            metalness={0.9}
-            roughness={0.1}
-            distort={0.2}
-            speed={2}
-          />
-        </mesh>
-        
-        {/* Wireframe inner detail to add some complexity/edges */}
-        <mesh scale={0.99}>
-          <icosahedronGeometry args={[2, 0]} />
-          <meshBasicMaterial color="#6b21a8" wireframe transparent opacity={0.15} />
-        </mesh>
+          <CrackedMonolith hovered={hovered} />
+        </group>
       </Float>
 
       {/* Sparkles / Ambient Particles */}
@@ -127,7 +177,8 @@ export function Scene() {
         </Float>
       ))}
 
-      <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
+      {/* Static shadow under the entire scene */}
+      <ContactShadows position={[0, -4, 0]} opacity={0.6} scale={20} blur={2.5} far={4.5} color="#000000" />
       <Environment preset="city" />
     </>
   );

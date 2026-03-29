@@ -10,12 +10,17 @@ import {
   teams
 } from "@/lib/site-data";
 import { getPostMeta } from "@/lib/posts";
+import { ScrollReveal, ParallaxBackgroundText } from "@/components/scroll-effects";
 
 export default async function HomePage() {
   const latestPosts = await getPostMeta();
 
   return (
-    <main>
+    <main style={{ position: "relative", overflow: "hidden" }}>
+      {/* Background Parallax Typography */}
+      <ParallaxBackgroundText text="PRESSURE" speed={0.8} top="25%" left="-5%" />
+      <ParallaxBackgroundText text="OBSIDIAN" speed={1.2} top="55%" left="10%" />
+      <ParallaxBackgroundText text="COMPETE" speed={1.0} top="85%" left="-2%" />
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="at-hero">
@@ -52,7 +57,7 @@ export default async function HomePage() {
             Wired for <em>competition</em>.<br />
             Ready to scale.
           </p>
-          <div className="at-statement-aside">
+          <ScrollReveal delay={0.2} className="at-statement-aside">
             <p>
               RAD launches with a cinematic brand shell, a flexible roster system,
               and a real editorial layer that scales as better media and new divisions arrive.
@@ -60,7 +65,7 @@ export default async function HomePage() {
             <Link href="/about" className="at-link-arrow">
               About RAD →
             </Link>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -73,14 +78,16 @@ export default async function HomePage() {
       {/* ── STATS ─────────────────────────────────────────────────── */}
       <section className="at-stats">
         <div className="container">
-          <div className="at-stats-grid">
-            {stats.map((s, idx) => (
-              <div key={s.label} className="at-stat-block" data-reveal data-delay={idx + 1}>
-                <div className="at-stat-value">{s.value}</div>
-                <div className="at-stat-label">{s.label}</div>
-              </div>
-            ))}
-          </div>
+          <ScrollReveal delay={0.1}>
+            <div className="at-stats-grid">
+              {stats.map((s, idx) => (
+                <div key={s.label} className="at-stat-block" data-reveal data-delay={idx + 1}>
+                  <div className="at-stat-value">{s.value}</div>
+                  <div className="at-stat-label">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -91,19 +98,21 @@ export default async function HomePage() {
             <p className="at-section-label">Active Roster</p>
             <Link href="/roster" className="at-link-arrow">View all →</Link>
           </div>
-          <div className="at-roster-list">
-            {players.map((player, i) => (
-              <div key={player.name} className="at-roster-item" data-reveal>
-                <span className="at-roster-idx">0{i + 1}</span>
-                <div className="at-roster-info">
-                  <h3 className="at-roster-name">{player.name}</h3>
-                  <span className="at-roster-role">{player.role}</span>
+          <ScrollReveal delay={0.2}>
+            <div className="at-roster-list">
+              {players.map((player, i) => (
+                <div key={player.name} className="at-roster-item" data-reveal>
+                  <span className="at-roster-idx">0{i + 1}</span>
+                  <div className="at-roster-info">
+                    <h3 className="at-roster-name">{player.name}</h3>
+                    <span className="at-roster-role">{player.role}</span>
+                  </div>
+                  <span className="at-roster-desc">{player.descriptor}</span>
+                  <span className="at-roster-team">{player.group}</span>
                 </div>
-                <span className="at-roster-desc">{player.descriptor}</span>
-                <span className="at-roster-team">{player.group}</span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -114,22 +123,24 @@ export default async function HomePage() {
             <p className="at-section-label">Latest Content</p>
             <Link href="/content" className="at-link-arrow">Browse all →</Link>
           </div>
-          <div className="at-content-grid">
-            {latestPosts.slice(0, 3).map((post, idx) => (
-              <Link
-                key={post.slug}
-                href={`/content/${post.slug}`}
-                className="at-post-tile"
-                data-reveal
-                data-delay={idx + 1}
-              >
-                <span className="at-post-cat">{post.category}</span>
-                <h3 className="at-post-title">{post.title}</h3>
-                <p className="at-post-summary">{post.summary}</p>
-                <span className="at-post-date">{post.date}</span>
-              </Link>
-            ))}
-          </div>
+          <ScrollReveal delay={0.2}>
+            <div className="at-content-grid">
+              {latestPosts.slice(0, 3).map((post, idx) => (
+                <Link
+                  key={post.slug}
+                  href={`/content/${post.slug}`}
+                  className="at-post-tile"
+                  data-reveal
+                  data-delay={idx + 1}
+                >
+                  <span className="at-post-cat">{post.category}</span>
+                  <h3 className="at-post-title">{post.title}</h3>
+                  <p className="at-post-summary">{post.summary}</p>
+                  <span className="at-post-date">{post.date}</span>
+                </Link>
+              ))}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
