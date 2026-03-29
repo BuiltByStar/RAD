@@ -5,6 +5,7 @@ import { CustomCursor } from "@/components/custom-cursor";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { IntroAnimation } from "@/components/intro-animation";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
@@ -48,6 +49,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
         <div className="site-background" />
+        <IntroAnimation />
         <CustomCursor />
         <ScrollRevealInit />
         <SiteHeader />

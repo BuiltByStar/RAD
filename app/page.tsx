@@ -19,15 +19,7 @@ export default async function HomePage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="at-hero">
-        <div className="at-hero-video-shell">
-          <img 
-            src="/assets/RadRivals_Wallpaper_Red.png" 
-            alt="RAD Esports Background" 
-            className="hero-video"
-            style={{ opacity: 0.4 }}
-          />
-        </div>
-        <div className="at-hero-overlay" />
+        <div className="at-hero-overlay" style={{ background: 'linear-gradient(to top, #010101 0%, transparent 60%)' }} />
 
         <div className="at-hero-content">
           <p className="at-hero-kicker">
