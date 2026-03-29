@@ -6,13 +6,13 @@ import { Float, Html, ContactShadows, Environment, MeshDistortMaterial, Text3D, 
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
 
-// The points radiating from the 3D model
+// The points radiating from the 3D model (Positioned wider and forward to avoid text clipping)
 const navNodes = [
-  { label: "ROSTER", path: "/roster", position: [2.2, 1.2, 0] as [number, number, number] },
-  { label: "TEAMS", path: "/teams", position: [-2.0, 1.5, 0.5] as [number, number, number] },
-  { label: "CONTENT", path: "/content", position: [0, -2.2, 1] as [number, number, number] },
-  { label: "PARTNERS", path: "/partners", position: [1.8, -1.2, -1.5] as [number, number, number] },
-  { label: "ABOUT", path: "/about", position: [-1.8, -0.8, -1.2] as [number, number, number] },
+  { label: "ROSTER", path: "/roster", position: [3.2, 1.8, 0.5] as [number, number, number] },
+  { label: "TEAMS", path: "/teams", position: [-3.4, 1.8, 0.6] as [number, number, number] },
+  { label: "CONTENT", path: "/content", position: [0, -2.5, 0.8] as [number, number, number] },
+  { label: "PARTNERS", path: "/partners", position: [2.8, -1.8, 0.4] as [number, number, number] },
+  { label: "ABOUT", path: "/about", position: [-3.0, -1.5, 0.3] as [number, number, number] },
 ];
 
 function NavNode({ 
@@ -53,8 +53,8 @@ function NavNode({
          <lineBasicMaterial attach="material" color="#e60000" transparent opacity={0.4} />
       </line>
 
-      {/* The actual clickable point */}
-      <mesh 
+      {/* The actual clickable geometric component */}
+      <group 
         ref={meshRef}
         onClick={(e) => {
           e.stopPropagation();
@@ -70,13 +70,24 @@ function NavNode({
           document.body.style.cursor = 'auto';
         }}
       >
-        <octahedronGeometry args={[0.25, 0]} />
-        <meshStandardMaterial 
-            color={hovered ? "#ffffff" : "#e60000"} 
-            emissive={hovered ? "#e60000" : "#220000"} 
-            emissiveIntensity={hovered ? 2 : 0.5} 
-        />
-      </mesh>
+        {/* Core Jewel */}
+        <mesh>
+          <icosahedronGeometry args={[0.3, 0]} />
+          <meshStandardMaterial 
+              color={hovered ? "#ffffff" : "#e60000"} 
+              metalness={0.9}
+              roughness={0.1}
+              emissive={hovered ? "#ff0000" : "#440000"} 
+              emissiveIntensity={hovered ? 2 : 1} 
+          />
+        </mesh>
+        
+        {/* Rotating Orbital Halo */}
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+           <torusGeometry args={[0.5, 0.02, 16, 32]} />
+           <meshBasicMaterial color={hovered ? "#ffffff" : "#e60000"} transparent opacity={hovered ? 0.9 : 0.3} />
+        </mesh>
+      </group>
 
       {/* The floating GUI Label */}
       <Html distanceFactor={10} position={[0, 0.5, 0]} center style={{ pointerEvents: 'none' }}>
