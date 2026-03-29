@@ -28,6 +28,12 @@ export type Partner = {
   description: string;
 };
 
+export type ContactChannel = {
+  label: string;
+  value: string;
+  href: string;
+};
+
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
@@ -72,7 +78,7 @@ export const players: Person[] = [
     role: "Captain",
     group: "Marvel Rivals",
     descriptor: "Frontline caller built for tempo shifts and late-round control.",
-    socials: [{ label: "X", href: "https://x.com/radesports" }],
+    socials: [{ label: "X", href: "https://x.com/RADesport" }],
     featured: true
   },
   {
@@ -158,20 +164,20 @@ export const stats = [
   { value: "V1", label: "Launch Build Ready for Upgrades" }
 ];
 
-export const contactChannels = [
+export const contactChannels: ContactChannel[] = [
   {
-    label: "Partnerships",
-    value: "partners@radesports.gg",
-    href: "mailto:partners@radesports.gg"
+    label: "Email",
+    value: "Radrocketow@gmail.com",
+    href: "mailto:Radrocketow@gmail.com"
   },
   {
-    label: "Competitive Ops",
-    value: "roster@radesports.gg",
-    href: "mailto:roster@radesports.gg"
+    label: "YouTube",
+    value: "youtube.com/@RadEsport",
+    href: "https://www.youtube.com/@RadEsport"
   },
   {
-    label: "Community",
-    value: "discord.gg/rad",
-    href: "https://discord.gg/rad"
+    label: "X",
+    value: "x.com/RADesport",
+    href: "https://x.com/RADesport"
   }
 ];

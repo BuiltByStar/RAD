@@ -173,10 +173,10 @@ export default async function HomePage() {
           </div>
           <a
             className="btn btn-primary"
-            href="https://discord.gg/rad"
+            href="https://x.com/RADesport"
             style={{ marginTop: "2.5rem" }}
           >
-            Join Discord
+            Follow RAD
           </a>
         </div>
       </section>
