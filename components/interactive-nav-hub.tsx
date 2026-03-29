@@ -36,6 +36,7 @@ function NavNode({
   const [hovered, setHovered] = useState(false);
   const groupRef = useRef<THREE.Group>(null);
   const haloRef = useRef<THREE.Mesh>(null);
+  const secondaryHaloRef = useRef<THREE.Mesh>(null);
   const lineColor = hovered ? "#ffffff" : "#ff2a2a";
 
   useFrame((state) => {
@@ -51,6 +52,11 @@ function NavNode({
       haloRef.current.rotation.z = state.clock.elapsedTime * 0.55;
       const pulse = 1 + Math.sin(state.clock.elapsedTime * 1.8) * 0.06;
       haloRef.current.scale.setScalar(hovered ? 1.06 : pulse);
+    }
+
+    if (secondaryHaloRef.current) {
+      secondaryHaloRef.current.rotation.y = state.clock.elapsedTime * 0.8;
+      secondaryHaloRef.current.rotation.z = state.clock.elapsedTime * 0.35;
     }
   });
 
@@ -89,24 +95,47 @@ function NavNode({
         }}
       >
         <mesh>
-          <sphereGeometry args={[0.24, 32, 32]} />
-          <meshStandardMaterial 
-              color={hovered ? "#ffffff" : "#ff2a2a"} 
-              metalness={0.55}
-              roughness={0.05}
-              emissive={hovered ? "#ff2a2a" : "#5f0505"} 
-              emissiveIntensity={hovered ? 1.35 : 0.8} 
+          <sphereGeometry args={[0.3, 32, 32]} />
+          <meshStandardMaterial
+            color={hovered ? "#ffd9d9" : "#ff5c5c"}
+            transparent
+            opacity={0.22}
+            emissive="#ff1a1a"
+            emissiveIntensity={0.9}
+            roughness={0.14}
+            metalness={0.12}
           />
         </mesh>
 
-        <mesh ref={haloRef} rotation={[Math.PI / 2, 0, 0]}>
-           <torusGeometry args={[0.46, 0.015, 24, 96]} />
-           <meshBasicMaterial color={hovered ? "#ffffff" : "#ff3b3b"} transparent opacity={hovered ? 0.9 : 0.45} />
+        <mesh>
+          <sphereGeometry args={[0.19, 32, 32]} />
+          <meshStandardMaterial 
+              color={hovered ? "#ffffff" : "#ff5a5a"} 
+              metalness={0.4}
+              roughness={0.03}
+              emissive={hovered ? "#ff4d4d" : "#7b0d0d"} 
+              emissiveIntensity={hovered ? 1.7 : 1.05} 
+          />
         </mesh>
 
-        <mesh scale={1.45}>
+        <mesh scale={0.52}>
+          <sphereGeometry args={[0.24, 24, 24]} />
+          <meshBasicMaterial color="#fff1f1" transparent opacity={0.85} />
+        </mesh>
+
+        <mesh ref={haloRef} rotation={[Math.PI / 2, 0, 0]}>
+           <torusGeometry args={[0.46, 0.017, 24, 96]} />
+           <meshBasicMaterial color={hovered ? "#ffffff" : "#ff3b3b"} transparent opacity={hovered ? 0.92 : 0.55} />
+        </mesh>
+
+        <mesh ref={secondaryHaloRef} rotation={[0.6, Math.PI / 4, 0.4]}>
+          <torusGeometry args={[0.58, 0.011, 24, 96]} />
+          <meshBasicMaterial color={hovered ? "#ffdede" : "#ff1f1f"} transparent opacity={hovered ? 0.75 : 0.42} />
+        </mesh>
+
+        <mesh scale={1.62}>
           <sphereGeometry args={[0.18, 32, 32]} />
-          <meshBasicMaterial color="#ff0000" transparent opacity={0.12} />
+          <meshBasicMaterial color="#ff0000" transparent opacity={0.16} />
         </mesh>
       </group>
 
@@ -137,8 +166,10 @@ function HubModel() {
   
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.32) * 0.28;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.22) * 0.06;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.22 + Math.sin(state.clock.elapsedTime * 0.34) * 0.14;
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.28) * 0.07;
+      const introScale = THREE.MathUtils.lerp(groupRef.current.scale.x, 1, 0.06);
+      groupRef.current.scale.setScalar(introScale);
     }
 
     if (ringRef.current) {
@@ -153,7 +184,7 @@ function HubModel() {
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={0.82}>
       <mesh ref={ringRef} position={[0, 0, -0.12]}>
         <torusGeometry args={[2.1, 0.02, 32, 160]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.15} />
@@ -204,7 +235,7 @@ function HubModel() {
 
 export function InteractiveNavHub() {
   return (
-    <div style={{ width: "100%", height: "44vh", minHeight: "340px", maxHeight: "520px", position: "relative", zIndex: 10, margin: "0.5rem 0 0.25rem" }}>
+    <div className="at-hub-wrap" style={{ width: "100%", height: "44vh", minHeight: "340px", maxHeight: "520px", position: "relative", zIndex: 10, margin: "0.5rem 0 0.25rem" }}>
       <Canvas camera={{ position: [0, 0, 7.1], fov: 40 }} dpr={[1, 1.8]}>
         <ambientLight intensity={0.7} />
         <spotLight position={[6, 7, 8]} angle={0.34} penumbra={1} intensity={2.2} color="#ff3b3b" />
