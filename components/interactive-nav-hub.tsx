@@ -8,8 +8,7 @@ import {
   ContactShadows,
   Environment,
   Text3D,
-  Center,
-  MeshTransmissionMaterial
+  Center
 } from "@react-three/drei";
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
@@ -45,7 +44,7 @@ function NavNode({
       const currentScale = groupRef.current.scale.x;
       const nextScale = THREE.MathUtils.lerp(currentScale, target, 0.12);
       groupRef.current.scale.setScalar(nextScale);
-      groupRef.current.rotation.y += 0.01;
+      groupRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 1.2) * 0.06;
     }
 
     if (haloRef.current) {
@@ -97,30 +96,30 @@ function NavNode({
         <mesh>
           <sphereGeometry args={[0.3, 32, 32]} />
           <meshStandardMaterial
-            color={hovered ? "#ffd9d9" : "#ff5c5c"}
+            color={hovered ? "#ffb1b1" : "#ff2d2d"}
             transparent
-            opacity={0.22}
+            opacity={0.26}
             emissive="#ff1a1a"
-            emissiveIntensity={0.9}
-            roughness={0.14}
-            metalness={0.12}
+            emissiveIntensity={1.2}
+            roughness={0.16}
+            metalness={0.08}
           />
         </mesh>
 
         <mesh>
           <sphereGeometry args={[0.19, 32, 32]} />
           <meshStandardMaterial 
-              color={hovered ? "#ffffff" : "#ff5a5a"} 
-              metalness={0.4}
-              roughness={0.03}
-              emissive={hovered ? "#ff4d4d" : "#7b0d0d"} 
-              emissiveIntensity={hovered ? 1.7 : 1.05} 
+              color={hovered ? "#ffe2e2" : "#ff4b4b"} 
+              metalness={0.2}
+              roughness={0.06}
+              emissive={hovered ? "#ff5a5a" : "#891111"} 
+              emissiveIntensity={hovered ? 2.1 : 1.35} 
           />
         </mesh>
 
         <mesh scale={0.52}>
           <sphereGeometry args={[0.24, 24, 24]} />
-          <meshBasicMaterial color="#fff1f1" transparent opacity={0.85} />
+          <meshBasicMaterial color="#ffd6d6" transparent opacity={0.82} />
         </mesh>
 
         <mesh ref={haloRef} rotation={[Math.PI / 2, 0, 0]}>
@@ -166,8 +165,9 @@ function HubModel() {
   
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.22 + Math.sin(state.clock.elapsedTime * 0.34) * 0.14;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.28) * 0.07;
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.045;
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.6) * 0.035;
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.85) * 0.08;
       const introScale = THREE.MathUtils.lerp(groupRef.current.scale.x, 1, 0.06);
       groupRef.current.scale.setScalar(introScale);
     }
@@ -187,7 +187,7 @@ function HubModel() {
     <group ref={groupRef} scale={0.82}>
       <mesh ref={ringRef} position={[0, 0, -0.12]}>
         <torusGeometry args={[2.1, 0.02, 32, 160]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.15} />
+        <meshBasicMaterial color="#ff6767" transparent opacity={0.18} />
       </mesh>
 
       <mesh ref={accentRingRef} rotation={[0.55, 0.2, 0.1]} position={[0, 0, -0.35]}>
@@ -208,20 +208,15 @@ function HubModel() {
           bevelSegments={10}
         >
           RAD
-          <MeshTransmissionMaterial
-            backside
-            samples={6}
-            resolution={256}
-            thickness={0.48}
-            roughness={0.08}
-            transmission={0.92}
-            ior={1.1}
-            chromaticAberration={0.03}
-            anisotropy={0.15}
-            distortion={0.04}
-            distortionScale={0.08}
-            temporalDistortion={0.06}
-            color="#f4f4f4"
+          <meshPhysicalMaterial
+            color="#c40000"
+            metalness={0.88}
+            roughness={0.18}
+            clearcoat={1}
+            clearcoatRoughness={0.08}
+            reflectivity={1}
+            emissive="#430000"
+            emissiveIntensity={0.42}
           />
         </Text3D>
       </Center>
@@ -235,18 +230,18 @@ function HubModel() {
 
 export function InteractiveNavHub() {
   return (
-    <div className="at-hub-wrap" style={{ width: "100%", height: "44vh", minHeight: "340px", maxHeight: "520px", position: "relative", zIndex: 10, margin: "0.5rem 0 0.25rem" }}>
-      <Canvas camera={{ position: [0, 0, 7.1], fov: 40 }} dpr={[1, 1.8]}>
-        <ambientLight intensity={0.7} />
+    <div className="at-hub-wrap" style={{ width: "100%", height: "46vh", minHeight: "380px", maxHeight: "560px", position: "relative", zIndex: 10, margin: "0.5rem 0 0.75rem" }}>
+      <Canvas camera={{ position: [0, 0.2, 7.6], fov: 39 }} dpr={[1, 1.8]}>
+        <ambientLight intensity={0.55} />
         <spotLight position={[6, 7, 8]} angle={0.34} penumbra={1} intensity={2.2} color="#ff3b3b" />
-        <pointLight position={[-8, -6, -6]} intensity={0.7} color="#ffffff" />
-        <pointLight position={[0, 5, -3]} intensity={0.55} color="#ff0000" />
+        <pointLight position={[-8, -6, -6]} intensity={0.32} color="#ffd1d1" />
+        <pointLight position={[0, 5, -3]} intensity={0.75} color="#ff0000" />
         
-        <Float speed={1.35} rotationIntensity={0.08} floatIntensity={0.42}>
+        <Float speed={1.2} rotationIntensity={0.03} floatIntensity={0.12}>
           <HubModel />
         </Float>
         
-        <ContactShadows position={[0, -3.05, 0]} opacity={0.42} scale={12} blur={2.8} far={4.4} color="#320000" />
+        <ContactShadows position={[0, -3.15, 0]} opacity={0.34} scale={12.5} blur={2.8} far={4.6} color="#320000" />
         <Environment preset="studio" />
       </Canvas>
     </div>
