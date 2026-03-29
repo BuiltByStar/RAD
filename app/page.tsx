@@ -11,6 +11,7 @@ import {
 } from "@/lib/site-data";
 import { getPostMeta } from "@/lib/posts";
 import { ScrollReveal, ParallaxBackgroundText } from "@/components/scroll-effects";
+import { InteractiveNavHub } from "@/components/interactive-nav-hub";
 
 export default async function HomePage() {
   const latestPosts = await getPostMeta();
@@ -45,6 +46,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── INTERACTIVE 3D NAV ────────────────────────────────────── */}
+      <InteractiveNavHub />
 
       {/* ── MARQUEE ───────────────────────────────────────────────── */}
       <MarqueeStrip />
