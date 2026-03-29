@@ -67,8 +67,12 @@ export function IntroAnimation() {
             {/* Glowing Logo that scales down and fades */}
             <motion.div 
               className="rad-intro__logo-wrap"
-              initial={{ scale: 0.9, opacity: 0, filter: 'blur(20px)' }}
-              animate={phase === 0 ? { scale: 1, opacity: 1, filter: 'blur(0px)' } : { scale: 1.2, opacity: 0, filter: 'blur(15px)' }}
+              initial={{ x: "-50%", y: "-50%", scale: 0.9, opacity: 0, filter: 'blur(20px)' }}
+              animate={
+                phase === 0 
+                  ? { x: "-50%", y: "-50%", scale: 1, opacity: 1, filter: 'blur(0px)' } 
+                  : { x: "-50%", y: "-50%", scale: 1.2, opacity: 0, filter: 'blur(15px)' }
+              }
               transition={{ duration: 0.8 }}
               style={{ clipPath: "none" }}
             >

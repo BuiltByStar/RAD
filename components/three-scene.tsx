@@ -1,9 +1,34 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Environment, Float, MeshDistortMaterial, ContactShadows } from "@react-three/drei";
+import { Environment, Float, MeshDistortMaterial, ContactShadows, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
+
+function Lightning() {
+  const lightRef = useRef<THREE.PointLight>(null);
+  
+  useFrame(() => {
+    if (!lightRef.current) return;
+    // 1-2% chance every frame for a flash
+    if (Math.random() > 0.985) {
+      lightRef.current.intensity = 15 + Math.random() * 15;
+    } else {
+      lightRef.current.intensity = THREE.MathUtils.lerp(lightRef.current.intensity, 0, 0.2);
+    }
+  });
+
+  return (
+    <pointLight 
+      ref={lightRef} 
+      position={[-5, 8, -5]} 
+      color="#d8b4fe" 
+      distance={50} 
+      decay={2}
+      intensity={0}
+    />
+  );
+}
 
 export function Scene() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -23,7 +48,7 @@ export function Scene() {
     const pointerX = (state.pointer.x * Math.PI) / 8;
     const pointerY = (state.pointer.y * Math.PI) / 8;
     
-    // Smooth interpolation towards pointer
+    // Smooth interpolation towards pointer (creating a subtle parallax)
     state.camera.position.x += (pointerX - state.camera.position.x) * 0.05;
     state.camera.position.y += (pointerY - state.camera.position.y) * 0.05;
     state.camera.lookAt(0, 0, 0);
@@ -39,8 +64,11 @@ export function Scene() {
       <spotLight position={[-10, 10, -10]} intensity={2.5} color="#e60000" angle={0.5} penumbra={1} />
       <spotLight position={[10, -10, 10]} intensity={2.0} color="#6b21a8" angle={0.5} penumbra={1} />
 
+      <Lightning />
+
       {/* Main Geometry: "Obsidian Monolith" */}
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+      {/* Positioned slightly to the right to frame the centered/left text properly */}
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={1} position={[2.5, -0.5, -2]}>
         <mesh
           ref={meshRef}
           onPointerOver={() => setHovered(true)}
@@ -61,7 +89,17 @@ export function Scene() {
             speed={2}
           />
         </mesh>
+        
+        {/* Wireframe inner detail to add some complexity/edges */}
+        <mesh scale={0.99}>
+          <icosahedronGeometry args={[2, 0]} />
+          <meshBasicMaterial color="#6b21a8" wireframe transparent opacity={0.15} />
+        </mesh>
       </Float>
+
+      {/* Sparkles / Ambient Particles */}
+      <Sparkles count={150} scale={15} size={3} speed={0.4} opacity={0.3} color="#e60000" />
+      <Sparkles count={80} scale={20} size={5} speed={0.2} opacity={0.4} color="#6b21a8" />
 
       {/* Floating shards */}
       {Array.from({ length: 15 }).map((_, i) => (
