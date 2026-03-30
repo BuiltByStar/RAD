@@ -230,8 +230,8 @@ function HubModel() {
 
 export function InteractiveNavHub() {
   return (
-    <div className="at-hub-wrap" style={{ width: "100%", height: "46vh", minHeight: "380px", maxHeight: "560px", position: "relative", zIndex: 10, margin: "0.5rem 0 0.75rem" }}>
-      <Canvas camera={{ position: [0, 0.2, 7.6], fov: 39 }} dpr={[1, 1.8]}>
+    <div className="at-hub-wrap" style={{ width: "100%", height: "49vh", minHeight: "420px", maxHeight: "600px", position: "relative", zIndex: 10, margin: "0.5rem 0 1.25rem" }}>
+      <Canvas camera={{ position: [0, 0.45, 7.9], fov: 39 }} dpr={[1, 1.8]}>
         <ambientLight intensity={0.55} />
         <spotLight position={[6, 7, 8]} angle={0.34} penumbra={1} intensity={2.2} color="#ff3b3b" />
         <pointLight position={[-8, -6, -6]} intensity={0.32} color="#ffd1d1" />
@@ -241,7 +241,7 @@ export function InteractiveNavHub() {
           <HubModel />
         </Float>
         
-        <ContactShadows position={[0, -3.15, 0]} opacity={0.34} scale={12.5} blur={2.8} far={4.6} color="#320000" />
+        <ContactShadows position={[0, -2.85, 0]} opacity={0.3} scale={12.8} blur={2.8} far={4.8} color="#320000" />
         <Environment preset="studio" />
       </Canvas>
     </div>
