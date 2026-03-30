@@ -41,17 +41,15 @@ export function SectionHead({
 
 export function TeamSection({ teams }: { teams: Team[] }) {
   return (
-    <div className="grid-3">
+    <div className="team-grid">
       {teams.map((team) => (
-        <article key={team.slug} className="rad-card">
-          <div className="rad-card__body">
-            <div className="card-topline">
-              <span className="card-status">{team.status}</span>
-              <span>{team.game}</span>
-            </div>
-            <h3 className="card-title">{team.name}</h3>
-            <p className="card-desc">{team.description}</p>
+        <article key={team.slug} className="team-card">
+          <div className="team-card-top">
+            <span className="team-card-status">{team.status}</span>
+            <span className="team-card-game">{team.game}</span>
           </div>
+          <h3 className="team-card-title">{team.name}</h3>
+          <p className="team-card-copy">{team.description}</p>
         </article>
       ))}
     </div>
@@ -62,20 +60,19 @@ export function TeamSection({ teams }: { teams: Team[] }) {
 
 export function PeopleSection({ people, variant: _variant }: { people: Person[]; variant?: string }) {
   return (
-    <div className="grid-2">
+    <div className="people-grid">
       {people.map((person) => (
-        <article key={person.name} className="rad-card profile-card">
-          <div className="profile-visual">
-            <div className="profile-glow" />
-            <span className="profile-initials">{person.name.slice(0, 2)}</span>
+        <article key={person.name} className="person-card">
+          <div className="person-topline">
+            <span className="person-group">{person.group}</span>
+            <span className="person-role-chip">{person.role}</span>
           </div>
-          <div className="profile-meta">
-            <p className="profile-group">{person.group}</p>
-            <h3 className="profile-name">{person.name}</h3>
-            <p className="profile-role">{person.role}</p>
-            <p className="profile-desc">{person.descriptor}</p>
+          <h3 className="person-name">{person.name}</h3>
+          <p className="person-desc">{person.descriptor}</p>
+          <div className="person-footer">
+            <p className="person-role">{person.role}</p>
             {person.socials?.length ? (
-              <div className="profile-links">
+              <div className="person-links">
                 {person.socials.map((s) => (
                   <a key={s.label} href={s.href}>
                     {s.label}
@@ -94,9 +91,9 @@ export function PeopleSection({ people, variant: _variant }: { people: Person[];
 
 export function PartnerSection({ partners }: { partners: Partner[] }) {
   return (
-    <div className="grid-2">
+    <div className="partner-grid">
       {partners.map((partner) => (
-        <article key={partner.name} className="partner-card">
+        <article key={partner.name} className="partner-surface">
           <div className="partner-mark">
             {partner.name === "GoWild" ? (
               <img src="/assets/Gowild.png" alt="GoWild" style={{ maxWidth: "110px" }} />
@@ -104,7 +101,7 @@ export function PartnerSection({ partners }: { partners: Partner[] }) {
               <span>{partner.name}</span>
             )}
           </div>
-          <div className="partner-info">
+          <div className="partner-surface-copy">
             <p className="eyebrow">{partner.tier}</p>
             <p>{partner.description}</p>
           </div>
