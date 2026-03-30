@@ -3,11 +3,13 @@ import Link from "next/link";
 import { DivisionsShowcase } from "@/components/divisions-showcase";
 import { MarqueeStrip } from "@/components/marquee-strip";
 import {
+  aboutSummary,
   contactChannels,
   discordInviteUrl,
   discordWidgetUrl,
   partners,
   players,
+  siteTagline,
   stats,
   teams
 } from "@/lib/site-data";
@@ -39,7 +41,7 @@ export default async function HomePage() {
           </h1>
           <div className="at-hero-sub">
             <p className="at-hero-tagline">
-              Built for pressure, content, and the next stage of competition.
+              {siteTagline}
             </p>
             <div className="at-hero-scroll-hint">
               <span className="at-scroll-line" />
@@ -65,8 +67,7 @@ export default async function HomePage() {
           </p>
           <ScrollReveal delay={0.2} className="at-statement-aside">
             <p>
-              RAD launches with a cinematic brand shell, a flexible roster system,
-              and a real editorial layer that scales as better media and new divisions arrive.
+              {aboutSummary}
             </p>
             <Link href="/about" className="at-link-arrow">
               About RAD →

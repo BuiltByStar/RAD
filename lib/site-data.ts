@@ -34,6 +34,11 @@ export type ContactChannel = {
   href: string;
 };
 
+export const siteTagline = "Built for pressure, content, and the next stage of competition.";
+
+export const aboutSummary =
+  "RAD has been turning heads since the beginning. We didn't wait for an invitation to the top; RAD cemented its place as the inaugural Marvel Rivals Ignite: Mid-Season World Champions and most recently added the EMEA Regional Champions title. You've seen us do it before, get ready to see it again. Untamed, unstoppable, and never by the book. Welcome to the wild. #GoWild";
+
 export const discordInviteUrl = "https://discord.com/invite/radgg";
 export const discordServerId = "1363584103479513198";
 export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId}&theme=dark`;
@@ -50,98 +55,119 @@ export const teams: Team[] = [
   {
     name: "Marvel Rivals",
     slug: "marvel-rivals",
-    game: "Hero Shooter",
+    game: "Marvel Rivals",
     description:
-      "RAD's lead division built for fast, coordinated team fights and big-stage moments.",
-    status: "Featured",
-    featured: false
-  },
-  {
-    name: "VALORANT",
-    slug: "valorant",
-    game: "Tactical FPS",
-    description:
-      "A tactical roster slotting into RAD's long-term competitive expansion plan.",
-    status: "Recruiting",
+      "RAD's flagship roster and reigning Ignite: Mid-Season World Champions, now also holding the EMEA Regional Champions title.",
+    status: "World & EMEA Champions",
     featured: true
-  },
-  {
-    name: "Creator Division",
-    slug: "creator-division",
-    game: "Entertainment",
-    description:
-      "Community-first talent supporting the org through streams, clips, and brand campaigns.",
-    status: "Growing",
-    featured: false
   }
 ];
 
+function createXSocial(handle: string) {
+  return {
+    label: "X",
+    href: `https://x.com/${handle.replace(/^@/, "")}`
+  };
+}
+
+function createTwitchSocial(handle: string) {
+  return {
+    label: "Twitch",
+    href: `https://www.twitch.tv/${handle}`
+  };
+}
+
 export const players: Person[] = [
   {
-    name: "VEX",
-    role: "Captain",
+    name: "ducky",
+    role: "Tank / Vanguard",
     group: "Marvel Rivals",
-    descriptor: "Frontline caller built for tempo shifts and late-round control.",
-    socials: [{ label: "X", href: "https://x.com/RADesport" }],
+    descriptor: "Anchor tank",
+    socials: [createXSocial("ducky1one"), createTwitchSocial("ducky1mr")],
     featured: true
   },
   {
-    name: "NYRA",
-    role: "Flex",
+    name: "lugiagoat",
+    role: "Tank / Vanguard",
     group: "Marvel Rivals",
-    descriptor: "High-pressure utility play with reliable skirmish reads."
+    descriptor: "Offtank diver",
+    socials: [createXSocial("lugiagoat")]
   },
   {
-    name: "KOZA",
+    name: "SmashNezz",
     role: "Duelist",
-    group: "VALORANT",
-    descriptor: "Aggressive entry profile ready for next-stage lineup reveals."
+    group: "Marvel Rivals",
+    descriptor: "Hitscan",
+    socials: [createXSocial("smashnezz"), createTwitchSocial("smashnezz")]
   },
   {
-    name: "ARC",
-    role: "Sentinel",
-    group: "VALORANT",
-    descriptor: "Anchor-focused defender with patient site control."
+    name: "crazykitty",
+    role: "Duelist",
+    group: "Marvel Rivals",
+    descriptor: "I be playing anything these days (flex)",
+    socials: [createXSocial("crazykitty333"), createTwitchSocial("crazykitty33")]
   },
   {
-    name: "MALIX",
-    role: "Content Talent",
-    group: "Creator Division",
-    descriptor: "Clip-driven creator helping turn match energy into community growth."
+    name: "vertigo",
+    role: "Strategist",
+    group: "Marvel Rivals",
+    descriptor: "Healing my team a lot",
+    socials: [createXSocial("vertigomrv"), createTwitchSocial("vertigo__o")]
   },
   {
-    name: "ONYX",
-    role: "Sub / Reserve",
-    group: "Open Slot",
-    descriptor: "Placeholder slot designed to accept updated roster data later."
+    name: "Mash",
+    role: "Strategist & Team Captain",
+    group: "Marvel Rivals",
+    descriptor: "For fun",
+    socials: [createXSocial("mashh_mrr"), createTwitchSocial("Mashhmr")]
+  },
+  {
+    name: "Etsu",
+    role: "Duelist (Sub)",
+    group: "Marvel Rivals",
+    descriptor: "French Flex",
+    socials: [createXSocial("@etsuuu6"), createTwitchSocial("etsuuuuuuu")]
   }
 ];
 
 export const staff: Person[] = [
   {
-    name: "RAD Leadership",
-    role: "Executive Team",
-    group: "Operations",
-    descriptor: "Sets the competitive, creative, and community direction for the org.",
+    name: "AndrewDZNs",
+    role: "Graphic Designer",
+    group: "Brand",
+    descriptor: "Creating visuals and the branding for RAD.",
     featured: true
   },
   {
-    name: "Head Coach",
-    role: "Performance",
-    group: "Competitive",
-    descriptor: "Owns prep, systems, and match-day structure for featured rosters."
+    name: "Moises “Jatsby” Lara",
+    role: "Team Manager",
+    group: "Operations",
+    descriptor:
+      "Responsible for roster coordination, team operations, and competitive support while helping shape the structure and professional standard of the organization."
   },
   {
-    name: "Media Lead",
-    role: "Creative",
+    name: "Felix",
+    role: "Social Media Manager",
     group: "Brand",
-    descriptor: "Drives the visual identity, social output, and content presentation."
+    descriptor: "Puts out fire posts for the public, creates new ideas, and works on many projects for RAD."
   },
   {
-    name: "Community Manager",
-    role: "Engagement",
-    group: "Community",
-    descriptor: "Runs Discord, fan touchpoints, and activation rollouts."
+    name: "Prosper",
+    role: "Analyst",
+    group: "Competitive",
+    descriptor: "Scouting, predictions, analytics, and assistant coaching."
+  },
+  {
+    name: "Kcins1",
+    role: "Social Media Management",
+    group: "Brand",
+    descriptor: "Helps with socials and brings new ideas."
+  },
+  {
+    name: "Ashh",
+    role: "Head Coach / Tank Sub",
+    group: "Competitive",
+    descriptor: "I use my brain more than my hands."
   }
 ];
 
@@ -163,9 +189,9 @@ export const partners: Partner[] = [
 ];
 
 export const stats = [
-  { value: "03", label: "Competitive Divisions" },
-  { value: "24/7", label: "Community Energy" },
-  { value: "V1", label: "Launch Build Ready for Upgrades" }
+  { value: "01", label: "World Championship" },
+  { value: "01", label: "EMEA Regional Title" },
+  { value: "07", label: "Marvel Rivals Players" }
 ];
 
 export const contactChannels: ContactChannel[] = [
