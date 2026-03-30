@@ -46,7 +46,9 @@ export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId
 export const primaryNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/teams", label: "Teams" },
-  { href: "/content", label: "Content" }
+  { href: "/roster", label: "Roster" },
+  { href: "/content", label: "Content" },
+  { href: "/contact", label: "Contact" }
 ];
 
 export const navLinks: NavLink[] = [
