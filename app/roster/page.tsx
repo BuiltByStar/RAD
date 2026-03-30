@@ -6,16 +6,16 @@ export default function RosterPage() {
   return (
     <PageShell
       eyebrow="Roster"
-      title="Player cards designed to feel complete before final media arrives."
-      description="The roster experience uses branded placeholder treatments now and is ready for future portraits and full player data later."
+      title="Marvel Rivals Roster."
+      description="The current lineup, roles, and active sub."
       background="red"
     >
       <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Lineup"
-            title="Featured talent and flexible placeholders."
-            description="This layout supports missing portraits, updated handles, new signings, and refreshed competitive copy without breaking the visual rhythm."
+            title="Seven-player lineup."
+            description="Current championship roster with role, socials, and team context."
           />
           <PeopleGrid people={players} />
         </div>

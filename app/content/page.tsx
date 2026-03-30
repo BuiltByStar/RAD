@@ -10,16 +10,16 @@ export default async function ContentPage() {
   return (
     <PageShell
       eyebrow="Content"
-      title="Editorial space for announcements, recaps, and org momentum."
-      description="RAD content is powered by local MDX at launch so new posts can ship quickly while the structure stays ready for future upgrades."
+      title="Latest Content."
+      description="Announcements, updates, and recaps from RAD."
       background="red"
     >
       <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Latest"
-            title="Structured publishing, launch-speed workflow."
-            description="The current site keeps content local to the repo for fast iteration, with article pages and list views already in place."
+            title="News and updates."
+            description="A clean feed for recent posts, announcements, and features."
           />
           <div className="post-grid">
             {posts.map((post) => (

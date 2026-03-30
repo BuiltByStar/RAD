@@ -6,16 +6,16 @@ export default function PartnersPage() {
   return (
     <PageShell
       eyebrow="Partners"
-      title="Brand-ready placements built into the system from the start."
-      description="RAD's partner layer is ready for launch sponsors now and can expand into deeper activations later without reworking the page structure."
+      title="Partner With RAD."
+      description="Brand-ready space for activations, sponsors, and collaborations."
       background="red"
     >
       <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Sponsorship"
-            title="A premium shell for future commercial growth."
-            description="The partner page gives category sponsors, apparel partners, and campaign collaborators a clear entry point."
+            title="Open for activations."
+            description="A clear entry point for campaigns, category sponsors, and brand partnerships."
           />
           <PartnerGrid partners={partners} />
         </div>

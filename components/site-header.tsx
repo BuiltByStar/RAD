@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import { AuthWidget } from "@/components/auth-widget";
-import { navLinks } from "@/lib/site-data";
+import { discordInviteUrl, primaryNavLinks } from "@/lib/site-data";
 
 export function SiteHeader() {
   return (
@@ -16,16 +15,16 @@ export function SiteHeader() {
         </Link>
 
         <nav className="nav-links" aria-label="Primary navigation">
-          {navLinks.map((link) => (
+          {primaryNavLinks.map((link) => (
             <Link key={link.href} href={link.href}>
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="nav-right">
-          <AuthWidget />
-        </div>
+        <a className="nav-cta" href={discordInviteUrl}>
+          Join Discord
+        </a>
       </div>
     </header>
   );

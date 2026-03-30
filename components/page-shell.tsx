@@ -22,10 +22,10 @@ export function PageShell({
         <div className="container page-hero-copy">
           <p className="eyebrow">{eyebrow}</p>
           <h1>{title}</h1>
-          <p className="section-copy">{description}</p>
+          <p className="section-copy page-hero-description">{description}</p>
         </div>
       </section>
-      <div className="page-content container">{children}</div>
+      <div className="page-content">{children}</div>
     </main>
   );
 }

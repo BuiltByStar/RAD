@@ -43,6 +43,14 @@ export const discordInviteUrl = "https://discord.com/invite/radgg";
 export const discordServerId = "1363584103479513198";
 export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId}&theme=dark`;
 
+export const primaryNavLinks: NavLink[] = [
+  { href: "/", label: "Home" },
+  { href: "/teams", label: "Teams" },
+  { href: "/roster", label: "Roster" },
+  { href: "/content", label: "Content" },
+  { href: "/contact", label: "Contact" }
+];
+
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },

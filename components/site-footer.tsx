@@ -14,23 +14,25 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
-        {/* Brand column */}
-        <div>
+        <div className="footer-brand-column">
+          <p className="footer-kicker">RAD Esports</p>
           <img
             src="/assets/RadNewLogoWordmarkRed.png"
             alt="RAD Esports"
             className="footer-brand"
           />
           <p className="footer-copy">
-            RAD Esports is built to launch now and evolve later. The structure is stable
-            so premium assets, roster updates, and sponsorship layers can all scale without
-            a redesign.
+            Championship-level Marvel Rivals, sharp branding, and a community
+            built to keep growing.
           </p>
+          <a className="footer-discord-badge" href={discordInviteUrl}>
+            <SocialIcon />
+            Join Discord
+          </a>
         </div>
 
-        {/* Nav column */}
         <div>
-          <p className="footer-col-label">Navigate</p>
+          <p className="footer-col-label">Pages</p>
           <div className="footer-links">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
@@ -40,13 +42,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Contact column */}
         <div>
-          <p className="footer-col-label">Direct</p>
+          <p className="footer-col-label">Connect</p>
           <div className="footer-links">
             {contactChannels.map((ch) => (
               <a key={ch.label} href={ch.href}>
-                {ch.label}: {ch.value}
+                {ch.label}
               </a>
             ))}
           </div>
@@ -54,11 +55,8 @@ export function SiteFooter() {
       </div>
 
       <div className="container footer-bottom">
-        <p>© {new Date().getFullYear()} RAD Esports — V1 Launch Build</p>
-        <a className="footer-discord-badge" href={discordInviteUrl}>
-          <SocialIcon />
-          Join Discord
-        </a>
+        <p>© {new Date().getFullYear()} RAD Esports</p>
+        <span>Built for pressure, content, and the next stage of competition.</span>
       </div>
     </footer>
   );

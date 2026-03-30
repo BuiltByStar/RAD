@@ -6,14 +6,14 @@ export default function AboutPage() {
   return (
     <PageShell
       eyebrow="About RAD"
-      title="Untamed, unstoppable, and never by the book."
-      description={aboutSummary}
+      title="About RAD."
+      description="World champions. EMEA champions. Built to do it again."
       background="red"
     >
       <section className="section">
         <SectionHeading
           eyebrow="Identity"
-          title="RAD didn't wait for an invitation to the top."
+          title="RAD didn't wait for permission."
           description={aboutSummary}
         />
         <div className="grid-3">

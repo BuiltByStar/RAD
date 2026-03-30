@@ -10,16 +10,16 @@ export default function ContactPage() {
   return (
     <PageShell
       eyebrow="Contact"
-      title="Direct lanes for partners, recruitment, and community."
-      description="Contact entry points are organized so the site can handle sponsor outreach, roster inquiries, and fan/community activation cleanly."
+      title="Get in Touch."
+      description="Direct channels for partnerships, talent, and community."
       background="black"
     >
       <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Reach Out"
-            title="Direct channels plus a backend-ready inquiry pipeline."
-            description="The page keeps direct contact visible, while Vercel route handling and Supabase storage now support structured inquiries when env vars are configured."
+            title="Direct contact and submissions."
+            description="Use the public channels now or send a structured inquiry through the form."
           />
           <ContactGrid channels={contactChannels} />
           <div className="contact-form-shell">
