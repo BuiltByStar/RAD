@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AuthWidget } from "@/components/auth-widget";
 import { discordInviteUrl, primaryNavLinks } from "@/lib/site-data";
 
 export function SiteHeader() {
@@ -22,9 +23,12 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <a className="nav-cta" href={discordInviteUrl}>
-          Join Discord
-        </a>
+        <div className="nav-actions">
+          <AuthWidget />
+          <a className="nav-cta" href={discordInviteUrl}>
+            Join Discord
+          </a>
+        </div>
       </div>
     </header>
   );
