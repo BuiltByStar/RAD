@@ -1,12 +1,9 @@
 import Link from "next/link";
 
 import { DivisionsShowcase } from "@/components/divisions-showcase";
-import { MarqueeStrip } from "@/components/marquee-strip";
 import {
   aboutSummary,
   contactChannels,
-  discordInviteUrl,
-  discordWidgetUrl,
   partners,
   players,
   siteTagline,
@@ -14,19 +11,15 @@ import {
   teams
 } from "@/lib/site-data";
 import { getPostMeta } from "@/lib/posts";
-import { ScrollReveal, ParallaxBackgroundText } from "@/components/scroll-effects";
+import { ScrollReveal } from "@/components/scroll-effects";
 import { InteractiveNavHub } from "@/components/interactive-nav-hub";
 
 export default async function HomePage() {
   const latestPosts = await getPostMeta();
+  const rosterPreview = players.slice(0, 5);
 
   return (
     <main style={{ position: "relative", overflow: "hidden" }}>
-      {/* Background Parallax Typography */}
-      <ParallaxBackgroundText text="PRESSURE" speed={0.8} top="25%" left="-5%" />
-      <ParallaxBackgroundText text="OBSIDIAN" speed={1.2} top="55%" left="10%" />
-      <ParallaxBackgroundText text="COMPETE" speed={1.0} top="85%" left="-2%" />
-
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="at-hero">
         <div className="at-hero-overlay" style={{ background: 'linear-gradient(to top, #010101 0%, transparent 60%)' }} />
@@ -54,9 +47,6 @@ export default async function HomePage() {
       {/* ── INTERACTIVE 3D NAV ────────────────────────────────────── */}
       <InteractiveNavHub />
 
-      {/* ── MARQUEE ───────────────────────────────────────────────── */}
-      <MarqueeStrip />
-
       {/* ── STATEMENT ─────────────────────────────────────────────── */}
       <section className="at-statement">
         <div className="at-statement-inner">
@@ -79,9 +69,6 @@ export default async function HomePage() {
       {/* ── ACTIVE DIVISIONS ──────────────────────────────────────── */}
       <DivisionsShowcase teams={teams} />
 
-      {/* ── MARQUEE (reversed) ────────────────────────────────────── */}
-      <MarqueeStrip reverse />
-
       {/* ── STATS ─────────────────────────────────────────────────── */}
       <section className="at-stats">
         <div className="container">
@@ -103,11 +90,11 @@ export default async function HomePage() {
         <div className="container">
           <div className="at-section-row" data-reveal>
             <p className="at-section-label">Active Roster</p>
-            <Link href="/roster" className="at-link-arrow">View all →</Link>
+            <Link href="/teams" className="at-link-arrow">View team →</Link>
           </div>
           <ScrollReveal delay={0.2}>
             <div className="at-roster-list">
-              {players.map((player, i) => (
+              {rosterPreview.map((player, i) => (
                 <div key={player.name} className="at-roster-item" data-reveal>
                   <span className="at-roster-idx">0{i + 1}</span>
                   <div className="at-roster-info">
@@ -151,56 +138,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── COMMUNITY CTA ─────────────────────────────────────────── */}
-      <section className="at-community">
-        <div className="at-community-video">
-          <video autoPlay muted loop playsInline>
-            <source src="/assets/DiscordRadPFPAnimated.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div className="at-community-shell">
-          <div className="at-community-content">
-            <p className="at-section-label">Discord</p>
-            <h2 className="at-community-title">
-              Join<br />The<br /><em>Community.</em>
-            </h2>
-            <p className="at-community-body">
-              The RAD server is live now. Get in early for announcements,
-              clips, team conversation, and the direct community pulse while the
-              org keeps building upward.
-            </p>
-            <div className="at-community-channels">
-              {contactChannels.map((ch) => (
-                <a key={ch.label} href={ch.href} className="at-channel-item">
-                  <span className="at-channel-label">{ch.label}</span>
-                  <span className="at-channel-value">{ch.value}</span>
-                </a>
-              ))}
-            </div>
-            <div className="at-community-actions">
-              <a className="btn btn-primary" href={discordInviteUrl}>
-                Join Discord
-              </a>
-              <a className="btn btn-secondary" href="https://x.com/RADesport">
-                Follow on X
-              </a>
-            </div>
+      {/* ── CONNECT ──────────────────────────────────────────────── */}
+      <section className="section section-dark">
+        <div className="container">
+          <div className="at-section-row" data-reveal>
+            <p className="at-section-label">Connect</p>
+            <Link href="/contact" className="at-link-arrow">Contact RAD →</Link>
           </div>
-
-          <div className="at-discord-panel">
-            <div className="at-discord-panel-head">
-              <span className="at-discord-dot" />
-              <p>Live Server Widget</p>
-            </div>
-            <iframe
-              src={discordWidgetUrl}
-              title="RAD Discord Server"
-              width="100%"
-              height="420"
-              allowTransparency={true}
-              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-              className="at-discord-widget"
-            />
+          <div className="contact-grid">
+            {contactChannels.map((channel) => (
+              <a key={channel.label} href={channel.href} className="contact-tile">
+                <p className="eyebrow">{channel.label}</p>
+                <strong>{channel.value}</strong>
+              </a>
+            ))}
           </div>
         </div>
       </section>

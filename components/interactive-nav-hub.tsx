@@ -16,11 +16,11 @@ import * as THREE from "three";
 
 // The points radiating from the 3D model (Positioned wider and forward to avoid text clipping)
 const navNodes = [
-  { label: "ROSTER", path: "/roster", position: [3.25, 1.5, 0.45] as [number, number, number] },
-  { label: "TEAMS", path: "/teams", position: [-3.25, 1.48, 0.45] as [number, number, number] },
-  { label: "CONTENT", path: "/content", position: [0, -2.02, 0.65] as [number, number, number] },
-  { label: "PARTNERS", path: "/partners", position: [2.8, -1.2, 0.35] as [number, number, number] },
-  { label: "ABOUT", path: "/about", position: [-2.8, -1.15, 0.3] as [number, number, number] },
+  { label: "TEAMS", path: "/teams", position: [-3.15, 1.42, 0.45] as [number, number, number] },
+  { label: "CONTENT", path: "/content", position: [3.1, 1.42, 0.45] as [number, number, number] },
+  { label: "ABOUT", path: "/about", position: [-2.75, -1.12, 0.32] as [number, number, number] },
+  { label: "STAFF", path: "/staff", position: [2.75, -1.12, 0.32] as [number, number, number] },
+  { label: "CONTACT", path: "/contact", position: [0, -1.88, 0.62] as [number, number, number] },
 ];
 
 function NavNode({ 
