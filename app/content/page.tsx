@@ -1,39 +1,54 @@
-import Link from "next/link";
-
 import { PageShell } from "@/components/page-shell";
-import { SectionHeading } from "@/components/sections";
-import { getPostMeta } from "@/lib/posts";
+import { YouTubeFeatured } from "@/components/youtube-featured";
+import { YouTubeLibrary } from "@/components/youtube-library";
+import { TwitchCreators } from "@/components/twitch-creators";
 
-export default async function ContentPage() {
-  const posts = await getPostMeta();
-
+export default function ContentPage() {
   return (
     <PageShell
       eyebrow="Content"
-      title="Latest Content."
-      description="Announcements, updates, and recaps from RAD."
+      title="Content Hub."
+      description="Latest videos, streams, and media from RAD Esports."
       background="red"
     >
+      {/* ── Featured Video ─────────────────────────────────────── */}
       <section className="section">
         <div className="container">
-          <SectionHeading
-            eyebrow="Latest"
-            title="News and updates."
-            description="A clean feed for recent posts, announcements, and features."
-          />
-          <div className="post-grid">
-            {posts.map((post) => (
-              <Link key={post.slug} href={`/content/${post.slug}`} className="post-card post-card-rich">
-                <img src={post.cover} alt={post.title} />
-                <div>
-                  <p className="eyebrow">{post.category}</p>
-                  <h3>{post.title}</h3>
-                  <p>{post.summary}</p>
-                  <span>{post.date}</span>
-                </div>
-              </Link>
-            ))}
+          <div className="at-section-row" style={{ marginBottom: "2rem" }}>
+            <p className="at-section-label">Featured Video</p>
+            <a
+              href="https://www.youtube.com/@RadEsport"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="at-link-arrow"
+            >
+              Visit YouTube →
+            </a>
           </div>
+          <YouTubeFeatured />
+        </div>
+      </section>
+
+      {/* ── Video Library ──────────────────────────────────────── */}
+      <section className="section">
+        <div className="container">
+          <div className="at-section-row" style={{ marginBottom: "2rem" }}>
+            <p className="at-section-label">Recent Uploads</p>
+          </div>
+          <YouTubeLibrary />
+        </div>
+      </section>
+
+      {/* ── Twitch Creators ────────────────────────────────────── */}
+      <section className="section">
+        <div className="container">
+          <div className="at-section-row" style={{ marginBottom: "2rem" }}>
+            <p className="at-section-label">RAD Creators</p>
+            <span className="at-section-label" style={{ color: "var(--dim)" }}>
+              Twitch Live Status
+            </span>
+          </div>
+          <TwitchCreators />
         </div>
       </section>
     </PageShell>

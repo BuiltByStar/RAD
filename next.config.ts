@@ -3,7 +3,11 @@ import path from "node:path";
 
 const nextConfig: NextConfig = {
   images: {
-    formats: ["image/avif", "image/webp"]
+    formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      { hostname: "i.ytimg.com" },
+      { hostname: "static-cdn.jtvnw.net" },
+    ]
   },
   turbopack: {
     root: path.resolve(__dirname)
