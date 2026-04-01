@@ -44,29 +44,30 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* ── TICKER ────────────────────────────────────────────────── */}
-        <div className="at-ticker-wrap">
-          <div className="at-ticker-inner">
-            <span className="at-ticker-item"><span>✦</span> #RADONESTEP</span>
-            <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
-            <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
-            <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
-            <span className="at-ticker-item"><span>✦</span> #MARVELRIVALS</span>
-            <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
-            <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
-            <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
-            {/* Loop duplication */}
-            <span className="at-ticker-item"><span>✦</span> #RADONESTEP</span>
-            <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
-            <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
-            <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
-            <span className="at-ticker-item"><span>✦</span> #MARVELRIVALS</span>
-            <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
-            <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
-            <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
-          </div>
-        </div>
       </section>
+
+      {/* ── TICKER ────────────────────────────────────────────────── */}
+      <div className="at-ticker-wrap">
+        <div className="at-ticker-inner">
+          <span className="at-ticker-item"><span>✦</span> #RADONESTEP</span>
+          <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
+          <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
+          <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
+          <span className="at-ticker-item"><span>✦</span> #MARVELRIVALS</span>
+          <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
+          <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
+          <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
+          {/* Loop duplication */}
+          <span className="at-ticker-item"><span>✦</span> #RADONESTEP</span>
+          <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
+          <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
+          <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
+          <span className="at-ticker-item"><span>✦</span> #MARVELRIVALS</span>
+          <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
+          <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
+          <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
+        </div>
+      </div>
 
       {/* ── NAVIGATION HUB ────────────────────────────────────────── */}
       <NavHub />
