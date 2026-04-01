@@ -13,6 +13,7 @@ import {
 import { getPostMeta } from "@/lib/posts";
 import { ScrollReveal } from "@/components/scroll-effects";
 import { InteractiveNavHub } from "@/components/interactive-nav-hub";
+import { DiscordSection } from "@/components/discord-section";
 
 export default async function HomePage() {
   const latestPosts = await getPostMeta();
@@ -137,6 +138,9 @@ export default async function HomePage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* ── DISCORD ──────────────────────────────────────────────── */}
+      <DiscordSection />
 
       {/* ── CONNECT ──────────────────────────────────────────────── */}
       <section className="section section-dark">

@@ -9,19 +9,132 @@ import {
   Environment,
   Text3D,
   Center,
-  RoundedBox
+  RoundedBox,
+  MeshTransmissionMaterial
 } from "@react-three/drei";
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
 
-// The points radiating from the 3D model (Positioned wider and forward to avoid text clipping)
+// Navigation nodes (Positions adjusted for a more dynamic "halo" arrangement)
 const navNodes = [
-  { label: "TEAMS", path: "/teams", position: [-3.15, 1.42, 0.45] as [number, number, number] },
-  { label: "CONTENT", path: "/content", position: [3.1, 1.42, 0.45] as [number, number, number] },
-  { label: "ABOUT", path: "/about", position: [-2.75, -1.12, 0.32] as [number, number, number] },
-  { label: "STAFF", path: "/staff", position: [2.75, -1.12, 0.32] as [number, number, number] },
-  { label: "CONTACT", path: "/contact", position: [0, -1.88, 0.62] as [number, number, number] },
+  { label: "TEAMS", path: "/teams", position: [-3.4, 1.6, 0.5] as [number, number, number] },
+  { label: "CONTENT", path: "/content", position: [3.4, 1.6, 0.5] as [number, number, number] },
+  { label: "ABOUT", path: "/about", position: [-3.0, -1.2, 0.4] as [number, number, number] },
+  { label: "STAFF", path: "/staff", position: [3.0, -1.2, 0.4] as [number, number, number] },
+  { label: "CONTACT", path: "/contact", position: [0, -2.1, 0.7] as [number, number, number] },
 ];
+
+function ParticleField({ count = 80 }) {
+  const points = useMemo(() => {
+    const p = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+        p[i * 3] = (Math.random() - 0.5) * 15;
+        p[i * 3 + 1] = (Math.random() - 0.5) * 10;
+        p[i * 3 + 2] = (Math.random() - 0.5) * 10 - 5;
+    }
+    return p;
+  }, [count]);
+
+  const ref = useRef<THREE.Points>(null);
+  useFrame((state) => {
+    if (ref.current) {
+        ref.current.rotation.y = state.clock.elapsedTime * 0.04;
+        ref.current.rotation.x = state.clock.elapsedTime * 0.02;
+    }
+  });
+
+  return (
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" count={count} args={[points, 3]} />
+      </bufferGeometry>
+      <pointsMaterial size={0.035} color="#ff3030" transparent opacity={0.4} sizeAttenuation={true} />
+    </points>
+  );
+}
+
+function OrbitingRings() {
+    const ring1 = useRef<THREE.Mesh>(null);
+    const ring2 = useRef<THREE.Mesh>(null);
+    const ring3 = useRef<THREE.Mesh>(null);
+
+    useFrame((state) => {
+        const t = state.clock.elapsedTime;
+        if (ring1.current) {
+            ring1.current.rotation.z = t * 0.25;
+            ring1.current.rotation.x = Math.PI / 2 + Math.sin(t * 0.2) * 0.1;
+        }
+        if (ring2.current) {
+            ring2.current.rotation.y = t * -0.18;
+            ring2.current.rotation.z = t * 0.12;
+            ring2.current.rotation.x = Math.PI / 4;
+        }
+        if (ring3.current) {
+            ring3.current.rotation.z = t * 0.35;
+            ring3.current.rotation.x = -Math.PI / 6 + Math.cos(t * 0.3) * 0.08;
+        }
+    });
+
+    return (
+        <group>
+            {/* Inner tech ring */}
+            <mesh ref={ring1}>
+                <torusGeometry args={[2.55, 0.012, 16, 128]} />
+                <meshBasicMaterial color="#ff2222" transparent opacity={0.24} />
+            </mesh>
+            {/* Outer tilted ring */}
+            <mesh ref={ring2}>
+                <torusGeometry args={[3.2, 0.008, 12, 160]} />
+                <meshBasicMaterial color="#ff4444" transparent opacity={0.15} />
+            </mesh>
+            {/* Wide accent ring */}
+            <mesh ref={ring3}>
+                <torusGeometry args={[4.05, 0.006, 12, 180]} />
+                <meshBasicMaterial color="#ff1111" transparent opacity={0.12} />
+            </mesh>
+        </group>
+    );
+}
+
+function EnergyCore() {
+    const coreRef = useRef<THREE.Mesh>(null);
+    const outerRef = useRef<THREE.Mesh>(null);
+
+    useFrame((state) => {
+        const t = state.clock.elapsedTime;
+        if (coreRef.current) {
+            const s = 1.0 + Math.sin(t * 2.5) * 0.04;
+            coreRef.current.scale.setScalar(s);
+        }
+        if (outerRef.current) {
+            const s = 1.5 + Math.sin(t * 1.8) * 0.08;
+            outerRef.current.scale.setScalar(s);
+            outerRef.current.rotation.y = t * 0.5;
+        }
+    });
+
+    return (
+        <group position={[0, 0, -0.8]}>
+            {/* Central dense core */}
+            <mesh ref={coreRef}>
+                <sphereGeometry args={[0.35, 32, 32]} />
+                <meshBasicMaterial color="#ff0000" />
+            </mesh>
+            {/* Glowing atmosphere */}
+            <mesh ref={outerRef}>
+                <sphereGeometry args={[0.62, 32, 32]} />
+                <meshBasicMaterial 
+                    color="#ff3333" 
+                    transparent 
+                    opacity={0.12} 
+                    blending={THREE.AdditiveBlending} 
+                />
+            </mesh>
+            {/* Point light within the core */}
+            <pointLight distance={6} intensity={1.5} color="#ff0000" />
+        </group>
+    );
+}
 
 function NavNode({ 
   position, 
@@ -35,125 +148,109 @@ function NavNode({
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
   const groupRef = useRef<THREE.Group>(null);
+  const coreRef = useRef<THREE.Mesh>(null);
   const haloRef = useRef<THREE.Mesh>(null);
-  const secondaryHaloRef = useRef<THREE.Mesh>(null);
-  const lineColor = hovered ? "#ffd1d1" : "#b31111";
 
   useFrame((state) => {
+    const t = state.clock.elapsedTime;
     if (groupRef.current) {
-      const target = hovered ? 1.14 : 1;
-      const currentScale = groupRef.current.scale.x;
-      const nextScale = THREE.MathUtils.lerp(currentScale, target, 0.11);
-      groupRef.current.scale.setScalar(nextScale);
-      groupRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.85) * 0.035;
+      const target = hovered ? 1.2 : 1;
+      groupRef.current.scale.lerp(new THREE.Vector3(target, target, target), 0.12);
+      groupRef.current.position.y += Math.sin(t * 1.5 + position[0]) * 0.0015;
     }
-
+    if (coreRef.current) {
+        coreRef.current.rotation.y = t * 0.8;
+        coreRef.current.rotation.z = t * 0.4;
+    }
     if (haloRef.current) {
-      haloRef.current.rotation.z = state.clock.elapsedTime * 0.25;
-      const pulse = 1 + Math.sin(state.clock.elapsedTime * 1.6) * 0.045;
-      haloRef.current.scale.setScalar(hovered ? 1.06 : pulse);
-    }
-
-    if (secondaryHaloRef.current) {
-      secondaryHaloRef.current.rotation.y = state.clock.elapsedTime * 0.42;
-      secondaryHaloRef.current.rotation.z = state.clock.elapsedTime * 0.16;
+        haloRef.current.rotation.z = t * -0.5;
+        const s = 1 + Math.sin(t * 2) * 0.05;
+        haloRef.current.scale.setScalar(hovered ? 1.15 : s);
     }
   });
 
-  // Calculate the path back to the origin (0,0,0) from this node's local space
-  const originLine = new Float32Array([0, 0, 0, -position[0], -position[1], -position[2]]);
-
   return (
     <group position={position}>
-      {/* Invisible connection lines linking the node back to the center model */}
+      {/* Connector line to center */}
       <line>
          <bufferGeometry attach="geometry">
             <bufferAttribute
                attach="attributes-position"
                count={2}
-               args={[originLine, 3]}
+               args={[new Float32Array([0, 0, 0, -position[0], -position[1], -position[2]]), 3]}
              />
          </bufferGeometry>
-         <lineBasicMaterial attach="material" color={lineColor} transparent opacity={hovered ? 0.7 : 0.18} />
+         <lineBasicMaterial 
+            color={hovered ? "#ff8888" : "#ff2222"} 
+            transparent 
+            opacity={hovered ? 0.75 : 0.15} 
+            blending={THREE.AdditiveBlending}
+         />
       </line>
 
-      {/* The actual clickable geometric component */}
       <group 
         ref={groupRef}
-        onClick={(e) => {
-          e.stopPropagation();
-          router.push(path);
-        }}
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          setHovered(true);
-          document.body.style.cursor = 'pointer';
-        }}
-        onPointerOut={() => {
-          setHovered(false);
-          document.body.style.cursor = 'auto';
-        }}
+        onClick={(e) => { e.stopPropagation(); router.push(path); }}
+        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+        onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
       >
-        <mesh scale={[1.08, 1.08, 0.88]}>
-          <sphereGeometry args={[0.28, 32, 32]} />
-          <meshStandardMaterial
-            color={hovered ? "#ff8787" : "#670808"}
-            transparent
-            opacity={0.42}
-            emissive="#ff1a1a"
-            emissiveIntensity={0.85}
-            roughness={0.08}
-            metalness={0.18}
-          />
-        </mesh>
-
-        <mesh scale={[0.82, 0.82, 0.76]}>
-          <sphereGeometry args={[0.22, 32, 32]} />
+        {/* Inner Octahedron core for a more "tech" feel */}
+        <mesh ref={coreRef}>
+          <octahedronGeometry args={[0.22, 0]} />
           <meshStandardMaterial 
-              color={hovered ? "#ffb4b4" : "#ff2323"} 
-              metalness={0.28}
-              roughness={0.12}
-              emissive={hovered ? "#ff5a5a" : "#b81010"} 
-              emissiveIntensity={hovered ? 1.8 : 1.15} 
+            color={hovered ? "#ff4d4d" : "#940000"} 
+            emissive="#ff0000" 
+            emissiveIntensity={hovered ? 2.5 : 1.2} 
+            metalness={0.8}
+            roughness={0.1}
           />
         </mesh>
 
-        <mesh scale={[0.34, 0.34, 0.26]}>
-          <sphereGeometry args={[0.28, 24, 24]} />
-          <meshBasicMaterial color="#fff3f3" transparent opacity={0.9} />
+        {/* Glass sphere shell */}
+        <mesh scale={1.3}>
+           <sphereGeometry args={[0.22, 32, 32]} />
+           <MeshTransmissionMaterial 
+                backside
+                samples={4}
+                thickness={0.5}
+                chromaticAberration={0.06}
+                anisotropy={0.1}
+                distortion={0.1}
+                distortionScale={0.14}
+                temporalDistortion={0.1}
+                transmission={1}
+                color={hovered ? "#fff0f0" : "#ffdddd"}
+                roughness={0.05}
+           />
         </mesh>
 
-        <mesh ref={haloRef} rotation={[Math.PI / 2, 0, 0]}>
-           <torusGeometry args={[0.44, 0.012, 24, 96]} />
-           <meshBasicMaterial color={hovered ? "#ffe7e7" : "#ff2f2f"} transparent opacity={hovered ? 0.85 : 0.42} />
+        {/* Orbiting ring for node */}
+        <mesh ref={haloRef} rotation={[Math.PI / 2.5, 0.2, 0]}>
+            <torusGeometry args={[0.5, 0.01, 16, 64]} />
+            <meshBasicMaterial color="#ff3333" transparent opacity={hovered ? 0.8 : 0.3} />
         </mesh>
 
-        <mesh ref={secondaryHaloRef} rotation={[0.6, Math.PI / 4, 0.4]}>
-          <torusGeometry args={[0.56, 0.008, 24, 96]} />
-          <meshBasicMaterial color={hovered ? "#ffdede" : "#d31717"} transparent opacity={hovered ? 0.68 : 0.28} />
-        </mesh>
-
-        <mesh scale={1.62}>
-          <sphereGeometry args={[0.18, 32, 32]} />
-          <meshBasicMaterial color="#ff0000" transparent opacity={0.12} />
+        {/* Interaction glow */}
+        <mesh scale={1.8}>
+           <sphereGeometry args={[0.25, 16, 16]} />
+           <meshBasicMaterial color="#ff0000" transparent opacity={hovered ? 0.08 : 0.0} />
         </mesh>
       </group>
 
-      {/* The floating GUI Label */}
-      <Html distanceFactor={10} position={[0, 0.5, 0]} center style={{ pointerEvents: 'none' }}>
+      <Html distanceFactor={10} position={[0, 0.65, 0]} center style={{ pointerEvents: 'none' }}>
         <div style={{
-          color: hovered ? "#fff" : "rgba(255,255,255,0.62)",
+          color: hovered ? "#fff" : "rgba(255,255,255,0.7)",
           textTransform: "uppercase",
-          letterSpacing: "0.22em",
-          fontSize: "11px",
-          fontWeight: 700,
-          transition: "all 0.2s",
-          textShadow: hovered ? "0 0 14px #ff0000" : "none",
-          backdropFilter: "blur(14px)",
-          padding: "0.4rem 0.6rem",
-          borderRadius: "999px",
-          background: hovered ? "rgba(255, 24, 24, 0.16)" : "rgba(255,255,255,0.04)",
-          border: hovered ? "1px solid rgba(255,110,110,0.4)" : "1px solid rgba(255,255,255,0.07)"
+          letterSpacing: "0.25em",
+          fontSize: "10px",
+          fontWeight: 800,
+          transition: "all 0.3s cubic-bezier(0.23, 1, 0.32, 1)",
+          textShadow: hovered ? "0 0 12px #ff0000" : "none",
+          padding: "0.4rem 0.7rem",
+          borderRadius: "4px",
+          background: hovered ? "rgba(255, 0, 0, 0.2)" : "rgba(255,255,255,0.03)",
+          border: hovered ? "1px solid rgba(255,100,100,0.5)" : "1px solid rgba(255,255,255,0.08)",
+          backdropFilter: "blur(10px)"
         }}>
           {label}
         </div>
@@ -164,116 +261,74 @@ function NavNode({
 
 function HubModel() {
   const groupRef = useRef<THREE.Group>(null);
-  const ringRef = useRef<THREE.Mesh>(null);
-  const accentRingRef = useRef<THREE.Mesh>(null);
-  const auraRef = useRef<THREE.Mesh>(null);
-  const accentColor = useMemo(() => new THREE.Color("#ff1a1a"), []);
+  const t3dRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
+    const t = state.clock.elapsedTime;
     if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.32) * 0.028;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.34) * 0.018;
-      groupRef.current.position.y = 0.26 + Math.sin(state.clock.elapsedTime * 0.72) * 0.045;
-      const introScale = THREE.MathUtils.lerp(groupRef.current.scale.x, 1, 0.06);
-      groupRef.current.scale.setScalar(introScale);
-    }
-
-    if (ringRef.current) {
-      ringRef.current.rotation.x = Math.PI / 2;
-      ringRef.current.rotation.z = state.clock.elapsedTime * 0.12;
-    }
-
-    if (accentRingRef.current) {
-      accentRingRef.current.rotation.y = state.clock.elapsedTime * 0.18;
-      accentRingRef.current.rotation.z = state.clock.elapsedTime * 0.07;
-    }
-
-    if (auraRef.current) {
-      const pulse = 1 + Math.sin(state.clock.elapsedTime * 1.1) * 0.035;
-      auraRef.current.scale.set(pulse, pulse * 0.96, pulse);
-      const auraMaterial = auraRef.current.material as THREE.MeshBasicMaterial;
-      auraMaterial.opacity = 0.16 + Math.sin(state.clock.elapsedTime * 1.1) * 0.03;
+      groupRef.current.rotation.y = Math.sin(t * 0.2) * 0.04;
+      groupRef.current.rotation.z = Math.cos(t * 0.15) * 0.02;
+      groupRef.current.position.y = 0.2 + Math.sin(t * 0.8) * 0.05;
     }
   });
 
   return (
-    <group ref={groupRef} scale={0.88}>
-      <mesh ref={auraRef} position={[0, -0.05, -0.72]} rotation={[0, 0, 0.04]}>
-        <planeGeometry args={[5.6, 3.3]} />
-        <meshBasicMaterial color="#c00000" transparent opacity={0.18} />
-      </mesh>
+    <group ref={groupRef}>
+      <OrbitingRings />
+      <EnergyCore />
 
-      <mesh ref={ringRef} position={[0, 0.02, -0.22]}>
-        <torusGeometry args={[2.3, 0.018, 32, 160]} />
-        <meshBasicMaterial color="#ff6767" transparent opacity={0.16} />
-      </mesh>
-
-      <mesh ref={accentRingRef} rotation={[0.48, 0.18, 0.12]} position={[0, 0.06, -0.4]}>
-        <torusGeometry args={[2.85, 0.022, 32, 160]} />
-        <meshBasicMaterial color={accentColor} transparent opacity={0.18} />
-      </mesh>
-
-      <RoundedBox args={[4.95, 2.1, 0.42]} radius={0.34} smoothness={5} position={[0, 0, -0.28]}>
-        <meshPhysicalMaterial
-          color="#120202"
-          metalness={0.42}
-          roughness={0.34}
-          clearcoat={1}
-          clearcoatRoughness={0.12}
-          reflectivity={1}
-          transmission={0.04}
-        />
-      </RoundedBox>
-
-      <RoundedBox args={[4.25, 1.48, 0.34]} radius={0.28} smoothness={5} position={[0, 0.03, -0.02]}>
-        <meshPhysicalMaterial
-          color="#700000"
-          metalness={0.12}
-          roughness={0.08}
-          transmission={0.3}
-          thickness={1.6}
-          ior={1.24}
-          envMapIntensity={1.2}
-          clearcoat={1}
-          clearcoatRoughness={0.08}
-          emissive="#7a0000"
-          emissiveIntensity={0.45}
-        />
-      </RoundedBox>
-
-      <RoundedBox args={[3.72, 0.16, 0.08]} radius={0.08} smoothness={4} position={[0, 0.62, 0.08]}>
-        <meshBasicMaterial color="#ff6d6d" transparent opacity={0.26} />
-      </RoundedBox>
-
-      <RoundedBox args={[3.2, 0.1, 0.06]} radius={0.08} smoothness={4} position={[0, -0.68, 0.06]}>
-        <meshBasicMaterial color="#ff2b2b" transparent opacity={0.18} />
-      </RoundedBox>
-
-      <Center>
+      <Center ref={t3dRef}>
         <Text3D
           font="https://unpkg.com/three@0.149.0/examples/fonts/helvetiker_bold.typeface.json"
-          size={1.52}
-          height={0.28}
-          curveSegments={28}
+          size={1.6}
+          height={0.4}
+          curveSegments={24}
           bevelEnabled
-          bevelThickness={0.034}
-          bevelSize={0.024}
+          bevelThickness={0.05}
+          bevelSize={0.03}
           bevelOffset={0}
-          bevelSegments={14}
+          bevelSegments={10}
         >
           RAD
           <meshPhysicalMaterial
-            color="#d10000"
-            metalness={0.82}
-            roughness={0.1}
+            color="#050505"
+            emissive="#ff0000"
+            emissiveIntensity={0.65}
+            metalness={1.0}
+            roughness={0.12}
             clearcoat={1}
             clearcoatRoughness={0.05}
             reflectivity={1}
-            emissive="#560000"
-            emissiveIntensity={0.56}
+            transmission={0.05}
+            ior={1.45}
           />
         </Text3D>
       </Center>
+
+      {/* Structured "frame" around the text */}
+      <RoundedBox args={[5.2, 2.3, 0.5]} radius={0.4} smoothness={4} position={[0, 0, -0.3]}>
+        <MeshTransmissionMaterial 
+            samples={6}
+            thickness={1}
+            chromaticAberration={0.02}
+            distortion={0.1}
+            distortionScale={0.1}
+            temporalDistortion={0.1}
+            color="#1a0000"
+            roughness={0.1}
+            transmission={0.8}
+        />
+      </RoundedBox>
+
+      {/* Floating accent elements */}
+      <group position={[0,0,-0.1]}>
+        <RoundedBox args={[3.8, 0.08, 0.1]} radius={0.04} position={[0, 1.25, 0]}>
+            <meshBasicMaterial color="#ff3333" transparent opacity={0.3} />
+        </RoundedBox>
+        <RoundedBox args={[3.8, 0.08, 0.1]} radius={0.04} position={[0, -1.25, 0]}>
+            <meshBasicMaterial color="#ff3333" transparent opacity={0.3} />
+        </RoundedBox>
+      </group>
       
       {navNodes.map((node) => (
          <NavNode key={node.label} {...node} />
@@ -284,20 +339,30 @@ function HubModel() {
 
 export function InteractiveNavHub() {
   return (
-    <div className="at-hub-wrap" style={{ width: "100%", height: "56vh", minHeight: "500px", maxHeight: "680px", position: "relative", zIndex: 10, margin: "0.15rem 0 1rem", overflow: "visible" }}>
-      <Canvas camera={{ position: [0, 0.78, 8.4], fov: 34 }} dpr={[1, 1.8]}>
-        <ambientLight intensity={0.45} />
-        <spotLight position={[5.5, 6, 7]} angle={0.36} penumbra={1} intensity={1.8} color="#ff4b4b" />
-        <pointLight position={[-7, -3, -4]} intensity={0.28} color="#ffc5c5" />
-        <pointLight position={[0, 3.5, 2]} intensity={0.65} color="#ff2020" />
-        <pointLight position={[0, -2, 4]} intensity={0.34} color="#8a0303" />
+    <div className="at-hub-wrap" style={{ 
+      width: "100%", 
+      height: "62vh", 
+      minHeight: "550px", 
+      maxHeight: "750px", 
+      position: "relative", 
+      zIndex: 10, 
+      margin: "1rem 0", 
+      overflow: "visible" 
+    }}>
+      <Canvas camera={{ position: [0, 0.8, 8.8], fov: 32 }} dpr={[1, 2]}>
+        <ambientLight intensity={0.5} />
+        <spotLight position={[8, 10, 10]} angle={0.3} penumbra={1} intensity={2.5} color="#ff3333" />
+        <pointLight position={[-8, -5, -5]} intensity={0.5} color="#ff6666" />
+        <pointLight position={[0, 4, 3]} intensity={1.2} color="#ff0000" />
         
-        <Float speed={1.2} rotationIntensity={0.03} floatIntensity={0.12}>
+        <ParticleField count={100} />
+        
+        <Float speed={1.5} rotationIntensity={0.05} floatIntensity={0.15}>
           <HubModel />
         </Float>
         
-        <ContactShadows position={[0, -2.2, 0]} opacity={0.24} scale={12.5} blur={2.6} far={4.9} color="#280000" />
-        <Environment preset="studio" />
+        <ContactShadows position={[0, -2.4, 0]} opacity={0.3} scale={15} blur={1.5} far={4.5} color="#100000" />
+        <Environment preset="night" />
       </Canvas>
     </div>
   );

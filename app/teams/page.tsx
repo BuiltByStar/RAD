@@ -15,22 +15,22 @@ export default function TeamsPage() {
     >
       <section className="section">
         <div className="container team-page-grid">
-          <article className="team-overview-card">
+          <article className="team-overview-card at-hud-border at-glass">
             <div className="card-topline">
               <span className="card-status">{team.status}</span>
               <span>{team.game}</span>
             </div>
-            <h2 className="team-overview-title">{team.name}</h2>
+            <h2 className="team-overview-title at-glitch-text" data-text={team.name}>{team.name}</h2>
             <p className="section-copy">{team.description}</p>
           </article>
 
           <div className="team-note-stack">
-            <article className="team-note-card">
-              <p className="eyebrow">Competitive Identity</p>
+            <article className="team-note-card at-glass">
+              <p className="at-section-label">Competitive Identity</p>
               <p>Frontline stability, flexible duelists, and support players built for high-pressure matches.</p>
             </article>
-            <article className="team-note-card">
-              <p className="eyebrow">RAD Standard</p>
+            <article className="team-note-card at-glass">
+              <p className="at-section-label">RAD Standard</p>
               <p>World results first, strong presentation second, and no wasted page depth getting to the actual roster.</p>
             </article>
           </div>
@@ -41,8 +41,8 @@ export default function TeamsPage() {
         <div className="container">
           <div className="section-head">
             <div>
-              <p className="eyebrow">Roster</p>
-              <h2>Current lineup.</h2>
+              <p className="at-section-label">Roster</p>
+              <h2 className="at-glitch-text" data-text="Current lineup.">Current lineup.</h2>
             </div>
             <div className="section-meta">
               <p className="section-copy">
@@ -53,10 +53,10 @@ export default function TeamsPage() {
 
           <div className="team-roster-grid">
             {teamRoster.map((player) => (
-              <article key={player.name} className="rad-card team-player-card">
+              <article key={player.name} className="rad-card team-player-card at-glass at-hud-border">
                 <div className="rad-card__body">
                   <div className="card-topline">
-                    <span>{player.group}</span>
+                    <span className="at-section-label" style={{ marginBottom: 0 }}>{player.group}</span>
                     <span>{player.role}</span>
                   </div>
                   <h3 className="card-title">{player.name}</h3>
@@ -64,8 +64,8 @@ export default function TeamsPage() {
                   {player.socials?.length ? (
                     <div className="team-player-links">
                       {player.socials.map((social) => (
-                        <a key={social.label} href={social.href}>
-                          {social.label}
+                        <a key={social.label} href={social.href} className="at-link-arrow">
+                          {social.label} →
                         </a>
                       ))}
                     </div>
@@ -81,8 +81,8 @@ export default function TeamsPage() {
         <div className="container">
           <div className="section-head">
             <div>
-              <p className="eyebrow">Support</p>
-              <h2>Staff layer.</h2>
+              <p className="at-section-label">Support</p>
+              <h2 className="at-glitch-text" data-text="Staff layer.">Staff layer.</h2>
             </div>
             <div className="section-meta">
               <p className="section-copy">
@@ -93,9 +93,9 @@ export default function TeamsPage() {
 
           <div className="team-support-grid">
             {supportStaff.map((member) => (
-              <article key={member.name} className="rad-card team-support-card">
+              <article key={member.name} className="rad-card team-support-card at-glass">
                 <div className="rad-card__body">
-                  <p className="eyebrow">{member.group}</p>
+                  <p className="at-section-label">{member.group}</p>
                   <h3 className="card-title">{member.name}</h3>
                   <p className="team-support-role">{member.role}</p>
                   <p className="card-desc">{member.descriptor}</p>
