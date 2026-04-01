@@ -91,7 +91,7 @@ p { margin: 0; }
 
 /* ─── Layout ───────────────────────────────────────────────────────────────── */
 .container { width: var(--container); margin: 0 auto; }
-.page-main { min-height: 100vh; }
+.page-main { min-height: 100vh; position: relative; z-index: 2; }
 
 /* ─── @keyframes library ───────────────────────────────────────────────────── */
 @keyframes border-rotate { to { --border-angle: 360deg; } }
@@ -780,14 +780,16 @@ p { margin: 0; }
 }
 
 /* ─── Sections ─────────────────────────────────────────────────────────────── */
-.section { padding: 4rem 0; }
+.section { padding: 4rem 0; background: var(--bg); position: relative; z-index: 2; }
 
 .section-tinted {
   background: linear-gradient(180deg, rgba(230, 0, 0, 0.04), rgba(255, 255, 255, 0.01));
 }
 
 .section-dark {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(230, 0, 0, 0.025));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(230, 0, 0, 0.025)), var(--bg);
+  position: relative;
+  z-index: 2;
 }
 
 .section-head {
@@ -1277,6 +1279,7 @@ p { margin: 0; }
 /* ─── Page Hero ────────────────────────────────────────────────────────────── */
 .page-hero {
   position: relative;
+  z-index: 2;
   overflow: clip;
   padding: 6.25rem 0 2.75rem;
   background-position: center;
@@ -1313,7 +1316,7 @@ p { margin: 0; }
   font-size: 0.95rem;
 }
 
-.page-content { padding: 2.5rem 0 4.25rem; }
+.page-content { padding: 2.5rem 0 4.25rem; background: var(--bg); position: relative; z-index: 2; }
 
 /* ─── Post Page ────────────────────────────────────────────────────────────── */
 .post-hero {
@@ -1724,6 +1727,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 /* ─── AT Hero ───────────────────────────────────────────────────────────── */
 .at-hero {
   position: relative;
+  z-index: 2;
   height: calc(100vh - 60px);
   min-height: 560px;
   display: flex;
@@ -1922,7 +1926,9 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 /* ─── AT Statement ──────────────────────────────────────────────────────── */
 .at-statement {
   padding: 5rem 0 4.25rem;
-  background: transparent;
+  background: var(--bg);
+  position: relative;
+  z-index: 2;
 }
 
 .at-statement-inner {
@@ -2012,7 +2018,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 .at-divisions {
   position: relative;
   padding: 4rem 0 3.5rem;
-  background: transparent;
+  background: var(--bg);
   overflow: hidden;
 }
 
@@ -2121,7 +2127,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 /* ─── AT Stats ──────────────────────────────────────────────────────────── */
 .at-stats {
   padding: 2.75rem 0;
-  background: transparent;
+  background: var(--bg);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -2162,7 +2168,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 /* ─── AT Roster ─────────────────────────────────────────────────────────── */
 .at-roster {
   padding: 4.5rem 0;
-  background: transparent;
+  background: var(--bg);
 }
 
 .at-roster-list {
@@ -2236,7 +2242,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 /* ─── AT Content ────────────────────────────────────────────────────────── */
 .at-content {
   padding: 4.5rem 0;
-  background: transparent;
+  background: var(--bg);
   border-top: 1px solid var(--border);
 }
 
@@ -2298,7 +2304,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 .at-community {
   position: relative;
   padding: 5.5rem 0;
-  background: transparent;
+  background: var(--bg);
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -2459,7 +2465,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 /* ─── AT Partners ───────────────────────────────────────────────────────── */
 .at-partners {
   padding: 3rem 0;
-  background: transparent;
+  background: var(--bg);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
