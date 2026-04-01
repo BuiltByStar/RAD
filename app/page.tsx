@@ -12,8 +12,8 @@ import {
 } from "@/lib/site-data";
 import { getPostMeta } from "@/lib/posts";
 import { ScrollReveal } from "@/components/scroll-effects";
-import { InteractiveNavHub } from "@/components/interactive-nav-hub";
 import { DiscordSection } from "@/components/discord-section";
+import { NavHub } from "@/components/nav-hub";
 
 export default async function HomePage() {
   const latestPosts = await getPostMeta();
@@ -45,8 +45,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── INTERACTIVE 3D NAV ────────────────────────────────────── */}
-      <InteractiveNavHub />
+      {/* ── NAVIGATION HUB ────────────────────────────────────────── */}
+      <NavHub />
 
       {/* ── STATEMENT ─────────────────────────────────────────────── */}
       <section className="at-statement">

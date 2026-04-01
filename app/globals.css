@@ -1731,7 +1731,22 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
   align-items: center;
   justify-content: flex-end;
   overflow: clip;
-  background: transparent;
+  background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
+}
+
+.at-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center;
+  mask-image: radial-gradient(circle at center, black, transparent 80%);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .at-hero-video-shell {
@@ -2854,4 +2869,44 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 
 .at-red-glow-btn:hover::before {
   opacity: 0.4;
+}
+
+/* ─── Auth Refinements ────────────────────────────────────────────────────── */
+.auth-skeleton-mini {
+  width: 80px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  animation: auth-pulse 1.5s infinite;
+}
+
+@keyframes auth-pulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+.auth-action-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-config-hint {
+  display: flex;
+  align-items: center;
+  color: #ff9900;
+  cursor: help;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.auth-config-hint:hover {
+  opacity: 1;
+}
+
+.auth-discord-btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(1);
 }

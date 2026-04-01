@@ -91,7 +91,9 @@ export function AuthWidget() {
   }
 
   if (loading) {
-    return <div className="auth-skeleton" aria-hidden="true" />;
+    return (
+      <div className="auth-skeleton-mini" aria-hidden="true" />
+    );
   }
 
   if (user) {
@@ -146,14 +148,22 @@ export function AuthWidget() {
   }
 
   return (
-    <button
-      className="auth-discord-btn"
-      onClick={signIn}
-      disabled={!available}
-      title={!available ? "Configure Supabase + Discord OAuth to enable login" : "Login with Discord"}
-    >
-      <DiscordIcon size={14} />
-      <span>Login</span>
-    </button>
+    <div className="auth-action-group">
+      {!available && (
+        <span className="auth-config-hint" title="Supabase Env Vars missing">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </span>
+      )}
+      <button
+        className={`auth-discord-btn ${!available ? "auth-discord-btn--disabled" : ""}`}
+        onClick={signIn}
+        disabled={!available}
+      >
+        <DiscordIcon size={14} />
+        <span>{available ? "Login" : "Login Unavailable"}</span>
+      </button>
+    </div>
   );
 }
