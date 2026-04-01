@@ -48,6 +48,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
         <div className="site-background" />
+        <div className="noise-overlay" />
         <IntroAnimation />
         <ScrollRevealInit />
         <SiteHeader />

@@ -20,7 +20,7 @@ export default async function HomePage() {
   const rosterPreview = players.slice(0, 5);
 
   return (
-    <main style={{ position: "relative", overflow: "hidden" }}>
+    <main className="page-main" style={{ position: "relative", overflow: "hidden", zIndex: 2 }}>
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="at-hero">
         <div className="at-hero-overlay" style={{ background: 'linear-gradient(to top, #010101 0%, transparent 60%)' }} />
