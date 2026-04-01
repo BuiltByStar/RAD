@@ -4,11 +4,10 @@ import Link from "next/link";
 import { ScrollReveal } from "./scroll-effects";
 
 const navItems = [
-  { label: "Roster", path: "/roster", desc: "Players & Staff", icon: "🎮" },
-  { label: "Teams", path: "/teams", desc: "Active Divisions", icon: "⚔️" },
-  { label: "Content", path: "/content", desc: "Videos & Streams", icon: "📺" },
   { label: "About", path: "/about", desc: "Organization Story", icon: "🏢" },
+  { label: "Content", path: "/content", desc: "Videos & Streams", icon: "📺" },
   { label: "Staff", path: "/staff", desc: "Behind the Scenes", icon: "👥" },
+  { label: "Partners", path: "/partners", desc: "Open for Activations", icon: "✦" },
   { label: "Contact", path: "/contact", desc: "Partner with RAD", icon: "✉️" },
 ];
 

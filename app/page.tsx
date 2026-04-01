@@ -5,7 +5,6 @@ import {
   aboutSummary,
   contactChannels,
   partners,
-  players,
   siteTagline,
   stats,
   teams
@@ -17,7 +16,6 @@ import { NavHub } from "@/components/nav-hub";
 
 export default async function HomePage() {
   const latestPosts = await getPostMeta();
-  const rosterPreview = players.slice(0, 5);
 
   return (
     <main className="page-main" style={{ position: "relative", overflow: "hidden", zIndex: 2 }}>
@@ -110,26 +108,37 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── ROSTER ────────────────────────────────────────────────── */}
+      {/* ── ABOUT ─────────────────────────────────────────────────── */}
       <section className="at-roster">
         <div className="container">
           <div className="at-section-row" data-reveal>
-            <p className="at-section-label">Active Roster</p>
-            <Link href="/teams" className="at-link-arrow">View team →</Link>
+            <p className="at-section-label">About RAD</p>
+            <Link href="/about" className="at-link-arrow">Open about page →</Link>
           </div>
           <ScrollReveal delay={0.2}>
             <div className="at-roster-list">
-              {rosterPreview.map((player, i) => (
-                <div key={player.name} className="at-roster-item" data-reveal>
-                  <span className="at-roster-idx">0{i + 1}</span>
-                  <div className="at-roster-info">
-                    <h3 className="at-roster-name">{player.name}</h3>
-                    <span className="at-roster-role">{player.role}</span>
-                  </div>
-                  <span className="at-roster-desc">{player.descriptor}</span>
-                  <span className="at-roster-team">{player.group}</span>
+              <div className="at-roster-item" data-reveal>
+                <span className="at-roster-idx">01</span>
+                <div className="at-roster-info">
+                  <h3 className="at-roster-name">World Champions</h3>
+                  <span className="at-roster-role">Marvel Rivals</span>
                 </div>
-              ))}
+                <span className="at-roster-desc">
+                  RAD has been turning heads since the beginning and didn&apos;t wait for permission to reach the top.
+                </span>
+                <span className="at-roster-team">Identity</span>
+              </div>
+              <div className="at-roster-item" data-reveal>
+                <span className="at-roster-idx">02</span>
+                <div className="at-roster-info">
+                  <h3 className="at-roster-name">Built To Repeat</h3>
+                  <span className="at-roster-role">EMEA Champions</span>
+                </div>
+                <span className="at-roster-desc">
+                  {aboutSummary}
+                </span>
+                <span className="at-roster-team">#GoWild</span>
+              </div>
             </div>
           </ScrollReveal>
         </div>
