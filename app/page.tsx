@@ -112,32 +112,32 @@ export default async function HomePage() {
       <section className="at-roster">
         <div className="container">
           <div className="at-section-row" data-reveal>
-            <p className="at-section-label">About RAD</p>
-            <Link href="/about" className="at-link-arrow">Open about page →</Link>
+            <p className="at-section-label">Roster</p>
+            <Link href="/roster" className="at-link-arrow">Open roster page →</Link>
           </div>
           <ScrollReveal delay={0.2}>
             <div className="at-roster-list">
               <div className="at-roster-item" data-reveal>
                 <span className="at-roster-idx">01</span>
                 <div className="at-roster-info">
-                  <h3 className="at-roster-name">World Champions</h3>
-                  <span className="at-roster-role">Marvel Rivals</span>
+                  <h3 className="at-roster-name">Marvel Rivals</h3>
+                  <span className="at-roster-role">World & EMEA Champions</span>
                 </div>
                 <span className="at-roster-desc">
-                  RAD has been turning heads since the beginning and didn&apos;t wait for permission to reach the top.
+                  The full competitive lineup, support layer, and team identity now live in one roster page.
                 </span>
-                <span className="at-roster-team">Identity</span>
+                <span className="at-roster-team">Lineup</span>
               </div>
               <div className="at-roster-item" data-reveal>
                 <span className="at-roster-idx">02</span>
                 <div className="at-roster-info">
-                  <h3 className="at-roster-name">Built To Repeat</h3>
-                  <span className="at-roster-role">EMEA Champions</span>
+                  <h3 className="at-roster-name">Support Staff</h3>
+                  <span className="at-roster-role">Coaching / Ops / Brand</span>
                 </div>
                 <span className="at-roster-desc">
-                  {aboutSummary}
+                  Cleaner structure, one competitive destination, and no split between teams and roster.
                 </span>
-                <span className="at-roster-team">#GoWild</span>
+                <span className="at-roster-team">Structure</span>
               </div>
             </div>
           </ScrollReveal>

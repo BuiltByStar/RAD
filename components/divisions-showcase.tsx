@@ -32,7 +32,7 @@ export function DivisionsShowcase({ teams }: { teams: Team[] }) {
           {teams.map((team, i) => (
             <Link
               key={team.slug}
-              href="/teams"
+              href="/roster"
               className={`at-division-row${hovered === team.slug ? " is-active" : ""}${hovered && hovered !== team.slug ? " is-dimmed" : ""}`}
               onMouseEnter={() => setHovered(team.slug)}
               onMouseLeave={() => setHovered(null)}
