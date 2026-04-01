@@ -13,7 +13,7 @@ export function DiscordSection() {
         <div className="at-discord-grid">
           <div className="at-discord-content">
             <div className="at-section-label">Community</div>
-            <h2 className="at-discord-title">
+            <h2 className="at-discord-title at-hover-sheen-text">
               Enter the <span className="at-discord-highlight">Wild</span>
             </h2>
             <p className="at-discord-text">

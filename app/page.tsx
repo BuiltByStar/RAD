@@ -75,7 +75,7 @@ export default async function HomePage() {
       {/* ── STATEMENT ─────────────────────────────────────────────── */}
       <section className="at-statement">
         <div className="at-statement-inner">
-          <p className="at-statement-text">
+          <p className="at-statement-text at-hover-sheen-text">
             Built for <em>pressure</em>.<br />
             Wired for <em>competition</em>.<br />
             Ready to scale.

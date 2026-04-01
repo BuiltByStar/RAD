@@ -151,6 +151,11 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
   to   { opacity: 1; transform: none; }
 }
 
+@keyframes surface-sheen {
+  0% { transform: translateX(-140%) skewX(-18deg); }
+  100% { transform: translateX(140%) skewX(-18deg); }
+}
+
 /* ─── Intro Animation ──────────────────────────────────────────────────────── */
 .rad-intro {
   position: fixed;
@@ -258,11 +263,48 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+  transition: transform 0.28s ease, filter 0.28s ease;
 }
 
 .brand-image {
   width: min(184px, 34vw);
   height: auto;
+  transition: transform 0.32s ease, opacity 0.32s ease, filter 0.32s ease;
+}
+
+.brand-lockup::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(
+    112deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.04) 38%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 0, 0, 0.18) 56%,
+    transparent 72%
+  );
+  transform: translateX(-140%) skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.brand-lockup:hover {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 10px 28px rgba(230, 0, 0, 0.22));
+}
+
+.brand-lockup:hover::after {
+  opacity: 1;
+  animation: surface-sheen 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.brand-lockup:hover .brand-image {
+  transform: scale(1.02);
+  filter: brightness(1.08);
 }
 
 .nav-links {
@@ -1963,6 +2005,41 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
   text-transform: uppercase;
   color: #fff;
   margin: 0;
+}
+
+.at-hover-sheen-text {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.28s ease, text-shadow 0.28s ease, filter 0.28s ease;
+}
+
+.at-hover-sheen-text::after {
+  content: "";
+  position: absolute;
+  inset: -4% -3%;
+  background: linear-gradient(
+    110deg,
+    transparent 22%,
+    rgba(255, 255, 255, 0.03) 38%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 0, 0, 0.16) 58%,
+    transparent 74%
+  );
+  mix-blend-mode: screen;
+  transform: translateX(-140%) skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.at-hover-sheen-text:hover {
+  transform: translateY(-1px);
+  text-shadow: 0 0 24px rgba(230, 0, 0, 0.14);
+  filter: brightness(1.04);
+}
+
+.at-hover-sheen-text:hover::after {
+  opacity: 1;
+  animation: surface-sheen 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .at-statement-text em {
