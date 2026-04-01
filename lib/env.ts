@@ -5,16 +5,16 @@ function read(name: string) {
 
 export function getPublicSiteUrl() {
   return (
-    read("NEXT_PUBLIC_SITE_URL") ??
+    process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
   );
 }
 
 export function getSupabaseEnv() {
   return {
-    url: read("NEXT_PUBLIC_SUPABASE_URL"),
-    publishableKey: read("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"),
-    serviceRoleKey: read("SUPABASE_SERVICE_ROLE_KEY")
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
+    publishableKey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
+    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY
   };
 }
 
