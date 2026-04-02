@@ -2412,10 +2412,23 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
   align-items: center;
 }
 
+.at-discord-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.at-discord-content .at-section-label {
+  display: flex;
+  margin-bottom: 1.1rem;
+}
+
 .at-discord-title {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   margin-bottom: 1.5rem;
   line-height: 0.9;
+  display: block;
+  width: 100%;
 }
 
 .at-discord-highlight {
