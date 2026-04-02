@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 
 function DiscordIcon({ size = 16 }: { size?: number }) {
@@ -22,6 +23,7 @@ export function AuthWidget() {
   const [loading, setLoading] = useState(true);
   const [available, setAvailable] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,12 +37,20 @@ export function AuthWidget() {
 
         const { data } = await supabase.auth.getUser();
         setUser(data.user);
+        if (data.user) {
+          void refreshAdminStatus();
+        }
         setLoading(false);
 
         const {
           data: { subscription }
         } = supabase.auth.onAuthStateChange((_, session) => {
           setUser(session?.user ?? null);
+          if (session?.user) {
+            void refreshAdminStatus();
+          } else {
+            setIsAdmin(false);
+          }
         });
 
         unsubscribe = () => subscription.unsubscribe();
@@ -51,6 +61,20 @@ export function AuthWidget() {
 
     return () => unsubscribe?.();
   }, []);
+
+  async function refreshAdminStatus() {
+    try {
+      const response = await fetch("/api/admin/status", { cache: "no-store" });
+      if (!response.ok) {
+        setIsAdmin(false);
+        return;
+      }
+      const data = (await response.json()) as { isAdmin?: boolean };
+      setIsAdmin(Boolean(data.isAdmin));
+    } catch {
+      setIsAdmin(false);
+    }
+  }
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -138,6 +162,11 @@ export function AuthWidget() {
               <span>Connected via Discord</span>
             </div>
             <div className="auth-dropdown-divider" />
+            {isAdmin ? (
+              <Link className="auth-dropdown-item" href="/admin" onClick={() => setDropdownOpen(false)}>
+                Admin Dashboard
+              </Link>
+            ) : null}
             <button className="auth-dropdown-item" onClick={signOut}>
               Sign out
             </button>
