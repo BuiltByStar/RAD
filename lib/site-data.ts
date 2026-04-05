@@ -285,7 +285,7 @@ export const partners: Partner[] = [
 export const stats = [
   { value: "01", label: "World Championship" },
   { value: "01", label: "EMEA Regional Title" },
-  { value: "07", label: "Marvel Rivals Players" }
+  { value: "07", label: "Active Players" }
 ];
 
 export const contactChannels: ContactChannel[] = [

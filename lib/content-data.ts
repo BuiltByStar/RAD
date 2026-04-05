@@ -18,7 +18,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "Watch RAD's full tournament run through the Ignite: Mid-Season World Championship. Every round, every clutch, every call.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadRivals_Wallpaper_Red.png",
+    thumbnail: "/assets/RadPlayerBannerPNG8.png",
     type: "video",
     tags: ["highlights", "tournament", "marvel-rivals"],
     featured: true
@@ -29,7 +29,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "RAD vs the best of EMEA. This is the series that locked the regional title.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadRivals_Wallpaper_Black.png",
+    thumbnail: "/assets/RadBanner1920_1080.png",
     type: "video",
     tags: ["emea", "vod", "marvel-rivals"]
   },
@@ -39,7 +39,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "A behind-the-scenes look at how RAD trains, builds, and competes at the highest level.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadRivals_Wallpaper_Red.png",
+    thumbnail: "/assets/RadBannerNewTest300ppi.png",
     type: "video",
     tags: ["documentary", "behind-the-scenes"]
   },
@@ -49,7 +49,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "Team Captain Mash breaks down meta reads, shot calling, and the mindset behind winning.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadRivals_Wallpaper_Black.png",
+    thumbnail: "/assets/PFP_2048_2048.jpg",
     type: "video",
     tags: ["podcast", "strategy"]
   },
@@ -58,7 +58,7 @@ export const fallbackContent: ContentItem[] = [
     title: "RAD Announcement — GoWild Partnership",
     description: "RAD announces its launch-phase activation partnership with GoWild.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadRivals_Wallpaper_Red.png",
+    thumbnail: "/assets/RadBanner1920_1080.png",
     type: "video",
     tags: ["announcement", "partnership"]
   }

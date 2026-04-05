@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "RAD Esports",
     description:
       "Competitive divisions, roster depth, premium content, and a flexible brand system ready to scale.",
-    images: ["/assets/RadRivals_Wallpaper_Red.png"]
+    images: ["/assets/RadPlayerBannerPNG8.png"]
   }
 };
 

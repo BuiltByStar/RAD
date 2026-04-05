@@ -9,8 +9,8 @@ export default function RosterPage() {
   return (
     <PageShell
       eyebrow="Roster"
-      title="Marvel Rivals."
-      description="The active roster, title status, and support layer now live together in one place."
+      title="Active Roster."
+      description="RAD's featured competitive lineup, title pedigree, and support layer live together in one clean destination."
       background="black"
     >
       <section className="section">
@@ -31,7 +31,7 @@ export default function RosterPage() {
             </article>
             <article className="team-note-card">
               <p className="eyebrow">RAD Standard</p>
-              <p>World results first, strong presentation second, and no wasted page depth getting to the actual roster.</p>
+              <p>World results first, strong presentation second, and a structure that can expand cleanly as RAD enters more titles.</p>
             </article>
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function RosterPage() {
             </div>
             <div className="section-meta">
               <p className="section-copy">
-                The Marvel Rivals roster sits here as the single competitive destination for RAD.
+                RAD's current championship core sits here as the main competitive destination while future divisions can slot into the same system.
               </p>
             </div>
           </div>

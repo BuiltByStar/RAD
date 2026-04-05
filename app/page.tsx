@@ -25,12 +25,13 @@ export default async function HomePage() {
 
         <div className="at-hero-content">
           <p className="at-hero-kicker">
-            Competitive Esports Organization &nbsp;·&nbsp; Est. 2025
+            Multi-title Esports Organization &nbsp;·&nbsp; Est. 2025
           </p>
-          <h1 className="at-hero-title">
-            RAD<br />
-            <span className="at-red">Esports</span>
-          </h1>
+          <img
+            src="/assets/RadNewLogoWordmarkWhite.png"
+            alt="RAD Esports"
+            className="at-hero-brand"
+          />
           <div className="at-hero-sub">
             <p className="at-hero-tagline">
               {siteTagline}
@@ -51,7 +52,7 @@ export default async function HomePage() {
           <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
           <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
           <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
-          <span className="at-ticker-item"><span>✦</span> #MARVELRIVALS</span>
+          <span className="at-ticker-item"><span>✦</span> #RADGG</span>
           <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
           <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
           <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
@@ -60,7 +61,7 @@ export default async function HomePage() {
           <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
           <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
           <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
-          <span className="at-ticker-item"><span>✦</span> #MARVELRIVALS</span>
+          <span className="at-ticker-item"><span>✦</span> #RADGG</span>
           <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
           <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
           <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
@@ -120,11 +121,11 @@ export default async function HomePage() {
               <div className="at-roster-item" data-reveal>
                 <span className="at-roster-idx">01</span>
                 <div className="at-roster-info">
-                  <h3 className="at-roster-name">Marvel Rivals</h3>
-                  <span className="at-roster-role">World & EMEA Champions</span>
+                  <h3 className="at-roster-name">Featured Division</h3>
+                  <span className="at-roster-role">Championship Core</span>
                 </div>
                 <span className="at-roster-desc">
-                  The full competitive lineup, support layer, and team identity now live in one roster page.
+                  The current lineup is anchored by RAD's world-title roster while the brand scales across future titles and activations.
                 </span>
                 <span className="at-roster-team">Lineup</span>
               </div>

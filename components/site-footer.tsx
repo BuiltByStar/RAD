@@ -14,8 +14,8 @@ export function SiteFooter() {
             className="footer-brand"
           />
           <p className="footer-copy">
-            Championship-level Marvel Rivals, sharp branding, and a community
-            built to keep growing.
+            Championship pedigree, sharp branding, and a competitive identity
+            built to scale beyond a single title.
           </p>
         </div>
 
