@@ -1,4 +1,5 @@
 import { PageShell } from "@/components/page-shell";
+import { SectionHeading } from "@/components/sections";
 import { YouTubeFeatured } from "@/components/youtube-featured";
 import { YouTubeLibrary } from "@/components/youtube-library";
 import { TwitchCreators } from "@/components/twitch-creators";
@@ -14,17 +15,13 @@ export default function ContentPage() {
       {/* ── Featured Video ─────────────────────────────────────── */}
       <section className="section">
         <div className="container">
-          <div className="at-section-row" style={{ marginBottom: "2rem" }}>
-            <p className="at-section-label">Featured Video</p>
-            <a
-              href="https://www.youtube.com/@RadEsport"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="at-link-arrow"
-            >
-              Visit YouTube →
-            </a>
-          </div>
+          <SectionHeading
+            eyebrow="Featured Video"
+            title="Lead with the strongest RAD story."
+            description="A hero slot for the biggest release, championship recap, or announcement so the content page opens with a clear priority."
+            actionHref="https://www.youtube.com/@RadEsport"
+            actionLabel="Visit YouTube"
+          />
           <YouTubeFeatured />
         </div>
       </section>
@@ -32,9 +29,11 @@ export default function ContentPage() {
       {/* ── Video Library ──────────────────────────────────────── */}
       <section className="section">
         <div className="container">
-          <div className="at-section-row" style={{ marginBottom: "2rem" }}>
-            <p className="at-section-label">Recent Uploads</p>
-          </div>
+          <SectionHeading
+            eyebrow="Recent Uploads"
+            title="Everything RAD is publishing."
+            description="A cleaner archive for videos, highlights, and story-driven media without the page turning into a long undifferentiated feed."
+          />
           <YouTubeLibrary />
         </div>
       </section>
@@ -42,12 +41,11 @@ export default function ContentPage() {
       {/* ── Twitch Creators ────────────────────────────────────── */}
       <section className="section">
         <div className="container">
-          <div className="at-section-row" style={{ marginBottom: "2rem" }}>
-            <p className="at-section-label">RAD Creators</p>
-            <span className="at-section-label" style={{ color: "var(--dim)" }}>
-              Twitch Live Status
-            </span>
-          </div>
+          <SectionHeading
+            eyebrow="RAD Creators"
+            title="Live presence across stream and socials."
+            description="Track the org's creator-facing side in one place, with live Twitch status and room for future creator expansion."
+          />
           <TwitchCreators />
         </div>
       </section>

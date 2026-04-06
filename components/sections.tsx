@@ -19,6 +19,8 @@ export function SectionHead({
   actionHref,
   actionLabel
 }: SectionHeadProps) {
+  const isExternal = actionHref?.startsWith("http");
+
   return (
     <div className="section-head">
       <div>
@@ -27,7 +29,17 @@ export function SectionHead({
       </div>
       <div className="section-meta">
         <p className="section-copy">{description}</p>
-        {actionHref && actionLabel ? (
+        {actionHref && actionLabel && isExternal ? (
+          <a
+            className="at-link-arrow"
+            href={actionHref}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {actionLabel} →
+          </a>
+        ) : null}
+        {actionHref && actionLabel && !isExternal ? (
           <Link className="at-link-arrow" href={actionHref}>
             {actionLabel} →
           </Link>
