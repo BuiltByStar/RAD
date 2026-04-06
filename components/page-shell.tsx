@@ -17,8 +17,13 @@ export function PageShell({
 }: PageShellProps) {
   return (
     <main className="page-main">
-      <section className={`page-hero page-hero-${background}`}>
+      <section
+        className={`page-hero page-hero-${background}`}
+        aria-hidden="true"
+      >
         <div className="page-overlay" />
+      </section>
+      <section className="page-hero-intro">
         <div className="container page-hero-copy">
           <p className="eyebrow">{eyebrow}</p>
           <h1>{title}</h1>

@@ -1354,9 +1354,10 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
   position: relative;
   z-index: 2;
   overflow: clip;
-  padding: 6.25rem 0 2.75rem;
+  min-height: clamp(180px, 30vw, 340px);
   background-position: center;
   background-size: cover;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .page-hero-red {
@@ -1374,16 +1375,32 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
 .page-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 85% 30%, rgba(230, 0, 0, 0.18), transparent 45%);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.52) 100%),
+    radial-gradient(ellipse 60% 80% at 85% 30%, rgba(230, 0, 0, 0.18), transparent 45%);
 }
 
-.page-hero-copy { position: relative; z-index: 1; }
+.page-hero-intro {
+  position: relative;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+    var(--bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.page-hero-copy {
+  position: relative;
+  z-index: 1;
+  padding: 1.75rem 0 0.35rem;
+}
+
 .page-hero-copy h1 {
   font-size: clamp(2.3rem, 5.6vw, 4.05rem);
   max-width: 8.5ch;
   line-height: 0.92;
   letter-spacing: -0.03em;
-  margin: 0;
+  margin: 0 0 0.65rem;
   text-wrap: balance;
 }
 
@@ -1392,7 +1409,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
   font-size: 0.95rem;
 }
 
-.page-content { padding: clamp(2.1rem, 3vw, 3rem) 0 4rem; background: var(--bg); position: relative; z-index: 2; }
+.page-content { padding: clamp(1.8rem, 3vw, 3rem) 0 4rem; background: var(--bg); position: relative; z-index: 2; }
 
 /* ─── Post Page ────────────────────────────────────────────────────────────── */
 .post-hero {
