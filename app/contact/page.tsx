@@ -10,9 +10,11 @@ export default function ContactPage() {
   return (
     <PageShell
       eyebrow="Contact"
-      title="Get in Touch."
-      description="Direct channels for partnerships, talent, and community."
-      background="black"
+      title="Get in touch."
+      description="Connect with RAD for business, partnerships, or community inquiries."
+      background="red"
+      heroType="contact"
+      heroImage="/assets/RadRivals_Wallpaper_Red.png"
     >
       <section className="section">
         <div className="container">

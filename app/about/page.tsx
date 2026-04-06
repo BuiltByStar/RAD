@@ -6,9 +6,10 @@ export default function AboutPage() {
   return (
     <PageShell
       eyebrow="About RAD"
-      title="About RAD."
-      description="World champions. EMEA champions. Built to do it again."
+      title="The standard of excellence."
+      description="World champions. EMEA title holders. Built from the ground up to redefine the competitive landscape."
       background="red"
+      heroType="about"
     >
       {/* ── Identity ───────────────────────────────────────────── */}
       <section className="section">

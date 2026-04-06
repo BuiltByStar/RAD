@@ -8,10 +8,12 @@ export default function RosterPage() {
 
   return (
     <PageShell
-      eyebrow="Roster"
-      title="Active Roster."
-      description="RAD's featured competitive lineup, title pedigree, and support layer live together in one clean destination."
+      eyebrow="Live Roster"
+      title="The championship lineup."
+      description="RAD's primary title contenders, world-class individual talent, and the backbone of the organization's competitive presence."
       background="black"
+      heroType="roster"
+      heroImage="/assets/RadRivals_Wallpaper_Black.png"
     >
       <section className="section">
         <div className="container team-page-grid">

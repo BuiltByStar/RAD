@@ -6,9 +6,11 @@ export default function PartnersPage() {
   return (
     <PageShell
       eyebrow="Partners"
-      title="Partner With RAD."
-      description="Brand-ready space for activations, sponsors, and collaborations."
-      background="red"
+      title="The network."
+      description="Collaborating with industry-leading brands and partners who share RAD's vision for the future of competitive gaming."
+      background="black"
+      heroType="partners"
+      heroImage="/assets/SkinTeasePic.png"
     >
       <section className="section">
         <div className="container">

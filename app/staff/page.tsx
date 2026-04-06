@@ -5,10 +5,12 @@ import { staff } from "@/lib/site-data";
 export default function StaffPage() {
   return (
     <PageShell
-      eyebrow="Staff"
-      title="Staff & Support."
-      description="The people behind RAD's brand, ops, and competitive structure."
+      eyebrow="Rad House"
+      title="The foundation."
+      description="The operations, leadership, and management layer that keeps RAD's competitive engine running at the highest level."
       background="black"
+      heroType="staff"
+      heroImage="/assets/RadPlayerBannerPNG8.png"
     >
       <section className="section">
         <div className="container">

@@ -1352,64 +1352,107 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
 /* ─── Page Hero ────────────────────────────────────────────────────────────── */
 .page-hero {
   position: relative;
-  z-index: 2;
-  overflow: clip;
-  min-height: clamp(180px, 30vw, 340px);
+  z-index: 10;
+  overflow: hidden;
+  min-height: clamp(320px, 45vh, 600px);
+  display: flex;
+  align-items: flex-end;
   background-position: center;
   background-size: cover;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  animation: hero-image-entrance 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.page-hero-red {
-  background-image:
-    linear-gradient(175deg, rgba(2, 2, 2, 0.28) 0%, rgba(2, 2, 2, 0.86) 100%),
-    url("/assets/RadBannerNewTest300ppi.png");
+@keyframes hero-image-entrance {
+  0% { transform: scale(1.15); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-.page-hero-black {
-  background-image:
-    linear-gradient(175deg, rgba(2, 2, 2, 0.25) 0%, rgba(2, 2, 2, 0.88) 100%),
-    url("/assets/RadBanner1920_1080.png");
+.page-hero-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.page-hero-copy {
+  max-width: 800px;
+}
+
+.page-hero-copy h1 {
+  font-size: clamp(2.8rem, 8vw, 5.4rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  margin: 0.8rem 0 1.2rem;
+  text-wrap: balance;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: white;
+}
+
+.page-hero-description {
+  max-width: 42rem;
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .page-overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.52) 100%),
-    radial-gradient(ellipse 60% 80% at 85% 30%, rgba(230, 0, 0, 0.18), transparent 45%);
-}
-
-.page-hero-intro {
-  position: relative;
-  z-index: 2;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
-    var(--bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.page-hero-copy {
-  position: relative;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.2) 100%);
   z-index: 1;
-  padding: 1.75rem 0 0.35rem;
 }
 
-.page-hero-copy h1 {
-  font-size: clamp(2.3rem, 5.6vw, 4.05rem);
-  max-width: 8.5ch;
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  margin: 0 0 0.65rem;
-  text-wrap: balance;
+.page-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 100%, rgba(230, 0, 0, 0.15) 0%, transparent 50%);
 }
 
-.page-hero-description {
-  max-width: 38rem;
-  font-size: 0.95rem;
+.page-hero-red {
+  background-image: url("/assets/RadBannerNewTest300ppi.png");
 }
 
-.page-content { padding: clamp(1.8rem, 3vw, 3rem) 0 4rem; background: var(--bg); position: relative; z-index: 2; }
+.page-hero-black {
+  background-image: url("/assets/RadBanner1920_1080.png");
+}
+
+/* Unique Page Variants */
+.page-hero--roster { background-position: 50% 20%; }
+.page-hero--about { background-position: 50% 40%; }
+.page-hero--staff { background-position: 50% 30%; }
+
+.hero-corner-accents {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+}
+
+.hero-corner-accents::before {
+  content: "";
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.page-content {
+  position: relative;
+  z-index: 20;
+  background: var(--bg);
+  padding: clamp(3rem, 6vw, 6rem) 0;
+}
+
 
 /* ─── Post Page ────────────────────────────────────────────────────────────── */
 .post-hero {
