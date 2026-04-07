@@ -1,6 +1,32 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { motion, Variants } from "framer-motion";
 import type { Partner, Person, Team } from "@/lib/site-data";
+
+// ─── Animation Variants ───────────────────────────────────────────────────────
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const cardVariant: Variants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { type: "spring", stiffness: 100, damping: 15 }
+  }
+};
+
+const headerVariant: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+};
 
 // ─── Section Heading ──────────────────────────────────────────────────────────
 
@@ -22,12 +48,18 @@ export function SectionHead({
   const isExternal = actionHref?.startsWith("http");
 
   return (
-    <div className="section-head">
-      <div>
+    <motion.div 
+      className="section-head"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-50px" }}
+    >
+      <motion.div variants={headerVariant}>
         <p className="at-section-label">{eyebrow}</p>
         <h2 className="at-glitch-text" data-text={title}>{title}</h2>
-      </div>
-      <div className="section-meta">
+      </motion.div>
+      <motion.div className="section-meta" variants={headerVariant}>
         <p className="section-copy">{description}</p>
         {actionHref && actionLabel && isExternal ? (
           <a
@@ -44,8 +76,8 @@ export function SectionHead({
             {actionLabel} →
           </Link>
         ) : null}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -53,9 +85,15 @@ export function SectionHead({
 
 export function TeamSection({ teams }: { teams: Team[] }) {
   return (
-    <div className="grid-3">
+    <motion.div 
+      className="grid-3"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-100px" }}
+    >
       {teams.map((team) => (
-        <article key={team.slug} className="rad-card at-glass at-hud-border">
+        <motion.article key={team.slug} variants={cardVariant} className="rad-card at-glass at-hud-border">
           <div className="rad-card__body">
             <div className="card-topline">
               <span className="card-status">{team.status}</span>
@@ -64,9 +102,9 @@ export function TeamSection({ teams }: { teams: Team[] }) {
             <h3 className="card-title">{team.name}</h3>
             <p className="card-desc">{team.description}</p>
           </div>
-        </article>
+        </motion.article>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -74,9 +112,15 @@ export function TeamSection({ teams }: { teams: Team[] }) {
 
 export function PeopleSection({ people, variant: _variant }: { people: Person[]; variant?: string }) {
   return (
-    <div className="grid-2">
+    <motion.div 
+      className="grid-2"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-100px" }}
+    >
       {people.map((person) => (
-        <article key={person.name} className="rad-card profile-card at-glass at-hud-border">
+        <motion.article key={person.name} variants={cardVariant} className="rad-card profile-card at-glass at-hud-border">
           <div className="profile-visual">
             <div className="profile-glow" />
             <span className="profile-initials">{person.name.slice(0, 2)}</span>
@@ -96,9 +140,9 @@ export function PeopleSection({ people, variant: _variant }: { people: Person[];
               </div>
             ) : null}
           </div>
-        </article>
+        </motion.article>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -106,9 +150,15 @@ export function PeopleSection({ people, variant: _variant }: { people: Person[];
 
 export function PartnerSection({ partners }: { partners: Partner[] }) {
   return (
-    <div className="grid-2">
+    <motion.div 
+      className="grid-2"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-100px" }}
+    >
       {partners.map((partner) => (
-        <article key={partner.name} className="partner-card at-glass">
+        <motion.article key={partner.name} variants={cardVariant} className="partner-card at-glass">
           <div className="partner-mark">
             {partner.name === "GoWild" ? (
               <img src="/assets/Gowild.png" alt="GoWild" style={{ maxWidth: "110px" }} />
@@ -120,9 +170,9 @@ export function PartnerSection({ partners }: { partners: Partner[] }) {
             <p className="at-section-label">{partner.tier}</p>
             <p>{partner.description}</p>
           </div>
-        </article>
+        </motion.article>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -134,14 +184,20 @@ export function ContactSection({
   channels: { label: string; value: string; href: string }[];
 }) {
   return (
-    <div className="contact-grid">
+    <motion.div 
+      className="contact-grid"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-50px" }}
+    >
       {channels.map((ch) => (
-        <a key={ch.label} href={ch.href} className="contact-tile">
+        <motion.a key={ch.label} variants={cardVariant} href={ch.href} className="contact-tile">
           <p className="eyebrow">{ch.label}</p>
           <strong>{ch.value}</strong>
-        </a>
+        </motion.a>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -151,3 +207,4 @@ export { TeamSection as TeamGrid };
 export { PeopleSection as PeopleGrid };
 export { PartnerSection as PartnerGrid };
 export { ContactSection as ContactGrid };
+

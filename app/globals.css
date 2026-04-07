@@ -7,34 +7,32 @@
 
 /* ─── Design Tokens ────────────────────────────────────────────────────────── */
 :root {
-  --bg:            #050505;
-  --surface:       rgba(255, 255, 255, 0.03);
-  --surface-md:    rgba(255, 255, 255, 0.045);
-  --surface-hi:    rgba(255, 255, 255, 0.07);
-  --border:        rgba(255, 255, 255, 0.08);
-  --border-md:     rgba(255, 255, 255, 0.14);
-  --text:          #f3f1ee;
-  --muted:         rgba(255, 255, 255, 0.66);
-  --dim:           rgba(255, 255, 255, 0.38);
+  --bg:            #040106; /* Darker, slightly purplish abyss */
+  --surface:       rgba(255, 255, 255, 0.02);
+  --surface-md:    rgba(255, 255, 255, 0.05);
+  --surface-hi:    rgba(255, 255, 255, 0.08);
+  --border:        rgba(255, 255, 255, 0.1);
+  --border-md:     rgba(255, 255, 255, 0.18);
+  --text:          #ffffff;
+  --muted:         rgba(255, 255, 255, 0.65);
+  --dim:           rgba(255, 255, 255, 0.4);
   --red:           #e60000;
-  --red-hi:        #ff3030;
-  --red-glow:      rgba(230, 0, 0, 0.22);
-  --red-border:    rgba(230, 0, 0, 0.4);
+  --red-hi:        #ff3333;
+  --red-glow:      rgba(230, 0, 0, 0.25);
+  --red-border:    rgba(230, 0, 0, 0.5);
+  --gold:          rgba(255, 215, 0, 0.9);
   --purple:        #9d4edd;
-  --purple-glow:   rgba(157, 78, 221, 0.3);
   --discord:       #5865f2;
-  --discord-hi:    #6b75ff;
-  --shadow:        0 12px 48px rgba(0, 0, 0, 0.8);
-  --shadow-lg:     0 24px 80px rgba(0, 0, 0, 0.9);
-  --glow-neon:     0 0 40px rgba(157, 78, 221, 0.15), 0 0 80px rgba(157, 78, 221, 0.05);
-  --shadow-lg:     0 24px 80px rgba(0, 0, 0, 0.65);
-  --glow-red:      0 0 40px rgba(230, 0, 0, 0.18), 0 0 80px rgba(230, 0, 0, 0.08);
-  --radius:        16px;
-  --radius-lg:     22px;
-  --container:     min(1160px, calc(100% - 2.5rem));
-  --font-body:     var(--font-body, "Arial Narrow", Arial, sans-serif);
-  --font-display:  var(--font-display, "Arial Narrow", Arial, sans-serif);
-  --intro-dur:     2.1s;  /* total intro duration — used for hero stagger delays */
+  --shadow:        0 12px 48px rgba(0, 0, 0, 0.9);
+  --shadow-lg:     0 24px 80px rgba(0, 0, 0, 0.95);
+  --glow-red:      0 0 50px rgba(255, 50, 50, 0.25), 0 0 100px rgba(230, 0, 0, 0.15);
+  --glow-red-hi:   0 0 60px rgba(255, 50, 50, 0.4), 0 0 120px rgba(230, 0, 0, 0.25);
+  --radius:        14px;
+  --radius-lg:     24px;
+  --container:     min(1280px, calc(100% - 4rem)); /* Wider, more breathable containers */
+  --font-body:     var(--font-body, "Arial Strip", sans-serif);
+  --font-display:  var(--font-display, "Arial Strip", sans-serif);
+  --intro-dur:     2.1s;
 }
 
 /* ─── Reset ────────────────────────────────────────────────────────────────── */
@@ -922,28 +920,29 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
 .rad-card {
   position: relative;
   border-radius: var(--radius-lg);
-  /* Stacking background trick: inner fill + animated border */
   background:
-    linear-gradient(var(--surface-md), var(--surface-md)) padding-box,
+    linear-gradient(rgba(10, 5, 15, 0.45), rgba(10, 5, 15, 0.35)) padding-box,
     conic-gradient(
       from var(--border-angle),
       var(--border) 0deg,
       var(--border) 160deg,
-      var(--red-border) 200deg,
-      rgba(255, 80, 80, 0.6) 220deg,
-      var(--red-border) 240deg,
+      rgba(230, 0, 0, 0.5) 200deg,
+      rgba(255, 215, 0, 0.6) 220deg, /* Gold/Red mix */
+      rgba(230, 0, 0, 0.5) 240deg,
       var(--border) 280deg,
       var(--border) 360deg
     ) border-box;
   border: 1px solid transparent;
   box-shadow: var(--shadow);
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  backdrop-filter: blur(28px) saturate(120%);
+  -webkit-backdrop-filter: blur(28px) saturate(120%);
+  transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: clip;
 }
 
 .rad-card:hover {
-  box-shadow: var(--shadow-lg), var(--glow-red);
-  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), var(--glow-red-hi);
+  transform: translateY(-6px) scale(1.02);
   animation: border-rotate 3s linear infinite;
 }
 
@@ -1019,9 +1018,9 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
 }
 
 /* ─── Grid Layouts ─────────────────────────────────────────────────────────── */
-.grid-2  { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-.grid-3  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
-.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+.grid-2  { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
+.grid-3  { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
 
 /* ─── About Strip ──────────────────────────────────────────────────────────── */
 .about-strip {
@@ -1984,19 +1983,19 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
   background: rgba(2, 2, 2, 0.75);
 }
 
-/* ─── AT Hero ───────────────────────────────────────────────────────────── */
 .at-hero {
   position: relative;
   z-index: 2;
-  height: calc(100vh - 60px);
-  min-height: 560px;
+  height: 100vh;
+  min-height: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   overflow: clip;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.6) 62%, rgba(0, 0, 0, 0.92) 100%),
+    radial-gradient(ellipse at 50% 120%, rgba(200, 0, 0, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(5, 1, 6, 0.4) 0%, rgba(5, 1, 6, 0.8) 60%, rgba(5, 1, 6, 1) 100%),
     url("/assets/RadPlayerBannerPNG8.png");
   background-position: center top;
   background-size: cover;
@@ -3391,12 +3390,15 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 /* ─── HUD & Esports Utilities ─────────────────────────────────────────────── */
 
 .at-glass {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
-  backdrop-filter: blur(14px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(20, 10, 30, 0.4), rgba(10, 5, 15, 0.2));
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background-clip: padding-box;
   box-shadow: 
-    inset 0 1px 1px rgba(255, 255, 255, 0.04),
-    0 10px 30px rgba(0, 0, 0, 0.5);
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 0 20px rgba(230, 0, 0, 0.05),
+    0 16px 40px rgba(0, 0, 0, 0.8);
 }
 
 .at-hud-border {
@@ -3442,6 +3444,11 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 .at-glitch-text {
   position: relative;
   display: inline-block;
+  background: linear-gradient(135deg, #ffffff 20%, rgba(255, 230, 230, 0.9) 60%, var(--red-hi) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(230, 0, 0, 0.4);
 }
 
 .at-glitch-text:hover::before,

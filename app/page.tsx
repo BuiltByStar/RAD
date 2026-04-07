@@ -23,25 +23,26 @@ export default async function HomePage() {
       <section className="at-hero">
         <div className="at-hero-overlay" style={{ background: 'linear-gradient(to top, #010101 0%, transparent 60%)' }} />
 
-        <div className="at-hero-content">
-          <p className="at-hero-kicker">
+        <ScrollReveal className="at-hero-content" delay={0.2}>
+          <p className="at-hero-kicker text-[#ff3333] font-bold tracking-[0.3em]">
             Multi-title Esports Organization &nbsp;·&nbsp; Est. 2025
           </p>
           <img
             src="/assets/RadNewLogoWordmarkWhite.png"
             alt="RAD Esports"
             className="at-hero-brand"
+            style={{ filter: "drop-shadow(0 0 20px rgba(255,50,50,0.3))" }}
           />
           <div className="at-hero-sub">
-            <p className="at-hero-tagline">
+            <p className="at-hero-tagline max-w-2xl opacity-90 text-lg">
               {siteTagline}
             </p>
-            <div className="at-hero-scroll-hint">
+            <div className="at-hero-scroll-hint mt-8">
               <span className="at-scroll-line" />
               <span>Scroll</span>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
       </section>
 
