@@ -3443,7 +3443,9 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 
 .at-glitch-text {
   position: relative;
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  margin-top: 0.25rem;
   background: linear-gradient(135deg, #ffffff 20%, rgba(255, 230, 230, 0.9) 60%, var(--red-hi) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

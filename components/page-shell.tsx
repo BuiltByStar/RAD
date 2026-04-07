@@ -52,18 +52,19 @@ export function PageShell({
 
       <section className="page-hero-intro relative z-20">
         <motion.div 
-          className="container page-hero-copy pt-16 pb-12"
+          className="container page-hero-copy"
+          style={{ paddingTop: "4rem", paddingBottom: "3rem" }}
           variants={shellVariants}
           initial="hidden"
           animate="show"
         >
-          <motion.p variants={textFadeUp} className="eyebrow text-xl font-bold tracking-widest text-[#ff3333] mb-4">
+          <motion.p variants={textFadeUp} className="eyebrow" style={{ color: "var(--red-hi)", fontWeight: 800, letterSpacing: "0.2em", marginBottom: "1rem" }}>
             {eyebrow}
           </motion.p>
-          <motion.h1 variants={textFadeUp} className="at-glitch-text text-5xl md:text-7xl mb-6">
+          <motion.h1 variants={textFadeUp} className="at-glitch-text" data-text={title}>
             {title}
           </motion.h1>
-          <motion.p variants={textFadeUp} className="section-copy page-hero-description text-lg md:text-xl max-w-3xl opacity-80 leading-relaxed">
+          <motion.p variants={textFadeUp} className="section-copy page-hero-description" style={{ opacity: 0.8, maxWidth: "800px" }}>
             {description}
           </motion.p>
         </motion.div>
