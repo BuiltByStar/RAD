@@ -22,20 +22,17 @@ export default async function HomePage() {
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="at-hero">
         <div className="at-hero-overlay" style={{ background: 'linear-gradient(to top, #010101 0%, transparent 60%)' }} />
-      </section>
 
-      <section className="at-hero-intro">
-        <div className="at-hero-content pb-12 pt-8">
-          <p className="at-hero-kicker" style={{ marginLeft: "1rem" }}>
+        <div className="at-hero-content">
+          <p className="at-hero-kicker">
             Multi-title Esports Organization &nbsp;·&nbsp; Est. 2025
           </p>
           <img
             src="/assets/RadNewLogoWordmarkWhite.png"
             alt="RAD Esports"
             className="at-hero-brand"
-            style={{ padding: "0 1rem" }}
           />
-          <div className="at-hero-sub" style={{ padding: "0 1rem" }}>
+          <div className="at-hero-sub">
             <p className="at-hero-tagline">
               {siteTagline}
             </p>
@@ -45,6 +42,7 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
+
       </section>
 
       {/* ── TICKER ────────────────────────────────────────────────── */}
