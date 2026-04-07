@@ -43,8 +43,22 @@ export function SiteFooter() {
       </div>
 
       <div className="container footer-bottom">
-        <p>© {new Date().getFullYear()} RAD Esports</p>
-        <span>Built for pressure, content, and the next stage of competition.</span>
+        <div className="footer-bottom-main">
+          <p>© {new Date().getFullYear()} RAD Esports</p>
+          <span className="footer-tag">Built for pressure, content, and the next stage of competition.</span>
+        </div>
+        
+        <div className="footer-legal">
+          <Link href="/terms">Terms</Link>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/cookies">Cookies</Link>
+        </div>
+
+        <div className="footer-attribution">
+          <a href="https://builtbystar.com" target="_blank" rel="noopener noreferrer" className="built-by-star">
+            Built by Star
+          </a>
+        </div>
       </div>
     </footer>
   );

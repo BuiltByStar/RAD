@@ -31,7 +31,11 @@ export function PageShell({
         style={heroStyle}
       >
         <div className="page-overlay" />
-        
+        {/* Decorative corner element */}
+        <div className="hero-corner-accents" aria-hidden="true" />
+      </section>
+
+      <section className="page-hero-intro">
         <div className="container page-hero-content">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -64,9 +68,6 @@ export function PageShell({
             </motion.p>
           </motion.div>
         </div>
-        
-        {/* Decorative corner element */}
-        <div className="hero-corner-accents" aria-hidden="true" />
       </section>
 
       <div className="page-content">{children}</div>

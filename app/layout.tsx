@@ -5,6 +5,7 @@ import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { IntroAnimation } from "@/components/intro-animation";
+import { PassiveAtmosphere } from "@/components/passive-atmosphere";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
         <div className="site-background" />
         <div className="noise-overlay" />
+        <PassiveAtmosphere />
         <IntroAnimation />
         <ScrollRevealInit />
         <SiteHeader />
