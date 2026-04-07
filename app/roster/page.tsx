@@ -1,10 +1,9 @@
 import { PageShell } from "@/components/page-shell";
-import { players, staff, teams } from "@/lib/site-data";
+import { players, teams } from "@/lib/site-data";
 
 export default function RosterPage() {
   const team = teams[0];
   const teamRoster = players.filter((player) => player.group === team.name);
-  const supportStaff = staff.slice(0, 4);
 
   return (
     <PageShell
@@ -79,34 +78,6 @@ export default function RosterPage() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <p className="eyebrow">Support</p>
-              <h2>Staff layer.</h2>
-            </div>
-            <div className="section-meta">
-              <p className="section-copy">
-                Coaching, operations, social, and design are part of the same competitive picture.
-              </p>
-            </div>
-          </div>
-
-          <div className="team-support-grid">
-            {supportStaff.map((member) => (
-              <article key={member.name} className="rad-card team-support-card">
-                <div className="rad-card__body">
-                  <p className="eyebrow">{member.group}</p>
-                  <h3 className="card-title">{member.name}</h3>
-                  <p className="team-support-role">{member.role}</p>
-                  <p className="card-desc">{member.descriptor}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
     </PageShell>
   );
 }

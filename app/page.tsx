@@ -130,17 +130,6 @@ export default async function HomePage() {
                 </span>
                 <span className="at-roster-team">Lineup</span>
               </div>
-              <div className="at-roster-item" data-reveal>
-                <span className="at-roster-idx">02</span>
-                <div className="at-roster-info">
-                  <h3 className="at-roster-name">Support Staff</h3>
-                  <span className="at-roster-role">Coaching / Ops / Brand</span>
-                </div>
-                <span className="at-roster-desc">
-                  Cleaner structure, one competitive destination, and no split between teams and roster.
-                </span>
-                <span className="at-roster-team">Structure</span>
-              </div>
             </div>
           </ScrollReveal>
         </div>
