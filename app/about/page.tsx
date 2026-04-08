@@ -1,4 +1,4 @@
-import { aboutSummary, staff, orgTimeline, orgValues } from "@/lib/site-data";
+import { aboutSummary, staff, orgTimeline, orgValues, igniteSchedule } from "@/lib/site-data";
 import { PageShell } from "@/components/page-shell";
 import { SectionHeading } from "@/components/sections";
 
@@ -97,6 +97,27 @@ export default function AboutPage() {
                   <span className="at-timeline-date">{event.date}</span>
                   <h4 className="at-timeline-title">{event.title}</h4>
                   <p className="at-timeline-desc">{event.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Roadmap ────────────────────────────────────────────── */}
+      <section className="section bg-black/20">
+        <div className="container">
+          <SectionHeading
+            eyebrow="2026 Roadmap"
+            title="The road to Ignite."
+            description="The full championship schedule for the upcoming season, from preseason qualifiers to the Grand Finals."
+          />
+          <div className="grid-3 at-roadmap-grid">
+            {igniteSchedule.map((item, i) => (
+              <div key={i} className="rad-card at-glass at-hud-border">
+                <div className="rad-card__body">
+                  <span className="at-timeline-date">{item.dates}</span>
+                  <h3 className="card-title" style={{ marginTop: '0.5rem' }}>{item.stage}</h3>
                 </div>
               </div>
             ))}

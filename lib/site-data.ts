@@ -56,7 +56,7 @@ export type OrgValue = {
 export const siteTagline = "Built for pressure, content, and the next stage of competition.";
 
 export const aboutSummary =
-  "RAD has been turning heads since the beginning. We didn't wait for an invitation to the top; RAD cemented its place as the inaugural Marvel Rivals Ignite: Mid-Season World Champions and most recently added the EMEA Regional Champions title. You've seen us do it before, get ready to see it again. Untamed, unstoppable, and never by the book. Welcome to the wild. #GoWild";
+  "RAD has been turning heads since 2023. We didn't wait for an invitation to the top; RAD cemented its place as the inaugural Marvel Rivals Ignite: Mid-Season World Champions and most recently secured the Season 6: EMEA PC title in March 2026. You've seen us do it before, get ready to see it again. Untamed, unstoppable, and never by the book. Welcome to the wild. #GoWild";
 
 export const discordInviteUrl = "https://discord.com/invite/radgg";
 export const discordServerId = "1363584103479513198";
@@ -85,8 +85,8 @@ export const teams: Team[] = [
     slug: "marvel-rivals",
     game: "Marvel Rivals",
     description:
-      "RAD's flagship roster and reigning Ignite: Mid-Season World Champions, now also holding the EMEA Regional Champions title.",
-    status: "World & EMEA Champions",
+      "RAD's flagship roster and reigning Ignite: Mid-Season World Champions, now also holding the Season 6: EMEA PC title.",
+    status: "World & Season 6 EMEA Champions",
     featured: true
   }
 ];
@@ -315,30 +315,39 @@ export const contactChannels: ContactChannel[] = [
 
 export const orgTimeline: Milestone[] = [
   {
-    date: "2025",
+    date: "Sept 2023",
     title: "RAD Founded",
     description: "RAD Esports established with a mission to compete at the highest level."
   },
   {
-    date: "2025",
-    title: "Marvel Rivals Roster Signed",
-    description: "The founding Marvel Rivals roster assembled — a team built for pressure."
+    date: "Dec 2024",
+    title: "Marvel Rivals Entry",
+    description: "Officially entered the Marvel Rivals competitive scene with a world-class roster."
   },
   {
-    date: "2025",
-    title: "Ignite World Championship",
+    date: "Aug 2025",
+    title: "Ignite World Champions",
     description: "RAD became the inaugural Marvel Rivals Ignite: Mid-Season World Champions."
   },
   {
-    date: "2025",
-    title: "EMEA Regional Title",
-    description: "Captured the EMEA Regional Champions title, solidifying dominance across Europe."
+    date: "March 2026",
+    title: "EMEA Regional Champions",
+    description: "Won the Marvel Rivals Championship Season 6: EMEA PC title, solidifying dominance across Europe."
   },
   {
     date: "2025",
     title: "GoWild Partnership",
     description: "Announced the activation partnership with GoWild — first brand sponsor onboarded."
   }
+];
+
+export const igniteSchedule = [
+  { stage: "Preseason EMEA", dates: "March - April" },
+  { stage: "Stage 1 EMEA", dates: "May - June" },
+  { stage: "Mid-Season Qualifiers", dates: "July" },
+  { stage: "Mid-Season Finals", dates: "August" },
+  { stage: "Stage 2", dates: "September – October" },
+  { stage: "Grand Finals", dates: "November - December" }
 ];
 
 // ─── Organization Values / Pillars ────────────────────────────────────────────
