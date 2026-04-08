@@ -6,6 +6,7 @@ import { primaryNavLinks } from "@/lib/site-data";
 export function SiteHeader() {
   return (
     <header className="site-header">
+      <div style={{ height: '3px', background: 'var(--grad-primary)', width: '100%', position: 'absolute', top: 0, left: 0 }} />
       <div className="container nav-shell">
         <Link href="/" className="brand-lockup" aria-label="RAD Esports home">
           <img

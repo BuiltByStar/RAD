@@ -4,7 +4,8 @@ import { contactChannels, navLinks } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" style={{ position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'var(--grad-ocean)' }} />
       <div className="container footer-grid">
         <div className="footer-brand-column">
           <p className="footer-kicker">RAD Esports</p>
