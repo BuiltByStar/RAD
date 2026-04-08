@@ -86,24 +86,27 @@ export function SectionHead({
 export function TeamSection({ teams }: { teams: Team[] }) {
   return (
     <motion.div 
-      className="grid-3"
+      className="asymmetric-grid"
       variants={staggerContainer}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-100px" }}
     >
-      {teams.map((team) => (
-        <motion.article key={team.slug} variants={cardVariant} className="rad-card at-glass at-hud-border">
-          <div className="rad-card__body">
-            <div className="card-topline">
-              <span className="card-status">{team.status}</span>
-              <span>{team.game}</span>
+      {teams.map((team, idx) => {
+        const asymClass = idx === 0 ? "asym-item-full" : (idx % 2 !== 0 ? "asym-item-wide" : "asym-item-narrow");
+        return (
+          <motion.article key={team.slug} variants={cardVariant} className={`rad-card ${asymClass}`}>
+            <div className="rad-card__body">
+              <div className="card-topline">
+                <span className="card-status">{team.status}</span>
+                <span>{team.game}</span>
+              </div>
+              <h3 className="card-title">{team.name}</h3>
+              <p className="card-desc">{team.description}</p>
             </div>
-            <h3 className="card-title">{team.name}</h3>
-            <p className="card-desc">{team.description}</p>
-          </div>
-        </motion.article>
-      ))}
+          </motion.article>
+        );
+      })}
     </motion.div>
   );
 }
@@ -113,35 +116,43 @@ export function TeamSection({ teams }: { teams: Team[] }) {
 export function PeopleSection({ people, variant: _variant }: { people: Person[]; variant?: string }) {
   return (
     <motion.div 
-      className="grid-2"
+      className="asymmetric-grid"
       variants={staggerContainer}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-100px" }}
     >
-      {people.map((person) => (
-        <motion.article key={person.name} variants={cardVariant} className="rad-card profile-card at-glass at-hud-border">
-          <div className="profile-visual">
-            <div className="profile-glow" />
-            <span className="profile-initials">{person.name.slice(0, 2)}</span>
-          </div>
-          <div className="profile-meta">
-            <p className="at-section-label" style={{ marginBottom: '0.25rem' }}>{person.group}</p>
-            <h3 className="profile-name">{person.name}</h3>
-            <p className="profile-role">{person.role}</p>
-            <p className="profile-desc">{person.descriptor}</p>
-            {person.socials?.length ? (
-              <div className="profile-links">
-                {person.socials.map((s) => (
-                  <a key={s.label} href={s.href} className="at-link-arrow">
-                    {s.label} →
-                  </a>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        </motion.article>
-      ))}
+      {people.map((person, idx) => {
+        let asymClass = "asym-item-standard";
+        if (person.featured) {
+          asymClass = "asym-item-wide";
+        } else if (idx % 3 === 0) {
+          asymClass = "asym-item-narrow";
+        }
+        return (
+          <motion.article key={person.name} variants={cardVariant} className={`rad-card profile-card ${asymClass}`}>
+            <div className="profile-visual">
+              <div className="profile-glow" />
+              <span className="profile-initials">{person.name.slice(0, 2)}</span>
+            </div>
+            <div className="profile-meta">
+              <p className="at-section-label" style={{ marginBottom: '0.25rem' }}>{person.group}</p>
+              <h3 className="profile-name" style={{ fontSize: person.featured ? '2.5rem' : '1.5rem', lineHeight: 1 }}>{person.name}</h3>
+              <p className="profile-role">{person.role}</p>
+              <p className="profile-desc">{person.descriptor}</p>
+              {person.socials?.length ? (
+                <div className="profile-links">
+                  {person.socials.map((s) => (
+                    <a key={s.label} href={s.href} className="at-link-arrow">
+                      {s.label} →
+                    </a>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </motion.article>
+        );
+      })}
     </motion.div>
   );
 }

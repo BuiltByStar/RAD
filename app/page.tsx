@@ -33,60 +33,69 @@ export default async function HomePage() {
             className="at-hero-brand"
             style={{ filter: "drop-shadow(0 0 20px rgba(255,50,50,0.3))" }}
           />
-          <div className="at-hero-sub">
-            <p className="at-hero-tagline max-w-2xl opacity-90 text-lg">
+          <div className="at-hero-sub" style={{ marginTop: "2rem", display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            <p className="at-hero-tagline max-w-2xl text-xl font-bold" style={{ textShadow: '0 4px 10px rgba(0,0,0,0.8)' }}>
               {siteTagline}
             </p>
-            <div className="at-hero-scroll-hint mt-8">
-              <span className="at-scroll-line" />
-              <span>Scroll</span>
+            
+            {/* Integrated Stats into Hero */}
+            <div className="at-stats-grid" style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap',  background: 'rgba(0,0,0,0.3)', padding: '1.5rem 2.5rem', borderRadius: '16px 0 16px 0', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)' }}>
+              {stats.map((s, idx) => (
+                <div key={s.label} className="at-stat-block" style={{ margin: 0 }}>
+                  <div className="at-stat-value" style={{ fontSize: '3rem', lineHeight: 0.8, color: 'var(--red-hi)' }}>{s.value}</div>
+                  <div className="at-stat-label" style={{ fontSize: '0.65rem', marginTop: '0.5rem', color: '#fff' }}>{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </ScrollReveal>
-
       </section>
 
       {/* ── TICKER ────────────────────────────────────────────────── */}
-      <div className="at-ticker-wrap">
+      <div className="at-ticker-wrap" style={{ transform: 'rotate(-2deg) scale(1.05)', marginTop: '-3rem', zIndex: 10 }}>
         <div className="at-ticker-inner">
-          <span className="at-ticker-item"><span>✦</span> #RADONESTEP</span>
+          <span className="at-ticker-item"><span>✦</span> UNTAMED</span>
+          <span className="at-ticker-item"><span>✦</span> UNSTOPPABLE</span>
+          <span className="at-ticker-item"><span>✦</span> NEVER BY THE BOOK</span>
+          <span className="at-ticker-item"><span>✦</span> RAD ESPORTS</span>
+          <span className="at-ticker-item"><span>✦</span> WORLD CHAMPIONS</span>
           <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
-          <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
-          <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
-          <span className="at-ticker-item"><span>✦</span> #RADGG</span>
-          <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
-          <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
-          <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
+          <span className="at-ticker-item"><span>✦</span> PURE PRESTIGE</span>
+          <span className="at-ticker-item"><span>✦</span> THE NEXT STAGE</span>
           {/* Loop duplication */}
-          <span className="at-ticker-item"><span>✦</span> #RADONESTEP</span>
+          <span className="at-ticker-item"><span>✦</span> UNTAMED</span>
+          <span className="at-ticker-item"><span>✦</span> UNSTOPPABLE</span>
+          <span className="at-ticker-item"><span>✦</span> NEVER BY THE BOOK</span>
+          <span className="at-ticker-item"><span>✦</span> RAD ESPORTS</span>
+          <span className="at-ticker-item"><span>✦</span> WORLD CHAMPIONS</span>
           <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
-          <span className="at-ticker-item"><span>✦</span> #PRESTIGE</span>
-          <span className="at-ticker-item"><span>✦</span> #COMMUNITY</span>
-          <span className="at-ticker-item"><span>✦</span> #RADGG</span>
-          <span className="at-ticker-item"><span>✦</span> #VALORANT</span>
-          <span className="at-ticker-item"><span>✦</span> #ESPORTS</span>
-          <span className="at-ticker-item"><span>✦</span> #DETERMINATION</span>
+          <span className="at-ticker-item"><span>✦</span> PURE PRESTIGE</span>
+          <span className="at-ticker-item"><span>✦</span> THE NEXT STAGE</span>
         </div>
       </div>
 
       {/* ── NAVIGATION HUB ────────────────────────────────────────── */}
-      <NavHub />
+      <div style={{ marginTop: '3rem', position: 'relative', zIndex: 5 }}>
+        <NavHub />
+      </div>
 
       {/* ── STATEMENT ─────────────────────────────────────────────── */}
-      <section className="at-statement">
+      <section className="at-statement" style={{ marginTop: '-5rem', paddingTop: '10rem', clipPath: 'polygon(0 8%, 100% 0, 100% 100%, 0 100%)', background: 'linear-gradient(180deg, #020205 0%, var(--bg) 100%)' }}>
         <div className="at-statement-inner">
-          <p className="at-statement-text at-hover-sheen-text">
-            Built for <em>pressure</em>.<br />
-            Wired for <em>competition</em>.<br />
+          <p className="at-statement-text at-hover-sheen-text" style={{ fontSize: 'clamp(3rem, 7vw, 6rem)', WebkitTextStroke: '1px rgba(255,255,255,0.1)', color: 'transparent', backgroundImage: 'linear-gradient(to bottom, #fff, rgba(255,255,255,0.2))', WebkitBackgroundClip: 'text', backgroundClip: 'text' }}>
+            Built for pressure.<br />
+            Wired for competition.<br />
             Ready to scale.
           </p>
           <ScrollReveal delay={0.2} className="at-statement-aside">
-            <p>
-              {aboutSummary}
-            </p>
-            <Link href="/about" className="at-link-arrow">
-              About RAD →
-            </Link>
+            <div style={{ background: 'var(--surface-md)', padding: '2rem', borderRadius: '0 24px 0 24px', borderLeft: '3px solid var(--red)' }}>
+              <p>
+                {aboutSummary}
+              </p>
+              <Link href="/about" className="at-link-arrow">
+                About RAD →
+              </Link>
+            </div>
           </ScrollReveal>
         </div>
       </section>
@@ -94,21 +103,7 @@ export default async function HomePage() {
       {/* ── ACTIVE DIVISIONS ──────────────────────────────────────── */}
       <DivisionsShowcase teams={teams} />
 
-      {/* ── STATS ─────────────────────────────────────────────────── */}
-      <section className="at-stats">
-        <div className="container">
-          <ScrollReveal delay={0.1}>
-            <div className="at-stats-grid">
-              {stats.map((s, idx) => (
-                <div key={s.label} className="at-stat-block" data-reveal data-delay={idx + 1}>
-                  <div className="at-stat-value">{s.value}</div>
-                  <div className="at-stat-label">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+      {/* STATS REMOVED FROM HERE (INTEGRATED INTO HERO) */}
 
       {/* ── ABOUT ─────────────────────────────────────────────────── */}
       <section className="at-roster">
