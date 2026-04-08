@@ -44,28 +44,30 @@ export function PageShell({
       <section
         className={`page-hero page-hero-${background} page-hero--${heroType}`}
         style={heroStyle}
+        aria-hidden="true"
       >
         <div className="page-overlay" />
         <div className="hero-corner-accents" aria-hidden="true" />
+      </section>
 
-        <div className="page-hero-content">
-          <motion.div 
-            className="container page-hero-copy"
-            variants={shellVariants}
-            initial="hidden"
-            animate="show"
-          >
-            <motion.p variants={textFadeUp} className="eyebrow" style={{ color: "var(--red-hi)", fontWeight: 800, letterSpacing: "0.2em", marginBottom: "1rem" }}>
-              {eyebrow}
-            </motion.p>
-            <motion.h1 variants={textFadeUp} className="at-glitch-text" data-text={title}>
-              {title}
-            </motion.h1>
-            <motion.p variants={textFadeUp} className="section-copy page-hero-description" style={{ opacity: 0.8, maxWidth: "800px" }}>
-              {description}
-            </motion.p>
-          </motion.div>
-        </div>
+      <section className="page-hero-intro relative z-20">
+        <motion.div 
+          className="container page-hero-copy"
+          style={{ paddingTop: "4rem", paddingBottom: "3rem" }}
+          variants={shellVariants}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.p variants={textFadeUp} className="eyebrow" style={{ color: "var(--red-hi)", fontWeight: 800, letterSpacing: "0.2em", marginBottom: "1rem" }}>
+            {eyebrow}
+          </motion.p>
+          <motion.h1 variants={textFadeUp} className="at-glitch-text" data-text={title}>
+            {title}
+          </motion.h1>
+          <motion.p variants={textFadeUp} className="section-copy page-hero-description" style={{ opacity: 0.8, maxWidth: "800px" }}>
+            {description}
+          </motion.p>
+        </motion.div>
       </section>
 
       <div className="page-content">{children}</div>
