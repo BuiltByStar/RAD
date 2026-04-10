@@ -1,0 +1,217 @@
+/* ── Cinematic Subpage Redesign (CHILE20 Style) ── */
+
+.cinematic-main {
+  background: #000;
+  min-height: 100vh;
+  color: #fff;
+  padding-bottom: 6rem;
+}
+
+.cinematic-hero {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4rem 2rem;
+  overflow: hidden;
+}
+
+.cinematic-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  filter: grayscale(100%) contrast(1.2);
+  opacity: 0.4;
+  transition: opacity 1s ease, transform 10s ease-out;
+}
+
+.cinematic-hero:hover .cinematic-hero-bg {
+  transform: scale(1.05);
+  opacity: 0.6;
+}
+
+.cinematic-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #000 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  z-index: 1;
+}
+
+.cinematic-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.cinematic-eyebrow {
+  font-family: var(--font-body);
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.cinematic-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.cinematic-desc {
+  font-family: var(--font-body);
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 45ch;
+  line-height: 1.6;
+}
+
+/* Base layouts */
+.cinematic-section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.cinematic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+/* Removing old boxes */
+.cinematic-item {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.cinematic-item:hover {
+  transform: translateY(-5px);
+}
+
+.cinematic-item-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--red);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.cinematic-item-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.cinematic-item-desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Roster specific */
+.cinematic-roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.cinematic-roster-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: #111;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.cinematic-roster-card:hover {
+  border-bottom-color: var(--red);
+}
+
+.cinematic-roster-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+  opacity: 0.5;
+  filter: grayscale(100%);
+  transition: opacity 0.3s ease, filter 0.3s ease, transform 0.5s ease;
+}
+
+.cinematic-roster-card:hover .cinematic-roster-bg {
+  opacity: 0.8;
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+.cinematic-roster-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cinematic-roster-role {
+  color: var(--red);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.25rem;
+}
+
+.cinematic-roster-name {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+/* Forms */
+.cinematic-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 1rem 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.cinematic-input:focus {
+  outline: none;
+  border-bottom-color: var(--red);
+}
+
+.cinematic-input::placeholder {
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+}

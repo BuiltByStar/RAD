@@ -1,86 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-
-import { discordInviteUrl, discordWidgetUrl } from "@/lib/site-data";
-import { SectionHeading } from "@/components/sections";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 export function DiscordSection() {
-  const [widgetLoaded, setWidgetLoaded] = useState(false);
-  const [widgetError, setWidgetError] = useState(false);
-
   return (
-    <section className="section home-community">
-      <div className="container">
-        <SectionHeading
-          eyebrow="Community"
-          title="Enter the wild."
-          description="Discord is where RAD's community, updates, scrims, clips, and live reactions actually come together. Keep the section sharp and useful instead of turning it into filler."
-          actionHref={discordInviteUrl}
-          actionLabel="Open Discord"
-        />
-
-        <div className="home-community__grid">
-          <div className="home-community__content">
-            <div className="home-community__panel">
-              <p className="section-kicker section-kicker--tight">Inside the server</p>
-              <ul className="home-list home-list--community">
-                <li>
-                  <strong>Live match updates</strong>
-                  <span>Fast pings, result drops, and real-time reactions during events.</span>
-                </li>
-                <li>
-                  <strong>Behind-the-scenes posts</strong>
-                  <span>Extra context, roster updates, and content that does not belong on a static page.</span>
-                </li>
-                <li>
-                  <strong>Community activity</strong>
-                  <span>Scrims, giveaways, and direct interaction around the org's biggest moments.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="home-community__links">
-              <a href={discordInviteUrl} className="text-link" target="_blank" rel="noopener noreferrer">
-                Join the server
-              </a>
-              <Link href="/contact" className="text-link">
-                Contact RAD
-              </Link>
-            </div>
-          </div>
-
-          <div className="home-community__widget">
-            {!widgetError ? (
-              <>
-                {!widgetLoaded ? (
-                  <div className="home-community__widget-loading">
-                    <p className="section-kicker section-kicker--tight">Loading widget</p>
-                    <p>Pulling the live community panel in.</p>
-                  </div>
-                ) : null}
-
-                <iframe
-                  src={discordWidgetUrl}
-                  title="RAD Discord Widget"
-                  className="home-community__iframe"
-                  sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-                  onLoad={() => setWidgetLoaded(true)}
-                  onError={() => setWidgetError(true)}
-                />
-              </>
-            ) : (
-              <div className="home-community__widget-fallback">
-                <p className="section-kicker section-kicker--tight">Discord widget unavailable</p>
-                <h3>RAD.GG / #GoWild</h3>
-                <p>Open the server directly if the embed is blocked in the current browser or region.</p>
-                <a href={discordInviteUrl} className="text-link" target="_blank" rel="noopener noreferrer">
-                  Open Discord
-                </a>
-              </div>
-            )}
-          </div>
+    <section className="cinematic-section" style={{ borderTop: 'none', padding: '0 2rem 5rem' }}>
+      <div style={{ background: '#18191c', padding: '4rem 2rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        {/* Aggressive radial glow */}
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(88,101,242,0.15) 0%, transparent 70%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
+        
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '600px', margin: '0 auto' }}>
+          <FontAwesomeIcon icon={faDiscord} style={{ fontSize: '3rem', color: '#5865F2', marginBottom: '1.5rem' }} />
+          <h2 className="cinematic-item-title" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Join the vanguard.</h2>
+          <p className="cinematic-desc" style={{ margin: '0 auto 2.5rem' }}>
+            The official RAD Esports server. Scrims, community brackets, and direct lines to the roster.
+          </p>
+          <a
+            href="https://discord.gg/RADesports"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hud-action"
+            style={{ 
+              borderColor: '#5865F2', 
+              color: '#fff', 
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = '#5865F2';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(88,101,242,0.4)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Enter the Server
+          </a>
         </div>
       </div>
     </section>

@@ -9,26 +9,29 @@ import { primaryNavLinks } from "@/lib/site-data";
 export function SiteHeader() {
   const pathname = usePathname();
 
+  // The Immersive HUD handles the root page layout.
+  if (pathname === "/") return null;
+
   return (
-    <header className="site-header">
-      <div className="container nav-shell">
-        <Link href="/" className="brand-lockup" aria-label="RAD Esports home">
+    <header className="subpage-header">
+      <div className="container subpage-header-inner">
+        <Link href="/" aria-label="RAD Esports home" className="subpage-brand">
           <img
             src="/assets/RadNewLogoWordmarkWhite.png"
             alt="RAD Esports"
-            className="brand-image"
+            className="subpage-logo"
           />
         </Link>
 
-        <nav className="nav-links" aria-label="Primary navigation">
+        <nav className="subpage-nav" aria-label="Primary navigation">
           {primaryNavLinks.map((link) => {
             const active = pathname === link.href;
 
             return (
-              <Link
+               <Link
                 key={link.href}
                 href={link.href}
-                className={active ? "is-active" : undefined}
+                className={active ? "subpage-link active" : "subpage-link"}
               >
                 {link.label}
               </Link>
@@ -36,7 +39,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="nav-actions">
+        <div className="subpage-actions">
           <AuthWidget />
         </div>
       </div>

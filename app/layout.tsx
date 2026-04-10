@@ -4,10 +4,10 @@ import { Barlow, Barlow_Condensed } from "next/font/google";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { PassiveAtmosphere } from "@/components/passive-atmosphere";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
+import "./cinematic.css";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -30,11 +30,10 @@ export const metadata: Metadata = {
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is a prestige-driven esports org built for competitive growth, content, and community.",
+    "RAD Esports is a prestige-driven esports org built for competitive growth.",
   openGraph: {
     title: "RAD Esports",
-    description:
-      "Competitive divisions, roster depth, premium content, and a flexible brand system ready to scale.",
+    description: "Multi-title competitive division.",
     images: ["/assets/RadPlayerBannerPNG8.png"]
   }
 };
@@ -46,13 +45,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
-        <div className="site-background" />
-        <div className="noise-overlay" />
-        <PassiveAtmosphere />
+      <body className={`${barlow.variable} ${barlowCondensed.variable} bg-black`}>
         <ScrollRevealInit />
         <SiteHeader />
-        {children}
+        <div className="subpage-wrapper">
+          {children}
+        </div>
         <SiteFooter />
       </body>
     </html>
