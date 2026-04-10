@@ -43,7 +43,7 @@ export function ContactGrid({ channels }: { channels: any[] }) {
   return (
     <div className="cinematic-grid">
       {channels.map((ch) => (
-        <div key={ch.id} className="cinematic-item" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
+        <div key={ch.title} className="cinematic-item" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
           <h3 className="cinematic-item-title" style={{ fontSize: '1.4rem', color: 'var(--red)', marginBottom: '0.2rem' }}>{ch.title}</h3>
           <p className="cinematic-item-desc">{ch.description}</p>
           <div style={{ marginTop: '0.5rem', opacity: 0.8 }}>{ch.value}</div>

@@ -56,7 +56,7 @@ export default function ContactPage() {
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {contactChannels.map((channel) => (
-              <div key={channel.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+              <div key={channel.title} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
                 <h3 className="cinematic-item-title" style={{ fontSize: '1.4rem', color: 'var(--red)', marginBottom: '0.2rem' }}>{channel.title}</h3>
                 <p className="cinematic-item-desc" style={{ marginBottom: '0.5rem' }}>{channel.description}</p>
                 <div style={{ display: 'flex', gap: '0.5rem', color: '#fff', fontSize: '0.9rem', opacity: 0.8 }}>
