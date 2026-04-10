@@ -48,7 +48,7 @@ export default async function HomePage() {
             <div className="home-hero__copy">
               <p className="home-hero__tagline">{siteTagline}</p>
               <p className="home-hero__body">
-                RAD is building a prestige-first esports brand around competition, content, and the next stage of org growth.
+                Forged in competition. Powered by an unrelenting drive to dominate the highest tiers of global esports.
               </p>
             </div>
 
@@ -94,54 +94,58 @@ export default async function HomePage() {
 
       <section className="section home-signal">
         <div className="container">
-          <div className="home-signal__grid">
-            <article className="home-signal__feature">
-              <p className="section-kicker section-kicker--tight">Featured division</p>
-              <div className="card-topline">
-                <span className="card-status">{featuredTeam.status}</span>
-                <span>{featuredTeam.game}</span>
-              </div>
-              <h2>{featuredTeam.name}</h2>
-              <p className="section-copy">{featuredTeam.description}</p>
-              <div className="home-signal__feature-actions">
-                <Link href="/roster" className="text-link">
-                  Explore lineup
-                </Link>
-                <Link href="/content" className="text-link">
-                  Watch content
-                </Link>
+          <div className="home-signal__grid asymmetric-grid">
+            <article className="home-signal__feature rad-card asym-item-wide">
+              <div className="rad-card__body">
+                <p className="section-kicker section-kicker--tight">Featured Division</p>
+                <div className="card-topline">
+                  <span className="card-status">{featuredTeam.status}</span>
+                  <span>{featuredTeam.game}</span>
+                </div>
+                <h2>{featuredTeam.name}</h2>
+                <p className="section-copy" style={{ marginTop: '1rem', marginBottom: '1.5rem' }}>
+                  {featuredTeam.description}
+                </p>
+                <div className="home-signal__feature-actions">
+                  <Link href="/roster" className="text-link">
+                    Explore lineup
+                  </Link>
+                  <Link href="/content" className="text-link">
+                    Watch content
+                  </Link>
+                </div>
               </div>
             </article>
 
-            <div className="home-signal__rail">
+            <div className="home-signal__rail asym-item-narrow">
               <Link href="/about" className="home-mini-panel">
-                <p className="section-kicker section-kicker--tight">About</p>
+                <p className="section-kicker section-kicker--tight">Culture</p>
                 <h3>What RAD stands for.</h3>
-                <p>Titles, culture, and the org story behind the current rise.</p>
+                <p>Titles, culture, and the org story behind the current rise to the top.</p>
               </Link>
 
               <Link href="/content" className="home-mini-panel">
-                <p className="section-kicker section-kicker--tight">Content</p>
+                <p className="section-kicker section-kicker--tight">Media</p>
                 <h3>The editorial layer.</h3>
-                <p>Highlights, stories, uploads, and media that keep the brand moving.</p>
+                <p>Highlights, stories, uploads, and raw moments that define our players.</p>
               </Link>
 
               <Link href="/contact" className="home-mini-panel">
-                <p className="section-kicker section-kicker--tight">Contact</p>
+                <p className="section-kicker section-kicker--tight">Connect</p>
                 <h3>Start a conversation.</h3>
-                <p>Partnerships, talent, press, and community-facing inquiries.</p>
+                <p>Partnerships, talent, press, and brand inquiries.</p>
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section-dark">
         <div className="container">
           <SectionHeading
-            eyebrow="About RAD"
-            title="A brand built to scale."
-            description="RAD needs to read like a serious org now, while still leaving room for future titles, better media, and deeper storytelling."
+            eyebrow="The Legacy"
+            title="A brand built to dominate."
+            description="We exist to win, plain and simple. RAD is engineered to outpace the competition across every title we touch."
             actionHref="/about"
             actionLabel="Read the story"
           />
@@ -151,77 +155,29 @@ export default async function HomePage() {
               <p>{aboutSummary}</p>
             </article>
 
-            <div className="home-story__cards">
-              <article className="feature-card">
-                <div className="feature-card__body">
-                  <p className="section-kicker section-kicker--tight">Competition</p>
-                  <h3 className="card-title">Championship pedigree.</h3>
-                  <p className="card-desc">RAD's flagship roster already gives the org a real proof point instead of launch-stage fluff.</p>
+            <div className="home-story__cards asymmetric-grid">
+              <article className="rad-card asym-item-narrow">
+                <div className="rad-card__body">
+                  <p className="section-kicker section-kicker--tight">Execution</p>
+                  <h3 className="card-title">Championship Pedigree.</h3>
+                  <p className="card-desc">Trophies aren't given, they're taken. Our flagship rosters already yield absolute results.</p>
                 </div>
               </article>
-              <article className="feature-card">
-                <div className="feature-card__body">
-                  <p className="section-kicker section-kicker--tight">Identity</p>
-                  <h3 className="card-title">Aggressive visual direction.</h3>
-                  <p className="card-desc">Black, white, and red stay at the center so the site feels branded instead of template-driven.</p>
+              <article className="rad-card asym-item-narrow">
+                <div className="rad-card__body">
+                  <p className="section-kicker section-kicker--tight">Aesthetics</p>
+                  <h3 className="card-title">Aggressive Identity.</h3>
+                  <p className="card-desc">Unapologetic design. Black, white, and red pulse at the core of everything we build.</p>
                 </div>
               </article>
-              <article className="feature-card">
-                <div className="feature-card__body">
-                  <p className="section-kicker section-kicker--tight">Expansion</p>
-                  <h3 className="card-title">Built beyond one title.</h3>
-                  <p className="card-desc">The information architecture is ready for more divisions without forcing a redesign later.</p>
+              <article className="rad-card asym-item-narrow">
+                <div className="rad-card__body">
+                  <p className="section-kicker section-kicker--tight">Future</p>
+                  <h3 className="card-title">Built to Scale.</h3>
+                  <p className="card-desc">We aren't stopping at one title. Our infrastructure supports a global footprint.</p>
                 </div>
               </article>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section-dark">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Roster"
-            title="The current competitive core."
-            description="The roster page is the main competitive destination, but the home page should still give a quick read on the names carrying the org right now."
-            actionHref="/roster"
-            actionLabel="Open full roster"
-          />
-
-          <div className="home-roster-preview">
-            <div className="home-roster-preview__grid">
-              {rosterPreview.map((player) => (
-                <article key={player.slug} className="people-card">
-                  <div className="people-card__top">
-                    <p className="section-kicker section-kicker--tight">{player.group}</p>
-                    {typeof player.number === "number" ? (
-                      <span className="people-card__index">#{String(player.number).padStart(2, "0")}</span>
-                    ) : null}
-                  </div>
-                  <div className="people-card__body">
-                    <h3 className="people-card__name">{player.name}</h3>
-                    <p className="people-card__role">{player.role}</p>
-                    <p className="people-card__desc">{player.descriptor}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <aside className="home-roster-preview__sidebar">
-              <p className="section-kicker section-kicker--tight">Support layer</p>
-              <h3>Players backed by real infrastructure.</h3>
-              <p className="section-copy">
-                RAD already has design, ops, coaching, and social support in place, which makes the org feel credible beyond the headline results.
-              </p>
-              <ul className="home-list">
-                {staffPreview.map((member) => (
-                  <li key={member.slug}>
-                    <strong>{member.name}</strong>
-                    <span>{member.role}</span>
-                  </li>
-                ))}
-              </ul>
-            </aside>
           </div>
         </div>
       </section>
@@ -229,17 +185,69 @@ export default async function HomePage() {
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="Content"
-            title="A real editorial layer."
-            description="The site should not feel like a static team page. It needs stories, uploads, and editorial signals that keep the org alive between match days."
+            eyebrow="Vanguard"
+            title="The competitive core."
+            description="World-class talent operating at the absolute peak of competition. Meet the names carrying the org right now."
+            actionHref="/roster"
+            actionLabel="Open full roster"
+          />
+
+          <div className="home-roster-preview split-layout">
+            <div className="home-roster-preview__grid" style={{ display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+              {rosterPreview.map((player) => (
+                <article key={player.slug} className="rad-card">
+                  <div className="rad-card__body">
+                    <div className="people-card__top">
+                      <p className="section-kicker section-kicker--tight">{player.group}</p>
+                      {typeof player.number === "number" ? (
+                        <span className="people-card__index" style={{ color: 'var(--red)', fontWeight: 'bold' }}>#{String(player.number).padStart(2, "0")}</span>
+                      ) : null}
+                    </div>
+                    <div className="people-card__body" style={{ marginTop: '1rem' }}>
+                      <h3 className="people-card__name" style={{ fontSize: '1.4rem' }}>{player.name}</h3>
+                      <p className="people-card__role" style={{ color: 'var(--text)', opacity: 0.8 }}>{player.role}</p>
+                      <p className="people-card__desc" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>{player.descriptor}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <aside className="home-roster-preview__sidebar rad-card">
+              <div className="rad-card__body">
+                <p className="section-kicker section-kicker--tight">Infrastructure</p>
+                <h3 style={{ fontSize: '1.8rem', margin: '0.5rem 0' }}>The Foundation.</h3>
+                <p className="section-copy" style={{ marginBottom: '1.5rem' }}>
+                  Elite players require elite backing. Our deep support staff guarantees the talent can perform when it matters most.
+                </p>
+                <ul className="home-list" style={{ listStyle: 'none', padding: 0 }}>
+                  {staffPreview.map((member) => (
+                    <li key={member.slug} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.8rem 0', borderBottom: '1px solid var(--border-md)' }}>
+                      <strong style={{ color: 'var(--text)' }}>{member.name}</strong>
+                      <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>{member.role}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-tinted">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Media"
+            title="The editorial lens."
+            description="We don't just win; we tell the story of how we did it. Explore the moments that define RAD."
             actionHref="/content"
             actionLabel="Browse content"
           />
 
-          <div className="home-editorial">
-            <Link href={`/content/${featuredPost.slug}`} className="home-editorial__featured">
+          <div className="home-editorial content-showcase">
+            <Link href={`/content/${featuredPost.slug}`} className="featured-article">
               <img src={featuredPost.cover} alt={featuredPost.title} />
-              <div className="home-editorial__featured-copy">
+              <div className="featured-article-copy">
                 <p className="section-kicker section-kicker--tight">{featuredPost.category}</p>
                 <h3>{featuredPost.title}</h3>
                 <p>{featuredPost.summary}</p>
@@ -247,15 +255,13 @@ export default async function HomePage() {
               </div>
             </Link>
 
-            <div className="home-editorial__stack">
+            <div className="post-stack">
               {secondaryPosts.map((post) => (
-                <Link key={post.slug} href={`/content/${post.slug}`} className="feature-card feature-card--article">
-                  <div className="feature-card__body">
-                    <p className="section-kicker section-kicker--tight">{post.category}</p>
-                    <h3 className="card-title">{post.title}</h3>
-                    <p className="card-desc">{post.summary}</p>
-                    <span className="text-link">Read more</span>
-                  </div>
+                <Link key={post.slug} href={`/content/${post.slug}`} className="post-card">
+                  <p className="section-kicker section-kicker--tight">{post.category}</p>
+                  <h3>{post.title}</h3>
+                  <p>{post.summary}</p>
+                  <span className="text-link">Read more</span>
                 </Link>
               ))}
             </div>
@@ -268,21 +274,24 @@ export default async function HomePage() {
       <section className="section section-dark">
         <div className="container">
           <SectionHeading
-            eyebrow="Activations"
-            title="Open for the right brand partners."
-            description="RAD does not need fake sponsor logos. The site should clearly state that activations, sponsorships, and campaigns are open now."
+            eyebrow="Alliances"
+            title="Brand synergy."
+            description="We partner with organizations that align with our unrelenting drive. Activations and sponsorships are open."
             actionHref="/partners"
             actionLabel="View activations page"
           />
 
-          <div className="feature-grid">
+          <div className="feature-grid asymmetric-grid">
             {partners.map((partner) => (
-              <article key={partner.name} className="feature-card feature-card--partner">
-                <div className="feature-card__body">
+              <article key={partner.name} className="partner-card rad-card asym-item-standard" style={{ display: 'grid', gridTemplateColumns: '80px 1fr' }}>
+                <div className="partner-mark">
+                  <span>{partner.name.substring(0,2)}</span>
+                </div>
+                <div className="partner-info rad-card__body" style={{ padding: '0 1rem' }}>
                   <p className="section-kicker section-kicker--tight">{partner.tier}</p>
-                  <h3 className="card-title">{partner.name}</h3>
+                  <h3 className="card-title" style={{ margin: '0.4rem 0' }}>{partner.name}</h3>
                   <p className="card-desc">{partner.description}</p>
-                  <Link href={partner.href} className="text-link">
+                  <Link href={partner.href} className="text-link" style={{ marginTop: '0.8rem' }}>
                     Contact RAD
                   </Link>
                 </div>
@@ -293,15 +302,17 @@ export default async function HomePage() {
       </section>
 
       <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Connect"
-            title="Direct channels that actually matter."
-            description="The public-facing contact options should be easy to find, consistent, and free of dead routes or fake CTAs."
-            actionHref="/contact"
-            actionLabel="Open contact page"
-          />
-          <ContactGrid channels={contactChannels} />
+        <div className="container community-inner">
+          <div style={{ gridColumn: '1 / -1' }}>
+            <SectionHeading
+              eyebrow="Comms"
+              title="Direct lines."
+              description="No dead ends. Reach out directly for partnerships, talent queries, or community feedback."
+              actionHref="/contact"
+              actionLabel="Open contact page"
+            />
+            <ContactGrid channels={contactChannels} />
+          </div>
         </div>
       </section>
     </main>
