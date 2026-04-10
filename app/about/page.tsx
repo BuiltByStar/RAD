@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
+
 import { aboutSummary, staff, orgTimeline, orgValues, igniteSchedule } from "@/lib/site-data";
 import { PageShell } from "@/components/page-shell";
 import { SectionHeading } from "@/components/sections";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "The RAD Esports story, milestones, values, and competitive identity."
+};
 
 export default function AboutPage() {
   return (
@@ -10,6 +17,7 @@ export default function AboutPage() {
       description="World champions. EMEA title holders. Built from the ground up to redefine the competitive landscape."
       background="red"
       heroType="about"
+      heroImage="/assets/RadBannerNewTest300ppi.png"
     >
       {/* ── Identity ───────────────────────────────────────────── */}
       <section className="section">

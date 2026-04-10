@@ -1,16 +1,23 @@
+import type { Metadata } from "next";
+
 import { PageShell } from "@/components/page-shell";
 import { PeopleGrid, SectionHeading } from "@/components/sections";
 import { staff } from "@/lib/site-data";
 
+export const metadata: Metadata = {
+  title: "Staff",
+  description: "The RAD staff, leadership, operations, and support structure behind the org."
+};
+
 export default function StaffPage() {
   return (
     <PageShell
-      eyebrow="Rad House"
-      title="The foundation."
+      eyebrow="Staff"
+      title="The people behind RAD."
       description="The operations, leadership, and management layer that keeps RAD's competitive engine running at the highest level."
       background="black"
       heroType="staff"
-      heroImage="/assets/RadPlayerBannerPNG8.png"
+      heroImage="/assets/RadBanner1920_1080.png"
     >
       <section className="section">
         <div className="container">

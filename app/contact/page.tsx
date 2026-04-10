@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
+
 import { ContactForm } from "@/components/contact-form";
 import { PageShell } from "@/components/page-shell";
 import { ContactGrid, SectionHeading } from "@/components/sections";
 import { hasSupabaseServiceEnv } from "@/lib/env";
 import { contactChannels } from "@/lib/site-data";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Contact RAD for partnerships, talent, media, or general inquiries."
+};
 
 export default function ContactPage() {
   const hasSubmissionPipeline = hasSupabaseServiceEnv();
@@ -14,14 +21,14 @@ export default function ContactPage() {
       description="Connect with RAD for business, partnerships, or community inquiries."
       background="red"
       heroType="contact"
-      heroImage="/assets/RadRivals_Wallpaper_Red.png"
+      heroImage="/assets/RadBannerNewTest300ppi.png"
     >
       <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Reach Out"
             title="Direct contact and submissions."
-            description="Use the public channels now or send a structured inquiry through the form."
+            description="Keep inquiries simple: public channels up top, structured form underneath, no dead-end CTAs."
           />
           <ContactGrid channels={contactChannels} />
           <div className="contact-form-shell">

@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 import { PageShell } from "@/components/page-shell";
+
+export const metadata: Metadata = {
+  title: "Cookies",
+  description: "RAD Esports cookies policy."
+};
 
 export default function CookiesPage() {
   return (
@@ -9,8 +16,8 @@ export default function CookiesPage() {
       background="black"
     >
       <section className="section">
-        <div className="container" style={{ maxWidth: "800px" }}>
-          <div className="prose prose-invert max-w-none">
+        <div className="container legal-shell">
+          <div className="legal-copy">
             <h3>1. What are Cookies?</h3>
             <p>Cookies are small text files placed on your device when you browse websites. They are widely used to make websites work more efficiently and to provide statistical information to the site owners.</p>
             
@@ -23,7 +30,7 @@ export default function CookiesPage() {
             <h3>4. Managing Cookies</h3>
             <p>You can set your browser to refuse all or some browser cookies, or to alert you when websites set or access cookies. Note that disabling cookies may affect the functionality of our website.</p>
             
-            <p className="mt-8 text-sm text-gray-500">Last Updated: {new Date().getFullYear()}</p>
+            <p className="legal-note">Last Updated: {new Date().getFullYear()}</p>
           </div>
         </div>
       </section>

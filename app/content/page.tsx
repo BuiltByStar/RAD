@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
+
 import { PageShell } from "@/components/page-shell";
 import { SectionHeading } from "@/components/sections";
 import { YouTubeFeatured } from "@/components/youtube-featured";
 import { YouTubeLibrary } from "@/components/youtube-library";
 import { TwitchCreators } from "@/components/twitch-creators";
+
+export const metadata: Metadata = {
+  title: "Content",
+  description: "RAD videos, streams, highlights, and editorial content."
+};
 
 export default function ContentPage() {
   return (
@@ -11,6 +18,8 @@ export default function ContentPage() {
       title="Content Hub."
       description="Latest videos, streams, and media from RAD Esports."
       background="red"
+      heroType="content"
+      heroImage="/assets/RadBanner1920_1080.png"
     >
       {/* ── Featured Video ─────────────────────────────────────── */}
       <section className="section">

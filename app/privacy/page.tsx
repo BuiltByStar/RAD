@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 import { PageShell } from "@/components/page-shell";
+
+export const metadata: Metadata = {
+  title: "Privacy",
+  description: "RAD Esports privacy policy."
+};
 
 export default function PrivacyPage() {
   return (
@@ -9,8 +16,8 @@ export default function PrivacyPage() {
       background="black"
     >
       <section className="section">
-        <div className="container" style={{ maxWidth: "800px" }}>
-          <div className="prose prose-invert max-w-none">
+        <div className="container legal-shell">
+          <div className="legal-copy">
             <h3>1. Information We Collect</h3>
             <p>We collect information you provide directly to us when you create an account, participate in our communities, sign up for a newsletter, or request support.</p>
             
@@ -23,7 +30,7 @@ export default function PrivacyPage() {
             <h3>4. Security Data</h3>
             <p>We employ standard industry measures to help protect your personal information from loss, theft, misuse, unauthorized access, disclosure, alteration, and destruction.</p>
             
-            <p className="mt-8 text-sm text-gray-500">Last Updated: {new Date().getFullYear()}</p>
+            <p className="legal-note">Last Updated: {new Date().getFullYear()}</p>
           </div>
         </div>
       </section>

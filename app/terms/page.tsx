@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 import { PageShell } from "@/components/page-shell";
+
+export const metadata: Metadata = {
+  title: "Terms",
+  description: "RAD Esports terms of service."
+};
 
 export default function TermsPage() {
   return (
@@ -9,8 +16,8 @@ export default function TermsPage() {
       background="black"
     >
       <section className="section">
-        <div className="container" style={{ maxWidth: "800px" }}>
-          <div className="prose prose-invert max-w-none">
+        <div className="container legal-shell">
+          <div className="legal-copy">
             <h3>1. Agreement to Terms</h3>
             <p>By accessing or using the RAD Esports website, you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access our services.</p>
             
@@ -23,7 +30,7 @@ export default function TermsPage() {
             <h3>4. Updates</h3>
             <p>We reserve the right to modify or replace these Terms at any time. We will provide reasonable notice of any significant changes.</p>
             
-            <p className="mt-8 text-sm text-gray-500">Last Updated: {new Date().getFullYear()}</p>
+            <p className="legal-note">Last Updated: {new Date().getFullYear()}</p>
           </div>
         </div>
       </section>

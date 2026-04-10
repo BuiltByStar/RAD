@@ -4,7 +4,6 @@ import { Barlow, Barlow_Condensed } from "next/font/google";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { IntroAnimation } from "@/components/intro-animation";
 import { PassiveAtmosphere } from "@/components/passive-atmosphere";
 import { getPublicSiteUrl } from "@/lib/env";
 
@@ -51,7 +50,6 @@ export default function RootLayout({
         <div className="site-background" />
         <div className="noise-overlay" />
         <PassiveAtmosphere />
-        <IntroAnimation />
         <ScrollRevealInit />
         <SiteHeader />
         {children}

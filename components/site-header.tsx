@@ -1,12 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { AuthWidget } from "@/components/auth-widget";
 import { primaryNavLinks } from "@/lib/site-data";
 
 export function SiteHeader() {
+  const pathname = usePathname();
+
   return (
     <header className="site-header">
-      <div style={{ height: '3px', background: 'var(--grad-primary)', width: '100%', position: 'absolute', top: 0, left: 0 }} />
       <div className="container nav-shell">
         <Link href="/" className="brand-lockup" aria-label="RAD Esports home">
           <img
@@ -17,11 +21,19 @@ export function SiteHeader() {
         </Link>
 
         <nav className="nav-links" aria-label="Primary navigation">
-          {primaryNavLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
-              {link.label}
-            </Link>
-          ))}
+          {primaryNavLinks.map((link) => {
+            const active = pathname === link.href;
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={active ? "is-active" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="nav-actions">

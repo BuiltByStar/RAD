@@ -1,214 +1,309 @@
 import Link from "next/link";
 
-import { DivisionsShowcase } from "@/components/divisions-showcase";
+import { DiscordSection } from "@/components/discord-section";
+import { ContactGrid, SectionHeading } from "@/components/sections";
+import { getFeaturedPost, getPostMeta } from "@/lib/posts";
 import {
   aboutSummary,
   contactChannels,
   partners,
+  players,
   siteTagline,
+  staff,
   stats,
   teams
 } from "@/lib/site-data";
-import { getPostMeta } from "@/lib/posts";
-import { ScrollReveal } from "@/components/scroll-effects";
-import { DiscordSection } from "@/components/discord-section";
-import { NavHub } from "@/components/nav-hub";
 
 export default async function HomePage() {
-  const latestPosts = await getPostMeta();
+  const [featuredPost, latestPosts] = await Promise.all([
+    getFeaturedPost(),
+    getPostMeta()
+  ]);
+
+  const featuredTeam = teams[0];
+  const rosterPreview = players.slice(0, 4);
+  const staffPreview = staff.slice(0, 3);
+  const secondaryPosts = latestPosts
+    .filter((post) => post.slug !== featuredPost.slug)
+    .slice(0, 2);
 
   return (
-    <main className="page-main" style={{ position: "relative", overflow: "hidden", zIndex: 2 }}>
-      {/* ── HERO ──────────────────────────────────────────────────── */}
-      <section className="at-hero">
-        <div className="at-hero-overlay" style={{ background: 'linear-gradient(to top, #010101 0%, transparent 60%)' }} />
+    <main className="page-main home-page">
+      <section className="home-hero">
+        <div className="home-hero__media" />
+        <div className="home-hero__overlay" />
 
-        <ScrollReveal className="at-hero-content" delay={0.2}>
-          <p className="at-hero-kicker text-[#ff3333] font-bold tracking-[0.3em]">
-            Multi-title Esports Organization &nbsp;·&nbsp; Est. 2025
+        <div className="container home-hero__inner">
+          <p className="section-kicker home-hero__kicker">
+            Multi-title esports organization
           </p>
+
           <img
             src="/assets/RadNewLogoWordmarkWhite.png"
             alt="RAD Esports"
-            className="at-hero-brand"
-            style={{ filter: "drop-shadow(0 0 20px rgba(255,50,50,0.3))" }}
+            className="home-hero__logo"
           />
-          <div className="at-hero-sub" style={{ marginTop: "2rem", display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-            <p className="at-hero-tagline max-w-2xl text-xl font-bold" style={{ textShadow: '0 4px 10px rgba(0,0,0,0.8)' }}>
-              {siteTagline}
-            </p>
-            
-            {/* Integrated Stats into Hero */}
-            <div className="at-stats-grid" style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap',  background: 'rgba(0,0,0,0.3)', padding: '1.5rem 2.5rem', borderRadius: '16px 0 16px 0', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)' }}>
-              {stats.map((s, idx) => (
-                <div key={s.label} className="at-stat-block" style={{ margin: 0 }}>
-                  <div className="at-stat-value" style={{ fontSize: '3rem', lineHeight: 0.8, color: 'var(--red-hi)' }}>{s.value}</div>
-                  <div className="at-stat-label" style={{ fontSize: '0.65rem', marginTop: '0.5rem', color: '#fff' }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
 
-      {/* ── TICKER ────────────────────────────────────────────────── */}
-      <div className="at-ticker-wrap" style={{ transform: 'rotate(-2deg) scale(1.05)', marginTop: '-3rem', zIndex: 10 }}>
-        <div className="at-ticker-inner">
-          <span className="at-ticker-item"><span>✦</span> UNTAMED</span>
-          <span className="at-ticker-item"><span>✦</span> UNSTOPPABLE</span>
-          <span className="at-ticker-item"><span>✦</span> NEVER BY THE BOOK</span>
-          <span className="at-ticker-item"><span>✦</span> RAD ESPORTS</span>
-          <span className="at-ticker-item"><span>✦</span> WORLD CHAMPIONS</span>
-          <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
-          <span className="at-ticker-item"><span>✦</span> PURE PRESTIGE</span>
-          <span className="at-ticker-item"><span>✦</span> THE NEXT STAGE</span>
-          {/* Loop duplication */}
-          <span className="at-ticker-item"><span>✦</span> UNTAMED</span>
-          <span className="at-ticker-item"><span>✦</span> UNSTOPPABLE</span>
-          <span className="at-ticker-item"><span>✦</span> NEVER BY THE BOOK</span>
-          <span className="at-ticker-item"><span>✦</span> RAD ESPORTS</span>
-          <span className="at-ticker-item"><span>✦</span> WORLD CHAMPIONS</span>
-          <span className="at-ticker-item"><span>✦</span> #RADWIN</span>
-          <span className="at-ticker-item"><span>✦</span> PURE PRESTIGE</span>
-          <span className="at-ticker-item"><span>✦</span> THE NEXT STAGE</span>
-        </div>
-      </div>
-
-      {/* ── NAVIGATION HUB ────────────────────────────────────────── */}
-      <div style={{ marginTop: '3rem', position: 'relative', zIndex: 5 }}>
-        <NavHub />
-      </div>
-
-      {/* ── STATEMENT ─────────────────────────────────────────────── */}
-      <section className="at-statement" style={{ marginTop: '-5rem', paddingTop: '10rem', clipPath: 'polygon(0 8%, 100% 0, 100% 100%, 0 100%)', background: 'linear-gradient(180deg, #020205 0%, var(--bg) 100%)' }}>
-        <div className="at-statement-inner">
-          <p className="at-statement-text at-hover-sheen-text" style={{ fontSize: 'clamp(3rem, 7vw, 6rem)', WebkitTextStroke: '1px rgba(255,255,255,0.1)', color: 'transparent', backgroundImage: 'linear-gradient(to bottom, #fff, rgba(255,255,255,0.2))', WebkitBackgroundClip: 'text', backgroundClip: 'text' }}>
-            Built for pressure.<br />
-            Wired for competition.<br />
-            Ready to scale.
-          </p>
-          <ScrollReveal delay={0.2} className="at-statement-aside">
-            <div style={{ background: 'var(--surface-md)', padding: '2rem', borderRadius: '0 24px 0 24px', borderLeft: '3px solid var(--red)' }}>
-              <p>
-                {aboutSummary}
+          <div className="home-hero__content">
+            <div className="home-hero__copy">
+              <p className="home-hero__tagline">{siteTagline}</p>
+              <p className="home-hero__body">
+                RAD is building a prestige-first esports brand around competition, content, and the next stage of org growth.
               </p>
-              <Link href="/about" className="at-link-arrow">
-                About RAD →
+            </div>
+
+            <div className="home-hero__actions">
+              <Link href="/roster" className="btn btn-primary">
+                View roster
+              </Link>
+              <Link href="/about" className="btn btn-secondary">
+                About RAD
               </Link>
             </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ── ACTIVE DIVISIONS ──────────────────────────────────────── */}
-      <DivisionsShowcase teams={teams} />
-
-      {/* STATS REMOVED FROM HERE (INTEGRATED INTO HERO) */}
-
-      {/* ── ABOUT ─────────────────────────────────────────────────── */}
-      <section className="at-roster">
-        <div className="container">
-          <div className="at-section-row" data-reveal>
-            <p className="at-section-label">Roster</p>
-            <Link href="/roster" className="at-link-arrow">Open roster page →</Link>
           </div>
-          <ScrollReveal delay={0.2}>
-            <div className="at-roster-list">
-              <div className="at-roster-item" data-reveal>
-                <span className="at-roster-idx">01</span>
-                <div className="at-roster-info">
-                  <h3 className="at-roster-name">Featured Division</h3>
-                  <span className="at-roster-role">Championship Core</span>
-                </div>
-                <span className="at-roster-desc">
-                  The current lineup is anchored by RAD's world-title roster while the brand scales across future titles and activations.
-                </span>
-                <span className="at-roster-team">Lineup</span>
+
+          <div className="home-hero__stats">
+            {stats.map((item) => (
+              <div key={item.label} className="home-stat">
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
               </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ── CONTENT ───────────────────────────────────────────────── */}
-      <section className="at-content">
-        <div className="container">
-          <div className="at-section-row" data-reveal>
-            <p className="at-section-label">Latest Content</p>
-            <Link href="/content" className="at-link-arrow">Browse all →</Link>
-          </div>
-          <ScrollReveal delay={0.2}>
-            <div className="at-content-grid">
-              {latestPosts.slice(0, 3).map((post, idx) => (
-                <Link
-                  key={post.slug}
-                  href={`/content/${post.slug}`}
-                  className="at-post-tile"
-                  data-reveal
-                  data-delay={idx + 1}
-                >
-                  <span className="at-post-cat">{post.category}</span>
-                  <h3 className="at-post-title">{post.title}</h3>
-                  <p className="at-post-summary">{post.summary}</p>
-                  <span className="at-post-date">{post.date}</span>
-                </Link>
-              ))}
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ── DISCORD ──────────────────────────────────────────────── */}
-      <DiscordSection />
-
-      {/* ── CONNECT ──────────────────────────────────────────────── */}
-      <section className="section section-dark">
-        <div className="container">
-          <div className="at-section-row" data-reveal>
-            <p className="at-section-label">Connect</p>
-            <Link href="/contact" className="at-link-arrow">Contact RAD →</Link>
-          </div>
-          <div className="contact-grid">
-            {contactChannels.map((channel) => (
-              <a key={channel.label} href={channel.href} className="contact-tile">
-                <p className="eyebrow">{channel.label}</p>
-                <strong>{channel.value}</strong>
-              </a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PARTNERS ──────────────────────────────────────────────── */}
-      <section className="at-partners">
+      <div className="home-ticker" aria-hidden="true">
+        <div className="home-ticker__track">
+          <span>Untamed</span>
+          <span>Unstoppable</span>
+          <span>Never By The Book</span>
+          <span>RAD.GG</span>
+          <span>#GoWild</span>
+          <span>World Champions</span>
+          <span>Content First</span>
+          <span>Untamed</span>
+          <span>Unstoppable</span>
+          <span>Never By The Book</span>
+          <span>RAD.GG</span>
+          <span>#GoWild</span>
+          <span>World Champions</span>
+          <span>Content First</span>
+        </div>
+      </div>
+
+      <section className="section home-signal">
         <div className="container">
-          <div className="at-partners-inner">
-            <span className="at-section-label" style={{ marginBottom: 0 }} data-reveal>
-              Partners
-            </span>
-            <div className="at-partners-logos">
-              {partners.map((p, idx) => (
-                <a key={p.name} href={p.href} className="at-partner-item" data-reveal data-delay={idx + 1}>
-                  {p.name === "GoWild" ? (
-                    <img
-                      src="/assets/Gowild.png"
-                      alt="GoWild"
-                      className="at-partner-logo-img"
-                    />
-                  ) : (
-                    <span className="at-partner-name">{p.name}</span>
-                  )}
-                  <span className="at-partner-tier">{p.tier}</span>
-                </a>
-              ))}
+          <div className="home-signal__grid">
+            <article className="home-signal__feature">
+              <p className="section-kicker section-kicker--tight">Featured division</p>
+              <div className="card-topline">
+                <span className="card-status">{featuredTeam.status}</span>
+                <span>{featuredTeam.game}</span>
+              </div>
+              <h2>{featuredTeam.name}</h2>
+              <p className="section-copy">{featuredTeam.description}</p>
+              <div className="home-signal__feature-actions">
+                <Link href="/roster" className="text-link">
+                  Explore lineup
+                </Link>
+                <Link href="/content" className="text-link">
+                  Watch content
+                </Link>
+              </div>
+            </article>
+
+            <div className="home-signal__rail">
+              <Link href="/about" className="home-mini-panel">
+                <p className="section-kicker section-kicker--tight">About</p>
+                <h3>What RAD stands for.</h3>
+                <p>Titles, culture, and the org story behind the current rise.</p>
+              </Link>
+
+              <Link href="/content" className="home-mini-panel">
+                <p className="section-kicker section-kicker--tight">Content</p>
+                <h3>The editorial layer.</h3>
+                <p>Highlights, stories, uploads, and media that keep the brand moving.</p>
+              </Link>
+
+              <Link href="/contact" className="home-mini-panel">
+                <p className="section-kicker section-kicker--tight">Contact</p>
+                <h3>Start a conversation.</h3>
+                <p>Partnerships, talent, press, and community-facing inquiries.</p>
+              </Link>
             </div>
-            <Link href="/partners" className="at-link-arrow">
-              Partner with RAD →
-            </Link>
           </div>
         </div>
       </section>
 
+      <section className="section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="About RAD"
+            title="A brand built to scale."
+            description="RAD needs to read like a serious org now, while still leaving room for future titles, better media, and deeper storytelling."
+            actionHref="/about"
+            actionLabel="Read the story"
+          />
+
+          <div className="home-story">
+            <article className="home-story__lead">
+              <p>{aboutSummary}</p>
+            </article>
+
+            <div className="home-story__cards">
+              <article className="feature-card">
+                <div className="feature-card__body">
+                  <p className="section-kicker section-kicker--tight">Competition</p>
+                  <h3 className="card-title">Championship pedigree.</h3>
+                  <p className="card-desc">RAD's flagship roster already gives the org a real proof point instead of launch-stage fluff.</p>
+                </div>
+              </article>
+              <article className="feature-card">
+                <div className="feature-card__body">
+                  <p className="section-kicker section-kicker--tight">Identity</p>
+                  <h3 className="card-title">Aggressive visual direction.</h3>
+                  <p className="card-desc">Black, white, and red stay at the center so the site feels branded instead of template-driven.</p>
+                </div>
+              </article>
+              <article className="feature-card">
+                <div className="feature-card__body">
+                  <p className="section-kicker section-kicker--tight">Expansion</p>
+                  <h3 className="card-title">Built beyond one title.</h3>
+                  <p className="card-desc">The information architecture is ready for more divisions without forcing a redesign later.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-dark">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Roster"
+            title="The current competitive core."
+            description="The roster page is the main competitive destination, but the home page should still give a quick read on the names carrying the org right now."
+            actionHref="/roster"
+            actionLabel="Open full roster"
+          />
+
+          <div className="home-roster-preview">
+            <div className="home-roster-preview__grid">
+              {rosterPreview.map((player) => (
+                <article key={player.slug} className="people-card">
+                  <div className="people-card__top">
+                    <p className="section-kicker section-kicker--tight">{player.group}</p>
+                    {typeof player.number === "number" ? (
+                      <span className="people-card__index">#{String(player.number).padStart(2, "0")}</span>
+                    ) : null}
+                  </div>
+                  <div className="people-card__body">
+                    <h3 className="people-card__name">{player.name}</h3>
+                    <p className="people-card__role">{player.role}</p>
+                    <p className="people-card__desc">{player.descriptor}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <aside className="home-roster-preview__sidebar">
+              <p className="section-kicker section-kicker--tight">Support layer</p>
+              <h3>Players backed by real infrastructure.</h3>
+              <p className="section-copy">
+                RAD already has design, ops, coaching, and social support in place, which makes the org feel credible beyond the headline results.
+              </p>
+              <ul className="home-list">
+                {staffPreview.map((member) => (
+                  <li key={member.slug}>
+                    <strong>{member.name}</strong>
+                    <span>{member.role}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Content"
+            title="A real editorial layer."
+            description="The site should not feel like a static team page. It needs stories, uploads, and editorial signals that keep the org alive between match days."
+            actionHref="/content"
+            actionLabel="Browse content"
+          />
+
+          <div className="home-editorial">
+            <Link href={`/content/${featuredPost.slug}`} className="home-editorial__featured">
+              <img src={featuredPost.cover} alt={featuredPost.title} />
+              <div className="home-editorial__featured-copy">
+                <p className="section-kicker section-kicker--tight">{featuredPost.category}</p>
+                <h3>{featuredPost.title}</h3>
+                <p>{featuredPost.summary}</p>
+                <span className="text-link">Open article</span>
+              </div>
+            </Link>
+
+            <div className="home-editorial__stack">
+              {secondaryPosts.map((post) => (
+                <Link key={post.slug} href={`/content/${post.slug}`} className="feature-card feature-card--article">
+                  <div className="feature-card__body">
+                    <p className="section-kicker section-kicker--tight">{post.category}</p>
+                    <h3 className="card-title">{post.title}</h3>
+                    <p className="card-desc">{post.summary}</p>
+                    <span className="text-link">Read more</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <DiscordSection />
+
+      <section className="section section-dark">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Activations"
+            title="Open for the right brand partners."
+            description="RAD does not need fake sponsor logos. The site should clearly state that activations, sponsorships, and campaigns are open now."
+            actionHref="/partners"
+            actionLabel="View activations page"
+          />
+
+          <div className="feature-grid">
+            {partners.map((partner) => (
+              <article key={partner.name} className="feature-card feature-card--partner">
+                <div className="feature-card__body">
+                  <p className="section-kicker section-kicker--tight">{partner.tier}</p>
+                  <h3 className="card-title">{partner.name}</h3>
+                  <p className="card-desc">{partner.description}</p>
+                  <Link href={partner.href} className="text-link">
+                    Contact RAD
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Connect"
+            title="Direct channels that actually matter."
+            description="The public-facing contact options should be easy to find, consistent, and free of dead routes or fake CTAs."
+            actionHref="/contact"
+            actionLabel="Open contact page"
+          />
+          <ContactGrid channels={contactChannels} />
+        </div>
+      </section>
     </main>
   );
 }

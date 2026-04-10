@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
+
 import { PageShell } from "@/components/page-shell";
 import { players, teams } from "@/lib/site-data";
+
+export const metadata: Metadata = {
+  title: "Roster",
+  description: "RAD's featured competitive lineup, active players, and championship core."
+};
 
 export default function RosterPage() {
   const team = teams[0];
@@ -12,14 +19,14 @@ export default function RosterPage() {
       description="RAD's primary title contenders, world-class individual talent, and the backbone of the organization's competitive presence."
       background="black"
       heroType="roster"
-      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      heroImage="/assets/RadPlayerBannerPNG8.png"
     >
       <section className="section">
         <div className="container team-page-grid">
           <article className="team-overview-card">
             <div className="card-topline">
               <span className="card-status">{team.status}</span>
-              <span>{team.game}</span>
+              <span>Featured Division</span>
             </div>
             <h2 className="team-overview-title">{team.name}</h2>
             <p className="section-copy">{team.description}</p>
@@ -47,7 +54,7 @@ export default function RosterPage() {
             </div>
             <div className="section-meta">
               <p className="section-copy">
-                RAD's current championship core sits here as the main competitive destination while future divisions can slot into the same system.
+                This page centers the current championship core without pretending RAD begins and ends with one game forever.
               </p>
             </div>
           </div>

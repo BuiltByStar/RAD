@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -5,6 +6,11 @@ import { PageShell } from "@/components/page-shell";
 import { getAdminViewer } from "@/lib/admin";
 import { hasSupabaseServiceEnv } from "@/lib/env";
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
+
+export const metadata: Metadata = {
+  title: "Admin",
+  description: "RAD's restricted admin dashboard for website inquiries."
+};
 
 type InquiryRow = {
   id: string;

@@ -267,25 +267,32 @@ export const staff: Person[] = [
 
 export const partners: Partner[] = [
   {
-    name: "GoWild",
-    tier: "Activation Partner",
-    href: "#",
-    description:
-      "Launch-phase brand partner used to show how sponsorship blocks and partner callouts will land."
-  },
-  {
-    name: "Open for Sponsors",
+    name: "Open for Activations",
     tier: "Now Booking",
     href: "/contact",
     description:
-      "RAD is structured to onboard category partners, apparel sponsors, and campaign collaborators."
+      "RAD is currently opening the door for activation partners who want launch-era visibility and long-term brand alignment."
+  },
+  {
+    name: "Category Sponsors",
+    tier: "Growth Ready",
+    href: "/contact",
+    description:
+      "Apparel, peripherals, energy, and campaign partners can plug into a structure designed for competitive storytelling and media rollout."
+  },
+  {
+    name: "Content Campaigns",
+    tier: "Available",
+    href: "/contact",
+    description:
+      "RAD can support launch announcements, creator-facing campaigns, community activations, and branded competitive content."
   }
 ];
 
 export const stats = [
-  { value: "01", label: "World Championship" },
-  { value: "01", label: "EMEA Regional Title" },
-  { value: "07", label: "Active Players" }
+  { value: "2023", label: "Founded" },
+  { value: "01", label: "World Title" },
+  { value: "01", label: "EMEA Title" }
 ];
 
 export const contactChannels: ContactChannel[] = [

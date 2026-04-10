@@ -55,11 +55,11 @@ export const fallbackContent: ContentItem[] = [
   },
   {
     id: "vid-5",
-    title: "RAD Announcement — GoWild Partnership",
-    description: "RAD announces its launch-phase activation partnership with GoWild.",
+    title: "RAD Announcement — Open for Activations",
+    description: "RAD outlines the kinds of brand and campaign collaborations it wants to build as the org expands.",
     url: "https://www.youtube.com/@RadEsport",
     thumbnail: "/assets/RadBanner1920_1080.png",
     type: "video",
-    tags: ["announcement", "partnership"]
+    tags: ["announcement", "activations"]
   }
 ];

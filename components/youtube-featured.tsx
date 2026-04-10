@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fallbackContent } from "@/lib/content-data";
 
 type Video = {
   videoId: string;
   title: string;
   description: string;
   thumbnail: string;
+  url?: string;
 };
 
 export function YouTubeFeatured() {
@@ -37,7 +39,33 @@ export function YouTubeFeatured() {
     );
   }
 
-  if (!video) return null;
+  if (!video) {
+    const fallback = fallbackContent.find((item) => item.featured) ?? fallbackContent[0];
+
+    if (!fallback) return null;
+
+    return (
+      <div className="at-yt-featured">
+        <a
+          href={fallback.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="at-yt-featured-fallback"
+        >
+          <div className="at-yt-thumb-wrap">
+            <img src={fallback.thumbnail} alt={fallback.title} className="at-yt-thumb" />
+          </div>
+          <div className="at-yt-featured-meta">
+            <h3 className="at-yt-featured-title">{fallback.title}</h3>
+            {fallback.description ? (
+              <p className="at-yt-featured-desc">{fallback.description}</p>
+            ) : null}
+            <span className="text-link">Open on YouTube</span>
+          </div>
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div className="at-yt-featured">

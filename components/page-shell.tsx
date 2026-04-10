@@ -1,7 +1,4 @@
-"use client";
-
-import { motion, Variants } from "framer-motion";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type PageShellProps = {
   title: string;
@@ -13,21 +10,6 @@ type PageShellProps = {
   children: ReactNode;
 };
 
-const shellVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.15, ease: "easeOut" } }
-};
-
-const textFadeUp: Variants = {
-  hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
-  show: { 
-    opacity: 1, 
-    y: 0, 
-    filter: "blur(0px)",
-    transition: { type: "spring", stiffness: 80, damping: 20 }
-  }
-};
-
 export function PageShell({
   title,
   eyebrow,
@@ -37,7 +19,9 @@ export function PageShell({
   heroType = "standard",
   children
 }: PageShellProps) {
-  const heroStyle = heroImage ? { backgroundImage: `url(${heroImage})` } : {};
+  const heroStyle = heroImage
+    ? ({ backgroundImage: `url(${heroImage})` } satisfies CSSProperties)
+    : undefined;
 
   return (
     <main className="page-main">
@@ -47,31 +31,17 @@ export function PageShell({
         aria-hidden="true"
       >
         <div className="page-overlay" />
-        <div className="hero-corner-accents" aria-hidden="true" />
       </section>
 
-      <section className="page-hero-intro relative z-20">
-        <motion.div 
-          className="container page-hero-copy"
-          style={{ paddingTop: "4rem", paddingBottom: "3rem" }}
-          variants={shellVariants}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.p variants={textFadeUp} className="eyebrow" style={{ color: "var(--red-hi)", fontWeight: 800, letterSpacing: "0.2em", marginBottom: "1rem" }}>
-            {eyebrow}
-          </motion.p>
-          <motion.h1 variants={textFadeUp} className="at-glitch-text" data-text={title}>
-            {title}
-          </motion.h1>
-          <motion.p variants={textFadeUp} className="section-copy page-hero-description" style={{ opacity: 0.8, maxWidth: "800px" }}>
-            {description}
-          </motion.p>
-        </motion.div>
+      <section className="page-hero-intro">
+        <div className="container page-hero-copy">
+          <p className="section-kicker">{eyebrow}</p>
+          <h1>{title}</h1>
+          <p className="section-copy page-hero-description">{description}</p>
+        </div>
       </section>
 
       <div className="page-content">{children}</div>
     </main>
   );
 }
-
