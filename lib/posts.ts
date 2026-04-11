@@ -51,7 +51,7 @@ export async function getPostMeta() {
     })
   );
 
-  return posts.sort((a, b) => b.date.localeCompare(a.date));
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export async function getFeaturedPost() {

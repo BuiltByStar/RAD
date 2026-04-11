@@ -51,8 +51,13 @@ async function getTwitchToken(): Promise<string | null> {
         client_secret: clientSecret,
         grant_type: "client_credentials"
       }),
-      cache: "no-store"
+      cache: "no-store",
+      signal: AbortSignal.timeout(8000)
     });
+
+    if (!res.ok) {
+      throw new Error(`Twitch token request failed with ${res.status}`);
+    }
 
     const data = await res.json();
     tokenCache = {
@@ -92,9 +97,14 @@ export async function GET() {
           "Client-ID": clientId,
           Authorization: `Bearer ${token}`
         },
-        cache: "no-store"
+        cache: "no-store",
+        signal: AbortSignal.timeout(8000)
       }
     );
+
+    if (!res.ok) {
+      throw new Error(`Twitch streams request failed with ${res.status}`);
+    }
 
     const data = await res.json();
     const liveStreams: TwitchStream[] = data.data || [];

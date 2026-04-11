@@ -55,8 +55,17 @@ export type OrgValue = {
 
 export const siteTagline = "Built for pressure, content, and the next stage of competition.";
 
+export const siteDescription =
+  "RAD Esports is a competitive organization built for elite performance, premium content, and scalable brand growth across multiple titles.";
+
 export const aboutSummary =
   "RAD has been turning heads since 2023. We didn't wait for an invitation to the top; RAD cemented its place as the inaugural Marvel Rivals Ignite: Mid-Season World Champions and most recently secured the Season 6: EMEA PC title in March 2026. You've seen us do it before, get ready to see it again. Untamed, unstoppable, and never by the book. Welcome to the wild. #GoWild";
+
+export const communitySummary =
+  "RAD's community is where match-day energy, org updates, and the next round of activations go live first. Join the server, follow the content, and stay close to the next chapter.";
+
+export const activationsSummary =
+  "RAD is structured for launch-era collaborations, branded content, and long-term category partnerships without padding the site with fake logos or placeholder sponsor walls.";
 
 export const discordInviteUrl = "https://discord.com/invite/radgg";
 export const discordServerId = "1363584103479513198";
@@ -66,7 +75,8 @@ export const primaryNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/roster", label: "Roster" },
-  { href: "/content", label: "Content" }
+  { href: "/content", label: "Content" },
+  { href: "/contact", label: "Contact" }
 ];
 
 export const navLinks: NavLink[] = [
@@ -75,7 +85,7 @@ export const navLinks: NavLink[] = [
   { href: "/roster", label: "Roster" },
   { href: "/staff", label: "Staff" },
   { href: "/content", label: "Content" },
-  { href: "/partners", label: "Partners" },
+  { href: "/partners", label: "Activations" },
   { href: "/contact", label: "Contact" }
 ];
 
@@ -292,7 +302,8 @@ export const partners: Partner[] = [
 export const stats = [
   { value: "2023", label: "Founded" },
   { value: "01", label: "World Title" },
-  { value: "01", label: "EMEA Title" }
+  { value: "01", label: "EMEA Title" },
+  { value: "24/7", label: "Content Engine" }
 ];
 
 export const contactChannels: ContactChannel[] = [
@@ -342,9 +353,9 @@ export const orgTimeline: Milestone[] = [
     description: "Won the Marvel Rivals Championship Season 6: EMEA PC title, solidifying dominance across Europe."
   },
   {
-    date: "2025",
-    title: "GoWild Partnership",
-    description: "Announced the activation partnership with GoWild — first brand sponsor onboarded."
+    date: "2026",
+    title: "Activation Pipeline Opens",
+    description: "RAD begins shaping its public-facing activations, creator campaigns, and multi-title brand infrastructure."
   }
 ];
 
@@ -391,3 +402,13 @@ export function getPersonBySlug(slug: string): Person | undefined {
 export function getAllPersonSlugs(): string[] {
   return [...players, ...staff].map((p) => p.slug);
 }
+
+export const featuredPlayers =
+  players.filter((player) => player.featured).length >= 4
+    ? players.filter((player) => player.featured).slice(0, 4)
+    : players.slice(0, 4);
+
+export const featuredStaff =
+  staff.filter((member) => member.featured).length >= 3
+    ? staff.filter((member) => member.featured).slice(0, 3)
+    : staff.slice(0, 3);

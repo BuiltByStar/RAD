@@ -14,7 +14,8 @@ const initialState = {
   organization: "",
   inquiryType: "Partnership" as InquiryType,
   socials: "",
-  message: ""
+  message: "",
+  website: ""
 };
 
 export function ContactForm({ enabled }: ContactFormProps) {
@@ -25,10 +26,14 @@ export function ContactForm({ enabled }: ContactFormProps) {
   }>({
     type: "idle",
     message: enabled
-      ? "Inquiries submit to the backend pipeline once Supabase is configured."
-      : "Supabase is not configured yet. Use the direct contact channels for now."
+      ? "Submissions route to the backend inquiry pipeline."
+      : "Submission storage is offline in this environment. Use the direct contact channels instead."
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  function updateField<K extends keyof typeof initialState>(key: K, value: (typeof initialState)[K]) {
+    setFormState((current) => ({ ...current, [key]: value }));
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -66,48 +71,53 @@ export function ContactForm({ enabled }: ContactFormProps) {
   }
 
   return (
-    <form className="contact-form" onSubmit={handleSubmit}>
-      <div className="form-grid">
-        <label>
-          <span>Name</span>
+    <form className="rad-form" onSubmit={handleSubmit} noValidate>
+      <div className="rad-form__grid">
+        <label className="rad-field">
+          <span className="rad-field__label">Name</span>
           <input
             value={formState.name}
-            onChange={(event) => setFormState((current) => ({ ...current, name: event.target.value }))}
-            placeholder="Your name"
+            onChange={(event) => updateField("name", event.target.value)}
+            placeholder="Your full name"
             required
             minLength={2}
+            maxLength={80}
+            className="rad-field__input"
+            autoComplete="name"
           />
         </label>
-        <label>
-          <span>Email</span>
+
+        <label className="rad-field">
+          <span className="rad-field__label">Email</span>
           <input
             type="email"
             value={formState.email}
-            onChange={(event) => setFormState((current) => ({ ...current, email: event.target.value }))}
+            onChange={(event) => updateField("email", event.target.value)}
             placeholder="name@example.com"
             required
+            className="rad-field__input"
+            autoComplete="email"
           />
         </label>
-        <label>
-          <span>Organization</span>
+
+        <label className="rad-field">
+          <span className="rad-field__label">Organization</span>
           <input
             value={formState.organization}
-            onChange={(event) =>
-              setFormState((current) => ({ ...current, organization: event.target.value }))
-            }
+            onChange={(event) => updateField("organization", event.target.value)}
             placeholder="Brand, team, or company"
+            maxLength={120}
+            className="rad-field__input"
+            autoComplete="organization"
           />
         </label>
-        <label>
-          <span>Inquiry type</span>
+
+        <label className="rad-field">
+          <span className="rad-field__label">Inquiry type</span>
           <select
             value={formState.inquiryType}
-            onChange={(event) =>
-              setFormState((current) => ({
-                ...current,
-                inquiryType: event.target.value as InquiryType
-              }))
-            }
+            onChange={(event) => updateField("inquiryType", event.target.value as InquiryType)}
+            className="rad-field__input"
           >
             {inquiryTypes.map((type) => (
               <option key={type} value={type}>
@@ -117,28 +127,48 @@ export function ContactForm({ enabled }: ContactFormProps) {
           </select>
         </label>
       </div>
-      <label>
-        <span>Socials or Discord</span>
+
+      <label className="rad-field rad-field--hidden" aria-hidden="true">
+        <span className="rad-field__label">Website</span>
+        <input
+          tabIndex={-1}
+          autoComplete="off"
+          value={formState.website}
+          onChange={(event) => updateField("website", event.target.value)}
+          className="rad-field__input"
+        />
+      </label>
+
+      <label className="rad-field">
+        <span className="rad-field__label">Socials or Discord</span>
         <input
           value={formState.socials}
-          onChange={(event) => setFormState((current) => ({ ...current, socials: event.target.value }))}
-          placeholder="@handle or discord username"
+          onChange={(event) => updateField("socials", event.target.value)}
+          placeholder="@handle, Discord username, or campaign deck link"
+          maxLength={160}
+          className="rad-field__input"
         />
       </label>
-      <label>
-        <span>Message</span>
+
+      <label className="rad-field">
+        <span className="rad-field__label">Message</span>
         <textarea
           value={formState.message}
-          onChange={(event) => setFormState((current) => ({ ...current, message: event.target.value }))}
-          placeholder="Tell RAD what you're looking for."
+          onChange={(event) => updateField("message", event.target.value)}
+          placeholder="Tell RAD what you're looking for, what you need, and the best next step."
           required
           minLength={20}
+          maxLength={2500}
           rows={7}
+          className="rad-field__input rad-field__input--textarea"
         />
       </label>
-      <div className="form-footer">
-        <p className={`form-status form-status-${status.type}`}>{status.message}</p>
-        <button className="btn btn-primary" type="submit" disabled={!enabled || isSubmitting}>
+
+      <div className="rad-form__actions">
+        <p className={`rad-form__status rad-form__status--${status.type}`} aria-live="polite">
+          {status.message}
+        </p>
+        <button className="rad-button" type="submit" disabled={!enabled || isSubmitting}>
           {isSubmitting ? "Submitting..." : "Send Inquiry"}
         </button>
       </div>

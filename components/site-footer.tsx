@@ -1,26 +1,29 @@
+import Image from "next/image";
 import Link from "next/link";
 
-import { contactChannels, navLinks } from "@/lib/site-data";
+import { activationsSummary, contactChannels, navLinks, siteTagline } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="site-footer">
-      <div className="container footer-grid">
-        <div className="footer-brand-column">
-          <p className="section-kicker section-kicker--tight">RAD Esports</p>
-          <img
+    <footer className="rad-footer">
+      <div className="container rad-footer__top">
+        <div className="rad-footer__brand">
+          <Image
             src="/assets/RadNewLogoWordmarkRed.png"
             alt="RAD Esports"
-            className="footer-brand"
+            width={196}
+            height={50}
+            className="rad-footer__logo"
           />
-          <p className="footer-copy">
-            Competitive pedigree, scalable branding, and a site structure built to grow with new titles, media, and partnerships.
+          <p className="rad-copy">
+            {siteTagline}
           </p>
+          <p className="rad-footer__note">{activationsSummary}</p>
         </div>
 
-        <div>
-          <p className="footer-col-label">Navigate</p>
-          <div className="footer-links">
+        <div className="rad-footer__group">
+          <p className="rad-kicker">Navigate</p>
+          <div className="rad-footer__links">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 {link.label}
@@ -29,11 +32,16 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div>
-          <p className="footer-col-label">Connect</p>
-          <div className="footer-links">
+        <div className="rad-footer__group">
+          <p className="rad-kicker">Connect</p>
+          <div className="rad-footer__links">
             {contactChannels.map((channel) => (
-              <a key={channel.label} href={channel.href}>
+              <a
+                key={channel.label}
+                href={channel.href}
+                target={channel.href.startsWith("http") ? "_blank" : undefined}
+                rel={channel.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              >
                 {channel.value}
               </a>
             ))}
@@ -41,13 +49,9 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="container footer-bottom">
-        <div className="footer-bottom-main">
-          <p>© {new Date().getFullYear()} RAD Esports</p>
-          <span className="footer-tag">Built for pressure, content, and the next stage of competition.</span>
-        </div>
-
-        <div className="footer-legal">
+      <div className="container rad-footer__bottom">
+        <p>© {new Date().getFullYear()} RAD Esports. All rights reserved.</p>
+        <div className="rad-footer__legal">
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/cookies">Cookies</Link>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { PageShell } from "@/components/page-shell";
+import { SectionHeading } from "@/components/sections";
 import { getAdminViewer } from "@/lib/admin";
 import { hasSupabaseServiceEnv } from "@/lib/env";
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
@@ -39,11 +40,10 @@ export default async function AdminPage() {
         eyebrow="Admin"
         title="Access Denied."
         description="This dashboard is restricted to allowlisted admin accounts."
-        background="black"
       >
-        <section className="section">
+        <section className="rad-section">
           <div className="container admin-empty-state">
-            <p className="section-copy">
+            <p className="rad-copy">
               Signed in as <strong>{email ?? "unknown user"}</strong>, but this account is not listed in
               <code> ADMIN_EMAILS</code>.
             </p>
@@ -59,11 +59,10 @@ export default async function AdminPage() {
         eyebrow="Admin"
         title="Supabase Not Ready."
         description="The dashboard route exists, but the service role key is missing."
-        background="black"
       >
-        <section className="section">
+        <section className="rad-section">
           <div className="container admin-empty-state">
-            <p className="section-copy">
+            <p className="rad-copy">
               Add <code>SUPABASE_SERVICE_ROLE_KEY</code> in Vercel to enable inquiry reads for the admin dashboard.
             </p>
           </div>
@@ -94,54 +93,46 @@ export default async function AdminPage() {
       eyebrow="Admin"
       title="RAD Dashboard."
       description="Operational visibility for inbound contact leads and website submissions."
-      background="black"
     >
-      <section className="section">
+      <section className="rad-section">
         <div className="container admin-metrics-grid">
           <article className="rad-card">
             <div className="rad-card__body">
-              <p className="eyebrow">Total</p>
+              <p className="rad-kicker">Total</p>
               <h2 className="admin-metric-value">{inquiries.length}</h2>
-              <p className="card-desc">Recent submissions pulled from Supabase.</p>
+              <p className="rad-copy">Recent submissions pulled from Supabase.</p>
             </div>
           </article>
           <article className="rad-card">
             <div className="rad-card__body">
-              <p className="eyebrow">New</p>
+              <p className="rad-kicker">New</p>
               <h2 className="admin-metric-value">{statusCounts.new ?? 0}</h2>
-              <p className="card-desc">Items still waiting on first review.</p>
+              <p className="rad-copy">Items still waiting on first review.</p>
             </div>
           </article>
           <article className="rad-card">
             <div className="rad-card__body">
-              <p className="eyebrow">Partner Leads</p>
+              <p className="rad-kicker">Partner Leads</p>
               <h2 className="admin-metric-value">
                 {inquiries.filter((inquiry) => inquiry.inquiry_type.toLowerCase().includes("partner")).length}
               </h2>
-              <p className="card-desc">Partnership-oriented submissions in the latest batch.</p>
+              <p className="rad-copy">Partnership-oriented submissions in the latest batch.</p>
             </div>
           </article>
         </div>
       </section>
 
-      <section className="section">
+      <section className="rad-section rad-section--alt">
         <div className="container">
-          <div className="section-head">
-            <div>
-              <p className="eyebrow">Inquiries</p>
-              <h2>Latest submissions.</h2>
-            </div>
-            <div className="section-meta">
-              <p className="section-copy">
-                This dashboard currently reads website inquiries only. Status edits can be added next once the review
-                workflow is settled.
-              </p>
-            </div>
-          </div>
+          <SectionHeading
+            eyebrow="Inquiries"
+            title="Latest submissions."
+            description="This dashboard currently reads website inquiries only. Status edits can be added next once the review workflow is settled."
+          />
 
           {inquiries.length === 0 ? (
             <div className="admin-empty-state">
-              <p className="section-copy">No inquiries stored yet. Submit the contact form once to seed this dashboard.</p>
+              <p className="rad-copy">No inquiries stored yet. Submit the contact form once to seed this dashboard.</p>
             </div>
           ) : (
             <div className="admin-table-wrap">
@@ -168,7 +159,7 @@ export default async function AdminPage() {
                       </td>
                       <td>{new Date(inquiry.submitted_at).toLocaleString()}</td>
                       <td>
-                        <a href={`mailto:${inquiry.email}`} className="text-link">
+                        <a href={`mailto:${inquiry.email}`} className="rad-text-link">
                           {inquiry.email}
                         </a>
                         {inquiry.socials ? <span className="admin-subtext">{inquiry.socials}</span> : null}
@@ -182,13 +173,13 @@ export default async function AdminPage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="rad-section">
         <div className="container">
           <div className="admin-quick-links">
-            <Link href="/contact" className="text-link">
+            <Link href="/contact" className="rad-text-link">
               Contact page
             </Link>
-            <Link href="/content" className="text-link">
+            <Link href="/content" className="rad-text-link">
               Content page
             </Link>
           </div>

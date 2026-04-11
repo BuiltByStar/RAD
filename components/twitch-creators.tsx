@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type CreatorStatus = {
@@ -19,21 +20,37 @@ export function TwitchCreators() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/twitch/live")
-      .then((r) => r.json())
-      .then((data) => {
-        setCreators(data.creators || []);
+    const controller = new AbortController();
+
+    async function load() {
+      try {
+        const response = await fetch("/api/twitch/live", {
+          signal: controller.signal,
+          cache: "no-store"
+        });
+        const data = (await response.json()) as { creators?: CreatorStatus[] };
+        setCreators(data.creators ?? []);
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setCreators([]);
+        }
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    }
+
+    void load();
+
+    return () => controller.abort();
   }, []);
 
   if (loading) {
     return (
-      <div className="at-twitch-grid">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="at-twitch-card at-glass">
-            <div className="at-skeleton-shimmer" style={{ width: "100%", height: 60, borderRadius: 4 }} />
+      <div className="rad-creator-grid" aria-hidden="true">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div key={index} className="rad-creator-card rad-creator-card--loading">
+            <div className="rad-skeleton rad-skeleton--title" />
+            <div className="rad-skeleton rad-skeleton--copy" />
           </div>
         ))}
       </div>
@@ -42,51 +59,53 @@ export function TwitchCreators() {
 
   if (creators.length === 0) {
     return (
-      <div className="at-twitch-empty at-glass at-hud-border" style={{ padding: "3rem", textAlign: "center" }}>
-        <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>No Twitch creators configured yet.</p>
+      <div className="rad-empty-state" data-reveal>
+        <p className="rad-copy">
+          No live creator data is available in this environment yet. Add Twitch credentials to light this section up.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="at-twitch-grid">
+    <div className="rad-creator-grid">
       {creators.map((creator) => (
         <a
           key={creator.id}
           href={`https://www.twitch.tv/${creator.twitchLogin}`}
           target="_blank"
           rel="noopener noreferrer"
-          className={`at-twitch-card at-glass at-hud-border ${creator.isLive ? "at-twitch-card--live" : "at-twitch-card--offline"}`}
+          className={`rad-creator-card${creator.isLive ? " rad-creator-card--live" : ""}`}
+          data-reveal
         >
-          {creator.isLive && creator.thumbnail && (
-            <div className="at-twitch-thumb-wrap">
-              <img src={creator.thumbnail} alt={creator.streamTitle || ""} className="at-twitch-thumb" />
-              <span className="at-twitch-viewers">
-                <span className="at-live-dot" />
-                {creator.viewerCount?.toLocaleString()} viewers
-              </span>
+          {creator.thumbnail ? (
+            <div className="rad-creator-card__media">
+              <Image
+                src={creator.thumbnail}
+                alt={creator.streamTitle || `${creator.name} Twitch stream`}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="rad-creator-card__image"
+              />
             </div>
-          )}
-          <div className="at-twitch-card-body">
-            <div className="at-twitch-card-header">
-              <div className="at-twitch-name-row">
-                <strong className="at-twitch-name">{creator.name}</strong>
-                {creator.isLive && <span className="at-twitch-live-badge">LIVE</span>}
+          ) : null}
+          <div className="rad-creator-card__body">
+            <div className="rad-creator-card__top">
+              <div>
+                <p className="rad-kicker">{creator.isLive ? "Live now" : "Creator"}</p>
+                <h3 className="rad-card__title">{creator.name}</h3>
               </div>
-              <span className="at-twitch-login">@{creator.twitchLogin}</span>
+              {creator.isLive ? <span className="rad-live-pill">LIVE</span> : null}
             </div>
-            {creator.role && (
-              <span className="at-twitch-role">{creator.role}</span>
-            )}
-            {creator.isLive && creator.streamTitle && (
-              <p className="at-twitch-stream-title">{creator.streamTitle}</p>
-            )}
-            {creator.isLive && creator.game && (
-              <span className="at-twitch-game">{creator.game}</span>
-            )}
-            {!creator.isLive && (
-              <span className="at-twitch-offline-tag">Offline</span>
-            )}
+            {creator.role ? <p className="rad-copy">{creator.role}</p> : null}
+            {creator.streamTitle ? <p className="rad-copy">{creator.streamTitle}</p> : null}
+            <div className="rad-inline-meta">
+              <span className="rad-badge">@{creator.twitchLogin}</span>
+              {creator.viewerCount ? (
+                <span className="rad-badge">{creator.viewerCount.toLocaleString()} viewers</span>
+              ) : null}
+              {creator.game ? <span className="rad-badge">{creator.game}</span> : null}
+            </div>
           </div>
         </a>
       ))}
