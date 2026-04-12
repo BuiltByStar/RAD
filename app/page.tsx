@@ -32,6 +32,46 @@ export default async function HomePage() {
     .filter((post) => post.slug !== featuredPost?.slug)
     .slice(0, 3);
   const featuredTeam = teams[0];
+  const signalPanels = [
+    {
+      eyebrow: "About RAD",
+      title: "What the org stands for.",
+      description: "A sharper org story, championship proof, and a brand platform designed to scale.",
+      href: "/about"
+    },
+    {
+      eyebrow: "Content",
+      title: "Editorial that keeps moving.",
+      description: "Uploads, features, launch stories, and content infrastructure that support the roster.",
+      href: "/content"
+    },
+    {
+      eyebrow: "Contact",
+      title: "A direct business path.",
+      description: "Press, partnerships, talent, and community-facing inquiries all route to the same intake surface.",
+      href: "/contact"
+    }
+  ];
+  const narrativeCards = [
+    {
+      eyebrow: "Competition",
+      title: "Championship pedigree, not fake launch energy.",
+      description:
+        "RAD already has results strong enough to anchor the brand, so the site can speak with proof instead of placeholder ambition."
+    },
+    {
+      eyebrow: "Content",
+      title: "A site built to publish, not just sit there.",
+      description:
+        "The platform is structured for recaps, announcements, features, and future campaign content without forcing a redesign."
+    },
+    {
+      eyebrow: "Scale",
+      title: "Prepared for more than one title.",
+      description:
+        "Marvel Rivals is the flagship right now, but the architecture stays ready for future divisions, activations, and creator-led expansion."
+    }
+  ];
   const tickerItems = [
     "Ignite Mid-Season World Champions",
     "Season 6 EMEA PC Champions",
@@ -86,50 +126,92 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="rad-section">
+      <section className="rad-home__signal-band">
         <div className="container">
-          <StatStrip items={stats} />
+          <div className="rad-home__signal-grid">
+            <article className="rad-home__signal-feature" data-reveal>
+              <div className="rad-home__signal-media">
+                <Image
+                  src="/assets/RadPlayerBannerPNG8.png"
+                  alt="RAD roster banner"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 58vw"
+                  className="rad-home__signal-image"
+                />
+              </div>
+              <div className="rad-home__signal-body">
+                <p className="rad-kicker">Featured Division</p>
+                <h2 className="rad-section__title rad-section__title--compact">{featuredTeam.name}</h2>
+                <p className="rad-copy">
+                  {featuredTeam.description}
+                </p>
+                <div className="rad-inline-meta">
+                  <span className="rad-badge">{featuredTeam.status}</span>
+                  <Link href="/roster" className="rad-text-link">
+                    Explore the lineup
+                  </Link>
+                </div>
+                <div className="rad-home__signal-stats">
+                  <StatStrip items={stats} />
+                </div>
+              </div>
+            </article>
+
+            <div className="rad-home__signal-rail">
+              {signalPanels.map((panel) => (
+                <Link key={panel.title} href={panel.href} className="rad-home__signal-card" data-reveal>
+                  <p className="rad-kicker">{panel.eyebrow}</p>
+                  <h3 className="rad-card__title">{panel.title}</h3>
+                  <p className="rad-copy">{panel.description}</p>
+                  <span className="rad-text-link">Open section</span>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="rad-section">
+      <section className="rad-home__scroll-band">
         <div className="container">
-          <SectionHeading
-            eyebrow="About RAD"
-            title="A brand built to scale without losing competitive edge."
-            description={aboutSummary}
-            actionHref="/about"
-            actionLabel="Read the full story"
-          />
+          <div className="rad-home__scroll-grid">
+            <div className="rad-home__scroll-copy">
+              <p className="rad-kicker">About RAD</p>
+              <h2 className="rad-section__title">A cleaner system with more of the long-scroll feel back in place.</h2>
+              <p className="rad-copy">{aboutSummary}</p>
+              <div className="rad-action-row">
+                <Link href="/about" className="rad-button">
+                  Read the full story
+                </Link>
+              </div>
+            </div>
 
-          <div className="rad-feature-grid">
-            <article className="rad-card" data-reveal>
-              <div className="rad-card__body">
-                <p className="rad-kicker">Competitive</p>
-                <h3 className="rad-card__title">High-standard rosters.</h3>
-                <p className="rad-copy">
-                  RAD is built around elite lineups, disciplined support staff, and a structure that can expand into new titles without losing quality.
-                </p>
-              </div>
-            </article>
-            <article className="rad-card" data-reveal>
-              <div className="rad-card__body">
-                <p className="rad-kicker">Content</p>
-                <h3 className="rad-card__title">Always publishable.</h3>
-                <p className="rad-copy">
-                  Matches, roster moves, broadcasts, and campaign moments are treated like media assets, not afterthoughts.
-                </p>
-              </div>
-            </article>
-            <article className="rad-card" data-reveal>
-              <div className="rad-card__body">
-                <p className="rad-kicker">Growth</p>
-                <h3 className="rad-card__title">Activation ready.</h3>
-                <p className="rad-copy">
-                  The site, brand system, and contact flow are structured for future sponsors, creator campaigns, and partner-facing storytelling.
-                </p>
-              </div>
-            </article>
+            <div className="rad-home__scroll-track">
+              {narrativeCards.map((card) => (
+                <article key={card.title} className="rad-home__story-card" data-reveal>
+                  <p className="rad-kicker">{card.eyebrow}</p>
+                  <h3 className="rad-card__title">{card.title}</h3>
+                  <p className="rad-copy">{card.description}</p>
+                </article>
+              ))}
+              <article className="rad-home__story-card rad-home__story-card--media" data-reveal>
+                <div className="rad-home__story-card-media">
+                  <Image
+                    src="/assets/RadBannerNewTest300ppi.png"
+                    alt="RAD banner"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 42vw"
+                    className="rad-home__story-card-image"
+                  />
+                </div>
+                <div className="rad-home__story-card-copy">
+                  <p className="rad-kicker">Brand Surface</p>
+                  <h3 className="rad-card__title">Visual identity that can carry more than one page.</h3>
+                  <p className="rad-copy">
+                    The new layout keeps the more cinematic scroll rhythm, but the actual system underneath is cleaner, faster to maintain, and more usable on smaller screens.
+                  </p>
+                </div>
+              </article>
+            </div>
           </div>
         </div>
       </section>
@@ -149,38 +231,46 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="rad-section">
+      <section className="rad-home__editorial-band">
         <div className="container">
-          <SectionHeading
-            eyebrow="Content"
-            title="Editorial that supports the org, not placeholder noise."
-            description="The media layer is built for match recaps, roster announcements, documentaries, and long-form campaign storytelling."
-            actionHref="/content"
-            actionLabel="View content"
-          />
-
-          {featuredPost ? (
-            <Link href={`/content/${featuredPost.slug}`} className="rad-featured-post" data-reveal>
-              <div className="rad-featured-post__media">
-                <Image
-                  src={featuredPost.cover}
-                  alt={featuredPost.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 55vw"
-                  className="rad-featured-post__image"
-                />
+          <div className="rad-home__editorial-grid">
+            <div className="rad-home__editorial-copy">
+              <p className="rad-kicker">Content</p>
+              <h2 className="rad-section__title">The site still needs a stronger editorial pulse than a basic org page.</h2>
+              <p className="rad-copy">
+                This section stays image-heavy and scroll-friendly so the homepage feels alive even before a full content pipeline is populated.
+              </p>
+              <div className="rad-action-row">
+                <Link href="/content" className="rad-button rad-button--ghost">
+                  Browse content
+                </Link>
               </div>
-              <div className="rad-featured-post__body">
-                <p className="rad-kicker">{featuredPost.category}</p>
-                <h3 className="rad-card__title">{featuredPost.title}</h3>
-                <p className="rad-copy">{featuredPost.summary}</p>
-                <span className="rad-text-link">Read feature</span>
-              </div>
-            </Link>
-          ) : null}
+            </div>
 
-          <div className="rad-section__spacer" />
-          <PostGrid posts={recentPosts} compact />
+            <div className="rad-home__editorial-stack">
+              {featuredPost ? (
+                <Link href={`/content/${featuredPost.slug}`} className="rad-featured-post" data-reveal>
+                  <div className="rad-featured-post__media">
+                    <Image
+                      src={featuredPost.cover}
+                      alt={featuredPost.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 55vw"
+                      className="rad-featured-post__image"
+                    />
+                  </div>
+                  <div className="rad-featured-post__body">
+                    <p className="rad-kicker">{featuredPost.category}</p>
+                    <h3 className="rad-card__title">{featuredPost.title}</h3>
+                    <p className="rad-copy">{featuredPost.summary}</p>
+                    <span className="rad-text-link">Read feature</span>
+                  </div>
+                </Link>
+              ) : null}
+
+              <PostGrid posts={recentPosts} compact />
+            </div>
+          </div>
         </div>
       </section>
 
