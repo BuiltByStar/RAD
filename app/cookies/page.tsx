@@ -13,8 +13,9 @@ export default function CookiesPage() {
       eyebrow="Legal"
       title="Cookies Policy."
       description="How RAD Esports uses cookies to enhance your browsing experience."
+      background="black"
     >
-      <section className="rad-section">
+      <section className="section">
         <div className="container legal-shell">
           <div className="legal-copy">
             <h3>1. What are Cookies?</h3>

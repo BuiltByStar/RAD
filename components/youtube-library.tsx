@@ -1,8 +1,6 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
-
 import { fallbackContent } from "@/lib/content-data";
 
 type Video = {
@@ -10,7 +8,6 @@ type Video = {
   title: string;
   description: string;
   thumbnail: string;
-  url?: string;
 };
 
 export function YouTubeLibrary() {
@@ -19,44 +16,33 @@ export function YouTubeLibrary() {
   const [usedFallback, setUsedFallback] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
-
-    async function load() {
-      try {
-        const response = await fetch("/api/youtube/latest", {
-          signal: controller.signal,
-          cache: "no-store"
-        });
-        const data = (await response.json()) as { recentVideos?: Video[] };
-
-        if (data.recentVideos?.length) {
+    fetch("/api/youtube/latest")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.recentVideos && data.recentVideos.length > 0) {
           setVideos(data.recentVideos);
         } else {
+          setVideos([]);
           setUsedFallback(true);
         }
-      } catch (error) {
-        if (!(error instanceof DOMException && error.name === "AbortError")) {
-          setUsedFallback(true);
-        }
-      } finally {
         setLoading(false);
-      }
-    }
-
-    void load();
-
-    return () => controller.abort();
+      })
+      .catch(() => {
+        setVideos([]);
+        setUsedFallback(true);
+        setLoading(false);
+      });
   }, []);
 
   if (loading) {
     return (
-      <div className="rad-media-grid" aria-hidden="true">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div key={index} className="rad-media-card rad-media-card--loading">
-            <div className="rad-skeleton rad-skeleton--media" />
-            <div className="rad-media-card__body">
-              <div className="rad-skeleton rad-skeleton--title" />
-              <div className="rad-skeleton rad-skeleton--copy" />
+      <div className="at-yt-grid">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="at-yt-card at-glass">
+            <div className="at-skeleton-shimmer" style={{ width: "100%", aspectRatio: "16/9", borderRadius: 4 }} />
+            <div style={{ padding: "1rem" }}>
+              <div className="at-skeleton-shimmer" style={{ width: "80%", height: 18, borderRadius: 4 }} />
+              <div className="at-skeleton-shimmer" style={{ width: "60%", height: 14, borderRadius: 4, marginTop: 6 }} />
             </div>
           </div>
         ))}
@@ -64,56 +50,51 @@ export function YouTubeLibrary() {
     );
   }
 
+  // Use fallback content if API returned nothing
   const displayItems = usedFallback
-    ? fallbackContent
-        .filter((item) => !item.featured)
-        .map((item) => ({
-          videoId: item.id,
-          title: item.title,
-          description: item.description || "",
-          thumbnail: item.thumbnail,
-          url: item.url
-        }))
+    ? fallbackContent.filter((c) => !c.featured).map((c) => ({
+        videoId: c.id,
+        title: c.title,
+        description: c.description || "",
+        thumbnail: c.thumbnail,
+        url: c.url
+      }))
     : videos;
 
-  if (displayItems.length === 0) {
-    return (
-      <div className="rad-empty-state" data-reveal>
-        <p className="rad-copy">No recent media items are available yet.</p>
-      </div>
-    );
-  }
+  if (displayItems.length === 0) return null;
 
   return (
-    <div className="rad-media-grid">
+    <div className="at-yt-grid">
       {displayItems.map((video) => {
-        const externalUrl =
-          "url" in video && video.url
-            ? video.url
-            : `https://www.youtube.com/watch?v=${video.videoId}`;
+        const isYT = "videoId" in video && !video.videoId.startsWith("vid-");
+        const href = isYT
+          ? `https://www.youtube.com/watch?v=${video.videoId}`
+          : ("url" in video ? (video as unknown as { url: string }).url : "#");
+        const thumb = isYT
+          ? video.thumbnail
+          : video.thumbnail;
 
         return (
           <a
             key={video.videoId}
-            href={externalUrl}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="rad-media-card"
-            data-reveal
+            className="at-yt-card at-glass at-hud-border"
           >
-            <div className="rad-media-card__media">
-              <Image
-                src={video.thumbnail}
-                alt={video.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="rad-media-card__image"
-              />
+            <div className="at-yt-thumb-wrap">
+              <img src={thumb} alt={video.title} className="at-yt-thumb" />
+              <div className="at-yt-play-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
             </div>
-            <div className="rad-media-card__body">
-              <p className="rad-kicker">{usedFallback ? "Curated" : "YouTube"}</p>
-              <h3 className="rad-card__title">{video.title}</h3>
-              {video.description ? <p className="rad-copy">{video.description.slice(0, 120)}</p> : null}
+            <div className="at-yt-card-info">
+              <h4 className="at-yt-card-title">{video.title}</h4>
+              {video.description && (
+                <p className="at-yt-card-desc">{video.description.slice(0, 100)}...</p>
+              )}
             </div>
           </a>
         );

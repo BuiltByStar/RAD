@@ -1,62 +1,64 @@
 import type { Metadata } from "next";
 
-import { PageShell } from "@/components/page-shell";
-import { PersonGrid, SectionHeading, TeamSpotlight } from "@/components/sections";
-import { players, staff, teams } from "@/lib/site-data";
+import { players, teams } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Roster",
-  description: "RAD's current competitive core, active lineup, and support staff."
+  description: "RAD's featured competitive lineup, active players, and championship core."
 };
 
 export default function RosterPage() {
-  const featuredTeam = teams[0];
-  const competitiveStaff = staff.filter((member) => member.group === "Competitive" || member.role.includes("Coach"));
+  const team = teams[0];
+  const teamRoster = players.filter((player) => player.group === team.name);
 
   return (
-    <PageShell
-      eyebrow="Roster"
-      title="The current competitive core."
-      description="RAD's active lineup is presented as a featured division inside a broader org framework, so the page works now and still scales when new titles arrive."
-      heroImage="/assets/RadPlayerBannerPNG8.png"
-      heroNote={
-        <div className="rad-note-card">
-          <p className="rad-kicker">Current flagship</p>
-          <p className="rad-copy">
-            Marvel Rivals is the live competitive focus today. The structure around it is already built for expansion, content, and operations.
+    <main className="cinematic-main">
+      <section className="cinematic-hero">
+        <div 
+          className="cinematic-hero-bg" 
+          style={{ backgroundImage: "url('/assets/RadPlayerBannerPNG8.png')" }} 
+        />
+        <div className="cinematic-hero-overlay" />
+        <div className="cinematic-hero-content">
+          <p className="cinematic-eyebrow">Live Roster</p>
+          <h1 className="cinematic-title">The Championship Lineup.</h1>
+          <p className="cinematic-desc">
+            RAD's primary title contenders, world-class individual talent, and the backbone of the organization's competitive presence.
           </p>
         </div>
-      }
-    >
-      <section className="rad-section">
-        <div className="container">
-          <TeamSpotlight team={featuredTeam} />
-        </div>
       </section>
 
-      <section className="rad-section rad-section--alt">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Players"
-            title="Seven players. One championship-standard lineup."
-            description="Each card is structured to support richer profile data later without needing a redesign."
-          />
-          <PersonGrid people={players} mode="player" />
+      <section className="cinematic-section">
+        <span className="cinematic-item-eyebrow">Featured Division</span>
+        <h2 className="cinematic-item-title" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>{team.name}</h2>
+        <p className="cinematic-desc" style={{ marginBottom: '4rem' }}>{team.description}</p>
+        
+        <div className="cinematic-roster-grid">
+          {teamRoster.map((player) => (
+            <div key={player.name} className="cinematic-roster-card">
+              <div 
+                className="cinematic-roster-bg" 
+                style={{ backgroundImage: `url('/assets/RadPlayerBannerPNG8.png')` }} 
+              />
+              <div className="cinematic-roster-content">
+                <p className="cinematic-roster-role">{player.role}</p>
+                <h3 className="cinematic-roster-name">{player.name}</h3>
+                <p className="cinematic-item-desc" style={{ fontSize: '0.8rem', opacity: 0.8 }}>{player.descriptor}</p>
+                
+                {player.socials?.length ? (
+                  <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
+                    {player.socials.map((social) => (
+                      <a key={social.label} href={social.href} style={{ color: 'var(--red)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }} target="_blank" rel="noopener noreferrer">
+                        {social.label}
+                      </a>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
-
-      <section className="rad-section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Competitive Support"
-            title="Coaching, management, and analytical support."
-            description="The roster page includes the staff closest to match-day operations so the competitive story reads as a full system, not just a list of player handles."
-            actionHref="/staff"
-            actionLabel="Open full staff page"
-          />
-          <PersonGrid people={competitiveStaff} mode="staff" />
-        </div>
-      </section>
-    </PageShell>
+    </main>
   );
 }

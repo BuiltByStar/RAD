@@ -24,7 +24,6 @@ export function AuthWidget() {
   const [available, setAvailable] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isAuthPending, setIsAuthPending] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -89,9 +88,8 @@ export function AuthWidget() {
   }, []);
 
   async function signIn() {
-    if (!available || isAuthPending) return;
+    if (!available) return;
     try {
-      setIsAuthPending(true);
       const { createSupabaseBrowserClient } = await import("@/lib/supabase/browser");
       const supabase = createSupabaseBrowserClient();
       await supabase.auth.signInWithOAuth({
@@ -99,14 +97,13 @@ export function AuthWidget() {
         options: { redirectTo: `${window.location.origin}/auth/callback` }
       });
     } catch {
-      setIsAuthPending(false);
+      /* no-op */
     }
   }
 
   async function signOut() {
-    if (!available || isAuthPending) return;
+    if (!available) return;
     try {
-      setIsAuthPending(true);
       const { createSupabaseBrowserClient } = await import("@/lib/supabase/browser");
       const supabase = createSupabaseBrowserClient();
       await supabase.auth.signOut();
@@ -114,8 +111,6 @@ export function AuthWidget() {
       setDropdownOpen(false);
     } catch {
       /* no-op */
-    } finally {
-      setIsAuthPending(false);
     }
   }
 
@@ -137,11 +132,9 @@ export function AuthWidget() {
     return (
       <div className="auth-user" ref={dropdownRef}>
         <button
-          type="button"
           className="auth-user-btn"
           onClick={() => setDropdownOpen((o) => !o)}
           aria-expanded={dropdownOpen}
-          aria-haspopup="menu"
           aria-label={`Logged in as ${displayName}`}
         >
           <span className="auth-online-dot" aria-hidden="true" />
@@ -174,8 +167,8 @@ export function AuthWidget() {
                 Admin Dashboard
               </Link>
             ) : null}
-            <button type="button" className="auth-dropdown-item" onClick={signOut}>
-              {isAuthPending ? "Signing out..." : "Sign out"}
+            <button className="auth-dropdown-item" onClick={signOut}>
+              Sign out
             </button>
           </div>
         )}
@@ -186,14 +179,13 @@ export function AuthWidget() {
   return (
     <div className="auth-action-group">
       <button
-        type="button"
         className={`auth-discord-btn ${!available ? "auth-discord-btn--disabled" : ""}`}
         onClick={signIn}
-        disabled={!available || isAuthPending}
+        disabled={!available}
         title={!available ? "Supabase environment variables (URL/Anon Key) are missing. Check .env.local" : "Login with Discord"}
       >
         <DiscordIcon size={14} />
-        <span>{available ? (isAuthPending ? "Redirecting..." : "Login") : "System Offline"}</span>
+        <span>{available ? "Login" : "System Offline"}</span>
       </button>
     </div>
   );

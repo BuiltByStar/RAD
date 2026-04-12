@@ -13,8 +13,9 @@ export default function TermsPage() {
       eyebrow="Legal"
       title="Terms of Service."
       description="The rules and guidelines for using RAD Esports platforms and services."
+      background="black"
     >
-      <section className="rad-section">
+      <section className="section">
         <div className="container legal-shell">
           <div className="legal-copy">
             <h3>1. Agreement to Terms</h3>

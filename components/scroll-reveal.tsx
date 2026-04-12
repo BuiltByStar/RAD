@@ -6,6 +6,7 @@ export function ScrollRevealInit() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Small delay to let DOM render after route change
     const timer = setTimeout(() => {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -19,24 +20,9 @@ export function ScrollRevealInit() {
         { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
       );
 
-      document.body.classList.add("reveal-ready");
-
-      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => {
-        const rect = element.getBoundingClientRect();
-        const alreadyVisible = rect.top < window.innerHeight * 0.92 && rect.bottom > 0;
-
-        if (alreadyVisible) {
-          element.classList.add("is-visible");
-          return;
-        }
-
-        if (!element.classList.contains("is-visible")) {
-          observer.observe(element);
-        }
-      });
-
+      document.querySelectorAll("[data-reveal]:not(.is-visible)").forEach((el) => observer.observe(el));
       return () => observer.disconnect();
-    }, 80);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [pathname]); // Re-run on every route change

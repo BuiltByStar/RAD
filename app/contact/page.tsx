@@ -1,66 +1,72 @@
 import type { Metadata } from "next";
-
-import { ContactForm } from "@/components/contact-form";
-import { PageShell } from "@/components/page-shell";
-import { ContactGrid, SectionHeading } from "@/components/sections";
 import { contactChannels } from "@/lib/site-data";
-import { hasSupabaseServiceEnv } from "@/lib/env";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Reach out to RAD Esports for activations, talent, media, or general inquiries."
+  description: "Reach out to RAD Esports for partnerships, talent queries, or community feedback."
 };
 
 export default function ContactPage() {
-  const submissionsEnabled = hasSupabaseServiceEnv();
-
   return (
-    <PageShell
-      eyebrow="Contact"
-      title="Direct lines for serious inquiries."
-      description="The site now supports structured intake through Supabase when configured, with direct channels still visible so no legitimate inquiry hits a dead end."
-      heroImage="/assets/RadBannerNewTest300ppi.png"
-      heroNote={
-        <div className="rad-note-card">
-          <p className="rad-kicker">Best use</p>
-          <p className="rad-copy">
-            Partnerships, press, roster opportunities, and general business contact should all route through the same polished intake surface.
+    <main className="cinematic-main">
+      <section className="cinematic-hero">
+        <div 
+          className="cinematic-hero-bg" 
+          style={{ backgroundImage: "url('/assets/RadBannerNewTest300ppi.png')" }} 
+        />
+        <div className="cinematic-hero-overlay" />
+        <div className="cinematic-hero-content">
+          <p className="cinematic-eyebrow">Comms</p>
+          <h1 className="cinematic-title">Direct lines.</h1>
+          <p className="cinematic-desc">
+            No dead ends. Reach out directly for partnerships, talent queries, or community feedback.
           </p>
         </div>
-      }
-    >
-      <section className="rad-section">
-        <div className="container rad-contact-layout">
-          <div className="rad-surface">
-            <SectionHeading
-              eyebrow="Inquiries"
-              title="Send a clear message."
-              description="Use the form for structured submissions. If Supabase is not configured in the environment yet, direct channels remain available on the right."
-              align="stacked"
-            />
-            <ContactForm enabled={submissionsEnabled} />
-          </div>
+      </section>
 
-          <div className="rad-contact-sidebar">
-            <div className="rad-surface">
-              <SectionHeading
-                eyebrow="Channels"
-                title="Direct contact channels."
-                description="These stay visible even when the backend pipeline is offline, so the page remains useful in every environment."
-                align="stacked"
-              />
-              <ContactGrid channels={contactChannels} />
-            </div>
+      <section className="cinematic-section" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(300px, 1fr)', gap: '4rem' }}>
+        
+        {/* Contact Form */}
+        <div>
+          <span className="cinematic-item-eyebrow">Inquiries</span>
+          <h2 className="cinematic-item-title" style={{ marginBottom: '3rem' }}>Send a strictly business message.</h2>
+          
+          <form className="cinematic-form">
+            <input type="text" className="cinematic-input" placeholder="Your Name" required />
+            <input type="email" className="cinematic-input" placeholder="Your Email" required />
+            <select className="cinematic-input" required>
+              <option value="" disabled selected>Select Inquiry Type</option>
+              <option value="partnership">Partnership & Sponsorship</option>
+              <option value="talent">Talent & Scouting</option>
+              <option value="press">Press & Media</option>
+              <option value="other">General</option>
+            </select>
+            <textarea className="cinematic-input" placeholder="Your Message" rows={4} required></textarea>
+            
+            <button type="submit" className="hud-action" style={{ width: '100%', marginTop: '1rem', cursor: 'pointer' }}>
+              Submit Inquiry
+            </button>
+          </form>
+        </div>
 
-            <div className="rad-note-card">
-              <p className="rad-kicker">Response quality</p>
-              <p className="rad-copy">
-                Include the reason for contact, the brand or org name if applicable, and any social handles or deck links that help RAD evaluate the inquiry quickly.
-              </p>
-            </div>
+        {/* Channels */}
+        <div>
+          <span className="cinematic-item-eyebrow">Channels</span>
+          <h2 className="cinematic-item-title" style={{ marginBottom: '3rem' }}>Direct emails.</h2>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {contactChannels.map((channel) => (
+              <div key={channel.label} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+                <h3 className="cinematic-item-title" style={{ fontSize: '1.4rem', color: 'var(--red)', marginBottom: '0.2rem' }}>{channel.label}</h3>
+                <div style={{ display: 'flex', gap: '0.5rem', color: '#fff', fontSize: '0.9rem', opacity: 0.8 }}>
+                  <a href={channel.href} target="_blank" rel="noopener noreferrer">{channel.value}</a>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
-    </PageShell>
+
+    </main>
   );
 }

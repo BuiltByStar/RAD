@@ -1,93 +1,121 @@
 "use client";
 
-import Link from "next/link";
-import { startTransition, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
+import { Environment, MeshTransmissionMaterial, Sparkles, Float } from "@react-three/drei";
 import * as THREE from "three";
 
-const STAGE_ITEMS = [
-  {
-    title: "About",
-    subtitle: "Org identity, timeline, and why RAD is built to scale.",
-    href: "/about"
-  },
-  {
-    title: "Roster",
-    subtitle: "Current lineup, championship core, and competitive depth.",
-    href: "/roster"
-  },
-  {
-    title: "Content",
-    subtitle: "Editorial, broadcasts, and long-form platform storytelling.",
-    href: "/content"
-  },
-  {
-    title: "Activations",
-    subtitle: "Brand-ready inventory, campaigns, and future partnerships.",
-    href: "/partners"
-  }
-] as const;
+import { Preloader } from "./preloader";
+import { ImmersiveHud } from "./immersive-hud";
 
-const SPACING = 3.4;
+const WORLDS_COUNT = 4;
+const SPACING = 15;
 
-function StageObjects({ activeIndex }: { activeIndex: number }) {
+// Abstract premium geometries for the 4 sections
+function Shapes() {
   const groupRef = useRef<THREE.Group>(null);
-  const targetRotation = activeIndex * 0.18;
 
-  useFrame((state, delta) => {
-    if (!groupRef.current) {
-      return;
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Gentle floating rotation for the entire group
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
     }
-
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(
-      groupRef.current.rotation.y,
-      targetRotation,
-      delta * 2.4
-    );
-    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.7) * 0.08;
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={1.4} floatIntensity={0.5} rotationIntensity={0.35}>
-        <mesh position={[-SPACING, 0.1, 0]}>
-          <icosahedronGeometry args={[0.95, 0]} />
-          <meshStandardMaterial color="#ff1818" metalness={0.7} roughness={0.22} emissive="#420000" />
-        </mesh>
-      </Float>
+      {/* World 0: The Core (Fractured Monolith) */}
+      <mesh position={[0 * SPACING, 0, 0]}>
+        <icosahedronGeometry args={[2, 0]} />
+        <MeshTransmissionMaterial
+          backside
+          samples={4}
+          thickness={1.5}
+          chromaticAberration={0.4}
+          anisotropy={0.3}
+          distortion={0.5}
+          distortionScale={0.5}
+          temporalDistortion={0.1}
+          iridescence={1}
+          iridescenceIOR={1}
+          iridescenceThicknessRange={[0, 1400]}
+          color="#ff2a2a" // Deep red tint
+        />
+      </mesh>
 
-      <Float speed={1.1} floatIntensity={0.45} rotationIntensity={0.2}>
-        <mesh position={[0, -0.1, 0]} rotation={[0.65, 0.8, 0]}>
-          <torusKnotGeometry args={[0.8, 0.22, 160, 24]} />
-          <meshStandardMaterial color="#f7f7f7" metalness={0.9} roughness={0.1} emissive="#140909" />
-        </mesh>
-      </Float>
+      {/* World 1: Vanguard (Sleek Torus) */}
+      <mesh position={[1 * SPACING, 0, 0]} rotation={[Math.PI/4, Math.PI/4, 0]}>
+        <torusGeometry args={[1.6, 0.4, 64, 100]} />
+        <meshPhysicalMaterial
+          color="#000000"
+          metalness={1}
+          roughness={0.05}
+          clearcoat={1}
+          clearcoatRoughness={0.1}
+          envMapIntensity={2}
+        />
+      </mesh>
 
-      <Float speed={1.6} floatIntensity={0.55} rotationIntensity={0.4}>
-        <mesh position={[SPACING, 0.12, 0]}>
-          <octahedronGeometry args={[1.05, 0]} />
-          <meshStandardMaterial color="#0d0d0d" metalness={0.55} roughness={0.28} emissive="#2d0000" />
-        </mesh>
-      </Float>
+      {/* World 2: Media (Floating Orbs) */}
+      <group position={[2 * SPACING, 0, 0]}>
+        <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+          <mesh position={[-1, 1, 0]}>
+            <sphereGeometry args={[0.8, 64, 64]} />
+            <meshPhysicalMaterial color="#aa0000" metalness={0.9} roughness={0.1} clearcoat={1} />
+          </mesh>
+        </Float>
+        <Float speed={1.5} rotationIntensity={2} floatIntensity={1}>
+          <mesh position={[1, -0.5, 0]}>
+            <sphereGeometry args={[1.2, 64, 64]} />
+            <meshPhysicalMaterial color="#111111" metalness={1} roughness={0} clearcoat={1} />
+          </mesh>
+        </Float>
+      </group>
 
-      <Float speed={1.3} floatIntensity={0.6} rotationIntensity={0.3}>
-        <mesh position={[SPACING * 2, -0.18, 0]} rotation={[0.2, 0.45, 0.75]}>
-          <capsuleGeometry args={[0.55, 1.25, 10, 20]} />
-          <meshStandardMaterial color="#ff3a3a" metalness={0.8} roughness={0.16} emissive="#320000" />
-        </mesh>
-      </Float>
+      {/* World 3: Alliances (Diamond/Octahedron) */}
+      <mesh position={[3 * SPACING, 0, 0]}>
+        <octahedronGeometry args={[2, 0]} />
+        <MeshTransmissionMaterial
+          backside
+          samples={4}
+          thickness={2}
+          chromaticAberration={0.8}
+          anisotropy={0.5}
+          color="#ffffff"
+        />
+      </mesh>
     </group>
   );
 }
 
+// Camera controller to lerp horizontally and respond to mouse movement
 function CameraRig({ activeIndex }: { activeIndex: number }) {
   const targetX = activeIndex * SPACING;
 
   useFrame((state, delta) => {
-    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, targetX, delta * 2.8);
-    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, 0.18, delta * 1.8);
-    state.camera.lookAt(targetX, 0, 0);
+    // Lerp camera X position
+    state.camera.position.x = THREE.MathUtils.lerp(
+      state.camera.position.x,
+      targetX,
+      delta * 4
+    );
+
+    // Parallax effect based on pointer (slight movement to look premium)
+    const pointerX = state.pointer.x * 2;
+    const pointerY = state.pointer.y * 2;
+    
+    state.camera.position.y = THREE.MathUtils.lerp(
+      state.camera.position.y,
+      pointerY * 1.5,
+      delta * 2
+    );
+    
+    // Look at the target
+    state.camera.lookAt(
+      THREE.MathUtils.lerp(state.camera.position.x, targetX, delta * 4),
+      0,
+      0
+    );
   });
 
   return null;
@@ -96,35 +124,84 @@ function CameraRig({ activeIndex }: { activeIndex: number }) {
 export function Scene() {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  return (
-    <div className="rad-stage">
-      <div className="rad-stage__canvas">
-        <Canvas camera={{ position: [0, 0.2, 5.6], fov: 34 }} dpr={[1, 1.5]} gl={{ antialias: true }}>
-          <color attach="background" args={["#050505"]} />
-          <fog attach="fog" args={["#050505", 5, 12]} />
-          <ambientLight intensity={0.9} />
-          <directionalLight position={[4, 5, 5]} intensity={2.2} color="#ffffff" />
-          <pointLight position={[-2, 1.5, 3]} intensity={14} color="#ff0000" distance={12} />
-          <pointLight position={[2, -1, 2]} intensity={4} color="#ffffff" distance={10} />
-          <StageObjects activeIndex={activeIndex} />
-          <CameraRig activeIndex={activeIndex} />
-        </Canvas>
-      </div>
+  // Wheel and Drag Logic to switch worlds
+  useEffect(() => {
+    let isThrottled = false;
+    let touchStartX = 0;
 
-      <div className="rad-stage__controls" aria-label="Stage destinations">
-        {STAGE_ITEMS.map((item, index) => (
-          <Link
-            key={item.title}
-            href={item.href}
-            className={`rad-stage__control${index === activeIndex ? " is-active" : ""}`}
-            onMouseEnter={() => startTransition(() => setActiveIndex(index))}
-            onFocus={() => startTransition(() => setActiveIndex(index))}
-          >
-            <span className="rad-stage__control-title">{item.title}</span>
-            <span className="rad-stage__control-copy">{item.subtitle}</span>
-          </Link>
-        ))}
-      </div>
+    const handleNext = () => {
+      setActiveIndex((prev) => Math.min(prev + 1, WORLDS_COUNT - 1));
+    };
+    const handlePrev = () => {
+      setActiveIndex((prev) => Math.max(prev - 1, 0));
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      if (isThrottled) return;
+      if (Math.abs(e.deltaY) > 20 || Math.abs(e.deltaX) > 20) {
+        if (e.deltaY > 0 || e.deltaX > 0) handleNext();
+        else handlePrev();
+        
+        isThrottled = true;
+        setTimeout(() => (isThrottled = false), 800); // 800ms cooldown for premium feel
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") handlePrev();
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      
+      if (diff > 50) handleNext();
+      else if (diff < -50) handlePrev();
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, []);
+
+  return (
+    <div className="immersive-canvas-wrap">
+      <Preloader />
+      <ImmersiveHud activeIndex={activeIndex} totalWorlds={WORLDS_COUNT} />
+      
+      <Canvas
+        camera={{ position: [0, 0, 7], fov: 45 }}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
+        dpr={[1, 2]}
+      >
+        <color attach="background" args={["#000000"]} />
+        <fog attach="fog" args={["#000000", 5, 20]} />
+
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[5, 5, 5]} intensity={2} color="#ffffff" />
+        <spotLight position={[-5, 5, 5]} intensity={4} color="#ff0000" angle={0.5} penumbra={1} />
+        
+        <Shapes />
+        <CameraRig activeIndex={activeIndex} />
+
+        {/* Ambient dust */}
+        <Sparkles count={200} scale={30} size={1.5} speed={0.2} opacity={0.3} color="#ff3333" />
+        
+        <Environment preset="studio" />
+      </Canvas>
     </div>
   );
 }

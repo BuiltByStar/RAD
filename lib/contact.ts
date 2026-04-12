@@ -15,7 +15,6 @@ export type ContactPayload = {
   inquiryType: InquiryType;
   message: string;
   socials?: string;
-  website?: string;
 };
 
 export function sanitizeContactPayload(input: Record<string, unknown>): ContactPayload {
@@ -29,38 +28,17 @@ export function sanitizeContactPayload(input: Record<string, unknown>): ContactP
       : "General";
   const message = typeof input.message === "string" ? input.message.trim() : "";
   const socials = typeof input.socials === "string" ? input.socials.trim() : undefined;
-  const website = typeof input.website === "string" ? input.website.trim() : "";
-
-  if (website) {
-    throw new Error("Spam detected.");
-  }
 
   if (name.length < 2) {
     throw new Error("Name must be at least 2 characters.");
   }
 
-  if (name.length > 80) {
-    throw new Error("Name must be under 80 characters.");
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!email.includes("@") || email.length < 5) {
     throw new Error("A valid email is required.");
   }
 
   if (message.length < 20) {
     throw new Error("Message must be at least 20 characters.");
-  }
-
-  if (message.length > 2500) {
-    throw new Error("Message must be under 2500 characters.");
-  }
-
-  if (organization && organization.length > 120) {
-    throw new Error("Organization must be under 120 characters.");
-  }
-
-  if (socials && socials.length > 160) {
-    throw new Error("Socials must be under 160 characters.");
   }
 
   return {
@@ -69,7 +47,6 @@ export function sanitizeContactPayload(input: Record<string, unknown>): ContactP
     organization,
     inquiryType,
     message,
-    socials,
-    website
+    socials
   };
 }

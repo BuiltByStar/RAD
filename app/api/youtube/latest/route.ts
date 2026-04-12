@@ -42,19 +42,11 @@ export async function GET() {
   }
 
   try {
-    const requestOptions = {
-      cache: "no-store" as const,
-      signal: AbortSignal.timeout(8000)
-    };
-
     // Step 1: Get channel's uploads playlist
     const channelRes = await fetch(
       `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`,
-      requestOptions
+      { cache: "no-store" }
     );
-    if (!channelRes.ok) {
-      throw new Error(`YouTube channel lookup failed with ${channelRes.status}`);
-    }
     const channelData = await channelRes.json();
     const uploadsPlaylistId =
       channelData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
@@ -70,11 +62,8 @@ export async function GET() {
     // Step 2: Get recent uploads (max 20)
     const playlistRes = await fetch(
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=20&key=${apiKey}`,
-      requestOptions
+      { cache: "no-store" }
     );
-    if (!playlistRes.ok) {
-      throw new Error(`YouTube playlist lookup failed with ${playlistRes.status}`);
-    }
     const playlistData = await playlistRes.json();
     const items = playlistData.items || [];
 
@@ -89,11 +78,8 @@ export async function GET() {
 
     const videosRes = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&id=${videoIds}&key=${apiKey}`,
-      requestOptions
+      { cache: "no-store" }
     );
-    if (!videosRes.ok) {
-      throw new Error(`YouTube video lookup failed with ${videosRes.status}`);
-    }
     const videosData = await videosRes.json();
 
     // Step 4: Filter out Shorts (< 60 seconds)

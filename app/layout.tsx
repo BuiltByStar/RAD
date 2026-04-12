@@ -5,10 +5,9 @@ import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPublicSiteUrl } from "@/lib/env";
-import { siteDescription } from "@/lib/site-data";
 
 import "./globals.css";
-import "./site.css";
+import "./cinematic.css";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -30,10 +29,11 @@ export const metadata: Metadata = {
     default: "RAD Esports",
     template: "%s | RAD Esports"
   },
-  description: siteDescription,
+  description:
+    "RAD Esports is a prestige-driven esports org built for competitive growth.",
   openGraph: {
     title: "RAD Esports",
-    description: siteDescription,
+    description: "Multi-title competitive division.",
     images: ["/assets/RadPlayerBannerPNG8.png"]
   }
 };
@@ -45,10 +45,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
+      <body className={`${barlow.variable} ${barlowCondensed.variable} bg-black`}>
         <ScrollRevealInit />
         <SiteHeader />
-        <div className="subpage-wrapper">{children}</div>
+        <div className="subpage-wrapper">
+          {children}
+        </div>
         <SiteFooter />
       </body>
     </html>

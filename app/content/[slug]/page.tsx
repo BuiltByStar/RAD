@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { getPostBySlug, getPostMeta, getPostSlugs } from "@/lib/posts";
@@ -23,12 +22,7 @@ export async function generateMetadata({
 
   return {
     title: post.title,
-    description: post.summary,
-    openGraph: {
-      title: post.title,
-      description: post.summary,
-      images: [post.cover]
-    }
+    description: post.summary
   };
 }
 
@@ -43,34 +37,22 @@ export default async function PostPage({
     const post = await getPostBySlug(slug);
 
     return (
-      <main className="rad-page rad-post-page">
-        <section className="rad-post-hero">
-          <div className="rad-post-hero__media">
-            <Image
-              src={post.cover}
-              alt={post.title}
-              fill
-              priority
-              sizes="100vw"
-              className="rad-post-hero__image"
-            />
+      <main className="page-main">
+        <article className="post-page">
+          <div className="post-hero">
+            <img src={post.cover} alt={post.title} />
+            <div className="post-hero-overlay" />
+            <div className="container post-hero-copy">
+              <p className="eyebrow">{post.category}</p>
+              <h1>{post.title}</h1>
+              <p className="section-copy">{post.summary}</p>
+              <span className="post-date">{post.date}</span>
+            </div>
           </div>
-          <div className="rad-post-hero__overlay" />
-          <div className="container rad-post-hero__copy">
-            <p className="rad-kicker">{post.category}</p>
-            <h1 className="rad-display rad-display--page">{post.title}</h1>
-            <p className="rad-lead">{post.summary}</p>
-            <span className="rad-post-hero__date">{post.date}</span>
+          <div className="container post-body">
+            <div className="mdx-body">{post.content}</div>
           </div>
-        </section>
-
-        <section className="rad-section">
-          <div className="container">
-            <article className="rad-post-body">
-              <div className="rad-mdx">{post.content}</div>
-            </article>
-          </div>
-        </section>
+        </article>
       </main>
     );
   } catch {

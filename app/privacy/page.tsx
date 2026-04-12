@@ -13,8 +13,9 @@ export default function PrivacyPage() {
       eyebrow="Legal"
       title="Privacy Policy."
       description="How RAD Esports collects, uses, and protects your personal information."
+      background="black"
     >
-      <section className="rad-section">
+      <section className="section">
         <div className="container legal-shell">
           <div className="legal-copy">
             <h3>1. Information We Collect</h3>
