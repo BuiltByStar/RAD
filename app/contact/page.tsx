@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <PageShell
+      variant="contact"
       eyebrow="Contact"
       title="Open a direct line."
       description="The contact page should feel credible and business-ready: clean intake, visible fallback channels, and enough structure that real inquiries know where to go."

@@ -9,6 +9,7 @@ type PageShellProps = {
   heroVideo?: string;
   status?: string;
   note?: ReactNode;
+  variant?: "default" | "about" | "roster" | "staff" | "content" | "contact" | "partners" | "legal";
   children: ReactNode;
 };
 
@@ -20,10 +21,11 @@ export function PageShell({
   heroVideo,
   status,
   note,
+  variant = "default",
   children
 }: PageShellProps) {
   return (
-    <main className="rad-subpage">
+    <main className={`rad-subpage rad-subpage--${variant}`}>
       <section className="rad-subpage-hero">
         <div className="container">
           <div className="rad-subpage-hero__panel">

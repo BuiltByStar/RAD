@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <PageShell
+      variant="about"
       eyebrow="About RAD"
       title="Built to compete. Designed to scale."
       description="RAD needs to read like a serious modern organization: championship-proven, visually disciplined, and structured for more than a single season."

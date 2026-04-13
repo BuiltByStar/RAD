@@ -31,6 +31,7 @@ const privacyBlocks = [
 export default function PrivacyPage() {
   return (
     <PageShell
+      variant="legal"
       eyebrow="Legal"
       title="Privacy policy."
       description="The legal pages should be readable, minimal, and visually aligned with the rest of the product."

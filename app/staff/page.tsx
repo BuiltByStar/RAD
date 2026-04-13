@@ -15,6 +15,7 @@ export default function StaffPage() {
 
   return (
     <PageShell
+      variant="staff"
       eyebrow="Staff"
       title="The system behind the roster."
       description="A serious org site should show the people who make the competitive product possible: brand, operations, analytics, management, and coaching."

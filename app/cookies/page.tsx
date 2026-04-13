@@ -31,6 +31,7 @@ const cookieBlocks = [
 export default function CookiesPage() {
   return (
     <PageShell
+      variant="legal"
       eyebrow="Legal"
       title="Cookie disclosure."
       description="This page explains the role of cookies and related tracking in a way that matches the rest of the site's tone and quality level."

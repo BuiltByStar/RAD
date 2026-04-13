@@ -31,6 +31,7 @@ const termsBlocks = [
 export default function TermsPage() {
   return (
     <PageShell
+      variant="legal"
       eyebrow="Legal"
       title="Terms of use."
       description="A cleaner legal surface keeps these pages readable and consistent with the rest of the site."

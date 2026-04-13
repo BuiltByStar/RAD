@@ -21,6 +21,7 @@ export default async function ContentPage() {
 
   return (
     <PageShell
+      variant="content"
       eyebrow="Content"
       title="The editorial side of the org."
       description="This page should feel like a real media surface, not an afterthought bolted onto a team site. Articles, video, and creator visibility all need to coexist cleanly."

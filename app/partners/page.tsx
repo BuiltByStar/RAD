@@ -34,6 +34,7 @@ const processSteps = [
 export default function PartnersPage() {
   return (
     <PageShell
+      variant="partners"
       eyebrow="Activations"
       title="Open for the right brand fit."
       description="This page should position RAD as activation-ready without using fake sponsor walls or manufactured social proof."

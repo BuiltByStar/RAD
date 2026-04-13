@@ -18,6 +18,7 @@ export default function RosterPage() {
 
   return (
     <PageShell
+      variant="roster"
       eyebrow="Roster"
       title="The championship core."
       description="The roster page should feel like a serious competitive surface: clear lineup hierarchy, useful player detail, and visible support around the team."
