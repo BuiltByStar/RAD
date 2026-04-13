@@ -1,141 +1,131 @@
 import type { Metadata } from "next";
-import { CinematicHero } from "@/components/cinematic-hero";
-import { aboutSummary, orgTimeline, orgValues, igniteSchedule } from "@/lib/site-data";
+
+import { PageShell } from "@/components/page-shell";
+import { SectionHeading } from "@/components/sections";
+import { aboutSummary, igniteSchedule, orgTimeline, orgValues } from "@/lib/site-data";
 
 export const metadata: Metadata = {
-  title: "The Standard",
-  description: "Identity, milestones, and the roadmap of RAD Esports."
+  title: "About",
+  description: "Identity, milestones, and the operating standard behind RAD Esports."
 };
 
 export default function AboutPage() {
   return (
-    <main className="cinematic-main">
-      <CinematicHero 
-        eyebrow="The Standard"
-        title="Redefining the Elite."
-        description="World champions. EMEA title holders. Built from the ground up to redefine the competitive landscape."
-        videoSrc="/assets/DiscordRadBannerAnimated.mp4"
-        statusText="CORE_IDENTITY // ACTIVE"
-      />
-
-      {/* Identity Section - Asymmetrical Layout */}
-      <section className="cinematic-section">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <PageShell
+      eyebrow="About RAD"
+      title="Built to compete. Designed to scale."
+      description="RAD needs to read like a serious modern organization: championship-proven, visually disciplined, and structured for more than a single season."
+      heroImage="/assets/RadBannerNewTest300ppi.png"
+      status="World title secured // EMEA pressure-tested"
+      note={
+        <div className="rad-subpage-note__stack">
           <div>
-            <span className="cinematic-item-eyebrow">Identity</span>
-            <h2 className="cinematic-item-title text-4xl lg:text-5xl leading-tight mb-8">
-              RAD didn't wait for <span className="text-red-600">permission.</span>
-            </h2>
-            <div className="h-[1px] w-24 bg-red-600 mb-8" />
+            <span className="rad-subpage-note__label">Primary Division</span>
+            <strong>Marvel Rivals</strong>
           </div>
-          <div className="space-y-6">
-            <p className="cinematic-desc text-xl text-white leading-relaxed">
-              {aboutSummary}
-            </p>
-            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
-              <div>
-                <span className="cinematic-mono block mb-2">Primary Title</span>
-                <span className="text-2xl font-bold uppercase tracking-tighter">Marvel Rivals</span>
-              </div>
-              <div>
-                <span className="cinematic-mono block mb-2">HQ Location</span>
-                <span className="text-2xl font-bold uppercase tracking-tighter">EMEA / Global</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="cinematic-grid mt-24">
-          <div className="cinematic-item group">
-            <div className="cinematic-red-accent group-hover:h-16 transition-all duration-500" />
-            <h3 className="cinematic-item-title text-2xl text-red-600">World Champions</h3>
-            <p className="cinematic-item-desc">
-              Inaugural Marvel Rivals Ignite Mid-Season World Champions. A legacy cemented in the first wave.
-            </p>
-          </div>
-          <div className="cinematic-item group">
-            <div className="cinematic-red-accent group-hover:h-16 transition-all duration-500" />
-            <h3 className="cinematic-item-title text-2xl text-red-600">EMEA Dominance</h3>
-            <p className="cinematic-item-desc">
-              Season 6 EMEA PC Champions. Solidifying our position as the region's absolute powerhouse.
-            </p>
-          </div>
-          <div className="cinematic-item group">
-            <div className="cinematic-red-accent group-hover:h-16 transition-all duration-500" />
-            <h3 className="cinematic-item-title text-2xl text-red-600">The #GoWild Creed</h3>
-            <p className="cinematic-item-desc">
-              Aggressive by nature. Untamed by choice. Welcome to the new era of competitive culture.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Pillars - Visual Grid */}
-      <section className="cinematic-section bg-white/[0.02]">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div>
-            <span className="cinematic-item-eyebrow">Our Pillars</span>
-            <h2 className="cinematic-item-title mb-0">Foundational Standards.</h2>
+            <span className="rad-subpage-note__label">Operating Region</span>
+            <strong>EMEA / Global</strong>
           </div>
-          <span className="cinematic-mono text-red-600">04 // CORE_VALUES</span>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10">
-          {orgValues.map((value) => (
-            <div key={value.title} className="bg-black p-8 hover:bg-neutral-900 transition-colors group">
-              <span className="text-3xl mb-6 block group-hover:scale-110 transition-transform duration-500">{value.icon}</span>
-              <h3 className="cinematic-item-title text-xl mb-4">{value.title}</h3>
-              <p className="cinematic-item-desc text-sm leading-relaxed">{value.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      }
+    >
+      <section className="rad-subpage-section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Identity"
+            title="An org story with proof behind it."
+            description="The site should explain who RAD is without reading like filler copy. The tone needs to stay competitive, credible, and brand-ready."
+          />
 
-      {/* Timeline - Terminal Feed Style */}
-      <section className="cinematic-section">
-        <div className="flex items-center gap-4 mb-16">
-          <div className="h-[2px] w-12 bg-red-600" />
-          <h2 className="cinematic-item-title mb-0">Evolution Log</h2>
-        </div>
-        
-        <div className="space-y-12">
-          {orgTimeline.map((event, i) => (
-            <div key={i} className="flex flex-col md:flex-row gap-8 group">
-              <div className="md:w-32 flex-shrink-0">
-                <span className="cinematic-mono text-red-600 group-hover:translate-x-2 transition-transform inline-block">
-                  [{event.date}]
-                </span>
-              </div>
-              <div className="flex-1 pb-12 border-b border-white/10">
-                <h4 className="cinematic-item-title text-2xl mb-4 group-hover:text-red-600 transition-colors">
-                  {event.title}
-                </h4>
-                <p className="cinematic-item-desc max-w-2xl">
-                  {event.description}
+          <div className="rad-subpage-grid rad-subpage-grid--2">
+            <article className="rad-subpage-card rad-subpage-card--lead">
+              <p className="rad-subpage-body rad-subpage-body--large">{aboutSummary}</p>
+            </article>
+
+            <div className="rad-subpage-stack">
+              <article className="rad-subpage-card">
+                <p className="rad-subpage-card__eyebrow">Competitive Position</p>
+                <h3 className="rad-subpage-card__title">Championship-standard operation.</h3>
+                <p className="rad-subpage-body">
+                  RAD is already anchored by meaningful results, which lets the brand speak with confidence instead of launch-stage exaggeration.
                 </p>
-              </div>
+              </article>
+              <article className="rad-subpage-card">
+                <p className="rad-subpage-card__eyebrow">Brand Direction</p>
+                <h3 className="rad-subpage-card__title">Aggressive, clean, and scalable.</h3>
+                <p className="rad-subpage-body">
+                  The org identity is meant to grow into new divisions, future activations, and a stronger editorial presence without changing its visual core.
+                </p>
+              </article>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
-      {/* Roadmap - Grid Data */}
-      <section className="cinematic-section">
-        <div className="mb-16">
-          <span className="cinematic-item-eyebrow">2026 Transmission</span>
-          <h2 className="cinematic-item-title">Roadmap to Dominance.</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {igniteSchedule.map((item, i) => (
-            <div key={i} className="relative p-6 border-l border-red-600/30 hover:border-red-600 transition-colors">
-              <span className="cinematic-item-eyebrow text-[10px] opacity-40">{item.dates}</span>
-              <h3 className="cinematic-item-title text-lg mt-2 tracking-widest">{item.stage}</h3>
-              <div className="absolute top-2 right-2 cinematic-mono text-[8px]">STG_{i+1}</div>
-            </div>
-          ))}
+      <section className="rad-subpage-section rad-subpage-section--soft">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Standards"
+            title="The values that shape the public product."
+            description="A strong esports site needs to communicate competitive standards and organizational intent, not just show results."
+          />
+
+          <div className="rad-subpage-grid rad-subpage-grid--4">
+            {orgValues.map((value) => (
+              <article key={value.title} className="rad-subpage-card">
+                <span className="rad-subpage-icon" aria-hidden="true">
+                  {value.icon}
+                </span>
+                <h3 className="rad-subpage-card__title">{value.title}</h3>
+                <p className="rad-subpage-body">{value.description}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
-    </main>
+
+      <section className="rad-subpage-section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Timeline"
+            title="How RAD established credibility."
+            description="This keeps the story chronological and readable without turning the page into a text wall."
+          />
+
+          <div className="rad-timeline">
+            {orgTimeline.map((event) => (
+              <article key={`${event.date}-${event.title}`} className="rad-timeline__item">
+                <p className="rad-timeline__date">{event.date}</p>
+                <div className="rad-timeline__body">
+                  <h3 className="rad-subpage-card__title">{event.title}</h3>
+                  <p className="rad-subpage-body">{event.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="rad-subpage-section rad-subpage-section--soft">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Roadmap"
+            title="Structured for the next competitive cycle."
+            description="This gives the about page a forward-looking layer instead of ending only on past results."
+          />
+
+          <div className="rad-subpage-grid rad-subpage-grid--3">
+            {igniteSchedule.map((item, index) => (
+              <article key={`${item.stage}-${item.dates}`} className="rad-subpage-card rad-subpage-card--compact">
+                <p className="rad-subpage-card__eyebrow">Stage {String(index + 1).padStart(2, "0")}</p>
+                <h3 className="rad-subpage-card__title">{item.stage}</h3>
+                <p className="rad-subpage-body">{item.dates}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </PageShell>
   );
 }

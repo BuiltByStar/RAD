@@ -1,3 +1,6 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getPostBySlug, getPostMeta, getPostSlugs } from "@/lib/posts";
@@ -11,7 +14,7 @@ export async function generateMetadata({
   params
 }: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
   const posts = await getPostMeta();
   const post = posts.find((entry) => entry.slug === slug);
@@ -37,22 +40,44 @@ export default async function PostPage({
     const post = await getPostBySlug(slug);
 
     return (
-      <main className="page-main">
-        <article className="post-page">
-          <div className="post-hero">
-            <img src={post.cover} alt={post.title} />
-            <div className="post-hero-overlay" />
-            <div className="container post-hero-copy">
-              <p className="eyebrow">{post.category}</p>
-              <h1>{post.title}</h1>
-              <p className="section-copy">{post.summary}</p>
-              <span className="post-date">{post.date}</span>
+      <main className="rad-subpage">
+        <section className="rad-article-hero">
+          <div className="container">
+            <div className="rad-article-hero__panel">
+              <div className="rad-article-hero__copy">
+                <p className="rad-subpage-eyebrow">{post.category}</p>
+                <h1 className="rad-subpage-title">{post.title}</h1>
+                <p className="rad-subpage-description">{post.summary}</p>
+                <div className="rad-article-hero__meta">
+                  <span className="rad-subpage-status">{post.date}</span>
+                  <Link href="/content" className="rad-subpage-link">
+                    Back to content
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rad-article-hero__media">
+                <Image
+                  src={post.cover}
+                  alt={post.title}
+                  fill
+                  priority
+                  sizes="(max-width: 900px) 100vw, 44vw"
+                  className="rad-article-hero__image"
+                />
+                <div className="rad-subpage-hero__wash" />
+              </div>
             </div>
           </div>
-          <div className="container post-body">
-            <div className="mdx-body">{post.content}</div>
+        </section>
+
+        <section className="rad-subpage-section">
+          <div className="container">
+            <article className="rad-article-body">
+              <div className="mdx-body">{post.content}</div>
+            </article>
           </div>
-        </article>
+        </section>
       </main>
     );
   } catch {

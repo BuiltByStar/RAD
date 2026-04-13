@@ -1,60 +1,101 @@
 import type { Metadata } from "next";
-
-import { partners } from "@/lib/site-data";
 import Link from "next/link";
+
+import { PageShell } from "@/components/page-shell";
+import { SectionHeading } from "@/components/sections";
+import { partners } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Activations",
-  description: "RAD's brand partnership, activation, and sponsorship entry point."
+  description: "RAD's public-facing page for sponsorships, campaigns, and branded activations."
 };
+
+const processSteps = [
+  {
+    label: "01 // Brief",
+    title: "Start with the right fit.",
+    description:
+      "The page should qualify serious brand interest without pretending there is already a full sponsor roster."
+  },
+  {
+    label: "02 // Concept",
+    title: "Build around competition and content.",
+    description:
+      "RAD's strongest value is the crossover between competitive credibility and an org identity that can support branded storytelling."
+  },
+  {
+    label: "03 // Launch",
+    title: "Roll the activation through real surfaces.",
+    description:
+      "Campaigns should be able to flow through the roster, content, community, and social channels without rebuilding the site around them."
+  }
+];
 
 export default function PartnersPage() {
   return (
-    <main className="cinematic-main">
-      <section className="cinematic-hero">
-        <div 
-          className="cinematic-hero-bg" 
-          style={{ backgroundImage: "url('/assets/RadBanner1920_1080.png')" }} 
-        />
-        <div className="cinematic-hero-overlay" />
-        <div className="cinematic-hero-content">
-          <p className="cinematic-eyebrow">Activations</p>
-          <h1 className="cinematic-title">Open for the right partners.</h1>
-          <p className="cinematic-desc">
-            RAD does not need fake sponsor walls. This page clearly communicates what kinds of collaborations are open right now.
-          </p>
+    <PageShell
+      eyebrow="Activations"
+      title="Open for the right brand fit."
+      description="This page should position RAD as activation-ready without using fake sponsor walls or manufactured social proof."
+      heroImage="/assets/RadBanner1920_1080.png"
+      status="Partnership inventory // available"
+      note={
+        <div className="rad-subpage-note__stack">
+          <div>
+            <span className="rad-subpage-note__label">Open Categories</span>
+            <strong>Apparel / Peripherals / Campaigns</strong>
+          </div>
+          <div>
+            <span className="rad-subpage-note__label">Best Contact</span>
+            <strong>Business inquiries</strong>
+          </div>
+        </div>
+      }
+    >
+      <section className="rad-subpage-section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Positioning"
+            title="Brand-ready without pretending the sponsor wall already exists."
+            description="This page is stronger when it clearly explains what RAD can support right now instead of filling space with fake logos."
+            actionHref="/contact"
+            actionLabel="Contact RAD"
+          />
+
+          <div className="rad-subpage-grid rad-subpage-grid--3">
+            {processSteps.map((step) => (
+              <article key={step.title} className="rad-subpage-card">
+                <p className="rad-subpage-card__eyebrow">{step.label}</p>
+                <h3 className="rad-subpage-card__title">{step.title}</h3>
+                <p className="rad-subpage-body">{step.description}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="cinematic-section">
-        <span className="cinematic-item-eyebrow">Sponsorship</span>
-        <h2 className="cinematic-item-title" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginBottom: '1.5rem' }}>Brand-ready without fake logos.</h2>
-        <p className="cinematic-desc" style={{ marginBottom: '3rem' }}>
-          RAD is currently positioning for activations, sponsorships, and creator-facing campaigns. This operates as an invitation into our highly engaged demographic, not a placeholder graveyard.
-        </p>
-        
-        <Link href="/contact" className="hud-action" style={{ marginBottom: '4rem' }}>
-          Contact RAD
-        </Link>
-        
-        <div className="cinematic-grid">
-          {partners.map((partner) => (
-            <div key={partner.name} className="cinematic-item" style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '2rem' }}>
-              <div style={{ width: '80px', height: '80px', background: 'var(--red)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#000' }}>
-                {partner.name.substring(0, 2).toUpperCase()}
-              </div>
-              <div style={{ alignSelf: 'center' }}>
-                <span className="cinematic-item-eyebrow" style={{ color: 'var(--muted)' }}>{partner.tier}</span>
-                <h3 className="cinematic-item-title" style={{ fontSize: '1.6rem', margin: '0.2rem 0' }}>{partner.name}</h3>
-                <p className="cinematic-item-desc">{partner.description}</p>
-                <Link href={partner.href} style={{ display: 'inline-block', marginTop: '1rem', color: 'var(--red)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em' }} target="_blank" rel="noopener noreferrer">
-                  Contact
+      <section className="rad-subpage-section rad-subpage-section--soft">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Available Angles"
+            title="What RAD can package cleanly."
+            description="The offering cards are framed as collaboration lanes rather than imaginary existing sponsorships."
+          />
+
+          <div className="rad-subpage-grid rad-subpage-grid--3">
+            {partners.map((partner) => (
+              <article key={partner.name} className="rad-subpage-card rad-subpage-card--tall">
+                <p className="rad-subpage-card__eyebrow">{partner.tier}</p>
+                <h3 className="rad-subpage-card__title">{partner.name}</h3>
+                <p className="rad-subpage-body">{partner.description}</p>
+                <Link href={partner.href} className="rad-subpage-link">
+                  Start the conversation
                 </Link>
-              </div>
-            </div>
-          ))}
+              </article>
+            ))}
+          </div>
         </div>
       </section>
-    </main>
+    </PageShell>
   );
 }

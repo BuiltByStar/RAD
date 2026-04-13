@@ -33,12 +33,28 @@ export function sanitizeContactPayload(input: Record<string, unknown>): ContactP
     throw new Error("Name must be at least 2 characters.");
   }
 
-  if (!email.includes("@") || email.length < 5) {
+  if (name.length > 80) {
+    throw new Error("Name must be under 80 characters.");
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw new Error("A valid email is required.");
   }
 
   if (message.length < 20) {
     throw new Error("Message must be at least 20 characters.");
+  }
+
+  if (message.length > 2500) {
+    throw new Error("Message must be under 2500 characters.");
+  }
+
+  if (organization && organization.length > 120) {
+    throw new Error("Organization must be under 120 characters.");
+  }
+
+  if (socials && socials.length > 160) {
+    throw new Error("Socials must be under 160 characters.");
   }
 
   return {

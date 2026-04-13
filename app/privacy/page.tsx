@@ -1,65 +1,55 @@
 import type { Metadata } from "next";
-import { CinematicHero } from "@/components/cinematic-hero";
+
+import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
-  title: "Data Protocol",
-  description: "RAD Esports privacy policy and data handling procedures."
+  title: "Privacy",
+  description: "Privacy policy for the RAD Esports website."
 };
+
+const privacyBlocks = [
+  {
+    label: "01 // Collection",
+    title: "What gets collected",
+    copy:
+      "RAD collects information submitted directly through website forms, account flows, or contact channels when that information is necessary to respond or operate the service."
+  },
+  {
+    label: "02 // Use",
+    title: "How information is used",
+    copy:
+      "Collected information is used to provide responses, operate the site, improve performance, and support administrative or security-related communication."
+  },
+  {
+    label: "03 // Sharing",
+    title: "When information is shared",
+    copy:
+      "RAD does not sell personal information. Data may be processed by service providers acting on RAD's behalf where required for site operation or communications."
+  }
+];
 
 export default function PrivacyPage() {
   return (
-    <main className="cinematic-main">
-      <CinematicHero 
-        eyebrow="Legal"
-        title="Privacy Protocol."
-        description="How RAD Esports collects, uses, and protects your personal information."
-        imageSrc="/assets/RadRivals_Wallpaper_Black.png"
-        statusText="SECURE_DOCUMENT // v2.0"
-      />
-
-      <section className="cinematic-section">
-        <div className="max-w-4xl">
-          <div className="space-y-16">
-            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
-              <span className="cinematic-mono text-red-600 text-xs mb-4 block">01 // COLLECTION</span>
-              <h3 className="cinematic-item-title text-2xl mb-4 uppercase">Information We Collect</h3>
-              <p className="cinematic-desc text-white/70 leading-relaxed">
-                We collect information you provide directly to us when you create an account, participate in our communities, sign up for a newsletter, or request support. This remains encrypted within our primary data nodes.
-              </p>
-            </div>
-
-            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
-              <span className="cinematic-mono text-red-600 text-xs mb-4 block">02 // UTILIZATION</span>
-              <h3 className="cinematic-item-title text-2xl mb-4 uppercase">How We Use Information</h3>
-              <p className="cinematic-desc text-white/70 leading-relaxed">
-                We use the information we collect to provide, maintain, and improve our services, as well as to communicate with you regarding updates, security alerts, and administrative messages.
-              </p>
-            </div>
-
-            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
-              <span className="cinematic-mono text-red-600 text-xs mb-4 block">03 // DISTRIBUTION</span>
-              <h3 className="cinematic-item-title text-2xl mb-4 uppercase">Information Sharing</h3>
-              <p className="cinematic-desc text-white/70 leading-relaxed">
-                We do not share your personal information with third parties except as described in this privacy policy (e.g., with service providers acting on our behalf who are bound by confidentiality agreements).
-              </p>
-            </div>
-
-            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
-              <span className="cinematic-mono text-red-600 text-xs mb-4 block">04 // DEFENSE</span>
-              <h3 className="cinematic-item-title text-2xl mb-4 uppercase">Security Data</h3>
-              <p className="cinematic-desc text-white/70 leading-relaxed">
-                We employ standard industry measures to help protect your personal information from loss, theft, misuse, unauthorized access, disclosure, alteration, and destruction.
-              </p>
-            </div>
-            
-            <div className="pt-12 border-t border-white/5">
-              <p className="cinematic-mono text-xs opacity-40 italic">
-                LAST_UPDATED: APRIL 2026 // END_OF_LOG
-              </p>
-            </div>
+    <PageShell
+      eyebrow="Legal"
+      title="Privacy policy."
+      description="The legal pages should be readable, minimal, and visually aligned with the rest of the product."
+      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      status="Privacy // current"
+    >
+      <section className="rad-subpage-section">
+        <div className="container">
+          <div className="rad-legal-stack">
+            {privacyBlocks.map((block) => (
+              <article key={block.title} className="rad-legal-card">
+                <p className="rad-subpage-card__eyebrow">{block.label}</p>
+                <h2 className="rad-subpage-card__title">{block.title}</h2>
+                <p className="rad-subpage-body">{block.copy}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
-    </main>
+    </PageShell>
   );
 }

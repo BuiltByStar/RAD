@@ -39,7 +39,8 @@ export default async function AdminPage() {
         eyebrow="Admin"
         title="Access Denied."
         description="This dashboard is restricted to allowlisted admin accounts."
-        background="black"
+        heroImage="/assets/RadRivals_Wallpaper_Black.png"
+        status="Restricted access"
       >
         <section className="section">
           <div className="container admin-empty-state">
@@ -59,7 +60,8 @@ export default async function AdminPage() {
         eyebrow="Admin"
         title="Supabase Not Ready."
         description="The dashboard route exists, but the service role key is missing."
-        background="black"
+        heroImage="/assets/RadRivals_Wallpaper_Black.png"
+        status="Backend unavailable"
       >
         <section className="section">
           <div className="container admin-empty-state">
@@ -94,7 +96,8 @@ export default async function AdminPage() {
       eyebrow="Admin"
       title="RAD Dashboard."
       description="Operational visibility for inbound contact leads and website submissions."
-      background="black"
+      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      status="Admin surface"
     >
       <section className="section">
         <div className="container admin-metrics-grid">

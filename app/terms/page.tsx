@@ -1,57 +1,55 @@
 import type { Metadata } from "next";
-import { CinematicHero } from "@/components/cinematic-hero";
+
+import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
-  title: "Service Protocol",
-  description: "RAD Esports terms of service and user conduct protocols."
+  title: "Terms",
+  description: "Terms of service for the RAD Esports website."
 };
+
+const termsBlocks = [
+  {
+    label: "01 // Use",
+    title: "Use of the site",
+    copy:
+      "By accessing RAD's website or related public services, you agree to use them lawfully and in a way that does not interfere with platform stability, community safety, or organizational operations."
+  },
+  {
+    label: "02 // IP",
+    title: "Brand and content ownership",
+    copy:
+      "RAD branding, site visuals, editorial content, video, and related materials remain the property of RAD Esports unless otherwise stated."
+  },
+  {
+    label: "03 // Conduct",
+    title: "Community-facing behavior",
+    copy:
+      "Harassment, abuse, or behavior that compromises affiliated RAD spaces may result in restriction from site-connected services or community access."
+  }
+];
 
 export default function TermsPage() {
   return (
-    <main className="cinematic-main">
-      <CinematicHero 
-        eyebrow="Legal"
-        title="Service Protocol."
-        description="The governing framework for engagement with RAD Esports platforms and services."
-        imageSrc="/assets/RadRivals_Wallpaper_Black.png"
-        statusText="GOVERNANCE_CODE // ACTIVE"
-      />
-
-      <section className="cinematic-section">
-        <div className="max-w-4xl">
-          <div className="space-y-16">
-            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
-              <span className="cinematic-mono text-xs mb-4 block text-red-600">01 // ACCEPTANCE</span>
-              <h3 className="cinematic-item-title text-2xl mb-4">Agreement of Conduct</h3>
-              <p className="cinematic-desc text-white/70">
-                By accessing RAD platforms, you agree to follow our protocols. Any breach of conduct may result in termination of service or temporary suspension of access to RAD H.Q. systems.
-              </p>
-            </div>
-
-            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
-              <span className="cinematic-mono text-xs mb-4 block text-red-600">02 // INTELLECTUAL_PROPERTY</span>
-              <h3 className="cinematic-item-title text-2xl mb-4">RAD Assets</h3>
-              <p className="cinematic-desc text-white/70">
-                All branding, visuals, videos, and code remain the exclusive property of RAD Esports. Unauthorized reproduction of the "CHILE20" aesthetic or official trademarks is strictly prohibited.
-              </p>
-            </div>
-
-            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
-              <span className="cinematic-mono text-xs mb-4 block text-red-600">03 // TERMINATION</span>
-              <h3 className="cinematic-item-title text-2xl mb-4">Protocol Termination</h3>
-              <p className="cinematic-desc text-white/70">
-                We reserve the right to disconnect any user who compromises the security, performance, or competitive integrity of our community.
-              </p>
-            </div>
-            
-            <div className="pt-12 border-t border-white/5">
-              <p className="cinematic-mono text-[10px] opacity-40">
-                PROTOCOL_ID: TOS_5.0 // GLOBAL_ENFORCED
-              </p>
-            </div>
+    <PageShell
+      eyebrow="Legal"
+      title="Terms of use."
+      description="A cleaner legal surface keeps these pages readable and consistent with the rest of the site."
+      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      status="Terms // active"
+    >
+      <section className="rad-subpage-section">
+        <div className="container">
+          <div className="rad-legal-stack">
+            {termsBlocks.map((block) => (
+              <article key={block.title} className="rad-legal-card">
+                <p className="rad-subpage-card__eyebrow">{block.label}</p>
+                <h2 className="rad-subpage-card__title">{block.title}</h2>
+                <p className="rad-subpage-body">{block.copy}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
-    </main>
+    </PageShell>
   );
 }

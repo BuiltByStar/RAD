@@ -5,19 +5,20 @@ import { getPublicSiteUrl, hasSupabaseServiceEnv } from "@/lib/env";
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
 
 export async function POST(request: Request) {
-  if (!hasSupabaseServiceEnv()) {
-    return NextResponse.json(
-      {
-        error:
-          "The contact pipeline is not configured yet. Add the Supabase environment variables before enabling submissions."
-      },
-      { status: 503 }
-    );
-  }
-
   try {
     const body = (await request.json()) as Record<string, unknown>;
     const payload = sanitizeContactPayload(body);
+
+    if (!hasSupabaseServiceEnv()) {
+      return NextResponse.json(
+        {
+          error:
+            "The contact pipeline is not configured yet. Add the Supabase environment variables before enabling submissions."
+        },
+        { status: 503 }
+      );
+    }
+
     const supabase = createSupabaseServiceClient();
 
     const { error } = await supabase.from("contact_inquiries").insert({
@@ -43,6 +44,12 @@ export async function POST(request: Request) {
     const message =
       error instanceof Error ? error.message : "Unable to store the contact inquiry.";
 
-    return NextResponse.json({ error: message }, { status: 400 });
+    const isValidationError =
+      message.includes("required") ||
+      message.includes("valid email") ||
+      message.includes("at least") ||
+      message.includes("under");
+
+    return NextResponse.json({ error: message }, { status: isValidationError ? 422 : 400 });
   }
 }

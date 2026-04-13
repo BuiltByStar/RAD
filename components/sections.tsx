@@ -1,55 +1,68 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-interface SectionHeadingProps {
+import type { ContactChannel } from "@/lib/site-data";
+
+type SectionHeadingProps = {
   title: string;
   eyebrow?: string;
   description?: ReactNode;
   actionHref?: string;
   actionLabel?: string;
-}
+  compact?: boolean;
+};
 
 export function SectionHeading({
   title,
   eyebrow,
   description,
   actionHref,
-  actionLabel
+  actionLabel,
+  compact = false
 }: SectionHeadingProps) {
   return (
-    <div style={{ marginBottom: "3rem" }}>
-      {eyebrow && <span className="cinematic-item-eyebrow">{eyebrow}</span>}
-      <h2 className="cinematic-item-title" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', marginBottom: '1rem' }}>
-        {title}
-      </h2>
-      {description && (
-        <p className="cinematic-item-desc" style={{ maxWidth: '800px', fontSize: '1.25rem', color: '#fff' }}>
-          {description}
-        </p>
-      )}
-      {actionHref && actionLabel && (
-        <div style={{ marginTop: '2rem' }}>
-          <Link href={actionHref} className="hud-action">
-            {actionLabel}
-          </Link>
+    <div className={`rad-subpage-heading${compact ? " rad-subpage-heading--compact" : ""}`}>
+      <div>
+        {eyebrow ? <p className="rad-subpage-heading__eyebrow">{eyebrow}</p> : null}
+        <h2 className="rad-subpage-heading__title">{title}</h2>
+      </div>
+
+      {(description || (actionHref && actionLabel)) ? (
+        <div className="rad-subpage-heading__meta">
+          {description ? (
+            <div className="rad-subpage-heading__description">{description}</div>
+          ) : null}
+          {actionHref && actionLabel ? (
+            <Link href={actionHref} className="rad-subpage-link">
+              {actionLabel}
+            </Link>
+          ) : null}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
 
-// Keep ContactGrid around for contact-page if it's imported there
-export function ContactGrid({ channels }: { channels: any[] }) {
+export function ContactGrid({ channels }: { channels: ContactChannel[] }) {
   return (
-    <div className="cinematic-grid">
-      {channels.map((ch) => (
-        <div key={ch.label} className="cinematic-item" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
-          <h3 className="cinematic-item-title" style={{ fontSize: '1.4rem', color: 'var(--red)', marginBottom: '0.2rem' }}>{ch.label}</h3>
-          <div style={{ marginTop: '0.5rem', opacity: 0.8 }}>
-            <a href={ch.href} style={{ color: 'inherit', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">{ch.value}</a>
-          </div>
-        </div>
-      ))}
+    <div className="rad-contact-grid">
+      {channels.map((channel) => {
+        const external = channel.href.startsWith("http");
+
+        return (
+          <article key={channel.label} className="rad-contact-card">
+            <p className="rad-contact-card__label">{channel.label}</p>
+            <a
+              href={channel.href}
+              className="rad-contact-card__value"
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+            >
+              {channel.value}
+            </a>
+          </article>
+        );
+      })}
     </div>
   );
 }

@@ -76,6 +76,7 @@ export function ContactForm({ enabled }: ContactFormProps) {
             placeholder="Your name"
             required
             minLength={2}
+            maxLength={80}
           />
         </label>
         <label>
@@ -96,6 +97,7 @@ export function ContactForm({ enabled }: ContactFormProps) {
               setFormState((current) => ({ ...current, organization: event.target.value }))
             }
             placeholder="Brand, team, or company"
+            maxLength={120}
           />
         </label>
         <label>
@@ -123,6 +125,7 @@ export function ContactForm({ enabled }: ContactFormProps) {
           value={formState.socials}
           onChange={(event) => setFormState((current) => ({ ...current, socials: event.target.value }))}
           placeholder="@handle or discord username"
+          maxLength={160}
         />
       </label>
       <label>
@@ -133,6 +136,7 @@ export function ContactForm({ enabled }: ContactFormProps) {
           placeholder="Tell RAD what you're looking for."
           required
           minLength={20}
+          maxLength={2500}
           rows={7}
         />
       </label>

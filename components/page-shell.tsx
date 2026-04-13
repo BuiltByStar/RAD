@@ -1,12 +1,14 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 type PageShellProps = {
   title: string;
   eyebrow: string;
   description: string;
-  background?: string;
   heroImage?: string;
-  heroType?: string;
+  heroVideo?: string;
+  status?: string;
+  note?: ReactNode;
   children: ReactNode;
 };
 
@@ -14,27 +16,53 @@ export function PageShell({
   title,
   eyebrow,
   description,
-  heroImage = "/assets/RadPlayerBannerPNG8.png",
+  heroImage = "/assets/RadBanner1920_1080.png",
+  heroVideo,
+  status,
+  note,
   children
 }: PageShellProps) {
   return (
-    <main className="cinematic-main">
-      <section className="cinematic-hero">
-        <div 
-          className="cinematic-hero-bg" 
-          style={{ backgroundImage: `url('${heroImage}')` }} 
-        />
-        <div className="cinematic-hero-overlay" />
-        <div className="cinematic-hero-content">
-          <p className="cinematic-eyebrow">{eyebrow}</p>
-          <h1 className="cinematic-title">{title}</h1>
-          <p className="cinematic-desc">{description}</p>
+    <main className="rad-subpage">
+      <section className="rad-subpage-hero">
+        <div className="container">
+          <div className="rad-subpage-hero__panel">
+            <div className="rad-subpage-hero__copy">
+              <p className="rad-subpage-eyebrow">{eyebrow}</p>
+              <h1 className="rad-subpage-title">{title}</h1>
+              <p className="rad-subpage-description">{description}</p>
+              {status ? <span className="rad-subpage-status">{status}</span> : null}
+            </div>
+
+            <div className="rad-subpage-hero__media">
+              {heroVideo ? (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="rad-subpage-hero__video"
+                >
+                  <source src={heroVideo} type="video/mp4" />
+                </video>
+              ) : (
+                <Image
+                  src={heroImage}
+                  alt={title}
+                  fill
+                  priority
+                  sizes="(max-width: 900px) 100vw, 44vw"
+                  className="rad-subpage-hero__image"
+                />
+              )}
+              <div className="rad-subpage-hero__wash" />
+              {note ? <div className="rad-subpage-note">{note}</div> : null}
+            </div>
+          </div>
         </div>
       </section>
 
-      <div className="cinematic-section" style={{ borderTop: 'none' }}>
-        {children}
-      </div>
+      <div className="rad-subpage__body">{children}</div>
     </main>
   );
 }

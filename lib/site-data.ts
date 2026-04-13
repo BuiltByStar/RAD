@@ -75,7 +75,7 @@ export const navLinks: NavLink[] = [
   { href: "/roster", label: "Roster" },
   { href: "/staff", label: "Staff" },
   { href: "/content", label: "Content" },
-  { href: "/partners", label: "Partners" },
+  { href: "/partners", label: "Activations" },
   { href: "/contact", label: "Contact" }
 ];
 
@@ -342,9 +342,9 @@ export const orgTimeline: Milestone[] = [
     description: "Won the Marvel Rivals Championship Season 6: EMEA PC title, solidifying dominance across Europe."
   },
   {
-    date: "2025",
-    title: "GoWild Partnership",
-    description: "Announced the activation partnership with GoWild — first brand sponsor onboarded."
+    date: "2026",
+    title: "Activation Pipeline Opens",
+    description: "RAD formalized its public-facing activations and partnership structure, preparing the org for brand campaigns without padding the site with fake sponsor inventory."
   }
 ];
 
