@@ -1,106 +1,137 @@
 import type { Metadata } from "next";
-
+import { CinematicHero } from "@/components/cinematic-hero";
 import { aboutSummary, orgTimeline, orgValues, igniteSchedule } from "@/lib/site-data";
 
 export const metadata: Metadata = {
-  title: "About",
-  description: "The RAD Esports story, milestones, values, and competitive identity."
+  title: "The Standard",
+  description: "Identity, milestones, and the roadmap of RAD Esports."
 };
 
 export default function AboutPage() {
   return (
     <main className="cinematic-main">
-      {/* Hero Section */}
-      <section className="cinematic-hero">
-        <div 
-          className="cinematic-hero-bg" 
-          style={{ backgroundImage: "url('/assets/RadBannerNewTest300ppi.png')" }} 
-        />
-        <div className="cinematic-hero-overlay" />
-        <div className="cinematic-hero-content">
-          <p className="cinematic-eyebrow">About RAD</p>
-          <h1 className="cinematic-title">The Standard of Excellence.</h1>
-          <p className="cinematic-desc">
-            World champions. EMEA title holders. Built from the ground up to redefine the competitive landscape.
-          </p>
+      <CinematicHero 
+        eyebrow="The Standard"
+        title="Redefining the Elite."
+        description="World champions. EMEA title holders. Built from the ground up to redefine the competitive landscape."
+        videoSrc="/assets/DiscordRadBannerAnimated.mp4"
+        statusText="CORE_IDENTITY // ACTIVE"
+      />
+
+      {/* Identity Section - Asymmetrical Layout */}
+      <section className="cinematic-section">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div>
+            <span className="cinematic-item-eyebrow">Identity</span>
+            <h2 className="cinematic-item-title text-4xl lg:text-5xl leading-tight mb-8">
+              RAD didn't wait for <span className="text-red-600">permission.</span>
+            </h2>
+            <div className="h-[1px] w-24 bg-red-600 mb-8" />
+          </div>
+          <div className="space-y-6">
+            <p className="cinematic-desc text-xl text-white leading-relaxed">
+              {aboutSummary}
+            </p>
+            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
+              <div>
+                <span className="cinematic-mono block mb-2">Primary Title</span>
+                <span className="text-2xl font-bold uppercase tracking-tighter">Marvel Rivals</span>
+              </div>
+              <div>
+                <span className="cinematic-mono block mb-2">HQ Location</span>
+                <span className="text-2xl font-bold uppercase tracking-tighter">EMEA / Global</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="cinematic-grid mt-24">
+          <div className="cinematic-item group">
+            <div className="cinematic-red-accent group-hover:h-16 transition-all duration-500" />
+            <h3 className="cinematic-item-title text-2xl text-red-600">World Champions</h3>
+            <p className="cinematic-item-desc">
+              Inaugural Marvel Rivals Ignite Mid-Season World Champions. A legacy cemented in the first wave.
+            </p>
+          </div>
+          <div className="cinematic-item group">
+            <div className="cinematic-red-accent group-hover:h-16 transition-all duration-500" />
+            <h3 className="cinematic-item-title text-2xl text-red-600">EMEA Dominance</h3>
+            <p className="cinematic-item-desc">
+              Season 6 EMEA PC Champions. Solidifying our position as the region's absolute powerhouse.
+            </p>
+          </div>
+          <div className="cinematic-item group">
+            <div className="cinematic-red-accent group-hover:h-16 transition-all duration-500" />
+            <h3 className="cinematic-item-title text-2xl text-red-600">The #GoWild Creed</h3>
+            <p className="cinematic-item-desc">
+              Aggressive by nature. Untamed by choice. Welcome to the new era of competitive culture.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Identity */}
-      <section className="cinematic-section">
-        <span className="cinematic-item-eyebrow">Identity</span>
-        <h2 className="cinematic-item-title" style={{ maxWidth: '800px', fontSize: 'clamp(2rem, 4vw, 3.5rem)', marginBottom: '3rem' }}>
-          RAD didn't wait for permission.
-        </h2>
-        <p className="cinematic-desc" style={{ maxWidth: '800px', fontSize: '1.25rem', color: '#fff', marginBottom: '4rem' }}>
-          {aboutSummary}
-        </p>
-
-        <div className="cinematic-grid">
-          <div className="cinematic-item">
-            <h3 className="cinematic-item-title" style={{ fontSize: '1.8rem', color: 'var(--red)' }}>World Champions</h3>
-            <p className="cinematic-item-desc">
-              RAD cemented its place as the inaugural Marvel Rivals Ignite: Mid-Season World Champions.
-            </p>
+      {/* Pillars - Visual Grid */}
+      <section className="cinematic-section bg-white/[0.02]">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+          <div>
+            <span className="cinematic-item-eyebrow">Our Pillars</span>
+            <h2 className="cinematic-item-title mb-0">Foundational Standards.</h2>
           </div>
-          <div className="cinematic-item">
-            <h3 className="cinematic-item-title" style={{ fontSize: '1.8rem', color: 'var(--red)' }}>EMEA Champions</h3>
-            <p className="cinematic-item-desc">
-              The org most recently added the EMEA Regional Champions title to its record.
-            </p>
-          </div>
-          <div className="cinematic-item">
-            <h3 className="cinematic-item-title" style={{ fontSize: '1.8rem', color: 'var(--red)' }}>#GoWild</h3>
-            <p className="cinematic-item-desc">
-              You've seen RAD do it before. Get ready to see it again. Welcome to the wild.
-            </p>
-          </div>
+          <span className="cinematic-mono text-red-600">04 // CORE_VALUES</span>
         </div>
-      </section>
-
-      {/* Pillars */}
-      <section className="cinematic-section">
-        <span className="cinematic-item-eyebrow">Our Pillars</span>
-        <h2 className="cinematic-item-title" style={{ marginBottom: '4rem' }}>Standards that shape the org.</h2>
         
-        <div className="cinematic-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10">
           {orgValues.map((value) => (
-            <div key={value.title} className="cinematic-item">
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '1rem' }}>{value.icon}</span>
-              <h3 className="cinematic-item-title" style={{ fontSize: '1.5rem' }}>{value.title}</h3>
-              <p className="cinematic-item-desc">{value.description}</p>
+            <div key={value.title} className="bg-black p-8 hover:bg-neutral-900 transition-colors group">
+              <span className="text-3xl mb-6 block group-hover:scale-110 transition-transform duration-500">{value.icon}</span>
+              <h3 className="cinematic-item-title text-xl mb-4">{value.title}</h3>
+              <p className="cinematic-item-desc text-sm leading-relaxed">{value.description}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* Timeline - Terminal Feed Style */}
       <section className="cinematic-section">
-        <span className="cinematic-item-eyebrow">Timeline</span>
-        <h2 className="cinematic-item-title">How RAD moved fast.</h2>
+        <div className="flex items-center gap-4 mb-16">
+          <div className="h-[2px] w-12 bg-red-600" />
+          <h2 className="cinematic-item-title mb-0">Evolution Log</h2>
+        </div>
         
-        <div style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+        <div className="space-y-12">
           {orgTimeline.map((event, i) => (
-            <div key={i} style={{ borderLeft: '2px solid var(--red)', paddingLeft: '2rem', position: 'relative' }}>
-              <div style={{ position: 'absolute', top: 0, left: '-6px', width: '10px', height: '10px', background: 'var(--red)', borderRadius: '50%' }} />
-              <span style={{ color: 'var(--muted)', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{event.date}</span>
-              <h4 className="cinematic-item-title" style={{ fontSize: '1.4rem', margin: '0.5rem 0' }}>{event.title}</h4>
-              <p className="cinematic-item-desc" style={{ maxWidth: '600px' }}>{event.description}</p>
+            <div key={i} className="flex flex-col md:flex-row gap-8 group">
+              <div className="md:w-32 flex-shrink-0">
+                <span className="cinematic-mono text-red-600 group-hover:translate-x-2 transition-transform inline-block">
+                  [{event.date}]
+                </span>
+              </div>
+              <div className="flex-1 pb-12 border-b border-white/10">
+                <h4 className="cinematic-item-title text-2xl mb-4 group-hover:text-red-600 transition-colors">
+                  {event.title}
+                </h4>
+                <p className="cinematic-item-desc max-w-2xl">
+                  {event.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Roadmap */}
+      {/* Roadmap - Grid Data */}
       <section className="cinematic-section">
-        <span className="cinematic-item-eyebrow">2026 Roadmap</span>
-        <h2 className="cinematic-item-title">The road to Ignite.</h2>
+        <div className="mb-16">
+          <span className="cinematic-item-eyebrow">2026 Transmission</span>
+          <h2 className="cinematic-item-title">Roadmap to Dominance.</h2>
+        </div>
         
-        <div className="cinematic-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {igniteSchedule.map((item, i) => (
-            <div key={i} style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.5rem' }}>
-              <span className="cinematic-item-eyebrow" style={{ color: 'var(--muted)' }}>{item.dates}</span>
-              <h3 className="cinematic-item-title" style={{ fontSize: '1.4rem' }}>{item.stage}</h3>
+            <div key={i} className="relative p-6 border-l border-red-600/30 hover:border-red-600 transition-colors">
+              <span className="cinematic-item-eyebrow text-[10px] opacity-40">{item.dates}</span>
+              <h3 className="cinematic-item-title text-lg mt-2 tracking-widest">{item.stage}</h3>
+              <div className="absolute top-2 right-2 cinematic-mono text-[8px]">STG_{i+1}</div>
             </div>
           ))}
         </div>

@@ -5,6 +5,55 @@
   min-height: 100vh;
   color: #fff;
   padding-bottom: 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── HUD & Atmosphere ── */
+
+.cinematic-main::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 4px, 3px 100%;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+.cinematic-noise {
+  position: fixed;
+  inset: -100%;
+  z-index: 99;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+  animation: noise-move 0.2s infinite steps(2);
+}
+
+@keyframes noise-move {
+  0% { transform: translate(0,0); }
+  10% { transform: translate(-5%,-5%); }
+  20% { transform: translate(-10%,5%); }
+  30% { transform: translate(5%,-10%); }
+  40% { transform: translate(-5%,15%); }
+  50% { transform: translate(-10%,5%); }
+  60% { transform: translate(15%,0); }
+  70% { transform: translate(0,10%); }
+  80% { transform: translate(-15%,0); }
+  90% { transform: translate(10%,5%); }
+  100% { transform: translate(5%,0); }
+}
+
+.cinematic-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+  pointer-events: none;
 }
 
 .cinematic-hero {
@@ -75,6 +124,23 @@
   font-size: 1.1rem;
   max-width: 45ch;
   line-height: 1.6;
+}
+
+.cinematic-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+.cinematic-red-accent {
+  width: 2px;
+  height: 40px;
+  background: var(--red);
+  display: inline-block;
+  margin-right: 1rem;
+  vertical-align: middle;
 }
 
 /* Base layouts */

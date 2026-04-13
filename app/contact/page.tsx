@@ -1,72 +1,106 @@
 import type { Metadata } from "next";
+import { CinematicHero } from "@/components/cinematic-hero";
 import { contactChannels } from "@/lib/site-data";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Reach out to RAD Esports for partnerships, talent queries, or community feedback."
+  title: "Link Up",
+  description: "Secure a line to RAD Esports for partnerships, press, or recruitment."
 };
 
 export default function ContactPage() {
   return (
     <main className="cinematic-main">
-      <section className="cinematic-hero">
-        <div 
-          className="cinematic-hero-bg" 
-          style={{ backgroundImage: "url('/assets/RadBannerNewTest300ppi.png')" }} 
-        />
-        <div className="cinematic-hero-overlay" />
-        <div className="cinematic-hero-content">
-          <p className="cinematic-eyebrow">Comms</p>
-          <h1 className="cinematic-title">Direct lines.</h1>
-          <p className="cinematic-desc">
-            No dead ends. Reach out directly for partnerships, talent queries, or community feedback.
-          </p>
-        </div>
-      </section>
+      <CinematicHero 
+        eyebrow="Link Up"
+        title="Secure the Connection."
+        description="Establish a direct line to RAD H.Q. for strategic alliances, media inquiries, or competitive scouting."
+        imageSrc="/assets/RadRivals_Wallpaper_Red.png"
+        statusText="COMMS_CHANNEL // ACTIVE"
+      />
 
-      <section className="cinematic-section" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(300px, 1fr)', gap: '4rem' }}>
-        
-        {/* Contact Form */}
-        <div>
-          <span className="cinematic-item-eyebrow">Inquiries</span>
-          <h2 className="cinematic-item-title" style={{ marginBottom: '3rem' }}>Send a strictly business message.</h2>
-          
-          <form className="cinematic-form">
-            <input type="text" className="cinematic-input" placeholder="Your Name" required />
-            <input type="email" className="cinematic-input" placeholder="Your Email" required />
-            <select className="cinematic-input" required>
-              <option value="" disabled selected>Select Inquiry Type</option>
-              <option value="partnership">Partnership & Sponsorship</option>
-              <option value="talent">Talent & Scouting</option>
-              <option value="press">Press & Media</option>
-              <option value="other">General</option>
-            </select>
-            <textarea className="cinematic-input" placeholder="Your Message" rows={4} required></textarea>
+      <section className="cinematic-section">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Transmission Channel Info */}
+          <div>
+            <span className="cinematic-item-eyebrow">Terminal Data</span>
+            <h2 className="cinematic-item-title text-4xl mb-8">Direct Channels</h2>
             
-            <button type="submit" className="hud-action" style={{ width: '100%', marginTop: '1rem', cursor: 'pointer' }}>
-              Submit Inquiry
-            </button>
-          </form>
-        </div>
+            <div className="space-y-8">
+              {contactChannels.map((channel) => (
+                <a 
+                  key={channel.label} 
+                  href={channel.href} 
+                  className="group flex items-center justify-between p-6 border border-white/10 hover:border-red-600 transition-all duration-300"
+                >
+                  <div>
+                    <span className="cinematic-mono text-red-600 block mb-1">[{channel.label}]</span>
+                    <span className="text-xl font-bold uppercase tracking-widest">{channel.value}</span>
+                  </div>
+                  <div className="h-2 w-2 bg-red-600 group-hover:scale-150 transition-transform" />
+                </a>
+              ))}
+            </div>
 
-        {/* Channels */}
-        <div>
-          <span className="cinematic-item-eyebrow">Channels</span>
-          <h2 className="cinematic-item-title" style={{ marginBottom: '3rem' }}>Direct emails.</h2>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            {contactChannels.map((channel) => (
-              <div key={channel.label} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
-                <h3 className="cinematic-item-title" style={{ fontSize: '1.4rem', color: 'var(--red)', marginBottom: '0.2rem' }}>{channel.label}</h3>
-                <div style={{ display: 'flex', gap: '0.5rem', color: '#fff', fontSize: '0.9rem', opacity: 0.8 }}>
-                  <a href={channel.href} target="_blank" rel="noopener noreferrer">{channel.value}</a>
+            <div className="mt-12 p-8 bg-neutral-900/50 border-l-2 border-red-600">
+              <span className="cinematic-mono text-xs opacity-60 block mb-4 underline">NOTICE://</span>
+              <p className="cinematic-desc text-sm leading-relaxed italic">
+                All transmissions are logged. Response times vary based on urgency and priority of alliance.
+              </p>
+            </div>
+          </div>
+
+          {/* Terminal Form */}
+          <div className="bg-black p-8 md:p-12 border border-white/5 relative">
+            {/* Form HUD Accents */}
+            <div className="absolute top-0 right-12 h-px w-24 bg-red-600/30" />
+            <div className="absolute top-12 right-0 h-24 w-px bg-red-600/30" />
+            
+            <span className="cinematic-mono text-red-600 block mb-8 underline">TRANSMISSION_FORM</span>
+            
+            <form className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <label className="cinematic-mono text-[10px] opacity-40 block mb-2">IDENTIFIER</label>
+                  <input type="text" placeholder="YOUR NAME" className="cinematic-input m-0" />
+                </div>
+                <div>
+                  <label className="cinematic-mono text-[10px] opacity-40 block mb-2">RETURN_SIGNAL</label>
+                  <input type="email" placeholder="EMAIL ADDRESS" className="cinematic-input m-0" />
                 </div>
               </div>
-            ))}
+              
+              <div>
+                <label className="cinematic-mono text-[10px] opacity-40 block mb-2">SUBJECT_HEADER</label>
+                <input type="text" placeholder="PURPOSE OF CONTACT" className="cinematic-input m-0" />
+              </div>
+
+              <div>
+                <label className="cinematic-mono text-[10px] opacity-40 block mb-2">MESSAGE_BODY</label>
+                <textarea 
+                  placeholder="ENTER DATA..." 
+                  className="cinematic-input m-0 min-h-[150px] resize-none"
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="w-full py-4 bg-red-600 text-white cinematic-mono font-bold tracking-[0.5em] hover:bg-red-700 transition-colors uppercase"
+              >
+                Send Transmission
+              </button>
+            </form>
           </div>
         </div>
       </section>
 
+      {/* Security Footer */}
+      <section className="cinematic-section border-t border-white/5 opacity-30 pointer-events-none">
+        <div className="flex justify-between items-center text-[10px] cinematic-mono tracking-widest">
+          <span>SECURE_LINK_ENCRYPTION_ACTIVE</span>
+          <span>TERMINAL_ID: RAD_HQ_0412</span>
+          <span>BITRATE: 128.4 KBPS</span>
+        </div>
+      </section>
     </main>
   );
 }

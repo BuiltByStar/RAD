@@ -1,39 +1,57 @@
 import type { Metadata } from "next";
-
-import { PageShell } from "@/components/page-shell";
+import { CinematicHero } from "@/components/cinematic-hero";
 
 export const metadata: Metadata = {
-  title: "Cookies",
-  description: "RAD Esports cookies policy."
+  title: "Trackers",
+  description: "RAD Esports cookie policy and tracking disclosure."
 };
 
 export default function CookiesPage() {
   return (
-    <PageShell
-      eyebrow="Legal"
-      title="Cookies Policy."
-      description="How RAD Esports uses cookies to enhance your browsing experience."
-      background="black"
-    >
-      <section className="section">
-        <div className="container legal-shell">
-          <div className="legal-copy">
-            <h3>1. What are Cookies?</h3>
-            <p>Cookies are small text files placed on your device when you browse websites. They are widely used to make websites work more efficiently and to provide statistical information to the site owners.</p>
-            
-            <h3>2. How We Use Cookies</h3>
-            <p>RAD Esports uses essential cookies for site functionality (like preserving your session when you log into the admin dashboard) and analytical cookies to understand how our community interacts with our content.</p>
-            
-            <h3>3. Third-Party Cookies</h3>
-            <p>Some of our pages may display content from external providers (like YouTube or Twitch streaming embeds). These third-party services may set their own cookies according to their policies.</p>
+    <main className="cinematic-main">
+      <CinematicHero 
+        eyebrow="Legal"
+        title="Cookie Disclosure."
+        description="How we use edge-data and trackers to optimize the RAD experience."
+        imageSrc="/assets/RadRivals_Wallpaper_Black.png"
+        statusText="CACHE_LOG // DATA_NODES"
+      />
 
-            <h3>4. Managing Cookies</h3>
-            <p>You can set your browser to refuse all or some browser cookies, or to alert you when websites set or access cookies. Note that disabling cookies may affect the functionality of our website.</p>
+      <section className="cinematic-section">
+        <div className="max-w-4xl">
+          <div className="space-y-16">
+            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
+              <span className="cinematic-mono text-xs mb-4 block text-red-600">01 // ESSENTIALS</span>
+              <h3 className="cinematic-item-title text-2xl mb-4">Core Cookies</h3>
+              <p className="cinematic-desc text-white/70">
+                These are necessary for the website to function (authentication, security, session management). They cannot be disabled in our systems as they form the backbone of the terminal connection.
+              </p>
+            </div>
+
+            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
+              <span className="cinematic-mono text-xs mb-4 block text-red-600">02 // PERFORMANCE</span>
+              <h3 className="cinematic-item-title text-2xl mb-4">Analytics Tracking</h3>
+              <p className="cinematic-desc text-white/70">
+                We use performance trackers to measure traffic, identify bottlenecks, and optimize site speed. This data is anonymized and aggregated for org-wide optimization.
+              </p>
+            </div>
+
+            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
+              <span className="cinematic-mono text-xs mb-4 block text-red-600">03 // PREFERENCES</span>
+              <h3 className="cinematic-item-title text-2xl mb-4">Experience Markers</h3>
+              <p className="cinematic-desc text-white/70">
+                These allow us to remember your settings (like dark mode or language) to provide a more personalized interface.
+              </p>
+            </div>
             
-            <p className="legal-note">Last Updated: {new Date().getFullYear()}</p>
+            <div className="pt-12 border-t border-white/5">
+              <p className="cinematic-mono text-[10px] opacity-40">
+                LOG_VER: 1.4 // SYSTEM_WIDE_DISCLOSURE
+              </p>
+            </div>
           </div>
         </div>
       </section>
-    </PageShell>
+    </main>
   );
 }

@@ -45,12 +45,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${barlow.variable} ${barlowCondensed.variable} bg-black`}>
+      <body className={`${barlow.variable} ${barlowCondensed.variable} bg-black text-white selection:bg-red-600/30`}>
         <ScrollRevealInit />
         <SiteHeader />
-        <div className="subpage-wrapper">
-          {children}
+        
+        <div className="subpage-wrapper relative min-h-screen">
+          <div className="cinematic-noise" />
+          <div className="cinematic-vignette" />
+          
+          {/* Global Branding Accent */}
+          <div className="fixed top-24 left-8 z-[60] mix-blend-difference hidden lg:block">
+            <div className="flex items-center gap-3">
+              <img src="/assets/RadNewLogoWordmarkWhite.png" alt="" className="h-4 opacity-40 grayscale" />
+              <div className="h-[1px] w-12 bg-white/20" />
+            </div>
+          </div>
+
+          <div className="relative z-10">
+            {children}
+          </div>
         </div>
+        
         <SiteFooter />
       </body>
     </html>

@@ -1,39 +1,57 @@
 import type { Metadata } from "next";
-
-import { PageShell } from "@/components/page-shell";
+import { CinematicHero } from "@/components/cinematic-hero";
 
 export const metadata: Metadata = {
-  title: "Terms",
-  description: "RAD Esports terms of service."
+  title: "Service Protocol",
+  description: "RAD Esports terms of service and user conduct protocols."
 };
 
 export default function TermsPage() {
   return (
-    <PageShell
-      eyebrow="Legal"
-      title="Terms of Service."
-      description="The rules and guidelines for using RAD Esports platforms and services."
-      background="black"
-    >
-      <section className="section">
-        <div className="container legal-shell">
-          <div className="legal-copy">
-            <h3>1. Agreement to Terms</h3>
-            <p>By accessing or using the RAD Esports website, you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access our services.</p>
-            
-            <h3>2. Intellectual Property</h3>
-            <p>The service and its original content, features, branding, and functionality are owned by RAD Esports and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
-            
-            <h3>3. User Conduct</h3>
-            <p>You agree not to engage in any activity that interferes with or disrupts the services. Harassment, abusive language, or unsportsmanlike conduct in affiliated communities (such as our Discord) will result in termination of access.</p>
+    <main className="cinematic-main">
+      <CinematicHero 
+        eyebrow="Legal"
+        title="Service Protocol."
+        description="The governing framework for engagement with RAD Esports platforms and services."
+        imageSrc="/assets/RadRivals_Wallpaper_Black.png"
+        statusText="GOVERNANCE_CODE // ACTIVE"
+      />
 
-            <h3>4. Updates</h3>
-            <p>We reserve the right to modify or replace these Terms at any time. We will provide reasonable notice of any significant changes.</p>
+      <section className="cinematic-section">
+        <div className="max-w-4xl">
+          <div className="space-y-16">
+            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
+              <span className="cinematic-mono text-xs mb-4 block text-red-600">01 // ACCEPTANCE</span>
+              <h3 className="cinematic-item-title text-2xl mb-4">Agreement of Conduct</h3>
+              <p className="cinematic-desc text-white/70">
+                By accessing RAD platforms, you agree to follow our protocols. Any breach of conduct may result in termination of service or temporary suspension of access to RAD H.Q. systems.
+              </p>
+            </div>
+
+            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
+              <span className="cinematic-mono text-xs mb-4 block text-red-600">02 // INTELLECTUAL_PROPERTY</span>
+              <h3 className="cinematic-item-title text-2xl mb-4">RAD Assets</h3>
+              <p className="cinematic-desc text-white/70">
+                All branding, visuals, videos, and code remain the exclusive property of RAD Esports. Unauthorized reproduction of the "CHILE20" aesthetic or official trademarks is strictly prohibited.
+              </p>
+            </div>
+
+            <div className="group border-l-2 border-white/10 hover:border-red-600 pl-8 transition-colors">
+              <span className="cinematic-mono text-xs mb-4 block text-red-600">03 // TERMINATION</span>
+              <h3 className="cinematic-item-title text-2xl mb-4">Protocol Termination</h3>
+              <p className="cinematic-desc text-white/70">
+                We reserve the right to disconnect any user who compromises the security, performance, or competitive integrity of our community.
+              </p>
+            </div>
             
-            <p className="legal-note">Last Updated: {new Date().getFullYear()}</p>
+            <div className="pt-12 border-t border-white/5">
+              <p className="cinematic-mono text-[10px] opacity-40">
+                PROTOCOL_ID: TOS_5.0 // GLOBAL_ENFORCED
+              </p>
+            </div>
           </div>
         </div>
       </section>
-    </PageShell>
+    </main>
   );
 }
