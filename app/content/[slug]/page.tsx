@@ -40,10 +40,10 @@ export default async function PostPage({
     const post = await getPostBySlug(slug);
 
     return (
-      <main className="rad-subpage">
+      <main className="rad-subpage rad-subpage--content">
         <section className="rad-article-hero">
           <div className="container">
-            <div className="rad-article-hero__panel">
+            <div className="rad-article-hero__panel" data-reveal="true">
               <div className="rad-article-hero__copy">
                 <p className="rad-subpage-eyebrow">{post.category}</p>
                 <h1 className="rad-subpage-title">{post.title}</h1>
@@ -73,7 +73,7 @@ export default async function PostPage({
 
         <section className="rad-subpage-section">
           <div className="container">
-            <article className="rad-article-body">
+            <article className="rad-article-body" data-reveal="true" data-delay="1">
               <div className="mdx-body">{post.content}</div>
             </article>
           </div>

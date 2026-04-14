@@ -65,7 +65,7 @@ export default function PartnersPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
             {processSteps.map((step) => (
-              <article key={step.title} className="rad-subpage-card">
+              <article key={step.title} className="rad-subpage-card" data-reveal="true">
                 <p className="rad-subpage-card__eyebrow">{step.label}</p>
                 <h3 className="rad-subpage-card__title">{step.title}</h3>
                 <p className="rad-subpage-body">{step.description}</p>
@@ -85,7 +85,7 @@ export default function PartnersPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
             {partners.map((partner) => (
-              <article key={partner.name} className="rad-subpage-card rad-subpage-card--tall">
+              <article key={partner.name} className="rad-subpage-card rad-subpage-card--tall" data-reveal="true">
                 <p className="rad-subpage-card__eyebrow">{partner.tier}</p>
                 <h3 className="rad-subpage-card__title">{partner.name}</h3>
                 <p className="rad-subpage-body">{partner.description}</p>

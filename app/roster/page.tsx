@@ -46,15 +46,15 @@ export default function RosterPage() {
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
-            <article className="rad-subpage-card rad-subpage-card--metric">
+            <article className="rad-subpage-card rad-subpage-card--metric" data-reveal="true" data-delay="1">
               <p className="rad-subpage-metric">{teamRoster.length}</p>
               <p className="rad-subpage-card__eyebrow">Active Players</p>
             </article>
-            <article className="rad-subpage-card rad-subpage-card--metric">
+            <article className="rad-subpage-card rad-subpage-card--metric" data-reveal="true" data-delay="2">
               <p className="rad-subpage-metric">01</p>
               <p className="rad-subpage-card__eyebrow">World Title</p>
             </article>
-            <article className="rad-subpage-card rad-subpage-card--metric">
+            <article className="rad-subpage-card rad-subpage-card--metric" data-reveal="true" data-delay="3">
               <p className="rad-subpage-metric">01</p>
               <p className="rad-subpage-card__eyebrow">Regional Title</p>
             </article>
@@ -72,7 +72,7 @@ export default function RosterPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
             {teamRoster.map((player) => (
-              <article key={player.slug} id={player.slug} className="rad-player-card">
+              <article key={player.slug} id={player.slug} className="rad-player-card" data-reveal="true">
                 <div className="rad-player-card__top">
                   <p className="rad-subpage-card__eyebrow">{player.role}</p>
                   {typeof player.number === "number" ? (
@@ -123,7 +123,7 @@ export default function RosterPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
             {supportStaff.map((member) => (
-              <article key={member.slug} className="rad-subpage-card">
+              <article key={member.slug} className="rad-subpage-card" data-reveal="true">
                 <p className="rad-subpage-card__eyebrow">{member.group}</p>
                 <h3 className="rad-subpage-card__title">{member.name}</h3>
                 <p className="rad-player-card__descriptor">{member.role}</p>

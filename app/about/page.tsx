@@ -40,11 +40,11 @@ export default function AboutPage() {
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--2">
-            <article className="rad-subpage-card rad-subpage-card--lead">
+            <article className="rad-subpage-card rad-subpage-card--lead" data-reveal="true" data-delay="1">
               <p className="rad-subpage-body rad-subpage-body--large">{aboutSummary}</p>
             </article>
 
-            <div className="rad-subpage-stack">
+            <div className="rad-subpage-stack" data-reveal="true" data-delay="2">
               <article className="rad-subpage-card">
                 <p className="rad-subpage-card__eyebrow">Competitive Position</p>
                 <h3 className="rad-subpage-card__title">Championship-standard operation.</h3>
@@ -74,7 +74,7 @@ export default function AboutPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--4">
             {orgValues.map((value) => (
-              <article key={value.title} className="rad-subpage-card">
+              <article key={value.title} className="rad-subpage-card" data-reveal="true">
                 <span className="rad-subpage-icon" aria-hidden="true">
                   {value.icon}
                 </span>
@@ -96,7 +96,7 @@ export default function AboutPage() {
 
           <div className="rad-timeline">
             {orgTimeline.map((event) => (
-              <article key={`${event.date}-${event.title}`} className="rad-timeline__item">
+              <article key={`${event.date}-${event.title}`} className="rad-timeline__item" data-reveal="true">
                 <p className="rad-timeline__date">{event.date}</p>
                 <div className="rad-timeline__body">
                   <h3 className="rad-subpage-card__title">{event.title}</h3>
@@ -118,7 +118,7 @@ export default function AboutPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
             {igniteSchedule.map((item, index) => (
-              <article key={`${item.stage}-${item.dates}`} className="rad-subpage-card rad-subpage-card--compact">
+              <article key={`${item.stage}-${item.dates}`} className="rad-subpage-card rad-subpage-card--compact" data-reveal="true">
                 <p className="rad-subpage-card__eyebrow">Stage {String(index + 1).padStart(2, "0")}</p>
                 <h3 className="rad-subpage-card__title">{item.stage}</h3>
                 <p className="rad-subpage-body">{item.dates}</p>

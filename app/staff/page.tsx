@@ -44,7 +44,7 @@ export default function StaffPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
             {brandStaff.map((member) => (
-              <article key={member.slug} className="rad-subpage-card">
+              <article key={member.slug} className="rad-subpage-card" data-reveal="true">
                 <p className="rad-subpage-card__eyebrow">{member.group}</p>
                 <h3 className="rad-subpage-card__title">{member.name}</h3>
                 <p className="rad-player-card__descriptor">{member.role}</p>
@@ -74,7 +74,7 @@ export default function StaffPage() {
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
             {operationsStaff.map((member) => (
-              <article key={member.slug} className="rad-subpage-card">
+              <article key={member.slug} className="rad-subpage-card" data-reveal="true">
                 <p className="rad-subpage-card__eyebrow">{member.group}</p>
                 <h3 className="rad-subpage-card__title">{member.name}</h3>
                 <p className="rad-player-card__descriptor">{member.role}</p>

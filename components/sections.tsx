@@ -21,7 +21,10 @@ export function SectionHeading({
   compact = false
 }: SectionHeadingProps) {
   return (
-    <div className={`rad-subpage-heading${compact ? " rad-subpage-heading--compact" : ""}`}>
+    <div
+      className={`rad-subpage-heading${compact ? " rad-subpage-heading--compact" : ""}`}
+      data-reveal="true"
+    >
       <div>
         {eyebrow ? <p className="rad-subpage-heading__eyebrow">{eyebrow}</p> : null}
         <h2 className="rad-subpage-heading__title">{title}</h2>

@@ -49,7 +49,7 @@ export default async function ContentPage() {
           />
 
           {featured ? (
-            <Link href={`/content/${featured.slug}`} className="rad-editorial-feature">
+            <Link href={`/content/${featured.slug}`} className="rad-editorial-feature" data-reveal="true" data-delay="1">
               <div className="rad-editorial-feature__media">
                 <Image
                   src={featured.cover}
@@ -79,8 +79,14 @@ export default async function ContentPage() {
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
-            {feed.map((post) => (
-              <Link key={post.slug} href={`/content/${post.slug}`} className="rad-post-card">
+            {feed.map((post, index) => (
+              <Link
+                key={post.slug}
+                href={`/content/${post.slug}`}
+                className="rad-post-card"
+                data-reveal="true"
+                data-delay={String((index % 3) + 1)}
+              >
                 <div className="rad-post-card__media">
                   <Image
                     src={post.cover}
@@ -111,17 +117,17 @@ export default async function ContentPage() {
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--2">
-            <div className="rad-subpage-surface">
+            <div className="rad-subpage-surface" data-reveal="true" data-delay="1">
               <p className="rad-subpage-card__eyebrow">Featured Video</p>
               <YouTubeFeatured />
             </div>
-            <div className="rad-subpage-surface">
+            <div className="rad-subpage-surface" data-reveal="true" data-delay="2">
               <p className="rad-subpage-card__eyebrow">Creator Status</p>
               <TwitchCreators />
             </div>
           </div>
 
-          <div className="rad-subpage-surface rad-subpage-surface--spaced">
+          <div className="rad-subpage-surface rad-subpage-surface--spaced" data-reveal="true" data-delay="3">
             <p className="rad-subpage-card__eyebrow">Library</p>
             <YouTubeLibrary />
           </div>

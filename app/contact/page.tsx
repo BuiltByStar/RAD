@@ -35,7 +35,7 @@ export default function ContactPage() {
     >
       <section className="rad-subpage-section">
         <div className="container rad-subpage-grid rad-subpage-grid--2">
-          <div className="rad-subpage-surface">
+          <div className="rad-subpage-surface" data-reveal="true" data-delay="1">
             <SectionHeading
               eyebrow="Inquiry Form"
               title="Send a clear message."
@@ -46,7 +46,7 @@ export default function ContactPage() {
           </div>
 
           <div className="rad-subpage-stack">
-            <div className="rad-subpage-surface">
+            <div className="rad-subpage-surface" data-reveal="true" data-delay="2">
               <SectionHeading
                 eyebrow="Direct Channels"
                 title="Use the channel that fits the ask."
@@ -56,7 +56,7 @@ export default function ContactPage() {
               <ContactGrid channels={contactChannels} />
             </div>
 
-            <article className="rad-subpage-card">
+            <article className="rad-subpage-card" data-reveal="true" data-delay="3">
               <p className="rad-subpage-card__eyebrow">What helps</p>
               <h3 className="rad-subpage-card__title">Send context, not just a name.</h3>
               <p className="rad-subpage-body">
