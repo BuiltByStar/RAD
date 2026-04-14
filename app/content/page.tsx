@@ -23,8 +23,8 @@ export default async function ContentPage() {
     <PageShell
       variant="content"
       eyebrow="Content"
-      title="The editorial side of the org."
-      description="This page should feel like a real media surface, not an afterthought bolted onto a team site. Articles, video, and creator visibility all need to coexist cleanly."
+      title="Stories, drops, and org signals."
+      description="RAD's content surface brings together articles, video, and creator visibility without treating media like an afterthought."
       heroImage={featured?.cover ?? "/assets/RadBannerNewTest300ppi.png"}
       status="Editorial surface // active"
       note={
@@ -45,7 +45,7 @@ export default async function ContentPage() {
           <SectionHeading
             eyebrow="Feature"
             title="Lead with the strongest story."
-            description="The hero article needs to read like a flagship post rather than just the first item in a list."
+            description="The lead story should set the tone for the org, not just fill the first slot in the archive."
           />
 
           {featured ? (
@@ -75,7 +75,7 @@ export default async function ContentPage() {
           <SectionHeading
             eyebrow="Archive"
             title="Recent stories and update drops."
-            description="The card system is designed to hold article growth cleanly, even while the content library is still small."
+            description="Announcements, recaps, and org updates need enough structure to scale as the editorial library grows."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
@@ -113,7 +113,7 @@ export default async function ContentPage() {
           <SectionHeading
             eyebrow="Live Surfaces"
             title="Video and creator touchpoints."
-            description="The page remains useful even when APIs are not configured by falling back gracefully instead of collapsing the layout."
+            description="Video and creator visibility give the org another public layer beyond match results and written updates."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--2">

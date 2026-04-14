@@ -14,8 +14,8 @@ export default function AboutPage() {
     <PageShell
       variant="about"
       eyebrow="About RAD"
-      title="Built to compete. Designed to scale."
-      description="RAD needs to read like a serious modern organization: championship-proven, visually disciplined, and structured for more than a single season."
+      title="Pressure made the identity."
+      description="RAD turned heads early with real wins and a clear point of view. The org is being built to grow into new titles, bigger stories, and stronger stages without losing its edge."
       heroImage="/assets/RadBannerNewTest300ppi.png"
       status="World title secured // EMEA pressure-tested"
       note={
@@ -36,7 +36,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="Identity"
             title="An org story with proof behind it."
-            description="The site should explain who RAD is without reading like filler copy. The tone needs to stay competitive, credible, and brand-ready."
+            description="RAD did not wait for an invitation to matter. The identity already has championships behind it, which gives the brand a real foundation."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--2">
@@ -47,16 +47,16 @@ export default function AboutPage() {
             <div className="rad-subpage-stack" data-reveal="true" data-delay="2">
               <article className="rad-subpage-card">
                 <p className="rad-subpage-card__eyebrow">Competitive Position</p>
-                <h3 className="rad-subpage-card__title">Championship-standard operation.</h3>
+                <h3 className="rad-subpage-card__title">Pressure-tested on the biggest stages.</h3>
                 <p className="rad-subpage-body">
-                  RAD is already anchored by meaningful results, which lets the brand speak with confidence instead of launch-stage exaggeration.
+                  The public identity works because there are real results underneath it, not because the site is trying to oversell the org.
                 </p>
               </article>
               <article className="rad-subpage-card">
                 <p className="rad-subpage-card__eyebrow">Brand Direction</p>
-                <h3 className="rad-subpage-card__title">Aggressive, clean, and scalable.</h3>
+                <h3 className="rad-subpage-card__title">A brand built to move across titles.</h3>
                 <p className="rad-subpage-body">
-                  The org identity is meant to grow into new divisions, future activations, and a stronger editorial presence without changing its visual core.
+                  RAD needs to stay recognisable whether it is presenting a roster, an activation, or the next division added to the org.
                 </p>
               </article>
             </div>
@@ -69,7 +69,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="Standards"
             title="The values that shape the public product."
-            description="A strong esports site needs to communicate competitive standards and organizational intent, not just show results."
+            description="Results matter, but the long-term standard is what turns a winning roster into a real organization."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--4">
@@ -91,7 +91,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="Timeline"
             title="How RAD established credibility."
-            description="This keeps the story chronological and readable without turning the page into a text wall."
+            description="The key moments below show how the org earned credibility early and why the brand already carries weight."
           />
 
           <div className="rad-timeline">
@@ -113,7 +113,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="Roadmap"
             title="Structured for the next competitive cycle."
-            description="This gives the about page a forward-looking layer instead of ending only on past results."
+            description="The story does not stop at titles already won. The next stage is about expanding the org without lowering the standard."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">

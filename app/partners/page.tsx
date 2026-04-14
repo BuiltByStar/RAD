@@ -15,19 +15,19 @@ const processSteps = [
     label: "01 // Brief",
     title: "Start with the right fit.",
     description:
-      "The page should qualify serious brand interest without pretending there is already a full sponsor roster."
+      "Every activation starts by making sure the brand, audience, and competitive surface actually line up."
   },
   {
     label: "02 // Concept",
     title: "Build around competition and content.",
     description:
-      "RAD's strongest value is the crossover between competitive credibility and an org identity that can support branded storytelling."
+      "RAD's best work sits where competitive credibility meets clean creative execution and brand storytelling."
   },
   {
     label: "03 // Launch",
     title: "Roll the activation through real surfaces.",
     description:
-      "Campaigns should be able to flow through the roster, content, community, and social channels without rebuilding the site around them."
+      "Strong campaigns move through roster, content, social, and community surfaces without needing a redesign every time."
   }
 ];
 
@@ -37,7 +37,7 @@ export default function PartnersPage() {
       variant="partners"
       eyebrow="Activations"
       title="Open for the right brand fit."
-      description="This page should position RAD as activation-ready without using fake sponsor walls or manufactured social proof."
+      description="RAD is open to brand relationships that fit competitive credibility, strong creative execution, and long-term growth."
       heroImage="/assets/RadBanner1920_1080.png"
       status="Partnership inventory // available"
       note={
@@ -58,7 +58,7 @@ export default function PartnersPage() {
           <SectionHeading
             eyebrow="Positioning"
             title="Brand-ready without pretending the sponsor wall already exists."
-            description="This page is stronger when it clearly explains what RAD can support right now instead of filling space with fake logos."
+            description="RAD can present a clear activation case right now without leaning on fake sponsor walls or manufactured proof."
             actionHref="/contact"
             actionLabel="Contact RAD"
           />
@@ -80,7 +80,7 @@ export default function PartnersPage() {
           <SectionHeading
             eyebrow="Available Angles"
             title="What RAD can package cleanly."
-            description="The offering cards are framed as collaboration lanes rather than imaginary existing sponsorships."
+            description="These lanes show the kinds of work RAD can support now, not invented sponsors that do not exist."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">

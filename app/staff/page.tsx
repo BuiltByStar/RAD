@@ -18,7 +18,7 @@ export default function StaffPage() {
       variant="staff"
       eyebrow="Staff"
       title="The system behind the roster."
-      description="A serious org site should show the people who make the competitive product possible: brand, operations, analytics, management, and coaching."
+      description="RAD's support team shapes the competitive product, the public brand, and the day-to-day standard behind the org."
       heroImage="/assets/RadBanner1920_1080.png"
       status="Creative + competitive support online"
       note={
@@ -39,7 +39,7 @@ export default function StaffPage() {
           <SectionHeading
             eyebrow="Brand & Media"
             title="Creative output and public-facing execution."
-            description="These roles define how RAD looks, ships content, and shows up across the public brand surface."
+            description="These roles shape how RAD looks, how content ships, and how the org carries itself in public."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
@@ -69,7 +69,7 @@ export default function StaffPage() {
           <SectionHeading
             eyebrow="Operations & Performance"
             title="Management, analytics, and coaching support."
-            description="This layer gives the public roster structure, accountability, and a clearer professional standard."
+            description="This is the layer that turns a lineup into a functioning competitive unit with structure, accountability, and support."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">

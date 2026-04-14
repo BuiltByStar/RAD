@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Float, MeshTransmissionMaterial, Sparkles } from "@react-three/drei";
+import { Environment, Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 
 import { ImmersiveHud } from "./immersive-hud";
@@ -21,100 +21,191 @@ function useActiveScale(ref: RefObject<THREE.Group | null>, active: boolean, act
   });
 }
 
+function matteMaterial(color = "#101010", emissive = "#050505", roughness = 0.82, metalness = 0.72) {
+  return new THREE.MeshStandardMaterial({
+    color,
+    emissive,
+    emissiveIntensity: 0.08,
+    roughness,
+    metalness
+  });
+}
+
+function Blade({
+  position,
+  rotation,
+  size,
+  color = "#101010",
+  emissive = "#050505",
+  emissiveIntensity = 0.08,
+  roughness = 0.82,
+  metalness = 0.72
+}: {
+  position: [number, number, number];
+  rotation?: [number, number, number];
+  size: [number, number, number];
+  color?: string;
+  emissive?: string;
+  emissiveIntensity?: number;
+  roughness?: number;
+  metalness?: number;
+}) {
+  return (
+    <mesh position={position} rotation={rotation}>
+      <boxGeometry args={size} />
+      <meshStandardMaterial
+        color={color}
+        emissive={emissive}
+        emissiveIntensity={emissiveIntensity}
+        roughness={roughness}
+        metalness={metalness}
+      />
+    </mesh>
+  );
+}
+
 function CoreWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const outerRingRef = useRef<THREE.Mesh>(null);
-  const innerBandRef = useRef<THREE.Mesh>(null);
+  const seamRef = useRef<THREE.Group>(null);
 
-  useActiveScale(groupRef, active, 1.12);
+  useActiveScale(groupRef, active, 1.1);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
 
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.22;
-      groupRef.current.rotation.x = Math.sin(t * 0.28) * 0.08;
-      groupRef.current.position.y = Math.sin(t * 0.7) * 0.22;
+      groupRef.current.rotation.y += delta * 0.14;
+      groupRef.current.rotation.x = Math.sin(t * 0.35) * 0.06;
+      groupRef.current.position.y = Math.sin(t * 0.7) * 0.16;
     }
 
-    if (outerRingRef.current) {
-      outerRingRef.current.rotation.x += delta * 0.18;
-      outerRingRef.current.rotation.y -= delta * 0.3;
-      const ringScale = 1 + Math.sin(t * 1.6) * 0.04;
-      outerRingRef.current.scale.setScalar(ringScale);
-    }
-
-    if (innerBandRef.current) {
-      innerBandRef.current.rotation.y -= delta * 0.16;
-      innerBandRef.current.rotation.z += delta * 0.08;
+    if (seamRef.current) {
+      seamRef.current.rotation.y -= delta * 0.18;
+      seamRef.current.position.y = Math.sin(t * 1.1) * 0.08;
     }
   });
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
-      <Float speed={1.8} rotationIntensity={0.12} floatIntensity={0.28}>
-        <mesh>
-          <icosahedronGeometry args={[1.95, 0]} />
-          <MeshTransmissionMaterial
-            backside
-            samples={4}
-            thickness={1.6}
-            chromaticAberration={0.35}
-            anisotropy={0.28}
-            distortion={0.48}
-            distortionScale={0.44}
-            temporalDistortion={0.12}
-            iridescence={1}
-            iridescenceIOR={1}
-            iridescenceThicknessRange={[0, 1200]}
-            color="#ff3030"
-          />
-        </mesh>
+      <Float speed={1.1} rotationIntensity={0.04} floatIntensity={0.12}>
+        <group>
+          <Blade position={[0, 0, 0]} rotation={[0.14, 0.18, 0.05]} size={[0.42, 4.3, 0.48]} color="#0c0c0c" roughness={0.9} />
+          <Blade position={[-0.78, 0.38, -0.16]} rotation={[0.04, -0.26, 0.42]} size={[0.24, 3.6, 0.42]} color="#141414" roughness={0.86} />
+          <Blade position={[0.84, -0.28, 0.18]} rotation={[0.08, 0.34, -0.42]} size={[0.24, 3.45, 0.42]} color="#171717" roughness={0.86} />
+          <Blade position={[-1.15, -0.76, 0.25]} rotation={[0.1, -0.22, 0.82]} size={[0.18, 2.5, 0.34]} color="#111111" roughness={0.9} />
+          <Blade position={[1.2, 0.74, -0.24]} rotation={[0.1, 0.22, -0.82]} size={[0.18, 2.5, 0.34]} color="#111111" roughness={0.9} />
+        </group>
       </Float>
 
-      <mesh>
-        <octahedronGeometry args={[0.86, 0]} />
-        <meshPhysicalMaterial
-          color="#140303"
-          emissive="#7d0000"
-          emissiveIntensity={active ? 1.65 : 1.05}
-          metalness={0.92}
-          roughness={0.16}
-          clearcoat={1}
+      <group ref={seamRef}>
+        <Blade
+          position={[0, 0, 0.18]}
+          rotation={[0.2, 0.1, 0.02]}
+          size={[0.1, 3.5, 0.1]}
+          color="#780000"
+          emissive="#9f0000"
+          emissiveIntensity={active ? 1.05 : 0.72}
+          roughness={0.3}
+          metalness={0.4}
         />
-      </mesh>
-
-      <mesh ref={outerRingRef} rotation={[Math.PI / 2.6, 0, 0]}>
-        <torusGeometry args={[3.02, 0.11, 32, 180]} />
-        <meshStandardMaterial
-          color="#121212"
-          emissive="#020202"
-          emissiveIntensity={active ? 0.12 : 0.05}
-          metalness={0.84}
-          roughness={0.72}
+        <Blade
+          position={[0, 0, -0.18]}
+          rotation={[0.2, 0.1, 0.02]}
+          size={[0.08, 2.4, 0.08]}
+          color="#a30000"
+          emissive="#a30000"
+          emissiveIntensity={active ? 0.95 : 0.58}
+          roughness={0.26}
+          metalness={0.22}
         />
-      </mesh>
+      </group>
 
-      <mesh ref={innerBandRef} rotation={[0.4, 0.1, Math.PI / 2.2]}>
-        <torusGeometry args={[2.28, 0.045, 18, 140]} />
-        <meshStandardMaterial
-          color="#1b1b1b"
-          emissive="#050505"
-          emissiveIntensity={0.08}
-          metalness={0.88}
-          roughness={0.64}
-        />
-      </mesh>
-
-      <Sparkles count={26} scale={5.4} size={2.2} speed={0.45} opacity={0.28} color="#ff4a4a" />
+      <Sparkles count={10} scale={4.2} size={1.6} speed={0.18} opacity={0.12} color="#ff4040" />
     </group>
   );
 }
 
 function VanguardWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const barsRef = useRef<THREE.Group>(null);
-  const spineRef = useRef<THREE.Group>(null);
+  const wallRef = useRef<THREE.Group>(null);
+  const outerRef = useRef<THREE.Group>(null);
+
+  useActiveScale(groupRef, active, 1.06);
+
+  useFrame((state, delta) => {
+    const t = state.clock.elapsedTime;
+
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.12;
+      groupRef.current.position.y = Math.sin(t * 0.58) * 0.14;
+    }
+
+    if (wallRef.current) {
+      wallRef.current.children.forEach((child, index) => {
+        child.position.y = Math.sin(t * 0.82 + index * 0.5) * 0.1;
+      });
+    }
+
+    if (outerRef.current) {
+      outerRef.current.rotation.y -= delta * 0.2;
+    }
+  });
+
+  return (
+    <group ref={groupRef} position={[1 * SPACING, 0, 0]}>
+      <group ref={wallRef}>
+        {[-1.8, -1.1, -0.38, 0.38, 1.1, 1.8].map((offset, index) => (
+          <Blade
+            key={offset}
+            position={[offset, 0, 0]}
+            rotation={[0.08, offset * 0.08, 0]}
+            size={[0.34, 3.7 - Math.abs(offset) * 0.4, 0.5]}
+            color={index % 2 === 0 ? "#0f0f0f" : "#151515"}
+            roughness={0.88}
+            metalness={0.78}
+          />
+        ))}
+      </group>
+
+      <group ref={outerRef}>
+        {[
+          [-2.95, 0.55, 0.36],
+          [2.95, -0.45, -0.22],
+          [0, 1.85, -0.2],
+          [0, -1.85, 0.22]
+        ].map((position, index) => (
+          <Blade
+            key={index}
+            position={position as [number, number, number]}
+            rotation={[0.18, index * 0.6, index < 2 ? 0.22 : Math.PI / 2]}
+            size={[0.22, 1.8, 0.34]}
+            color={index % 2 === 0 ? "#180f0f" : "#111111"}
+            emissive={index % 2 === 0 ? "#560000" : "#040404"}
+            emissiveIntensity={index % 2 === 0 ? 0.34 : 0.05}
+            roughness={0.82}
+            metalness={0.8}
+          />
+        ))}
+      </group>
+
+      <Blade
+        position={[0, 0, 0.5]}
+        rotation={[0.08, 0, 0]}
+        size={[0.16, 2.8, 0.16]}
+        color="#760000"
+        emissive="#860000"
+        emissiveIntensity={active ? 0.78 : 0.52}
+        roughness={0.36}
+        metalness={0.42}
+      />
+    </group>
+  );
+}
+
+function MediaWorld({ active }: { active: boolean }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const panelsRef = useRef<THREE.Group>(null);
+  const tickerRef = useRef<THREE.Group>(null);
 
   useActiveScale(groupRef, active, 1.08);
 
@@ -122,243 +213,166 @@ function VanguardWorld({ active }: { active: boolean }) {
     const t = state.clock.elapsedTime;
 
     if (groupRef.current) {
-      groupRef.current.position.y = Math.sin(t * 0.55) * 0.18;
-      groupRef.current.rotation.y += delta * 0.16;
+      groupRef.current.rotation.y += delta * 0.08;
+      groupRef.current.position.y = Math.sin(t * 0.65) * 0.12;
     }
 
-    if (barsRef.current) {
-      barsRef.current.rotation.y -= delta * 0.48;
-      barsRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 1.4 + index) * 0.18;
+    if (panelsRef.current) {
+      panelsRef.current.children.forEach((child, index) => {
+        child.rotation.y = THREE.MathUtils.lerp(child.rotation.y, -0.42 + index * 0.42, delta * 2.2);
       });
     }
 
-    if (spineRef.current) {
-      spineRef.current.rotation.y += delta * 0.12;
-      spineRef.current.rotation.z = Math.sin(t * 0.8) * 0.06;
-    }
-  });
-
-  return (
-    <group ref={groupRef} position={[1 * SPACING, 0, 0]}>
-      <Float speed={1.3} rotationIntensity={0.2} floatIntensity={0.2}>
-        <mesh rotation={[Math.PI / 5, Math.PI / 4, 0]}>
-          <torusKnotGeometry args={[1.2, 0.26, 220, 32]} />
-          <meshPhysicalMaterial
-            color="#060606"
-            metalness={1}
-            roughness={0.06}
-            clearcoat={1}
-            clearcoatRoughness={0.08}
-            envMapIntensity={2.4}
-          />
-        </mesh>
-      </Float>
-
-      <group ref={spineRef}>
-        {[-1.05, -0.35, 0.35, 1.05].map((offset, index) => (
-          <mesh key={offset} position={[offset, 0, 0]} rotation={[0.2, 0.4, 0.2]}>
-            <boxGeometry args={[0.24, 3.3 - index * 0.28, 0.24]} />
-            <meshStandardMaterial
-              color={index % 2 === 0 ? "#0c0c0c" : "#181818"}
-              emissive="#040404"
-              emissiveIntensity={0.05}
-              metalness={0.76}
-              roughness={0.7}
-            />
-          </mesh>
-        ))}
-      </group>
-
-      <group ref={barsRef}>
-        {[0, 1, 2, 3, 4, 5].map((index) => {
-          const angle = (index / 6) * Math.PI * 2;
-          const radius = 2.65;
-          return (
-            <mesh
-              key={index}
-              position={[Math.cos(angle) * radius, 0, Math.sin(angle) * radius]}
-              rotation={[0.28, angle, Math.PI / 8]}
-            >
-              <boxGeometry args={[0.22, 1.9, 0.28]} />
-              <meshStandardMaterial
-                color={index % 3 === 0 ? "#280707" : "#101010"}
-                emissive={index % 3 === 0 ? "#6d0000" : "#030303"}
-                emissiveIntensity={index % 3 === 0 ? 0.55 : 0.04}
-                metalness={0.82}
-                roughness={0.68}
-              />
-            </mesh>
-          );
-        })}
-      </group>
-    </group>
-  );
-}
-
-function MediaWorld({ active }: { active: boolean }) {
-  const groupRef = useRef<THREE.Group>(null);
-  const frameRef = useRef<THREE.Group>(null);
-  const screenRef = useRef<THREE.Group>(null);
-  const signalRef = useRef<THREE.Group>(null);
-
-  useActiveScale(groupRef, active, 1.1);
-
-  useFrame((state, delta) => {
-    const t = state.clock.elapsedTime;
-
-    if (groupRef.current) {
-      groupRef.current.position.y = Math.sin(t * 0.9) * 0.25;
-      groupRef.current.rotation.y += delta * 0.12;
-    }
-
-    if (frameRef.current) {
-      frameRef.current.rotation.y += delta * 0.22;
-      frameRef.current.rotation.z = Math.sin(t * 0.55) * 0.04;
-    }
-
-    if (screenRef.current) {
-      screenRef.current.rotation.y -= delta * 0.16;
-    }
-
-    if (signalRef.current) {
-      signalRef.current.rotation.y += delta * 0.36;
-      signalRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 0.95 + index * 1.1) * 0.18;
+    if (tickerRef.current) {
+      tickerRef.current.rotation.y -= delta * 0.18;
+      tickerRef.current.children.forEach((child, index) => {
+        child.position.y = Math.sin(t * 0.92 + index) * 0.08;
       });
     }
   });
 
   return (
     <group ref={groupRef} position={[2 * SPACING, 0, 0]}>
-      <group ref={frameRef}>
-        <mesh rotation={[0.18, 0.42, 0]}>
-          <boxGeometry args={[3.4, 2.1, 0.18]} />
-          <meshStandardMaterial color="#101010" metalness={0.88} roughness={0.72} />
-        </mesh>
-        <mesh position={[0, 0, 0.12]} rotation={[0.18, 0.42, 0]}>
-          <boxGeometry args={[2.82, 1.58, 0.05]} />
-          <meshStandardMaterial
-            color="#390707"
-            emissive="#790000"
-            emissiveIntensity={active ? 0.95 : 0.58}
-            metalness={0.22}
-            roughness={0.34}
-          />
-        </mesh>
-      </group>
-
-      <group ref={screenRef}>
-        {[-1.5, 0, 1.5].map((offset, index) => (
-          <mesh
-            key={offset}
-            position={[offset, index === 1 ? -0.15 : 0.55 - index * 0.2, -0.45 + index * 0.12]}
-            rotation={[0.12, -0.38 + index * 0.22, 0]}
-          >
-            <boxGeometry args={[0.82, 1.55, 0.06]} />
-            <meshStandardMaterial
-              color={index === 1 ? "#141414" : "#0f0f0f"}
-              emissive={index === 1 ? "#5f0000" : "#2a0808"}
-              emissiveIntensity={index === 1 ? 0.62 : 0.2}
-              metalness={0.62}
-              roughness={0.58}
+      <group ref={panelsRef}>
+        {[-1.55, 0, 1.55].map((offset, index) => (
+          <group key={offset} position={[offset, index === 1 ? 0 : 0.16, -0.1 * Math.abs(offset)]}>
+            <Blade
+              position={[0, 0, 0]}
+              rotation={[0.06, -0.42 + index * 0.42, 0]}
+              size={[1.28, 2.05, 0.14]}
+              color="#0e0e0e"
+              roughness={0.9}
+              metalness={0.78}
             />
-          </mesh>
+            <Blade
+              position={[0, 0, 0.09]}
+              rotation={[0.06, -0.42 + index * 0.42, 0]}
+              size={[1.02, 1.6, 0.03]}
+              color={index === 1 ? "#2a0707" : "#190404"}
+              emissive={index === 1 ? "#6a0000" : "#3d0000"}
+              emissiveIntensity={index === 1 ? 0.65 : 0.28}
+              roughness={0.42}
+              metalness={0.25}
+            />
+          </group>
         ))}
       </group>
 
-      <group ref={signalRef}>
-        {[0, 1, 2].map((index) => {
-          const angle = (index / 3) * Math.PI * 2;
-          const radius = 2.55;
-          return (
-            <mesh key={index} position={[Math.cos(angle) * radius, 0, Math.sin(angle) * radius]} rotation={[0.6, angle, 0]}>
-              <boxGeometry args={[0.18, 1.28, 0.18]} />
-              <meshStandardMaterial
-                color={index === 0 ? "#7a0000" : "#141414"}
-                emissive={index === 0 ? "#8e0000" : "#050505"}
-                emissiveIntensity={index === 0 ? 0.7 : 0.08}
-                metalness={0.8}
-                roughness={0.66}
-              />
-            </mesh>
-          );
-        })}
+      <group ref={tickerRef}>
+        {[-2.5, -1.15, 0, 1.15, 2.5].map((offset, index) => (
+          <Blade
+            key={offset}
+            position={[offset, 1.7 - (index % 2) * 3.4, 0.28]}
+            rotation={[0.2, 0, Math.PI / 2]}
+            size={[0.08, 1.2 + (index % 2) * 0.35, 0.08]}
+            color={index === 2 ? "#840000" : "#141414"}
+            emissive={index === 2 ? "#8f0000" : "#050505"}
+            emissiveIntensity={index === 2 ? 0.72 : 0.05}
+            roughness={0.76}
+            metalness={0.72}
+          />
+        ))}
       </group>
 
-      <Sparkles count={16} scale={4.8} size={1.8} speed={0.28} opacity={0.18} color="#ff5a5a" />
+      <Blade
+        position={[0, -2.2, -0.1]}
+        rotation={[0.1, 0, 0]}
+        size={[3.8, 0.1, 0.18]}
+        color="#111111"
+        roughness={0.88}
+        metalness={0.68}
+      />
+
+      <Sparkles count={8} scale={4.4} size={1.3} speed={0.14} opacity={0.08} color="#ff4040" />
     </group>
   );
 }
 
 function AlliancesWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const linkRef = useRef<THREE.Group>(null);
-  const nodeRef = useRef<THREE.Group>(null);
+  const nodesRef = useRef<THREE.Group>(null);
+  const bridgeRef = useRef<THREE.Group>(null);
 
-  useActiveScale(groupRef, active, 1.1);
+  useActiveScale(groupRef, active, 1.08);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
 
     if (groupRef.current) {
-      groupRef.current.position.y = Math.sin(t * 0.62) * 0.16;
-      groupRef.current.rotation.y -= delta * 0.18;
+      groupRef.current.rotation.y -= delta * 0.1;
+      groupRef.current.position.y = Math.sin(t * 0.56) * 0.12;
     }
 
-    if (linkRef.current) {
-      linkRef.current.rotation.y -= delta * 0.12;
-      linkRef.current.rotation.x = Math.sin(t * 0.48) * 0.08;
-    }
-
-    if (nodeRef.current) {
-      nodeRef.current.rotation.y += delta * 0.24;
-      nodeRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 0.88 + index * 0.9) * 0.14;
+    if (nodesRef.current) {
+      nodesRef.current.children.forEach((child, index) => {
+        child.position.y = Math.sin(t * 0.84 + index * 0.9) * 0.1 + (index < 2 ? 0.7 : -0.7);
       });
+    }
+
+    if (bridgeRef.current) {
+      bridgeRef.current.rotation.z = Math.sin(t * 0.38) * 0.05;
     }
   });
 
   return (
     <group ref={groupRef} position={[3 * SPACING, 0, 0]}>
-      <group ref={linkRef}>
-        <Float speed={1.1} rotationIntensity={0.08} floatIntensity={0.15}>
-          <mesh position={[-1.28, 0, 0]} rotation={[0.4, 0.2, Math.PI / 2.3]}>
-            <torusGeometry args={[1.22, 0.22, 28, 120]} />
-            <meshStandardMaterial color="#121212" metalness={0.9} roughness={0.64} />
-          </mesh>
-        </Float>
-        <Float speed={1.1} rotationIntensity={0.08} floatIntensity={0.15}>
-          <mesh position={[1.28, 0, 0]} rotation={[0.4, -0.2, Math.PI / 2.3]}>
-            <torusGeometry args={[1.22, 0.22, 28, 120]} />
-            <meshStandardMaterial color="#171717" metalness={0.9} roughness={0.64} />
-          </mesh>
-        </Float>
-        <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.14, 0.14, 2.15, 18]} />
-          <meshStandardMaterial color="#6f0000" emissive="#7f0000" emissiveIntensity={active ? 0.88 : 0.56} metalness={0.55} roughness={0.34} />
-        </mesh>
+      <group ref={nodesRef}>
+        {[
+          [-2.1, 0.7, 0],
+          [2.1, 0.7, 0],
+          [-2.1, -0.7, 0],
+          [2.1, -0.7, 0]
+        ].map((position, index) => (
+          <group key={index} position={position as [number, number, number]}>
+            <Blade
+              position={[0, 0, 0]}
+              rotation={[0.2, index < 2 ? -0.18 : 0.18, 0]}
+              size={[0.7, 1.1, 0.34]}
+              color="#111111"
+              roughness={0.86}
+              metalness={0.74}
+            />
+            <mesh position={[0, 0, 0.22]}>
+              <sphereGeometry args={[0.12, 20, 20]} />
+              <meshStandardMaterial
+                color={index % 2 === 0 ? "#770000" : "#111111"}
+                emissive={index % 2 === 0 ? "#7f0000" : "#050505"}
+                emissiveIntensity={index % 2 === 0 ? 0.62 : 0.06}
+                roughness={0.38}
+                metalness={0.5}
+              />
+            </mesh>
+          </group>
+        ))}
       </group>
 
-      <group ref={nodeRef}>
-        {[
-          [-3.1, 0.25, 0.2],
-          [3.1, -0.15, -0.25],
-          [0, 2.3, 0.18],
-          [0, -2.25, -0.22]
-        ].map((position, index) => (
-          <mesh key={index} position={position as [number, number, number]}>
-            <sphereGeometry args={[0.28 + (index % 2) * 0.04, 28, 28]} />
-            <meshPhysicalMaterial
-              color={index < 2 ? "#0f0f0f" : "#8a0000"}
-              emissive={index < 2 ? "#050505" : "#8a0000"}
-              emissiveIntensity={index < 2 ? 0.08 : 0.58}
-              metalness={0.78}
-              roughness={0.32}
-              clearcoat={1}
-            />
-          </mesh>
-        ))}
+      <group ref={bridgeRef}>
+        <Blade
+          position={[0, 0.72, 0]}
+          rotation={[0.04, 0, 0]}
+          size={[4.05, 0.12, 0.16]}
+          color="#151515"
+          roughness={0.84}
+          metalness={0.7}
+        />
+        <Blade
+          position={[0, -0.72, 0]}
+          rotation={[0.04, 0, 0]}
+          size={[4.05, 0.12, 0.16]}
+          color="#151515"
+          roughness={0.84}
+          metalness={0.7}
+        />
+        <Blade
+          position={[0, 0, 0.12]}
+          rotation={[0, 0, Math.PI / 2]}
+          size={[0.14, 1.52, 0.12]}
+          color="#7b0000"
+          emissive="#8d0000"
+          emissiveIntensity={active ? 0.7 : 0.48}
+          roughness={0.34}
+          metalness={0.38}
+        />
       </group>
     </group>
   );
@@ -379,14 +393,14 @@ function CameraRig({ activeIndex }: { activeIndex: number }) {
   const targetX = activeIndex * SPACING;
 
   useFrame((state, delta) => {
-    const pointerX = state.pointer.x * 0.55;
-    const pointerY = state.pointer.y * 1.35;
-    const targetY = pointerY + Math.sin(state.clock.elapsedTime * 0.4) * 0.18;
-    const targetZ = 7 - Math.abs(state.pointer.x) * 0.22;
+    const pointerX = state.pointer.x * 0.45;
+    const pointerY = state.pointer.y * 1.05;
+    const targetY = pointerY + Math.sin(state.clock.elapsedTime * 0.4) * 0.12;
+    const targetZ = 7.2 - Math.abs(state.pointer.x) * 0.16;
 
-    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, targetX + pointerX, delta * 3.2);
-    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, targetY, delta * 2.1);
-    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetZ, delta * 2.4);
+    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, targetX + pointerX, delta * 3);
+    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, targetY, delta * 2);
+    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetZ, delta * 2.2);
 
     state.camera.lookAt(targetX, 0, 0);
   });
@@ -415,11 +429,8 @@ export function Scene() {
       if (Math.abs(event.deltaY) > 20 || Math.abs(event.deltaX) > 20) {
         event.preventDefault();
 
-        if (event.deltaY > 0 || event.deltaX > 0) {
-          handleNext();
-        } else {
-          handlePrev();
-        }
+        if (event.deltaY > 0 || event.deltaX > 0) handleNext();
+        else handlePrev();
 
         isThrottled = true;
         window.setTimeout(() => {
@@ -462,19 +473,23 @@ export function Scene() {
       <Preloader />
       <ImmersiveHud activeIndex={activeIndex} totalWorlds={WORLDS_COUNT} />
 
-      <Canvas camera={{ position: [0, 0, 7], fov: 45 }} gl={{ antialias: true, powerPreference: "high-performance" }} dpr={[1, 2]}>
+      <Canvas
+        camera={{ position: [0, 0, 7.2], fov: 42 }}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
+        dpr={[1, 2]}
+      >
         <color attach="background" args={["#000000"]} />
-        <fog attach="fog" args={["#000000", 5, 26]} />
+        <fog attach="fog" args={["#000000", 5, 24]} />
 
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[6, 5, 6]} intensity={1.8} color="#ffffff" />
-        <spotLight position={[-6, 5, 6]} intensity={3.6} color="#ff0000" angle={0.5} penumbra={1} />
-        <pointLight position={[0, 0, 5]} intensity={1.1} color="#ff2b2b" />
+        <ambientLight intensity={0.55} />
+        <directionalLight position={[6, 5, 6]} intensity={1.5} color="#ffffff" />
+        <spotLight position={[-6, 5, 6]} intensity={2.4} color="#a40000" angle={0.48} penumbra={1} />
+        <pointLight position={[0, 0, 5]} intensity={0.7} color="#700000" />
 
         <Shapes activeIndex={activeIndex} />
         <CameraRig activeIndex={activeIndex} />
 
-        <Sparkles count={180} scale={32} size={1.6} speed={0.18} opacity={0.22} color="#ff3333" />
+        <Sparkles count={72} scale={28} size={1.2} speed={0.12} opacity={0.08} color="#ff2d2d" />
         <Environment preset="studio" />
       </Canvas>
     </div>

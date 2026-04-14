@@ -16,8 +16,8 @@ export default function ContactPage() {
     <PageShell
       variant="contact"
       eyebrow="Contact"
-      title="Open a direct line."
-      description="The contact page should feel credible and business-ready: clean intake, visible fallback channels, and enough structure that real inquiries know where to go."
+      title="Open the right line."
+      description="For partnerships, talent inquiries, media requests, and other serious outreach, RAD keeps both structured intake and direct channels visible."
       heroImage="/assets/RadRivals_Wallpaper_Red.png"
       status="Public inquiry channels // online"
       note={
@@ -36,12 +36,12 @@ export default function ContactPage() {
       <section className="rad-subpage-section">
         <div className="container rad-subpage-grid rad-subpage-grid--2">
           <div className="rad-subpage-surface" data-reveal="true" data-delay="1">
-            <SectionHeading
-              eyebrow="Inquiry Form"
-              title="Send a clear message."
-              description="This form is designed for structured business outreach, talent contact, and legitimate organizational inquiries."
-              compact
-            />
+              <SectionHeading
+                eyebrow="Inquiry Form"
+                title="Send a clear message."
+                description="Use the form when the request needs context, routing, and a direct response path."
+                compact
+              />
             <ContactForm enabled={hasSupabaseServiceEnv()} />
           </div>
 
@@ -50,7 +50,7 @@ export default function ContactPage() {
               <SectionHeading
                 eyebrow="Direct Channels"
                 title="Use the channel that fits the ask."
-                description="The page should still work when backend services are offline, so direct contact remains visible at all times."
+                description="Direct contact stays visible so the page remains useful even when backend services are unavailable."
                 compact
               />
               <ContactGrid channels={contactChannels} />

@@ -21,7 +21,7 @@ export default function RosterPage() {
       variant="roster"
       eyebrow="Roster"
       title="The championship core."
-      description="The roster page should feel like a serious competitive surface: clear lineup hierarchy, useful player detail, and visible support around the team."
+      description="RAD's featured lineup is built around role clarity, depth, and the kind of pressure-tested structure that holds up on the biggest stages."
       heroImage="/assets/RadPlayerBannerPNG8.png"
       status={team.status}
       note={
@@ -66,8 +66,8 @@ export default function RosterPage() {
         <div className="container">
           <SectionHeading
             eyebrow="Players"
-            title="Seven names carrying the current standard."
-            description="These cards are built to handle richer media and profiles later, but they already communicate role, specialties, and player identity clearly."
+            title="Seven names carrying the standard."
+            description="Each role in the lineup has a clear job, a distinct identity, and a reason it belongs in the current core."
           />
 
           <div className="rad-subpage-grid rad-subpage-grid--3">
@@ -116,7 +116,7 @@ export default function RosterPage() {
           <SectionHeading
             eyebrow="Support System"
             title="Management and coaching behind the lineup."
-            description="The page reads stronger when it shows the competitive structure around the roster instead of treating the team like a standalone list of aliases."
+            description="The roster is stronger when the support structure is visible too: management, coaching, and the people keeping the standard intact."
             actionHref="/staff"
             actionLabel="Open staff page"
           />

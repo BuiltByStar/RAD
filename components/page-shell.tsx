@@ -25,14 +25,54 @@ export function PageShell({
   children
 }: PageShellProps) {
   const heroMeta = {
-    default: { word: "RAD", code: "SYS 00" },
-    about: { word: "ORIGIN", code: "SYS 01" },
-    roster: { word: "LINEUP", code: "SYS 02" },
-    staff: { word: "SYSTEM", code: "SYS 03" },
-    content: { word: "EDITORIAL", code: "SYS 04" },
-    contact: { word: "ACCESS", code: "SYS 05" },
-    partners: { word: "ACTIVATE", code: "SYS 06" },
-    legal: { word: "POLICY", code: "SYS 07" }
+    default: {
+      mark: "RAD // SYSTEM",
+      code: "FILE 00",
+      channel: "teamrad.gg",
+      tags: ["Pressure-built", "Red // black // white", "Go wild"]
+    },
+    about: {
+      mark: "RAD // ABOUT",
+      code: "FILE 01",
+      channel: "org identity",
+      tags: ["World champions", "EMEA tested", "Built to scale"]
+    },
+    roster: {
+      mark: "RAD // ROSTER",
+      code: "FILE 02",
+      channel: "competitive core",
+      tags: ["Featured division", "Active lineup", "Role clarity"]
+    },
+    staff: {
+      mark: "RAD // STAFF",
+      code: "FILE 03",
+      channel: "operations",
+      tags: ["Brand", "Analytics", "Coaching"]
+    },
+    content: {
+      mark: "RAD // CONTENT",
+      code: "FILE 04",
+      channel: "editorial layer",
+      tags: ["Stories", "Video", "Community"]
+    },
+    contact: {
+      mark: "RAD // CONTACT",
+      code: "FILE 05",
+      channel: "inquiry path",
+      tags: ["Partnerships", "Talent", "Media"]
+    },
+    partners: {
+      mark: "RAD // ACTIVATIONS",
+      code: "FILE 06",
+      channel: "brand fit",
+      tags: ["Campaigns", "Apparel", "Peripherals"]
+    },
+    legal: {
+      mark: "RAD // POLICY",
+      code: "FILE 07",
+      channel: "public terms",
+      tags: ["Privacy", "Cookies", "Terms"]
+    }
   }[variant];
 
   return (
@@ -43,6 +83,7 @@ export function PageShell({
             <div className="rad-subpage-hero__copy" data-reveal="true">
               <div className="rad-subpage-hero__system">
                 <span>{heroMeta.code}</span>
+                <span>{heroMeta.channel}</span>
                 <span>teamrad.gg</span>
               </div>
               <p className="rad-subpage-eyebrow">{eyebrow}</p>
@@ -72,11 +113,30 @@ export function PageShell({
                   className="rad-subpage-hero__image"
                 />
               )}
-              <div className="rad-subpage-hero__ghost" aria-hidden="true">
-                {heroMeta.word}
+              <div className="rad-subpage-hero__logo" aria-hidden="true">
+                <Image
+                  src="/assets/RadNewLogoWordmarkRed.png"
+                  alt=""
+                  width={180}
+                  height={54}
+                  className="rad-subpage-hero__logo-image"
+                />
               </div>
-              <div className="rad-subpage-hero__grid" aria-hidden="true" />
+              <div className="rad-subpage-hero__stencil" aria-hidden="true">
+                {heroMeta.mark}
+              </div>
+              <div className={`rad-subpage-hero__motif rad-subpage-hero__motif--${variant}`} aria-hidden="true">
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
               <div className="rad-subpage-hero__wash" />
+              <div className="rad-subpage-hero__ticker" aria-hidden="true">
+                {heroMeta.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
               {note ? (
                 <div className="rad-subpage-note" data-reveal="true" data-delay="2">
                   {note}
