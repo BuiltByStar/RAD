@@ -23,8 +23,8 @@ function useActiveScale(ref: RefObject<THREE.Group | null>, active: boolean, act
 
 function CoreWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const orbitRef = useRef<THREE.Group>(null);
   const outerRingRef = useRef<THREE.Mesh>(null);
+  const innerBandRef = useRef<THREE.Mesh>(null);
 
   useActiveScale(groupRef, active, 1.12);
 
@@ -37,16 +37,16 @@ function CoreWorld({ active }: { active: boolean }) {
       groupRef.current.position.y = Math.sin(t * 0.7) * 0.22;
     }
 
-    if (orbitRef.current) {
-      orbitRef.current.rotation.y -= delta * 0.72;
-      orbitRef.current.rotation.z += delta * 0.25;
-    }
-
     if (outerRingRef.current) {
       outerRingRef.current.rotation.x += delta * 0.18;
       outerRingRef.current.rotation.y -= delta * 0.3;
       const ringScale = 1 + Math.sin(t * 1.6) * 0.04;
       outerRingRef.current.scale.setScalar(ringScale);
+    }
+
+    if (innerBandRef.current) {
+      innerBandRef.current.rotation.y -= delta * 0.16;
+      innerBandRef.current.rotation.z += delta * 0.08;
     }
   });
 
@@ -85,35 +85,26 @@ function CoreWorld({ active }: { active: boolean }) {
       </mesh>
 
       <mesh ref={outerRingRef} rotation={[Math.PI / 2.6, 0, 0]}>
-        <torusGeometry args={[3.02, 0.08, 28, 160]} />
+        <torusGeometry args={[3.02, 0.11, 32, 180]} />
         <meshStandardMaterial
-          color="#ff5252"
-          emissive="#ff1e1e"
-          emissiveIntensity={active ? 1.8 : 1.2}
-          metalness={0.45}
-          roughness={0.12}
+          color="#121212"
+          emissive="#020202"
+          emissiveIntensity={active ? 0.12 : 0.05}
+          metalness={0.84}
+          roughness={0.72}
         />
       </mesh>
 
-      <group ref={orbitRef}>
-        {[
-          [2.55, 0.1, 0.1],
-          [-2.25, -0.55, 0.65],
-          [0.2, 2.35, -0.55],
-          [0.3, -2.1, 0.45]
-        ].map((position, index) => (
-          <mesh key={index} position={position as [number, number, number]} rotation={[0.4, 0.8, 0.2]}>
-            <tetrahedronGeometry args={[0.34 + index * 0.05, 0]} />
-            <meshStandardMaterial
-              color={index % 2 === 0 ? "#ff6a6a" : "#1a1a1a"}
-              emissive={index % 2 === 0 ? "#b20000" : "#2a0909"}
-              emissiveIntensity={index % 2 === 0 ? 1.1 : 0.45}
-              metalness={0.8}
-              roughness={0.18}
-            />
-          </mesh>
-        ))}
-      </group>
+      <mesh ref={innerBandRef} rotation={[0.4, 0.1, Math.PI / 2.2]}>
+        <torusGeometry args={[2.28, 0.045, 18, 140]} />
+        <meshStandardMaterial
+          color="#1b1b1b"
+          emissive="#050505"
+          emissiveIntensity={0.08}
+          metalness={0.88}
+          roughness={0.64}
+        />
+      </mesh>
 
       <Sparkles count={26} scale={5.4} size={2.2} speed={0.45} opacity={0.28} color="#ff4a4a" />
     </group>
@@ -122,9 +113,8 @@ function CoreWorld({ active }: { active: boolean }) {
 
 function VanguardWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const ringARef = useRef<THREE.Mesh>(null);
-  const ringBRef = useRef<THREE.Mesh>(null);
   const barsRef = useRef<THREE.Group>(null);
+  const spineRef = useRef<THREE.Group>(null);
 
   useActiveScale(groupRef, active, 1.08);
 
@@ -136,21 +126,16 @@ function VanguardWorld({ active }: { active: boolean }) {
       groupRef.current.rotation.y += delta * 0.16;
     }
 
-    if (ringARef.current) {
-      ringARef.current.rotation.x += delta * 0.4;
-      ringARef.current.rotation.y += delta * 0.2;
-    }
-
-    if (ringBRef.current) {
-      ringBRef.current.rotation.x -= delta * 0.24;
-      ringBRef.current.rotation.z += delta * 0.32;
-    }
-
     if (barsRef.current) {
       barsRef.current.rotation.y -= delta * 0.48;
       barsRef.current.children.forEach((child, index) => {
         child.position.y = Math.sin(t * 1.4 + index) * 0.18;
       });
+    }
+
+    if (spineRef.current) {
+      spineRef.current.rotation.y += delta * 0.12;
+      spineRef.current.rotation.z = Math.sin(t * 0.8) * 0.06;
     }
   });
 
@@ -170,33 +155,38 @@ function VanguardWorld({ active }: { active: boolean }) {
         </mesh>
       </Float>
 
-      <mesh ref={ringARef} rotation={[Math.PI / 2.1, 0.2, 0]}>
-        <torusGeometry args={[2.55, 0.06, 24, 160]} />
-        <meshStandardMaterial color="#ff2424" emissive="#c80000" emissiveIntensity={1.45} />
-      </mesh>
-
-      <mesh ref={ringBRef} rotation={[0.4, 0, Math.PI / 2.5]}>
-        <torusGeometry args={[1.9, 0.045, 20, 120]} />
-        <meshStandardMaterial color="#ffffff" emissive="#7a1717" emissiveIntensity={0.55} />
-      </mesh>
+      <group ref={spineRef}>
+        {[-1.05, -0.35, 0.35, 1.05].map((offset, index) => (
+          <mesh key={offset} position={[offset, 0, 0]} rotation={[0.2, 0.4, 0.2]}>
+            <boxGeometry args={[0.24, 3.3 - index * 0.28, 0.24]} />
+            <meshStandardMaterial
+              color={index % 2 === 0 ? "#0c0c0c" : "#181818"}
+              emissive="#040404"
+              emissiveIntensity={0.05}
+              metalness={0.76}
+              roughness={0.7}
+            />
+          </mesh>
+        ))}
+      </group>
 
       <group ref={barsRef}>
-        {[0, 1, 2, 3].map((index) => {
-          const angle = (index / 4) * Math.PI * 2;
-          const radius = 2.45;
+        {[0, 1, 2, 3, 4, 5].map((index) => {
+          const angle = (index / 6) * Math.PI * 2;
+          const radius = 2.65;
           return (
             <mesh
               key={index}
               position={[Math.cos(angle) * radius, 0, Math.sin(angle) * radius]}
-              rotation={[0.2, angle, Math.PI / 6]}
+              rotation={[0.28, angle, Math.PI / 8]}
             >
-              <boxGeometry args={[0.22, 1.4, 0.22]} />
+              <boxGeometry args={[0.22, 1.9, 0.28]} />
               <meshStandardMaterial
-                color={index % 2 === 0 ? "#ff3030" : "#0f0f0f"}
-                emissive={index % 2 === 0 ? "#9a0000" : "#240909"}
-                emissiveIntensity={index % 2 === 0 ? 1.2 : 0.32}
-                metalness={0.9}
-                roughness={0.1}
+                color={index % 3 === 0 ? "#280707" : "#101010"}
+                emissive={index % 3 === 0 ? "#6d0000" : "#030303"}
+                emissiveIntensity={index % 3 === 0 ? 0.55 : 0.04}
+                metalness={0.82}
+                roughness={0.68}
               />
             </mesh>
           );
@@ -208,9 +198,9 @@ function VanguardWorld({ active }: { active: boolean }) {
 
 function MediaWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const haloARef = useRef<THREE.Mesh>(null);
-  const haloBRef = useRef<THREE.Mesh>(null);
-  const satelliteRef = useRef<THREE.Group>(null);
+  const frameRef = useRef<THREE.Group>(null);
+  const screenRef = useRef<THREE.Group>(null);
+  const signalRef = useRef<THREE.Group>(null);
 
   useActiveScale(groupRef, active, 1.1);
 
@@ -222,80 +212,89 @@ function MediaWorld({ active }: { active: boolean }) {
       groupRef.current.rotation.y += delta * 0.12;
     }
 
-    if (haloARef.current) {
-      haloARef.current.rotation.y += delta * 0.35;
-      haloARef.current.rotation.z += delta * 0.12;
+    if (frameRef.current) {
+      frameRef.current.rotation.y += delta * 0.22;
+      frameRef.current.rotation.z = Math.sin(t * 0.55) * 0.04;
     }
 
-    if (haloBRef.current) {
-      haloBRef.current.rotation.x -= delta * 0.26;
-      haloBRef.current.rotation.z -= delta * 0.2;
+    if (screenRef.current) {
+      screenRef.current.rotation.y -= delta * 0.16;
     }
 
-    if (satelliteRef.current) {
-      satelliteRef.current.rotation.y += delta * 0.52;
-      satelliteRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 1.1 + index * 1.5) * 0.26;
+    if (signalRef.current) {
+      signalRef.current.rotation.y += delta * 0.36;
+      signalRef.current.children.forEach((child, index) => {
+        child.position.y = Math.sin(t * 0.95 + index * 1.1) * 0.18;
       });
     }
   });
 
   return (
     <group ref={groupRef} position={[2 * SPACING, 0, 0]}>
-      <mesh>
-        <sphereGeometry args={[1.12, 64, 64]} />
-        <meshPhysicalMaterial
-          color="#ff2d2d"
-          emissive="#d30000"
-          emissiveIntensity={active ? 2.1 : 1.45}
-          metalness={0.6}
-          roughness={0.06}
-          clearcoat={1}
-          transmission={0.08}
-        />
-      </mesh>
+      <group ref={frameRef}>
+        <mesh rotation={[0.18, 0.42, 0]}>
+          <boxGeometry args={[3.4, 2.1, 0.18]} />
+          <meshStandardMaterial color="#101010" metalness={0.88} roughness={0.72} />
+        </mesh>
+        <mesh position={[0, 0, 0.12]} rotation={[0.18, 0.42, 0]}>
+          <boxGeometry args={[2.82, 1.58, 0.05]} />
+          <meshStandardMaterial
+            color="#390707"
+            emissive="#790000"
+            emissiveIntensity={active ? 0.95 : 0.58}
+            metalness={0.22}
+            roughness={0.34}
+          />
+        </mesh>
+      </group>
 
-      <mesh ref={haloARef} rotation={[Math.PI / 2.2, 0, 0]}>
-        <torusGeometry args={[2.24, 0.08, 24, 160]} />
-        <meshStandardMaterial color="#ff4a4a" emissive="#ff1e1e" emissiveIntensity={1.1} />
-      </mesh>
-
-      <mesh ref={haloBRef} rotation={[0.4, 0.4, Math.PI / 2]}>
-        <torusGeometry args={[1.62, 0.04, 18, 120]} />
-        <meshStandardMaterial color="#ffffff" emissive="#7a1515" emissiveIntensity={0.45} />
-      </mesh>
-
-      <group ref={satelliteRef}>
-        {[
-          { pos: [-2.4, 1, 0.2], radius: 0.62, color: "#1a1a1a", emissive: "#2a0909" },
-          { pos: [2.2, -0.75, -0.4], radius: 0.78, color: "#e40000", emissive: "#a60000" },
-          { pos: [0.2, 2.1, 0.55], radius: 0.4, color: "#ffffff", emissive: "#491010" }
-        ].map((satellite, index) => (
-          <Float key={index} speed={1.4 + index * 0.35} rotationIntensity={0.35} floatIntensity={0.5}>
-            <mesh position={satellite.pos as [number, number, number]}>
-              <sphereGeometry args={[satellite.radius, 48, 48]} />
-              <meshPhysicalMaterial
-                color={satellite.color}
-                emissive={satellite.emissive}
-                emissiveIntensity={satellite.color === "#1a1a1a" ? 0.4 : 0.9}
-                metalness={0.8}
-                roughness={0.08}
-                clearcoat={1}
-              />
-            </mesh>
-          </Float>
+      <group ref={screenRef}>
+        {[-1.5, 0, 1.5].map((offset, index) => (
+          <mesh
+            key={offset}
+            position={[offset, index === 1 ? -0.15 : 0.55 - index * 0.2, -0.45 + index * 0.12]}
+            rotation={[0.12, -0.38 + index * 0.22, 0]}
+          >
+            <boxGeometry args={[0.82, 1.55, 0.06]} />
+            <meshStandardMaterial
+              color={index === 1 ? "#141414" : "#0f0f0f"}
+              emissive={index === 1 ? "#5f0000" : "#2a0808"}
+              emissiveIntensity={index === 1 ? 0.62 : 0.2}
+              metalness={0.62}
+              roughness={0.58}
+            />
+          </mesh>
         ))}
       </group>
 
-      <Sparkles count={18} scale={4.8} size={2.4} speed={0.32} opacity={0.22} color="#ff7b7b" />
+      <group ref={signalRef}>
+        {[0, 1, 2].map((index) => {
+          const angle = (index / 3) * Math.PI * 2;
+          const radius = 2.55;
+          return (
+            <mesh key={index} position={[Math.cos(angle) * radius, 0, Math.sin(angle) * radius]} rotation={[0.6, angle, 0]}>
+              <boxGeometry args={[0.18, 1.28, 0.18]} />
+              <meshStandardMaterial
+                color={index === 0 ? "#7a0000" : "#141414"}
+                emissive={index === 0 ? "#8e0000" : "#050505"}
+                emissiveIntensity={index === 0 ? 0.7 : 0.08}
+                metalness={0.8}
+                roughness={0.66}
+              />
+            </mesh>
+          );
+        })}
+      </group>
+
+      <Sparkles count={16} scale={4.8} size={1.8} speed={0.28} opacity={0.18} color="#ff5a5a" />
     </group>
   );
 }
 
 function AlliancesWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const latticeRef = useRef<THREE.Group>(null);
-  const satellitesRef = useRef<THREE.Group>(null);
+  const linkRef = useRef<THREE.Group>(null);
+  const nodeRef = useRef<THREE.Group>(null);
 
   useActiveScale(groupRef, active, 1.1);
 
@@ -307,71 +306,59 @@ function AlliancesWorld({ active }: { active: boolean }) {
       groupRef.current.rotation.y -= delta * 0.18;
     }
 
-    if (latticeRef.current) {
-      latticeRef.current.rotation.x += delta * 0.24;
-      latticeRef.current.rotation.y -= delta * 0.18;
-      latticeRef.current.rotation.z += delta * 0.12;
+    if (linkRef.current) {
+      linkRef.current.rotation.y -= delta * 0.12;
+      linkRef.current.rotation.x = Math.sin(t * 0.48) * 0.08;
     }
 
-    if (satellitesRef.current) {
-      satellitesRef.current.rotation.y += delta * 0.46;
-      satellitesRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 0.9 + index * 1.2) * 0.2;
+    if (nodeRef.current) {
+      nodeRef.current.rotation.y += delta * 0.24;
+      nodeRef.current.children.forEach((child, index) => {
+        child.position.y = Math.sin(t * 0.88 + index * 0.9) * 0.14;
       });
     }
   });
 
   return (
     <group ref={groupRef} position={[3 * SPACING, 0, 0]}>
-      <Float speed={1.15} rotationIntensity={0.1} floatIntensity={0.18}>
-        <mesh>
-          <octahedronGeometry args={[1.9, 0]} />
-          <MeshTransmissionMaterial
-            backside
-            samples={4}
-            thickness={2.2}
-            chromaticAberration={0.5}
-            anisotropy={0.45}
-            distortion={0.12}
-            distortionScale={0.14}
-            color="#ffffff"
-          />
-        </mesh>
-      </Float>
-
-      <group ref={latticeRef}>
-        <mesh rotation={[Math.PI / 4, 0, 0]}>
-          <torusGeometry args={[2.7, 0.05, 20, 120]} />
-          <meshStandardMaterial color="#ff3a3a" emissive="#941111" emissiveIntensity={0.85} />
-        </mesh>
-        <mesh rotation={[0, Math.PI / 4, Math.PI / 4]}>
-          <torusGeometry args={[2.15, 0.04, 18, 96]} />
-          <meshStandardMaterial color="#fff5f5" emissive="#601313" emissiveIntensity={0.42} />
+      <group ref={linkRef}>
+        <Float speed={1.1} rotationIntensity={0.08} floatIntensity={0.15}>
+          <mesh position={[-1.28, 0, 0]} rotation={[0.4, 0.2, Math.PI / 2.3]}>
+            <torusGeometry args={[1.22, 0.22, 28, 120]} />
+            <meshStandardMaterial color="#121212" metalness={0.9} roughness={0.64} />
+          </mesh>
+        </Float>
+        <Float speed={1.1} rotationIntensity={0.08} floatIntensity={0.15}>
+          <mesh position={[1.28, 0, 0]} rotation={[0.4, -0.2, Math.PI / 2.3]}>
+            <torusGeometry args={[1.22, 0.22, 28, 120]} />
+            <meshStandardMaterial color="#171717" metalness={0.9} roughness={0.64} />
+          </mesh>
+        </Float>
+        <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.14, 0.14, 2.15, 18]} />
+          <meshStandardMaterial color="#6f0000" emissive="#7f0000" emissiveIntensity={active ? 0.88 : 0.56} metalness={0.55} roughness={0.34} />
         </mesh>
       </group>
 
-      <group ref={satellitesRef}>
-        {[0, 1, 2, 3].map((index) => {
-          const angle = (index / 4) * Math.PI * 2;
-          const radius = 3.05;
-          return (
-            <mesh
-              key={index}
-              position={[Math.cos(angle) * radius, 0, Math.sin(angle) * radius]}
-              rotation={[0.4, angle, 0.4]}
-            >
-              <octahedronGeometry args={[0.36, 0]} />
-              <meshPhysicalMaterial
-                color={index % 2 === 0 ? "#ffffff" : "#ff3d3d"}
-                emissive={index % 2 === 0 ? "#6e1b1b" : "#a40000"}
-                emissiveIntensity={index % 2 === 0 ? 0.4 : 1.05}
-                metalness={0.8}
-                roughness={0.12}
-                clearcoat={1}
-              />
-            </mesh>
-          );
-        })}
+      <group ref={nodeRef}>
+        {[
+          [-3.1, 0.25, 0.2],
+          [3.1, -0.15, -0.25],
+          [0, 2.3, 0.18],
+          [0, -2.25, -0.22]
+        ].map((position, index) => (
+          <mesh key={index} position={position as [number, number, number]}>
+            <sphereGeometry args={[0.28 + (index % 2) * 0.04, 28, 28]} />
+            <meshPhysicalMaterial
+              color={index < 2 ? "#0f0f0f" : "#8a0000"}
+              emissive={index < 2 ? "#050505" : "#8a0000"}
+              emissiveIntensity={index < 2 ? 0.08 : 0.58}
+              metalness={0.78}
+              roughness={0.32}
+              clearcoat={1}
+            />
+          </mesh>
+        ))}
       </group>
     </group>
   );
