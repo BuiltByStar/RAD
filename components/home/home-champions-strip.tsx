@@ -18,18 +18,18 @@ const milestones: Milestone[] = [
   },
   {
     year: "2024",
-    title: "Marvel Rivals",
-    detail: "Official entry into competitive Marvel Rivals with a world-class starting lineup."
+    title: "Top tier",
+    detail: "Entered international competition with a roster built for LANs, pressure, and long runs."
   },
   {
     year: "Aug 2025",
-    title: "Ignite World Champions",
-    detail: "Inaugural Marvel Rivals Ignite: Mid-Season World Championship secured."
+    title: "World title",
+    detail: "Inaugural global championship in our division — proof on the biggest stage."
   },
   {
     year: "Mar 2026",
-    title: "EMEA Title",
-    detail: "Season 6: EMEA PC champions. Back-to-back titles locked in."
+    title: "EMEA crown",
+    detail: "Regional championship locked in. The standard stays the same: win, then win again."
   }
 ];
 
@@ -53,14 +53,14 @@ export function HomeChampionsStrip() {
             transition={{ duration: 0.8, ease: EASE }}
             className="max-w-md"
           >
-            <Eyebrow>RAD / Record</Eyebrow>
+            <Eyebrow>RAD / Timeline</Eyebrow>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl uppercase leading-tight tracking-tight sm:text-5xl">
               Built in <span className="text-[color:var(--color-rad)]">three years.</span>{" "}
-              Winning at the top.
+              Still climbing.
             </h2>
             <p className="mt-4 text-sm text-white/60 sm:text-base">
-              We didn&apos;t wait for an invitation. RAD broke in, took the belt, and now
-              sets the tempo of the Marvel Rivals scene.
+              Proof over promises: titles, consistency, and a brand that shows up when the lights go
+              hot.
             </p>
           </motion.div>
 

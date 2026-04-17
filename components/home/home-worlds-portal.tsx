@@ -33,16 +33,15 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.8, ease: EASE }}
             className="max-w-md"
           >
-            <Eyebrow>Explore</Eyebrow>
+            <Eyebrow>Systems</Eyebrow>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl uppercase leading-[0.95] tracking-tight sm:text-5xl">
               Four worlds.
               <br />
               One organization.
             </h2>
             <p className="mt-5 text-sm text-white/60 sm:text-base">
-              Navigate the interactive RAD map. The Core, Vanguard, Media, and
-              Alliances — each world is an entry point into how we compete,
-              create, and grow.
+              An interactive map of how RAD operates — competition, creative, media,
+              and partnerships — without leaving the site.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/about" variant="primary">About the org</Button>

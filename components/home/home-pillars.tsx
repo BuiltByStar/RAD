@@ -23,7 +23,7 @@ export function HomePillars() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, ease: EASE }}
           >
-            <Eyebrow tone="rad">What drives us</Eyebrow>
+            <Eyebrow tone="rad">Principles</Eyebrow>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl">
               Four pillars.
               <br />
