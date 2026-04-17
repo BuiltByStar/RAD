@@ -3,7 +3,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Float, Sparkles } from "@react-three/drei";
+import { Edges, Environment, Float, Lightformer, Sparkles } from "@react-three/drei";
+import {
+  Bloom,
+  ChromaticAberration,
+  EffectComposer,
+  Vignette
+} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 
 import { ImmersiveHud } from "./immersive-hud";
@@ -11,6 +18,8 @@ import { Preloader } from "./preloader";
 
 const WORLDS_COUNT = 4;
 const SPACING = 15;
+
+/* ─────────────────────────── hooks ─────────────────────────── */
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -24,175 +33,187 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
+function useBreakpoint(query = "(max-width: 640px)") {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
+    const onChange = (e: MediaQueryListEvent) => setMatches(e.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
 function useActiveScale(ref: RefObject<THREE.Group | null>, active: boolean, activeScale = 1.08) {
   useFrame((_, delta) => {
     if (!ref.current) return;
     const target = active ? activeScale : 1;
-    const next = THREE.MathUtils.lerp(ref.current.scale.x, target, delta * 2.2);
+    const next = THREE.MathUtils.damp(ref.current.scale.x, target, 4, delta);
     ref.current.scale.setScalar(next);
   });
 }
 
-function Blade({
-  position,
-  rotation,
-  size,
-  color = "#101010",
-  emissive = "#050505",
-  emissiveIntensity = 0.08,
-  roughness = 0.82,
-  metalness = 0.72
-}: {
-  position: [number, number, number];
-  rotation?: [number, number, number];
-  size: [number, number, number];
-  color?: string;
-  emissive?: string;
-  emissiveIntensity?: number;
-  roughness?: number;
-  metalness?: number;
-}) {
+/* ─────────────────────────── materials ─────────────────────────── */
+
+const BRAND = {
+  red: "#ff2b45",
+  redHi: "#ff6b7e",
+  redDeep: "#8a0a1a",
+  redEmber: "#4a0510",
+  ink: "#080809",
+  edge: "#ff3d57"
+} as const;
+
+function ChromeBody(props: { color?: string; roughness?: number }) {
   return (
-    <mesh position={position} rotation={rotation}>
-      <boxGeometry args={size} />
-      <meshStandardMaterial
-        color={color}
-        emissive={emissive}
-        emissiveIntensity={emissiveIntensity}
-        roughness={roughness}
-        metalness={metalness}
-      />
-    </mesh>
+    <meshPhysicalMaterial
+      color={props.color ?? BRAND.ink}
+      roughness={props.roughness ?? 0.22}
+      metalness={0.95}
+      clearcoat={1}
+      clearcoatRoughness={0.15}
+      reflectivity={1}
+      sheen={1}
+      sheenRoughness={0.4}
+      sheenColor={BRAND.redDeep}
+      envMapIntensity={1.1}
+    />
   );
 }
 
+function EmissiveGlass(props: { color?: string; intensity?: number }) {
+  return (
+    <meshPhysicalMaterial
+      color={props.color ?? BRAND.red}
+      emissive={props.color ?? BRAND.red}
+      emissiveIntensity={props.intensity ?? 2.4}
+      roughness={0.15}
+      metalness={0}
+      transmission={0.35}
+      thickness={0.25}
+      transparent
+      opacity={0.95}
+    />
+  );
+}
+
+/* ─────────────────────────── worlds ─────────────────────────── */
+
 function CoreWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const seamRef = useRef<THREE.Group>(null);
+  const seamRef = useRef<THREE.Mesh>(null);
+  const ringARef = useRef<THREE.Mesh>(null);
+  const ringBRef = useRef<THREE.Mesh>(null);
 
   useActiveScale(groupRef, active, 1.1);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.14;
-      groupRef.current.rotation.x = Math.sin(t * 0.35) * 0.06;
-      groupRef.current.position.y = Math.sin(t * 0.7) * 0.16;
+      groupRef.current.rotation.y += delta * 0.18;
+      groupRef.current.rotation.x = Math.sin(t * 0.35) * 0.05;
+      groupRef.current.position.y = Math.sin(t * 0.65) * 0.12;
     }
     if (seamRef.current) {
-      seamRef.current.rotation.y -= delta * 0.18;
-      seamRef.current.position.y = Math.sin(t * 1.1) * 0.08;
+      const mat = seamRef.current.material as THREE.MeshPhysicalMaterial;
+      mat.emissiveIntensity = 2.4 + Math.sin(t * 2.6) * 0.6 + (active ? 0.8 : 0);
     }
+    if (ringARef.current) ringARef.current.rotation.z += delta * 0.6;
+    if (ringBRef.current) ringBRef.current.rotation.x += delta * 0.4;
   });
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
-      <Float speed={1.1} rotationIntensity={0.04} floatIntensity={0.12}>
-        <group>
-          <Blade position={[0, 0, 0]} rotation={[0.14, 0.18, 0.05]} size={[0.42, 4.3, 0.48]} color="#0c0c0c" roughness={0.9} />
-          <Blade position={[-0.78, 0.38, -0.16]} rotation={[0.04, -0.26, 0.42]} size={[0.24, 3.6, 0.42]} color="#141414" roughness={0.86} />
-          <Blade position={[0.84, -0.28, 0.18]} rotation={[0.08, 0.34, -0.42]} size={[0.24, 3.45, 0.42]} color="#171717" roughness={0.86} />
-          <Blade position={[-1.15, -0.76, 0.25]} rotation={[0.1, -0.22, 0.82]} size={[0.18, 2.5, 0.34]} color="#111111" roughness={0.9} />
-          <Blade position={[1.2, 0.74, -0.24]} rotation={[0.1, 0.22, -0.82]} size={[0.18, 2.5, 0.34]} color="#111111" roughness={0.9} />
-        </group>
+      <Float speed={1.2} rotationIntensity={0.1} floatIntensity={0.2}>
+        {/* Central crystal */}
+        <mesh castShadow receiveShadow>
+          <icosahedronGeometry args={[1.55, 0]} />
+          <ChromeBody roughness={0.18} />
+          <Edges scale={1.002} threshold={1} color={BRAND.edge} />
+        </mesh>
+
+        {/* Emissive seam bar through the crystal */}
+        <mesh ref={seamRef} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.055, 0.055, 4.4, 20]} />
+          <EmissiveGlass intensity={active ? 3 : 2.4} />
+        </mesh>
       </Float>
 
-      <group ref={seamRef}>
-        <Blade
-          position={[0, 0, 0.18]}
-          rotation={[0.2, 0.1, 0.02]}
-          size={[0.1, 3.5, 0.1]}
-          color="#780000"
-          emissive="#9f0000"
-          emissiveIntensity={active ? 1.05 : 0.72}
-          roughness={0.3}
-          metalness={0.4}
-        />
-        <Blade
-          position={[0, 0, -0.18]}
-          rotation={[0.2, 0.1, 0.02]}
-          size={[0.08, 2.4, 0.08]}
-          color="#a30000"
-          emissive="#a30000"
-          emissiveIntensity={active ? 0.95 : 0.58}
-          roughness={0.26}
-          metalness={0.22}
-        />
-      </group>
+      {/* Orbiting rings */}
+      <mesh ref={ringARef} rotation={[Math.PI / 2.4, 0, 0]}>
+        <torusGeometry args={[2.55, 0.018, 16, 160]} />
+        <meshBasicMaterial color={BRAND.red} toneMapped={false} />
+      </mesh>
+      <mesh ref={ringBRef} rotation={[Math.PI / 1.5, Math.PI / 3, 0]}>
+        <torusGeometry args={[3.1, 0.012, 16, 160]} />
+        <meshBasicMaterial color={BRAND.redHi} toneMapped={false} opacity={0.6} transparent />
+      </mesh>
     </group>
   );
 }
 
 function VanguardWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const wallRef = useRef<THREE.Group>(null);
-  const outerRef = useRef<THREE.Group>(null);
+  const pillarsRef = useRef<THREE.Group>(null);
+  const beamRef = useRef<THREE.Mesh>(null);
 
   useActiveScale(groupRef, active, 1.06);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.12;
-      groupRef.current.position.y = Math.sin(t * 0.58) * 0.14;
+      groupRef.current.rotation.y += delta * 0.1;
+      groupRef.current.position.y = Math.sin(t * 0.5) * 0.1;
     }
-    if (wallRef.current) {
-      wallRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 0.82 + index * 0.5) * 0.1;
+    if (pillarsRef.current) {
+      pillarsRef.current.children.forEach((child, i) => {
+        child.position.y = Math.sin(t * 0.8 + i * 0.6) * 0.18;
       });
     }
-    if (outerRef.current) {
-      outerRef.current.rotation.y -= delta * 0.2;
+    if (beamRef.current) {
+      const mat = beamRef.current.material as THREE.MeshBasicMaterial;
+      mat.opacity = 0.85 + Math.sin(t * 3) * 0.15;
     }
   });
 
+  const pillars = useMemo(
+    () => [-1.8, -1.1, -0.38, 0.38, 1.1, 1.8].map((x) => ({ x, h: 3.7 - Math.abs(x) * 0.42 })),
+    []
+  );
+
   return (
     <group ref={groupRef} position={[1 * SPACING, 0, 0]}>
-      <group ref={wallRef}>
-        {[-1.8, -1.1, -0.38, 0.38, 1.1, 1.8].map((offset, index) => (
-          <Blade
-            key={offset}
-            position={[offset, 0, 0]}
-            rotation={[0.08, offset * 0.08, 0]}
-            size={[0.34, 3.7 - Math.abs(offset) * 0.4, 0.5]}
-            color={index % 2 === 0 ? "#0f0f0f" : "#151515"}
-            roughness={0.88}
-            metalness={0.78}
-          />
+      <group ref={pillarsRef}>
+        {pillars.map(({ x, h }, i) => (
+          <mesh key={x} position={[x, 0, 0]} rotation={[0.05, 0, 0]}>
+            <boxGeometry args={[0.32, h, 0.5]} />
+            <ChromeBody color={i % 2 ? "#0e0e10" : "#141417"} roughness={0.28} />
+            <Edges scale={1.002} threshold={15} color={i === 2 || i === 3 ? BRAND.edge : "#2a2a2e"} />
+          </mesh>
         ))}
       </group>
 
-      <group ref={outerRef}>
-        {[
-          [-2.95, 0.55, 0.36],
-          [2.95, -0.45, -0.22],
-          [0, 1.85, -0.2],
-          [0, -1.85, 0.22]
-        ].map((position, index) => (
-          <Blade
-            key={index}
-            position={position as [number, number, number]}
-            rotation={[0.18, index * 0.6, index < 2 ? 0.22 : Math.PI / 2]}
-            size={[0.22, 1.8, 0.34]}
-            color={index % 2 === 0 ? "#180f0f" : "#111111"}
-            emissive={index % 2 === 0 ? "#560000" : "#040404"}
-            emissiveIntensity={index % 2 === 0 ? 0.34 : 0.05}
-            roughness={0.82}
-            metalness={0.8}
-          />
-        ))}
-      </group>
+      {/* Central emissive beam */}
+      <mesh ref={beamRef} position={[0, 0, 0.6]}>
+        <cylinderGeometry args={[0.04, 0.04, 3.2, 16]} />
+        <meshBasicMaterial color={BRAND.red} toneMapped={false} transparent />
+      </mesh>
 
-      <Blade
-        position={[0, 0, 0.5]}
-        rotation={[0.08, 0, 0]}
-        size={[0.16, 2.8, 0.16]}
-        color="#760000"
-        emissive="#860000"
-        emissiveIntensity={active ? 0.78 : 0.52}
-        roughness={0.36}
-        metalness={0.42}
-      />
+      {/* Crest — floating dodecahedron above */}
+      <Float speed={1.3} rotationIntensity={0.3} floatIntensity={0.2}>
+        <mesh position={[0, 2.3, 0.1]}>
+          <dodecahedronGeometry args={[0.48, 0]} />
+          <ChromeBody roughness={0.2} />
+          <Edges scale={1.002} threshold={1} color={BRAND.edge} />
+        </mesh>
+      </Float>
+
+      {/* Base ring */}
+      <mesh position={[0, -2.15, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[2.6, 0.03, 12, 96]} />
+        <meshBasicMaterial color={BRAND.red} toneMapped={false} />
+      </mesh>
     </group>
   );
 }
@@ -200,7 +221,7 @@ function VanguardWorld({ active }: { active: boolean }) {
 function MediaWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const panelsRef = useRef<THREE.Group>(null);
-  const tickerRef = useRef<THREE.Group>(null);
+  const scanRef = useRef<THREE.Mesh>(null);
 
   useActiveScale(groupRef, active, 1.08);
 
@@ -208,72 +229,58 @@ function MediaWorld({ active }: { active: boolean }) {
     const t = state.clock.elapsedTime;
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.08;
-      groupRef.current.position.y = Math.sin(t * 0.65) * 0.12;
+      groupRef.current.position.y = Math.sin(t * 0.55) * 0.1;
     }
     if (panelsRef.current) {
-      panelsRef.current.children.forEach((child, index) => {
-        child.rotation.y = THREE.MathUtils.lerp(child.rotation.y, -0.42 + index * 0.42, delta * 2.2);
+      panelsRef.current.children.forEach((child, i) => {
+        child.rotation.y = THREE.MathUtils.damp(
+          child.rotation.y,
+          -0.42 + i * 0.42,
+          3,
+          delta
+        );
       });
     }
-    if (tickerRef.current) {
-      tickerRef.current.rotation.y -= delta * 0.18;
-      tickerRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 0.92 + index) * 0.08;
-      });
+    if (scanRef.current) {
+      scanRef.current.position.y = ((t * 0.6) % 2.4) - 1.2;
     }
   });
 
   return (
     <group ref={groupRef} position={[2 * SPACING, 0, 0]}>
       <group ref={panelsRef}>
-        {[-1.55, 0, 1.55].map((offset, index) => (
-          <group key={offset} position={[offset, index === 1 ? 0 : 0.16, -0.1 * Math.abs(offset)]}>
-            <Blade
-              position={[0, 0, 0]}
-              rotation={[0.06, -0.42 + index * 0.42, 0]}
-              size={[1.28, 2.05, 0.14]}
-              color="#0e0e0e"
-              roughness={0.9}
-              metalness={0.78}
-            />
-            <Blade
-              position={[0, 0, 0.09]}
-              rotation={[0.06, -0.42 + index * 0.42, 0]}
-              size={[1.02, 1.6, 0.03]}
-              color={index === 1 ? "#2a0707" : "#190404"}
-              emissive={index === 1 ? "#6a0000" : "#3d0000"}
-              emissiveIntensity={index === 1 ? 0.65 : 0.28}
-              roughness={0.42}
-              metalness={0.25}
-            />
+        {[-1.6, 0, 1.6].map((offset, i) => (
+          <group key={offset} position={[offset, i === 1 ? 0.05 : 0, -0.12 * Math.abs(offset)]}>
+            {/* Outer frame */}
+            <mesh>
+              <boxGeometry args={[1.35, 2.15, 0.1]} />
+              <ChromeBody color={i === 1 ? "#0d0d0f" : "#111114"} roughness={0.3} />
+              <Edges scale={1.002} threshold={15} color={i === 1 ? BRAND.edge : "#262628"} />
+            </mesh>
+            {/* Screen */}
+            <mesh position={[0, 0, 0.06]}>
+              <planeGeometry args={[1.1, 1.75]} />
+              <meshBasicMaterial color={i === 1 ? "#330610" : "#1a0508"} toneMapped={false} />
+            </mesh>
+            {/* Scanning line (only on center panel) */}
+            {i === 1 ? (
+              <mesh ref={scanRef} position={[0, 0, 0.065]}>
+                <planeGeometry args={[1.05, 0.04]} />
+                <meshBasicMaterial color={BRAND.red} toneMapped={false} transparent opacity={0.9} />
+              </mesh>
+            ) : null}
           </group>
         ))}
       </group>
 
-      <group ref={tickerRef}>
-        {[-2.5, -1.15, 0, 1.15, 2.5].map((offset, index) => (
-          <Blade
-            key={offset}
-            position={[offset, 1.7 - (index % 2) * 3.4, 0.28]}
-            rotation={[0.2, 0, Math.PI / 2]}
-            size={[0.08, 1.2 + (index % 2) * 0.35, 0.08]}
-            color={index === 2 ? "#840000" : "#141414"}
-            emissive={index === 2 ? "#8f0000" : "#050505"}
-            emissiveIntensity={index === 2 ? 0.72 : 0.05}
-            roughness={0.76}
-            metalness={0.72}
-          />
-        ))}
-      </group>
+      {/* Base slab */}
+      <mesh position={[0, -1.6, -0.05]}>
+        <boxGeometry args={[4.2, 0.08, 0.3]} />
+        <ChromeBody roughness={0.45} />
+      </mesh>
 
-      <Blade
-        position={[0, -2.2, -0.1]}
-        rotation={[0.1, 0, 0]}
-        size={[3.8, 0.1, 0.18]}
-        color="#111111"
-        roughness={0.88}
-        metalness={0.68}
-      />
+      {/* Volumetric red glow under the panels */}
+      <pointLight position={[0, -0.3, 0.4]} intensity={2.2} distance={3.6} color={BRAND.red} />
     </group>
   );
 }
@@ -281,86 +288,61 @@ function MediaWorld({ active }: { active: boolean }) {
 function AlliancesWorld({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const nodesRef = useRef<THREE.Group>(null);
-  const bridgeRef = useRef<THREE.Group>(null);
+  const coreRef = useRef<THREE.Mesh>(null);
 
   useActiveScale(groupRef, active, 1.08);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
     if (groupRef.current) {
-      groupRef.current.rotation.y -= delta * 0.1;
-      groupRef.current.position.y = Math.sin(t * 0.56) * 0.12;
+      groupRef.current.rotation.y -= delta * 0.12;
+      groupRef.current.position.y = Math.sin(t * 0.5) * 0.1;
     }
     if (nodesRef.current) {
-      nodesRef.current.children.forEach((child, index) => {
-        child.position.y = Math.sin(t * 0.84 + index * 0.9) * 0.1 + (index < 2 ? 0.7 : -0.7);
+      nodesRef.current.children.forEach((child, i) => {
+        const orbit = t * 0.7 + i * (Math.PI / 2);
+        child.position.x = Math.cos(orbit) * 1.9;
+        child.position.z = Math.sin(orbit) * 1.9;
+        child.position.y = Math.sin(t * 0.9 + i) * 0.25;
       });
     }
-    if (bridgeRef.current) {
-      bridgeRef.current.rotation.z = Math.sin(t * 0.38) * 0.05;
+    if (coreRef.current) {
+      coreRef.current.rotation.x += delta * 0.4;
+      coreRef.current.rotation.y += delta * 0.6;
     }
   });
 
   return (
     <group ref={groupRef} position={[3 * SPACING, 0, 0]}>
+      {/* Central core */}
+      <Float speed={1.4} rotationIntensity={0.2} floatIntensity={0.2}>
+        <mesh ref={coreRef}>
+          <octahedronGeometry args={[0.95, 0]} />
+          <ChromeBody roughness={0.15} />
+          <Edges scale={1.002} threshold={1} color={BRAND.edge} />
+        </mesh>
+      </Float>
+
+      {/* Orbiting nodes */}
       <group ref={nodesRef}>
-        {[
-          [-2.1, 0.7, 0],
-          [2.1, 0.7, 0],
-          [-2.1, -0.7, 0],
-          [2.1, -0.7, 0]
-        ].map((position, index) => (
-          <group key={index} position={position as [number, number, number]}>
-            <Blade
-              position={[0, 0, 0]}
-              rotation={[0.2, index < 2 ? -0.18 : 0.18, 0]}
-              size={[0.7, 1.1, 0.34]}
-              color="#111111"
-              roughness={0.86}
-              metalness={0.74}
-            />
-            <mesh position={[0, 0, 0.22]}>
-              <sphereGeometry args={[0.12, 20, 20]} />
-              <meshStandardMaterial
-                color={index % 2 === 0 ? "#770000" : "#111111"}
-                emissive={index % 2 === 0 ? "#7f0000" : "#050505"}
-                emissiveIntensity={index % 2 === 0 ? 0.62 : 0.06}
-                roughness={0.38}
-                metalness={0.5}
-              />
-            </mesh>
-          </group>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <mesh key={i}>
+            <tetrahedronGeometry args={[0.3, 0]} />
+            <ChromeBody color={i % 2 ? "#0f0f11" : "#151518"} roughness={0.25} />
+            <Edges scale={1.002} threshold={1} color={BRAND.edge} />
+          </mesh>
         ))}
       </group>
 
-      <group ref={bridgeRef}>
-        <Blade
-          position={[0, 0.72, 0]}
-          rotation={[0.04, 0, 0]}
-          size={[4.05, 0.12, 0.16]}
-          color="#151515"
-          roughness={0.84}
-          metalness={0.7}
-        />
-        <Blade
-          position={[0, -0.72, 0]}
-          rotation={[0.04, 0, 0]}
-          size={[4.05, 0.12, 0.16]}
-          color="#151515"
-          roughness={0.84}
-          metalness={0.7}
-        />
-        <Blade
-          position={[0, 0, 0.12]}
-          rotation={[0, 0, Math.PI / 2]}
-          size={[0.14, 1.52, 0.12]}
-          color="#7b0000"
-          emissive="#8d0000"
-          emissiveIntensity={active ? 0.7 : 0.48}
-          roughness={0.34}
-          metalness={0.38}
-        />
-      </group>
+      {/* Orbit ring */}
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[1.9, 0.015, 12, 128]} />
+        <meshBasicMaterial color={BRAND.red} toneMapped={false} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2.6, Math.PI / 4, 0]}>
+        <torusGeometry args={[1.9, 0.008, 8, 128]} />
+        <meshBasicMaterial color={BRAND.redHi} toneMapped={false} transparent opacity={0.5} />
+      </mesh>
     </group>
   );
 }
@@ -376,30 +358,33 @@ function Shapes({ activeIndex }: { activeIndex: number }) {
   );
 }
 
+/* ─────────────────────────── camera ─────────────────────────── */
+
 function CameraRig({ activeIndex, reducedMotion }: { activeIndex: number; reducedMotion: boolean }) {
   const targetX = activeIndex * SPACING;
+  const target = useRef(new THREE.Vector3());
 
   useFrame((state, delta) => {
-    const pointerX = reducedMotion ? 0 : state.pointer.x * 0.45;
-    const pointerY = reducedMotion ? 0 : state.pointer.y * 1.05;
-    const targetY = pointerY + (reducedMotion ? 0 : Math.sin(state.clock.elapsedTime * 0.4) * 0.12);
-    const targetZ = 7.2 - Math.abs(state.pointer.x) * 0.16;
+    const pointerX = reducedMotion ? 0 : state.pointer.x * 0.55;
+    const pointerY = reducedMotion ? 0 : state.pointer.y * 0.9;
+    const bob = reducedMotion ? 0 : Math.sin(state.clock.elapsedTime * 0.4) * 0.08;
 
-    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, targetX + pointerX, delta * 3);
-    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, targetY, delta * 2);
-    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetZ, delta * 2.2);
+    target.current.set(targetX + pointerX, pointerY + bob, 7.5 - Math.abs(state.pointer.x) * 0.22);
+    const lambda = 4.5;
+    state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, target.current.x, lambda, delta);
+    state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, target.current.y, lambda, delta);
+    state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, target.current.z, lambda, delta);
 
-    state.camera.lookAt(targetX, 0, 0);
+    // lookAt with gentle easing
+    const look = new THREE.Vector3(targetX, 0, 0);
+    state.camera.lookAt(look);
   });
 
   return null;
 }
 
-/**
- * Pauses R3F rendering when the scene is offscreen or the tab is hidden.
- * Uses invalidate() to tick one frame after each state change so the lerp
- * in CameraRig still resolves even under frameloop="demand".
- */
+/* ─────────────────────────── render control ─────────────────────────── */
+
 function RenderController({ shouldRender }: { shouldRender: boolean }) {
   const invalidate = useThree((s) => s.invalidate);
   const set = useThree((s) => s.set);
@@ -412,16 +397,43 @@ function RenderController({ shouldRender }: { shouldRender: boolean }) {
   return null;
 }
 
+/* ─────────────────────────── fallback ─────────────────────────── */
+
+function StaticFallback() {
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-black">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/assets/RadRivals_Wallpaper_Red.png"
+        alt="RAD worlds"
+        className="absolute inset-0 h-full w-full object-cover opacity-55"
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgb(255_43_69_/_0.22),transparent_60%)]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 p-6 text-center">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/60">
+          RAD / Worlds
+        </p>
+        <p className="mt-2 font-[family-name:var(--font-display)] text-2xl uppercase tracking-tight">
+          Core · Vanguard · Media · Alliances
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────── root ─────────────────────────── */
+
 export function Scene() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isTabVisible, setIsTabVisible] = useState(true);
   const wrapRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
+  const isSmall = useBreakpoint("(max-width: 640px)");
 
   const shouldRender = isVisible && isTabVisible;
 
-  // IntersectionObserver — only render when this section is on screen
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -433,15 +445,12 @@ export function Scene() {
     return () => io.disconnect();
   }, []);
 
-  // Tab visibility — pause when backgrounded
   useEffect(() => {
     const onChange = () => setIsTabVisible(!document.hidden);
     document.addEventListener("visibilitychange", onChange);
     return () => document.removeEventListener("visibilitychange", onChange);
   }, []);
 
-  // Keyboard only when the canvas wrapper has focus.
-  // NO window-level wheel trap (that broke page scroll before).
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -459,7 +468,6 @@ export function Scene() {
       }
     };
 
-    // Touch swipe — only inside the canvas
     let touchStartX = 0;
     const onTouchStart = (event: TouchEvent) => {
       touchStartX = event.touches[0].clientX;
@@ -481,7 +489,30 @@ export function Scene() {
     };
   }, []);
 
-  const dpr = useMemo<[number, number]>(() => [1, reducedMotion ? 1.25 : 2], [reducedMotion]);
+  const dpr = useMemo<[number, number]>(() => [1, reducedMotion || isSmall ? 1.25 : 1.75], [
+    reducedMotion,
+    isSmall
+  ]);
+
+  // Mobile + reduced-motion path: skip Canvas entirely
+  if (isSmall || reducedMotion) {
+    return (
+      <div
+        ref={wrapRef}
+        className="immersive-canvas-wrap focus-visible:outline-none"
+        tabIndex={0}
+        role="region"
+        aria-label="RAD worlds preview"
+      >
+        <StaticFallback />
+        <ImmersiveHud
+          activeIndex={activeIndex}
+          totalWorlds={WORLDS_COUNT}
+          onSelect={setActiveIndex}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -499,27 +530,95 @@ export function Scene() {
       />
 
       <Canvas
-        camera={{ position: [0, 0, 7.2], fov: 42 }}
-        gl={{ antialias: true, powerPreference: "high-performance" }}
+        shadows
+        camera={{ position: [0, 0, 7.5], fov: 40 }}
+        gl={{
+          antialias: true,
+          powerPreference: "high-performance",
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.05
+        }}
         dpr={dpr}
         frameloop={shouldRender ? "always" : "never"}
       >
         <RenderController shouldRender={shouldRender} />
-        <color attach="background" args={["#000000"]} />
-        <fog attach="fog" args={["#000000", 5, 24]} />
+        <color attach="background" args={["#040406"]} />
+        <fog attach="fog" args={["#040406", 6, 28]} />
 
-        <ambientLight intensity={0.55} />
-        <directionalLight position={[6, 5, 6]} intensity={1.5} color="#ffffff" />
-        <spotLight position={[-6, 5, 6]} intensity={2.4} color="#a40000" angle={0.48} penumbra={1} />
-        <pointLight position={[0, 0, 5]} intensity={0.7} color="#700000" />
+        {/* Lightformer-based cheap IBL (no HDRI download) */}
+        <Environment resolution={256} frames={1}>
+          <Lightformer
+            form="rect"
+            intensity={1.8}
+            position={[-5, 3, 3]}
+            rotation={[0, Math.PI / 6, 0]}
+            scale={[10, 6, 1]}
+            color="#ffffff"
+          />
+          <Lightformer
+            form="rect"
+            intensity={2.2}
+            position={[5, -2, 2]}
+            rotation={[0, -Math.PI / 4, 0]}
+            scale={[6, 4, 1]}
+            color={BRAND.red}
+          />
+          <Lightformer
+            form="ring"
+            intensity={1.4}
+            position={[0, 4, -4]}
+            scale={[4, 4, 1]}
+            color={BRAND.redHi}
+          />
+        </Environment>
+
+        {/* Accent lights */}
+        <ambientLight intensity={0.08} />
+        <directionalLight
+          position={[6, 6, 4]}
+          intensity={0.9}
+          color="#ffffff"
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+        />
+        <spotLight
+          position={[-6, 4, 4]}
+          intensity={40}
+          distance={24}
+          angle={0.42}
+          penumbra={1}
+          color={BRAND.red}
+        />
+        <pointLight position={[0, 0, 4]} intensity={6} distance={10} color={BRAND.redDeep} />
 
         <Shapes activeIndex={activeIndex} />
         <CameraRig activeIndex={activeIndex} reducedMotion={reducedMotion} />
 
-        {!reducedMotion && (
-          <Sparkles count={36} scale={28} size={1.1} speed={0.1} opacity={0.06} color="#ff2d2d" />
-        )}
-        <Environment preset="studio" />
+        <Sparkles
+          count={42}
+          scale={[40, 14, 14]}
+          size={1.4}
+          speed={0.12}
+          opacity={0.55}
+          color={BRAND.redHi}
+        />
+
+        <EffectComposer multisampling={0} enableNormalPass={false}>
+          <Bloom
+            mipmapBlur
+            intensity={0.9}
+            luminanceThreshold={0.35}
+            luminanceSmoothing={0.25}
+            radius={0.8}
+          />
+          <ChromaticAberration
+            blendFunction={BlendFunction.NORMAL}
+            offset={[0.00035, 0.00055]}
+            radialModulation={true}
+            modulationOffset={0.15}
+          />
+          <Vignette eskil={false} offset={0.15} darkness={0.85} />
+        </EffectComposer>
       </Canvas>
     </div>
   );
