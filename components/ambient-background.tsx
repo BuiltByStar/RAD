@@ -2,67 +2,44 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 
+/**
+ * Site-wide atmosphere — soft, slow, editorial (inspired by premium dev-marketing
+ * sites like https://resend.com): no grids, no scan lines, no harsh motion.
+ */
 export function AmbientBackground() {
   const reduced = useReducedMotion();
 
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-black"
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#030303]"
     >
-      <div
-        className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,rgba(255,255,255,0.65)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.65)_1px,transparent_1px)] [background-size:60px_60px]"
+      {/* Top “floor” wash — subtle lift from pure black */}
+      <div className="absolute inset-0 bg-[radial-gradient(100%_70%_at_50%_-25%,rgba(255,255,255,0.055),transparent_50%)]" />
+
+      {/* Single slow radial — barely-there brand warmth */}
+      <motion.div
+        className="absolute left-1/2 top-[18%] h-[min(92vw,820px)] w-[min(92vw,820px)] -translate-x-1/2 rounded-full blur-[100px]"
+        style={{
+          background: "radial-gradient(circle at 50% 50%, rgba(255,43,69,0.07) 0%, transparent 68%)"
+        }}
+        animate={reduced ? undefined : { opacity: [0.55, 0.9, 0.55], scale: [1, 1.04, 1] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
 
+      {/* Very slow conic “light ray” — low contrast, no hard edges */}
       <motion.div
-        className="absolute -top-1/4 -left-1/4 h-[80vh] w-[80vh] rounded-full blur-[140px]"
+        className="absolute -left-1/2 top-0 h-[140vh] w-[200%] opacity-[0.35]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(255,43,69,0.38), rgba(255,43,69,0) 70%)"
+            "conic-gradient(from 200deg at 50% 0%, transparent 0deg, rgba(255,255,255,0.025) 25deg, transparent 55deg, transparent 360deg)"
         }}
-        animate={
-          reduced
-            ? undefined
-            : { x: [0, 80, -40, 0], y: [0, 40, 80, 0], scale: [1, 1.15, 0.95, 1] }
-        }
-        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+        animate={reduced ? undefined : { rotate: [0, 360] }}
+        transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
       />
 
-      <motion.div
-        className="absolute -bottom-1/3 right-[-10%] h-[75vh] w-[75vh] rounded-full blur-[150px]"
-        style={{
-          background:
-            "radial-gradient(circle at center, rgba(255,80,100,0.28), rgba(255,43,69,0) 70%)"
-        }}
-        animate={
-          reduced
-            ? undefined
-            : { x: [0, -60, 40, 0], y: [0, -40, -80, 0], scale: [1, 0.9, 1.1, 1] }
-        }
-        transition={{ duration: 34, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
-
-      <motion.div
-        className="absolute top-1/3 left-1/2 h-[50vh] w-[50vh] -translate-x-1/2 rounded-full blur-[120px]"
-        style={{
-          background:
-            "radial-gradient(circle at center, rgba(120,40,255,0.10), rgba(0,0,0,0) 70%)"
-        }}
-        animate={reduced ? undefined : { opacity: [0.4, 0.8, 0.4] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      <motion.div
-        className="absolute inset-x-0 top-0 h-px"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, rgba(255,43,69,0.9), transparent)"
-        }}
-        animate={reduced ? undefined : { x: ["-25%", "125%"] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-      />
-
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.7)_100%)]" />
+      {/* Readability: vignette into true black at edges */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_50%,transparent_40%,rgba(0,0,0,0.55)_100%)]" />
     </div>
   );
 }
