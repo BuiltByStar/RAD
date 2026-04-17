@@ -1,7 +1,16 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps, type Variants } from "framer-motion";
-import type { HTMLAttributes, ReactNode } from "react";
+import {
+  motion,
+  useInView,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  type HTMLMotionProps,
+  type Variants
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
 
 import { cn } from "./cn";
 import { EASE_EMPHASIS } from "./motion-tokens";
@@ -13,6 +22,7 @@ type CardProps = Omit<HTMLMotionProps<"article">, "children"> & {
   accent?: boolean;
   children: ReactNode;
   hover?: boolean;
+  spotlight?: boolean;
 };
 
 const tones: Record<Tone, string> = {
@@ -24,11 +34,11 @@ const tones: Record<Tone, string> = {
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 22 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: EASE_EMPHASIS }
+    transition: { duration: 0.6, ease: EASE_EMPHASIS }
   }
 };
 
@@ -36,11 +46,31 @@ export function Card({
   tone = "default",
   accent = true,
   hover = true,
+  spotlight = true,
   className,
   children,
+  onMouseMove,
+  onMouseLeave,
   ...rest
 }: CardProps) {
   const reduced = useReducedMotion();
+
+  const mouseX = useMotionValue(-200);
+  const mouseY = useMotionValue(-200);
+  const spotlightBg = useMotionTemplate`radial-gradient(280px circle at ${mouseX}px ${mouseY}px, rgba(255,43,69,0.22), transparent 65%)`;
+
+  const handleMove = (event: MouseEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    mouseX.set(event.clientX - rect.left);
+    mouseY.set(event.clientY - rect.top);
+    onMouseMove?.(event);
+  };
+
+  const handleLeave = (event: MouseEvent<HTMLElement>) => {
+    mouseX.set(-200);
+    mouseY.set(-200);
+    onMouseLeave?.(event);
+  };
 
   const motionProps = reduced
     ? {}
@@ -49,37 +79,69 @@ export function Card({
         initial: "hidden" as const,
         whileInView: "visible" as const,
         viewport: { once: true, margin: "-60px" },
-        whileHover: hover ? { y: -4 } : undefined
+        whileHover: hover ? { y: -6 } : undefined
       };
 
   return (
     <motion.article
       {...motionProps}
+      onMouseMove={spotlight ? handleMove : onMouseMove}
+      onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
         "group relative overflow-hidden rounded-2xl border border-white/10",
-        "bg-gradient-to-b from-white/[.04] to-white/[0.01]",
-        "transition-[border-color,background-color] duration-300 ease-[var(--ease-emphasis)]",
-        "hover:border-white/20 hover:from-white/[.06]",
+        "bg-gradient-to-b from-white/[.035] to-white/[0.005]",
+        "shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_20px_40px_-20px_rgba(0,0,0,0.8)]",
+        "transition-[border-color,box-shadow] duration-500",
+        "hover:border-[color:var(--color-rad)]/40",
+        "hover:shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_30px_70px_-20px_rgba(255,43,69,0.35)]",
         tones[tone],
         className
       )}
       {...rest}
     >
-      {accent ? (
-        <span
+      {spotlight && !reduced ? (
+        <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-1 w-24 bg-[color:var(--color-rad)]/90"
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ background: spotlightBg }}
         />
       ) : null}
+
+      {accent ? (
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute left-0 top-0 h-1 origin-left bg-gradient-to-r from-[color:var(--color-rad)] via-[color:var(--color-rad-hi)] to-[color:var(--color-rad)]"
+          initial={reduced ? undefined : { scaleX: 0 }}
+          whileInView={reduced ? undefined : { scaleX: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.8, ease: EASE_EMPHASIS, delay: 0.1 }}
+          style={{ width: "6rem" }}
+        />
+      ) : null}
+
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
       />
+
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-10 top-0 h-[140%] w-40 -translate-x-full rotate-12 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100"
+        animate={reduced ? undefined : { x: ["-120%", "320%"] }}
+        transition={{
+          duration: 1.4,
+          ease: "easeOut",
+          repeat: Infinity,
+          repeatDelay: 3
+        }}
+      />
+
       <span
         aria-hidden
-        className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgb(255_43_69_/_0.14),transparent_65%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-rad)]/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
       />
-      {children}
+
+      <div className="relative z-10">{children}</div>
     </motion.article>
   );
 }
@@ -126,7 +188,12 @@ export function CardBody({ className, ...rest }: CardBodyProps) {
 }
 
 type CardMetricProps = HTMLAttributes<HTMLParagraphElement>;
-export function CardMetric({ className, ...rest }: CardMetricProps) {
+export function CardMetric({ className, children, ...rest }: CardMetricProps) {
+  const reduced = useReducedMotion();
+  const raw = typeof children === "string" ? children : String(children ?? "");
+  const target = parseInt(raw, 10);
+  const isNumeric = !Number.isNaN(target);
+
   return (
     <p
       className={cn(
@@ -135,6 +202,35 @@ export function CardMetric({ className, ...rest }: CardMetricProps) {
       )}
       style={{ fontVariantNumeric: "tabular-nums" }}
       {...rest}
-    />
+    >
+      {isNumeric ? <CountUp target={target} pad={raw.length} reduced={!!reduced} /> : children}
+    </p>
   );
+}
+
+type CountUpProps = { target: number; pad: number; reduced: boolean };
+
+function CountUp({ target, pad, reduced }: CountUpProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [value, setValue] = useState(reduced ? target : 0);
+
+  useEffect(() => {
+    if (reduced || !inView) return;
+    const duration = 1400;
+    const start = performance.now();
+    let raf = 0;
+
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * target));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, reduced, target]);
+
+  return <span ref={ref}>{String(value).padStart(pad, "0")}</span>;
 }

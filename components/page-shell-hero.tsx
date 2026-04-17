@@ -119,9 +119,29 @@ export function PageShellHero({
               </motion.p>
               <motion.h1
                 {...item}
-                className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2.4rem,6vw,5rem)] uppercase leading-[0.92] tracking-tight text-white [text-wrap:balance]"
+                className="relative mt-4 font-[family-name:var(--font-display)] text-[clamp(2.4rem,6vw,5rem)] uppercase leading-[0.92] tracking-tight text-white [text-wrap:balance]"
               >
-                {title}
+                {title.split(" ").map((word, idx) => (
+                  <motion.span
+                    key={`${word}-${idx}`}
+                    className="mr-[0.25em] inline-block"
+                    initial={reduced ? undefined : { opacity: 0, y: 30, filter: "blur(12px)" }}
+                    animate={reduced ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{
+                      duration: 0.8,
+                      ease: EASE_EMPHASIS,
+                      delay: 0.2 + idx * 0.08
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+                <motion.span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)] bg-[length:200%_100%] mix-blend-overlay"
+                  animate={reduced ? undefined : { backgroundPosition: ["200% 0%", "-100% 0%"] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.5 }}
+                />
               </motion.h1>
               <motion.p
                 {...item}

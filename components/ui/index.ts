@@ -12,6 +12,7 @@ export { MatchCard, type MatchStatus } from "./match-card";
 export { NoteStack } from "./note-stack";
 export { PlayerCard } from "./player-card";
 export { Section } from "./section";
+export { SectionDivider } from "./section-divider";
 export { SectionHeading } from "./section-heading";
 export { Stat } from "./stat";
 export { StatsRow } from "./stats-row";

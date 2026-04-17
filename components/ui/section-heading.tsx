@@ -49,11 +49,22 @@ export function SectionHeading({
     >
       <div>
         {eyebrow ? (
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]">
+          <motion.p
+            className="relative inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]"
+            initial={reduced ? undefined : { opacity: 0, x: -8 }}
+            whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5, ease: EASE_EMPHASIS }}
+          >
+            <motion.span
+              className="inline-block h-[6px] w-[6px] rounded-full bg-[color:var(--color-rad)] shadow-[0_0_8px_rgb(255_43_69_/_0.9)]"
+              animate={reduced ? undefined : { opacity: [1, 0.4, 1], scale: [1, 1.25, 1] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            />
             {eyebrow}
-          </p>
+          </motion.p>
         ) : null}
-        <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3.25rem)] uppercase leading-[0.98] tracking-tight text-white [text-wrap:balance]">
+        <h2 className="relative mt-3 font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3.25rem)] uppercase leading-[0.98] tracking-tight text-white [text-wrap:balance]">
           {title}
         </h2>
       </div>

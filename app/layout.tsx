@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 
+import { AmbientBackground } from "@/components/ambient-background";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -64,6 +65,7 @@ export default function RootLayout({
         className={`${barlow.variable} ${barlowCondensed.variable} bg-black text-white selection:bg-[color:var(--color-rad)]/30 antialiased`}
       >
         <ScrollRevealInit />
+        <AmbientBackground />
         <SiteHeader />
 
         <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-18 lg:pt-20">
