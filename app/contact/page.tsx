@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 
 import { ContactForm } from "@/components/contact-form";
 import { PageShell } from "@/components/page-shell";
-import { ContactGrid, SectionHeading } from "@/components/sections";
+import {
+  Card,
+  CardBody,
+  CardEyebrow,
+  CardTitle,
+  ContactGrid,
+  Container,
+  NoteStack,
+  Section,
+  SectionHeading
+} from "@/components/ui";
 import { hasSupabaseServiceEnv } from "@/lib/env";
 import { contactChannels } from "@/lib/site-data";
 
@@ -21,51 +31,51 @@ export default function ContactPage() {
       heroImage="/assets/RadRivals_Wallpaper_Red.png"
       status="Public inquiry channels // online"
       note={
-        <div className="rad-subpage-note__stack">
-          <div>
-            <span className="rad-subpage-note__label">Best For</span>
-            <strong>Partnerships / Talent / Media</strong>
-          </div>
-          <div>
-            <span className="rad-subpage-note__label">Response Path</span>
-            <strong>Form + direct channels</strong>
-          </div>
-        </div>
+        <NoteStack
+          items={[
+            { label: "Best For", value: "Partnerships / Talent / Media" },
+            { label: "Response Path", value: "Form + direct channels" }
+          ]}
+        />
       }
     >
-      <section className="rad-subpage-section">
-        <div className="container rad-subpage-grid rad-subpage-grid--2">
-          <div className="rad-subpage-surface" data-reveal="true" data-delay="1">
+      <Section padding="sm">
+        <Container>
+          <div className="grid gap-5 lg:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-white/[.03] p-5 sm:p-6">
               <SectionHeading
                 eyebrow="Inquiry Form"
                 title="Send a clear message."
                 description="Use the form when the request needs context, routing, and a direct response path."
                 compact
+                className="mb-6"
               />
-            <ContactForm enabled={hasSupabaseServiceEnv()} />
-          </div>
-
-          <div className="rad-subpage-stack">
-            <div className="rad-subpage-surface" data-reveal="true" data-delay="2">
-              <SectionHeading
-                eyebrow="Direct Channels"
-                title="Use the channel that fits the ask."
-                description="Direct contact stays visible so the page remains useful even when backend services are unavailable."
-                compact
-              />
-              <ContactGrid channels={contactChannels} />
+              <ContactForm enabled={hasSupabaseServiceEnv()} />
             </div>
 
-            <article className="rad-subpage-card" data-reveal="true" data-delay="3">
-              <p className="rad-subpage-card__eyebrow">What helps</p>
-              <h3 className="rad-subpage-card__title">Send context, not just a name.</h3>
-              <p className="rad-subpage-body">
-                Include the type of request, any relevant brand or org name, the best return channel, and enough context for RAD to assess priority quickly.
-              </p>
-            </article>
+            <div className="flex flex-col gap-5">
+              <div className="rounded-2xl border border-white/10 bg-white/[.03] p-5 sm:p-6">
+                <SectionHeading
+                  eyebrow="Direct Channels"
+                  title="Use the channel that fits the ask."
+                  description="Direct contact stays visible so the page remains useful even when backend services are unavailable."
+                  compact
+                  className="mb-0"
+                />
+                <ContactGrid channels={contactChannels} />
+              </div>
+
+              <Card>
+                <CardEyebrow>What helps</CardEyebrow>
+                <CardTitle size="sm">Send context, not just a name.</CardTitle>
+                <CardBody>
+                  Include the type of request, any relevant brand or org name, the best return channel, and enough context for RAD to assess priority quickly.
+                </CardBody>
+              </Card>
+            </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
     </PageShell>
   );
 }

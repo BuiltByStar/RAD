@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/page-shell";
+import { Container, LegalCard, Section } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -38,19 +39,15 @@ export default function TermsPage() {
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
       status="Terms // active"
     >
-      <section className="rad-subpage-section">
-        <div className="container">
-          <div className="rad-legal-stack">
+      <Section padding="sm">
+        <Container size="md">
+          <div className="grid gap-4 sm:gap-5">
             {termsBlocks.map((block) => (
-              <article key={block.title} className="rad-legal-card">
-                <p className="rad-subpage-card__eyebrow">{block.label}</p>
-                <h2 className="rad-subpage-card__title">{block.title}</h2>
-                <p className="rad-subpage-body">{block.copy}</p>
-              </article>
+              <LegalCard key={block.title} label={block.label} title={block.title} copy={block.copy} />
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
     </PageShell>
   );
 }

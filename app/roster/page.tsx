@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/page-shell";
-import { SectionHeading } from "@/components/sections";
+import {
+  Card,
+  CardBody,
+  CardEyebrow,
+  CardGrid,
+  CardMetric,
+  CardTitle,
+  Container,
+  NoteStack,
+  PlayerCard,
+  Section,
+  SectionHeading
+} from "@/components/ui";
 import { players, staff, teams } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -25,94 +37,67 @@ export default function RosterPage() {
       heroImage="/assets/RadPlayerBannerPNG8.png"
       status={team.status}
       note={
-        <div className="rad-subpage-note__stack">
-          <div>
-            <span className="rad-subpage-note__label">Featured Division</span>
-            <strong>{team.name}</strong>
-          </div>
-          <div>
-            <span className="rad-subpage-note__label">Live Status</span>
-            <strong>Active lineup</strong>
-          </div>
-        </div>
+        <NoteStack
+          items={[
+            { label: "Featured Division", value: team.name },
+            { label: "Live Status", value: "Active lineup" }
+          ]}
+        />
       }
     >
-      <section className="rad-subpage-section">
-        <div className="container">
+      <Section padding="sm">
+        <Container>
           <SectionHeading
             eyebrow="Division Overview"
             title={`${team.name} is the current front line.`}
             description={team.description}
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
-            <article className="rad-subpage-card rad-subpage-card--metric" data-reveal="true" data-delay="1">
-              <p className="rad-subpage-metric">{teamRoster.length}</p>
-              <p className="rad-subpage-card__eyebrow">Active Players</p>
-            </article>
-            <article className="rad-subpage-card rad-subpage-card--metric" data-reveal="true" data-delay="2">
-              <p className="rad-subpage-metric">01</p>
-              <p className="rad-subpage-card__eyebrow">World Title</p>
-            </article>
-            <article className="rad-subpage-card rad-subpage-card--metric" data-reveal="true" data-delay="3">
-              <p className="rad-subpage-metric">01</p>
-              <p className="rad-subpage-card__eyebrow">Regional Title</p>
-            </article>
-          </div>
-        </div>
-      </section>
+          <CardGrid cols={3}>
+            <Card tone="metric">
+              <CardMetric>{String(teamRoster.length).padStart(2, "0")}</CardMetric>
+              <CardEyebrow className="mt-2">Active Players</CardEyebrow>
+            </Card>
+            <Card tone="metric">
+              <CardMetric>01</CardMetric>
+              <CardEyebrow className="mt-2">World Title</CardEyebrow>
+            </Card>
+            <Card tone="metric">
+              <CardMetric>01</CardMetric>
+              <CardEyebrow className="mt-2">Regional Title</CardEyebrow>
+            </Card>
+          </CardGrid>
+        </Container>
+      </Section>
 
-      <section className="rad-subpage-section rad-subpage-section--soft">
-        <div className="container">
+      <Section padding="sm" className="bg-white/[.015]">
+        <Container>
           <SectionHeading
             eyebrow="Players"
             title="Seven names carrying the standard."
             description="Each role in the lineup has a clear job, a distinct identity, and a reason it belongs in the current core."
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
+          <CardGrid cols={3}>
             {teamRoster.map((player) => (
-              <article key={player.slug} id={player.slug} className="rad-player-card" data-reveal="true">
-                <div className="rad-player-card__top">
-                  <p className="rad-subpage-card__eyebrow">{player.role}</p>
-                  {typeof player.number === "number" ? (
-                    <span className="rad-player-card__index">#{String(player.number).padStart(2, "0")}</span>
-                  ) : null}
-                </div>
-
-                <div className="rad-player-card__body">
-                  <h3 className="rad-subpage-card__title">{player.name}</h3>
-                  <p className="rad-player-card__descriptor">{player.descriptor}</p>
-                  <p className="rad-subpage-body">{player.bio ?? player.descriptor}</p>
-                </div>
-
-                {player.specialties?.length ? (
-                  <div className="rad-chip-row">
-                    {player.specialties.slice(0, 3).map((specialty) => (
-                      <span key={specialty} className="rad-chip">
-                        {specialty}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-
-                {player.socials?.length ? (
-                  <div className="rad-subpage-links">
-                    {player.socials.map((social) => (
-                      <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer">
-                        {social.label}
-                      </a>
-                    ))}
-                  </div>
-                ) : null}
-              </article>
+              <PlayerCard
+                key={player.slug}
+                id={player.slug}
+                name={player.name}
+                role={player.role}
+                number={typeof player.number === "number" ? player.number : undefined}
+                descriptor={player.descriptor}
+                bio={player.bio ?? player.descriptor}
+                specialties={player.specialties}
+                socials={player.socials}
+              />
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
 
-      <section className="rad-subpage-section">
-        <div className="container">
+      <Section padding="sm">
+        <Container>
           <SectionHeading
             eyebrow="Support System"
             title="Management and coaching behind the lineup."
@@ -121,18 +106,20 @@ export default function RosterPage() {
             actionLabel="Open staff page"
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
+          <CardGrid cols={3}>
             {supportStaff.map((member) => (
-              <article key={member.slug} className="rad-subpage-card" data-reveal="true">
-                <p className="rad-subpage-card__eyebrow">{member.group}</p>
-                <h3 className="rad-subpage-card__title">{member.name}</h3>
-                <p className="rad-player-card__descriptor">{member.role}</p>
-                <p className="rad-subpage-body">{member.bio ?? member.descriptor}</p>
-              </article>
+              <Card key={member.slug}>
+                <CardEyebrow>{member.group}</CardEyebrow>
+                <CardTitle size="sm">{member.name}</CardTitle>
+                <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)]/90">
+                  {member.role}
+                </p>
+                <CardBody>{member.bio ?? member.descriptor}</CardBody>
+              </Card>
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
     </PageShell>
   );
 }

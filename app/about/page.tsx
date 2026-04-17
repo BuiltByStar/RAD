@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/page-shell";
-import { SectionHeading } from "@/components/sections";
+import {
+  Card,
+  CardBody,
+  CardEyebrow,
+  CardGrid,
+  CardTitle,
+  Container,
+  NoteStack,
+  Section,
+  SectionHeading,
+  Timeline,
+  TimelineItem
+} from "@/components/ui";
 import { aboutSummary, igniteSchedule, orgTimeline, orgValues } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -19,114 +31,114 @@ export default function AboutPage() {
       heroImage="/assets/RadBannerNewTest300ppi.png"
       status="World title secured // EMEA pressure-tested"
       note={
-        <div className="rad-subpage-note__stack">
-          <div>
-            <span className="rad-subpage-note__label">Primary Division</span>
-            <strong>Marvel Rivals</strong>
-          </div>
-          <div>
-            <span className="rad-subpage-note__label">Operating Region</span>
-            <strong>EMEA / Global</strong>
-          </div>
-        </div>
+        <NoteStack
+          items={[
+            { label: "Primary Division", value: "Marvel Rivals" },
+            { label: "Operating Region", value: "EMEA / Global" }
+          ]}
+        />
       }
     >
-      <section className="rad-subpage-section">
-        <div className="container">
+      <Section padding="sm">
+        <Container>
           <SectionHeading
             eyebrow="Identity"
             title="An org story with proof behind it."
             description="RAD did not wait for an invitation to matter. The identity already has championships behind it, which gives the brand a real foundation."
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--2">
-            <article className="rad-subpage-card rad-subpage-card--lead" data-reveal="true" data-delay="1">
-              <p className="rad-subpage-body rad-subpage-body--large">{aboutSummary}</p>
-            </article>
+          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
+            <Card tone="lead">
+              <CardBody className="mt-0 text-base leading-relaxed text-white/75 sm:text-lg">
+                {aboutSummary}
+              </CardBody>
+            </Card>
 
-            <div className="rad-subpage-stack" data-reveal="true" data-delay="2">
-              <article className="rad-subpage-card">
-                <p className="rad-subpage-card__eyebrow">Competitive Position</p>
-                <h3 className="rad-subpage-card__title">Pressure-tested on the biggest stages.</h3>
-                <p className="rad-subpage-body">
+            <div className="grid gap-4 sm:gap-5">
+              <Card>
+                <CardEyebrow>Competitive Position</CardEyebrow>
+                <CardTitle size="sm">Pressure-tested on the biggest stages.</CardTitle>
+                <CardBody>
                   The public identity works because there are real results underneath it, not because the site is trying to oversell the org.
-                </p>
-              </article>
-              <article className="rad-subpage-card">
-                <p className="rad-subpage-card__eyebrow">Brand Direction</p>
-                <h3 className="rad-subpage-card__title">A brand built to move across titles.</h3>
-                <p className="rad-subpage-body">
+                </CardBody>
+              </Card>
+              <Card>
+                <CardEyebrow>Brand Direction</CardEyebrow>
+                <CardTitle size="sm">A brand built to move across titles.</CardTitle>
+                <CardBody>
                   RAD needs to stay recognisable whether it is presenting a roster, an activation, or the next division added to the org.
-                </p>
-              </article>
+                </CardBody>
+              </Card>
             </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="rad-subpage-section rad-subpage-section--soft">
-        <div className="container">
+      <Section padding="sm" className="bg-white/[.015]">
+        <Container>
           <SectionHeading
             eyebrow="Standards"
             title="The values that shape the public product."
             description="Results matter, but the long-term standard is what turns a winning roster into a real organization."
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--4">
+          <CardGrid cols={4}>
             {orgValues.map((value) => (
-              <article key={value.title} className="rad-subpage-card" data-reveal="true">
-                <span className="rad-subpage-icon" aria-hidden="true">
+              <Card key={value.title}>
+                <span
+                  aria-hidden
+                  className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[.03] text-lg text-[color:var(--color-rad-hi)]"
+                >
                   {value.icon}
                 </span>
-                <h3 className="rad-subpage-card__title">{value.title}</h3>
-                <p className="rad-subpage-body">{value.description}</p>
-              </article>
+                <CardTitle size="sm">{value.title}</CardTitle>
+                <CardBody>{value.description}</CardBody>
+              </Card>
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
 
-      <section className="rad-subpage-section">
-        <div className="container">
+      <Section padding="sm">
+        <Container>
           <SectionHeading
             eyebrow="Timeline"
             title="How RAD established credibility."
             description="The key moments below show how the org earned credibility early and why the brand already carries weight."
           />
 
-          <div className="rad-timeline">
+          <Timeline>
             {orgTimeline.map((event) => (
-              <article key={`${event.date}-${event.title}`} className="rad-timeline__item" data-reveal="true">
-                <p className="rad-timeline__date">{event.date}</p>
-                <div className="rad-timeline__body">
-                  <h3 className="rad-subpage-card__title">{event.title}</h3>
-                  <p className="rad-subpage-body">{event.description}</p>
-                </div>
-              </article>
+              <TimelineItem
+                key={`${event.date}-${event.title}`}
+                date={event.date}
+                title={event.title}
+                description={event.description}
+              />
             ))}
-          </div>
-        </div>
-      </section>
+          </Timeline>
+        </Container>
+      </Section>
 
-      <section className="rad-subpage-section rad-subpage-section--soft">
-        <div className="container">
+      <Section padding="sm" className="bg-white/[.015]">
+        <Container>
           <SectionHeading
             eyebrow="Roadmap"
             title="Structured for the next competitive cycle."
             description="The story does not stop at titles already won. The next stage is about expanding the org without lowering the standard."
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
+          <CardGrid cols={3}>
             {igniteSchedule.map((item, index) => (
-              <article key={`${item.stage}-${item.dates}`} className="rad-subpage-card rad-subpage-card--compact" data-reveal="true">
-                <p className="rad-subpage-card__eyebrow">Stage {String(index + 1).padStart(2, "0")}</p>
-                <h3 className="rad-subpage-card__title">{item.stage}</h3>
-                <p className="rad-subpage-body">{item.dates}</p>
-              </article>
+              <Card key={`${item.stage}-${item.dates}`} tone="compact">
+                <CardEyebrow>Stage {String(index + 1).padStart(2, "0")}</CardEyebrow>
+                <CardTitle size="sm">{item.stage}</CardTitle>
+                <CardBody>{item.dates}</CardBody>
+              </Card>
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
     </PageShell>
   );
 }

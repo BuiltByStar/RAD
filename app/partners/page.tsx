@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { PageShell } from "@/components/page-shell";
-import { SectionHeading } from "@/components/sections";
+import {
+  Card,
+  CardBody,
+  CardEyebrow,
+  CardGrid,
+  CardTitle,
+  Container,
+  NoteStack,
+  Section,
+  SectionHeading
+} from "@/components/ui";
 import { partners } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -41,20 +51,16 @@ export default function PartnersPage() {
       heroImage="/assets/RadBanner1920_1080.png"
       status="Partnership inventory // available"
       note={
-        <div className="rad-subpage-note__stack">
-          <div>
-            <span className="rad-subpage-note__label">Open Categories</span>
-            <strong>Apparel / Peripherals / Campaigns</strong>
-          </div>
-          <div>
-            <span className="rad-subpage-note__label">Best Contact</span>
-            <strong>Business inquiries</strong>
-          </div>
-        </div>
+        <NoteStack
+          items={[
+            { label: "Open Categories", value: "Apparel / Peripherals / Campaigns" },
+            { label: "Best Contact", value: "Business inquiries" }
+          ]}
+        />
       }
     >
-      <section className="rad-subpage-section">
-        <div className="container">
+      <Section padding="sm">
+        <Container>
           <SectionHeading
             eyebrow="Positioning"
             title="Brand-ready without pretending the sponsor wall already exists."
@@ -63,40 +69,44 @@ export default function PartnersPage() {
             actionLabel="Contact RAD"
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
+          <CardGrid cols={3}>
             {processSteps.map((step) => (
-              <article key={step.title} className="rad-subpage-card" data-reveal="true">
-                <p className="rad-subpage-card__eyebrow">{step.label}</p>
-                <h3 className="rad-subpage-card__title">{step.title}</h3>
-                <p className="rad-subpage-body">{step.description}</p>
-              </article>
+              <Card key={step.title}>
+                <CardEyebrow>{step.label}</CardEyebrow>
+                <CardTitle size="sm">{step.title}</CardTitle>
+                <CardBody>{step.description}</CardBody>
+              </Card>
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
 
-      <section className="rad-subpage-section rad-subpage-section--soft">
-        <div className="container">
+      <Section padding="sm" className="bg-white/[.015]">
+        <Container>
           <SectionHeading
             eyebrow="Available Angles"
             title="What RAD can package cleanly."
             description="These lanes show the kinds of work RAD can support now, not invented sponsors that do not exist."
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
+          <CardGrid cols={3}>
             {partners.map((partner) => (
-              <article key={partner.name} className="rad-subpage-card rad-subpage-card--tall" data-reveal="true">
-                <p className="rad-subpage-card__eyebrow">{partner.tier}</p>
-                <h3 className="rad-subpage-card__title">{partner.name}</h3>
-                <p className="rad-subpage-body">{partner.description}</p>
-                <Link href={partner.href} className="rad-subpage-link">
+              <Card key={partner.name} tone="tall" className="flex flex-col">
+                <CardEyebrow>{partner.tier}</CardEyebrow>
+                <CardTitle size="sm">{partner.name}</CardTitle>
+                <CardBody>{partner.description}</CardBody>
+                <Link
+                  href={partner.href}
+                  className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--color-rad-hi)] transition-colors hover:text-white"
+                >
                   Start the conversation
+                  <span aria-hidden>→</span>
                 </Link>
-              </article>
+              </Card>
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
     </PageShell>
   );
 }

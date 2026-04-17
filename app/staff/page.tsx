@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/page-shell";
-import { SectionHeading } from "@/components/sections";
+import {
+  Card,
+  CardBody,
+  CardEyebrow,
+  CardGrid,
+  CardTitle,
+  Chip,
+  ChipRow,
+  Container,
+  NoteStack,
+  Section,
+  SectionHeading
+} from "@/components/ui";
 import { staff } from "@/lib/site-data";
 
 export const metadata: Metadata = {
@@ -22,77 +34,73 @@ export default function StaffPage() {
       heroImage="/assets/RadBanner1920_1080.png"
       status="Creative + competitive support online"
       note={
-        <div className="rad-subpage-note__stack">
-          <div>
-            <span className="rad-subpage-note__label">Visible Roles</span>
-            <strong>{staff.length}</strong>
-          </div>
-          <div>
-            <span className="rad-subpage-note__label">Coverage</span>
-            <strong>Brand / Ops / Coaching</strong>
-          </div>
-        </div>
+        <NoteStack
+          items={[
+            { label: "Visible Roles", value: String(staff.length) },
+            { label: "Coverage", value: "Brand / Ops / Coaching" }
+          ]}
+        />
       }
     >
-      <section className="rad-subpage-section">
-        <div className="container">
+      <Section padding="sm">
+        <Container>
           <SectionHeading
             eyebrow="Brand & Media"
             title="Creative output and public-facing execution."
             description="These roles shape how RAD looks, how content ships, and how the org carries itself in public."
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
+          <CardGrid cols={3}>
             {brandStaff.map((member) => (
-              <article key={member.slug} className="rad-subpage-card" data-reveal="true">
-                <p className="rad-subpage-card__eyebrow">{member.group}</p>
-                <h3 className="rad-subpage-card__title">{member.name}</h3>
-                <p className="rad-player-card__descriptor">{member.role}</p>
-                <p className="rad-subpage-body">{member.bio ?? member.descriptor}</p>
+              <Card key={member.slug}>
+                <CardEyebrow>{member.group}</CardEyebrow>
+                <CardTitle size="sm">{member.name}</CardTitle>
+                <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)]/90">
+                  {member.role}
+                </p>
+                <CardBody>{member.bio ?? member.descriptor}</CardBody>
                 {member.tags?.length ? (
-                  <div className="rad-chip-row">
+                  <ChipRow>
                     {member.tags.map((tag) => (
-                      <span key={tag} className="rad-chip">
-                        {tag}
-                      </span>
+                      <Chip key={tag}>{tag}</Chip>
                     ))}
-                  </div>
+                  </ChipRow>
                 ) : null}
-              </article>
+              </Card>
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
 
-      <section className="rad-subpage-section rad-subpage-section--soft">
-        <div className="container">
+      <Section padding="sm" className="bg-white/[.015]">
+        <Container>
           <SectionHeading
             eyebrow="Operations & Performance"
             title="Management, analytics, and coaching support."
             description="This is the layer that turns a lineup into a functioning competitive unit with structure, accountability, and support."
           />
 
-          <div className="rad-subpage-grid rad-subpage-grid--3">
+          <CardGrid cols={3}>
             {operationsStaff.map((member) => (
-              <article key={member.slug} className="rad-subpage-card" data-reveal="true">
-                <p className="rad-subpage-card__eyebrow">{member.group}</p>
-                <h3 className="rad-subpage-card__title">{member.name}</h3>
-                <p className="rad-player-card__descriptor">{member.role}</p>
-                <p className="rad-subpage-body">{member.bio ?? member.descriptor}</p>
+              <Card key={member.slug}>
+                <CardEyebrow>{member.group}</CardEyebrow>
+                <CardTitle size="sm">{member.name}</CardTitle>
+                <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)]/90">
+                  {member.role}
+                </p>
+                <CardBody>{member.bio ?? member.descriptor}</CardBody>
                 {member.tags?.length ? (
-                  <div className="rad-chip-row">
+                  <ChipRow>
                     {member.tags.map((tag) => (
-                      <span key={tag} className="rad-chip">
-                        {tag}
-                      </span>
+                      <Chip key={tag}>{tag}</Chip>
                     ))}
-                  </div>
+                  </ChipRow>
                 ) : null}
-              </article>
+              </Card>
             ))}
-          </div>
-        </div>
-      </section>
+          </CardGrid>
+        </Container>
+      </Section>
     </PageShell>
   );
 }
