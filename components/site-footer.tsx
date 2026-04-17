@@ -1,17 +1,20 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { contactChannels, navLinks } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="site-footer">
+    <footer className="site-footer relative mt-0 border-t border-white/10 bg-black">
       <div className="container footer-grid">
         <div className="footer-brand-column">
           <p className="section-kicker section-kicker--tight">RAD Esports</p>
-          <img
+          <Image
             src="/assets/RadNewLogoWordmarkRed.png"
             alt="RAD Esports"
-            className="footer-brand"
+            width={180}
+            height={48}
+            className="footer-brand h-auto w-[180px]"
           />
           <p className="footer-copy">
             Competitive pedigree, scalable branding, and a site structure built to grow with new titles, media, and partnerships.
@@ -33,7 +36,12 @@ export function SiteFooter() {
           <p className="footer-col-label">Connect</p>
           <div className="footer-links">
             {contactChannels.map((channel) => (
-              <a key={channel.label} href={channel.href}>
+              <a
+                key={channel.label}
+                href={channel.href}
+                target={channel.href.startsWith("http") ? "_blank" : undefined}
+                rel={channel.href.startsWith("http") ? "noreferrer" : undefined}
+              >
                 {channel.value}
               </a>
             ))}

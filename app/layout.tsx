@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 
 import { ScrollRevealInit } from "@/components/scroll-reveal";
@@ -23,18 +23,33 @@ const barlowCondensed = Barlow_Condensed({
   display: "swap"
 });
 
+export const viewport: Viewport = {
+  themeColor: "#050505",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover"
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
   title: {
-    default: "RAD Esports",
+    default: "RAD Esports — Marvel Rivals World & EMEA Champions",
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is a prestige-driven esports org built for competitive growth.",
+    "RAD Esports is the inaugural Marvel Rivals Ignite: Mid-Season World Champions and reigning Season 6: EMEA PC title holders. Built for pressure. #GoWild",
   openGraph: {
     title: "RAD Esports",
-    description: "Multi-title competitive division.",
-    images: ["/assets/RadPlayerBannerPNG8.png"]
+    description:
+      "Marvel Rivals World & EMEA Champions. Untamed, unstoppable, and never by the book.",
+    images: ["/assets/RadPlayerBannerPNG8.png"],
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@RADesport",
+    creator: "@RADesport"
   }
 };
 
@@ -45,19 +60,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${barlow.variable} ${barlowCondensed.variable} bg-black text-white selection:bg-red-600/30`}>
+      <body
+        className={`${barlow.variable} ${barlowCondensed.variable} bg-black text-white selection:bg-[color:var(--color-rad)]/30 antialiased`}
+      >
         <ScrollRevealInit />
         <SiteHeader />
-        
-        <div className="subpage-wrapper relative min-h-screen">
+
+        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-18 lg:pt-20">
           <div className="cinematic-noise" />
           <div className="cinematic-vignette" />
-          
-          <div className="relative z-10">
-            {children}
-          </div>
+
+          <div className="relative z-10">{children}</div>
         </div>
-        
+
         <SiteFooter />
       </body>
     </html>

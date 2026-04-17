@@ -5,25 +5,23 @@ import { useProgress } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Preloader() {
-  const { progress, active } = useProgress();
+  const { progress } = useProgress();
   const [show, setShow] = useState(true);
   const [displayProgress, setDisplayProgress] = useState(0);
 
-  // Smooth out the progress display
   useEffect(() => {
     let t: number;
     if (progress > displayProgress) {
       t = window.setTimeout(() => {
-        setDisplayProgress((p) => Math.min(p + 1, Math.round(progress)));
-      }, 10);
+        setDisplayProgress((p) => Math.min(p + 2, Math.round(progress)));
+      }, 8);
     }
     return () => clearTimeout(t);
   }, [progress, displayProgress]);
 
-  // Hide the preloader only when 100% loaded and we wait a split second
   useEffect(() => {
     if (displayProgress >= 100) {
-      const t = setTimeout(() => setShow(false), 800);
+      const t = setTimeout(() => setShow(false), 250);
       return () => clearTimeout(t);
     }
   }, [displayProgress]);
@@ -34,12 +32,17 @@ export function Preloader() {
         <motion.div
           key="preloader"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, filter: "blur(10px)" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          exit={{ opacity: 0, filter: "blur(8px)" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
           className="hud-preloader"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 20
+          }}
         >
           <div className="hud-preloader-content">
-            <p className="hud-preloader-text">RAD Presents</p>
+            <p className="hud-preloader-text">RAD Worlds</p>
             <div className="hud-preloader-perc">{displayProgress}%</div>
             <div className="hud-preloader-bar-wrap">
               <motion.div

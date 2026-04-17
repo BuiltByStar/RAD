@@ -1,3 +1,55 @@
+@import "tailwindcss";
+
+/* ─── Tailwind v4 design tokens (brand-aligned) ─────────────────────────────
+ * These are the canonical brand tokens. Tailwind utilities like `bg-rad`,
+ * `text-muted`, `border-line` come from here. Legacy tokens in :root below
+ * are kept so the existing CSS keeps working during the migration.
+ * ---------------------------------------------------------------------------- */
+@theme {
+  --color-bg:         #050505;
+  --color-ink:        #0a0a0a;
+  --color-ink-2:      #111111;
+  --color-surface:    rgb(255 255 255 / 0.04);
+  --color-surface-hi: rgb(255 255 255 / 0.08);
+  --color-line:       rgb(255 255 255 / 0.1);
+  --color-line-hi:    rgb(255 255 255 / 0.18);
+
+  --color-text:       #ffffff;
+  --color-muted:      rgb(255 255 255 / 0.7);
+  --color-dim:        rgb(255 255 255 / 0.45);
+
+  /* Tuned brand red — softer than #ff0000, reads better on OLED + HDR */
+  --color-rad:        #ff2b45;
+  --color-rad-hi:     #ff4d63;
+  --color-rad-deep:   #8a0a1a;
+  --color-rad-ember:  #4a0510;
+
+  --font-display: var(--font-display), "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    var(--font-body), "Barlow", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-card: 0 10px 30px -10px rgb(0 0 0 / 0.7);
+  --shadow-glow: 0 0 40px rgb(255 43 69 / 0.25), 0 0 80px rgb(255 43 69 / 0.12);
+
+  --ease-emphasis: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
 /* ─── CSS Custom Properties (animatable) ──────────────────────────────────── */
 @property --border-angle {
   syntax: "<angle>";
@@ -17,13 +69,19 @@
   --muted:         rgba(255, 255, 255, 0.7);
   --dim:           rgba(255, 255, 255, 0.45);
   
-  --red:           #ff0000;
-  --red-hi:        #ff4d4d;
-  --orange:        #7a0a0a;
-  --purple:        #180909;
-  --blue:          #420909;
-  --gold:          rgba(255, 255, 255, 0.72);
+  --red:           #ff2b45;            /* tuned brand red (was #ff0000) */
+  --red-hi:        #ff4d63;
+  --red-deep:      #8a0a1a;             /* was mislabeled --orange */
+  --red-ember:     #4a0510;             /* was mislabeled --purple */
+  --red-shadow:    #330608;             /* was mislabeled --blue */
+  --soft-white:    rgba(255, 255, 255, 0.72); /* was mislabeled --gold */
   --discord:       #5865f2;
+
+  /* Back-compat aliases — delete once pages are migrated to the new names */
+  --orange:        var(--red-deep);
+  --purple:        var(--red-ember);
+  --blue:          var(--red-shadow);
+  --gold:          var(--soft-white);
   
   --grad-primary:  linear-gradient(90deg, #5e0000 0%, var(--red) 50%, #5e0000 100%);
   --grad-sunset:   linear-gradient(135deg, rgba(255, 0, 0, 0.18) 0%, rgba(255, 255, 255, 0.02) 100%);
@@ -37,8 +95,8 @@
   --radius:        14px;
   --radius-lg:     24px;
   --container:     min(1280px, calc(100% - 4rem)); /* Wider, more breathable containers */
-  --font-body:     var(--font-body, "Arial Strip", sans-serif);
-  --font-display:  var(--font-display, "Arial Strip", sans-serif);
+  --font-body:     var(--font-body, "Barlow", ui-sans-serif, system-ui, sans-serif);
+  --font-display:  var(--font-display, "Barlow Condensed", ui-sans-serif, system-ui, sans-serif);
   --intro-dur:     2.1s;
 }
 
