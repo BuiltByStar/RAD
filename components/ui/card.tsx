@@ -1,14 +1,18 @@
+"use client";
+
+import { motion, useReducedMotion, type HTMLMotionProps, type Variants } from "framer-motion";
 import type { HTMLAttributes, ReactNode } from "react";
 
 import { cn } from "./cn";
+import { EASE_EMPHASIS } from "./motion-tokens";
 
 type Tone = "default" | "lead" | "metric" | "compact" | "tall";
 
-type CardProps = HTMLAttributes<HTMLElement> & {
+type CardProps = Omit<HTMLMotionProps<"article">, "children"> & {
   tone?: Tone;
-  as?: "article" | "div";
   accent?: boolean;
   children: ReactNode;
+  hover?: boolean;
 };
 
 const tones: Record<Tone, string> = {
@@ -19,21 +23,42 @@ const tones: Record<Tone, string> = {
   tall: "p-6 min-h-[260px] grid content-start gap-3"
 };
 
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: EASE_EMPHASIS }
+  }
+};
+
 export function Card({
   tone = "default",
-  as = "article",
   accent = true,
+  hover = true,
   className,
   children,
   ...rest
 }: CardProps) {
-  const Tag = as;
+  const reduced = useReducedMotion();
+
+  const motionProps = reduced
+    ? {}
+    : {
+        variants: cardVariants,
+        initial: "hidden" as const,
+        whileInView: "visible" as const,
+        viewport: { once: true, margin: "-60px" },
+        whileHover: hover ? { y: -4 } : undefined
+      };
+
   return (
-    <Tag
+    <motion.article
+      {...motionProps}
       className={cn(
         "group relative overflow-hidden rounded-2xl border border-white/10",
         "bg-gradient-to-b from-white/[.04] to-white/[0.01]",
-        "transition duration-300 ease-[var(--ease-emphasis)]",
+        "transition-[border-color,background-color] duration-300 ease-[var(--ease-emphasis)]",
         "hover:border-white/20 hover:from-white/[.06]",
         tones[tone],
         className
@@ -55,7 +80,7 @@ export function Card({
         className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgb(255_43_69_/_0.14),transparent_65%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
       />
       {children}
-    </Tag>
+    </motion.article>
   );
 }
 

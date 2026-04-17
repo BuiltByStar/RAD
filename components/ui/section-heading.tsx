@@ -1,7 +1,11 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { cn } from "./cn";
+import { EASE_EMPHASIS } from "./motion-tokens";
 
 type SectionHeadingProps = {
   title: string;
@@ -23,9 +27,20 @@ export function SectionHeading({
   className
 }: SectionHeadingProps) {
   const hasMeta = description || (actionHref && actionLabel);
+  const reduced = useReducedMotion();
+
+  const motionProps = reduced
+    ? {}
+    : {
+        initial: { opacity: 0, y: 14 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "-80px" },
+        transition: { duration: 0.6, ease: EASE_EMPHASIS }
+      };
 
   return (
-    <header
+    <motion.header
+      {...motionProps}
       className={cn(
         "relative mb-10 grid gap-5 pb-5",
         compact ? "grid-cols-1" : "lg:grid-cols-[1.05fr_0.95fr] lg:items-end",
@@ -67,10 +82,15 @@ export function SectionHeading({
         </div>
       ) : null}
 
-      <span
+      <motion.span
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-white/15 via-white/5 to-transparent"
+        initial={reduced ? undefined : { scaleX: 0 }}
+        whileInView={reduced ? undefined : { scaleX: 1 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.9, ease: EASE_EMPHASIS, delay: 0.15 }}
+        style={{ originX: 0 }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-white/30 via-white/10 to-transparent"
       />
-    </header>
+    </motion.header>
   );
 }
