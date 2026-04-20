@@ -188,23 +188,11 @@ export function HomeHero() {
       <Container size="xl" className="relative z-10 w-full">
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(420px,0.98fr)] lg:gap-14">
           <div className="relative z-10 max-w-[640px]">
-            <motion.div
-              initial={reduced ? undefined : { opacity: 0, y: 8 }}
-              animate={reduced ? undefined : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease, delay: 0.04 }}
-              className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 backdrop-blur-md"
-            >
-              <span className="inline-block h-2.5 w-2.5 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_20px_rgba(255,43,69,0.75)]" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/70">
-                RAD Esports // teamrad.gg
-              </span>
-            </motion.div>
-
             <motion.h1
               initial={reduced ? undefined : { opacity: 0, y: 22 }}
               animate={reduced ? undefined : { opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease, delay: 0.1 }}
-              className="mt-6 max-w-[9ch] font-[family-name:var(--font-display)] text-[clamp(4rem,11vw,7.75rem)] font-extrabold uppercase leading-[0.86] tracking-[-0.05em] text-white"
+              className="max-w-[9ch] font-[family-name:var(--font-display)] text-[clamp(4rem,11vw,7.75rem)] font-extrabold uppercase leading-[0.86] tracking-[-0.05em] text-white"
             >
               GO{" "}
               <span className="relative inline-block bg-[linear-gradient(180deg,#ff5f74_0%,#ff2b45_52%,#ff8a98_100%)] bg-clip-text text-transparent drop-shadow-[0_0_28px_rgba(255,43,69,0.32)]">
@@ -228,10 +216,12 @@ export function HomeHero() {
               transition={{ duration: 0.55, ease, delay: 0.28 }}
               className="mt-5 flex flex-wrap items-center gap-3"
             >
-              <span className="inline-flex min-h-9 items-center rounded-full border border-white/10 bg-white/[0.03] px-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60 backdrop-blur-md">
+              <span className="inline-flex min-h-11 items-center border border-white/12 bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] px-5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/65 backdrop-blur-md [clip-path:polygon(0_0,100%_0,94%_100%,0_100%)]">
+                <span className="mr-3 inline-block h-4 w-[2px] bg-white/24" />
                 Featured division: Marvel Rivals
               </span>
-              <span className="inline-flex min-h-9 items-center rounded-full border border-[color:var(--color-rad)]/30 bg-[color:var(--color-rad)]/10 px-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/78">
+              <span className="inline-flex min-h-11 items-center border border-[color:var(--color-rad)]/35 bg-[linear-gradient(135deg,rgba(255,43,69,0.16),rgba(255,255,255,0.02))] px-5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/82 [clip-path:polygon(6%_0,100%_0,100%_100%,0_100%)]">
+                <span className="mr-3 inline-block h-4 w-[2px] bg-[color:var(--color-rad-hi)] shadow-[0_0_12px_rgba(255,43,69,0.55)]" />
                 World + EMEA champions
               </span>
             </motion.div>
