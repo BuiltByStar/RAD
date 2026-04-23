@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { EASE_OUT_EXPO, EASE_IN_OUT_EXPO } from "@/components/ui/motion-tokens";
+import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
 
 const SESSION_KEY = "rad:home-intro";
 
@@ -68,7 +68,7 @@ export function HomeIntro() {
         aria-label="RAD introduction"
         tabIndex={-1}
         initial={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { duration: 0.8, ease: EASE_IN_OUT_EXPO } }}
+        exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
         className="fixed inset-0 z-[100] flex cursor-pointer flex-col items-center justify-center bg-[#020202] outline-none"
         onClick={complete}
       >
