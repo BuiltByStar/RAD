@@ -6,9 +6,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Edges, Environment, Float, Lightformer, Sparkles } from "@react-three/drei";
 import {
   Bloom,
-  ChromaticAberration,
-  EffectComposer,
-  Vignette
+  EffectComposer
 } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
@@ -595,29 +593,22 @@ export function Scene() {
         <CameraRig activeIndex={activeIndex} reducedMotion={reducedMotion} />
 
         <Sparkles
-          count={42}
+          count={20}
           scale={[40, 14, 14]}
           size={1.4}
           speed={0.12}
-          opacity={0.55}
+          opacity={0.3}
           color={BRAND.redHi}
         />
 
         <EffectComposer multisampling={0} enableNormalPass={false}>
           <Bloom
             mipmapBlur
-            intensity={0.9}
-            luminanceThreshold={0.35}
-            luminanceSmoothing={0.25}
+            intensity={0.6}
+            luminanceThreshold={0.4}
+            luminanceSmoothing={0.3}
             radius={0.8}
           />
-          <ChromaticAberration
-            blendFunction={BlendFunction.NORMAL}
-            offset={[0.00035, 0.00055]}
-            radialModulation={true}
-            modulationOffset={0.15}
-          />
-          <Vignette eskil={false} offset={0.15} darkness={0.85} />
         </EffectComposer>
       </Canvas>
     </div>
