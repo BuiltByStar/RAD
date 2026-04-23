@@ -14,22 +14,22 @@ const milestones: Milestone[] = [
   {
     year: "2023",
     title: "Founded",
-    detail: "RAD establishes its identity — red, black, white, and relentless."
+    detail: "RAD establishes its identity early: red, black, white, and a standard that is supposed to travel."
   },
   {
     year: "2024",
     title: "Top tier",
-    detail: "Entered international competition with a roster built for LANs, pressure, and long runs."
+    detail: "The organization enters international competition with a roster built for LAN pressure and deep runs."
   },
   {
-    year: "Aug 2025",
+    year: "AUG 2025",
     title: "World title",
-    detail: "Inaugural global championship in our division — proof on the biggest stage."
+    detail: "An inaugural global championship locks in proof on the biggest stage."
   },
   {
-    year: "Mar 2026",
+    year: "MAR 2026",
     title: "EMEA crown",
-    detail: "Regional championship locked in. The standard stays the same: win, then win again."
+    detail: "The regional title confirms that the standard is repeatable, not accidental."
   }
 ];
 
@@ -39,71 +39,83 @@ export function HomeChampionsStrip() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative border-y border-white/10 bg-gradient-to-b from-black/60 via-black to-black/60 py-16 sm:py-20">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-rad)]/60 to-transparent"
-      />
-      <Container size="xl">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+    <section className="relative border-y border-white/10 py-20 sm:py-24">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.005)),rgba(4,4,4,0.96)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(640px_260px_at_15%_10%,rgba(255,43,69,0.12),transparent_60%)]" />
+
+      <Container size="xl" className="relative z-10">
+        <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-14">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="max-w-md"
+            className="max-w-lg"
           >
-            <Eyebrow>RAD / Timeline</Eyebrow>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl uppercase leading-tight tracking-tight sm:text-5xl">
-              Built in <span className="text-[color:var(--color-rad)]">three years.</span>{" "}
-              Still climbing.
+            <Eyebrow>Proof stack</Eyebrow>
+            <h2 className="mt-4 max-w-[11ch] font-[family-name:var(--font-display)] text-4xl uppercase leading-[0.92] tracking-[-0.02em] sm:text-6xl">
+              Built fast. Proven early.
             </h2>
-            <p className="mt-4 text-sm text-white/60 sm:text-base">
-              Proof over promises: titles, consistency, and a brand that shows up when the lights go
-              hot.
+            <p className="mt-5 text-sm leading-relaxed text-white/62 sm:text-base">
+              The strongest brand move RAD has is that the story already has results behind it. This section is the short version of why the org carries weight.
             </p>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <div className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.01)),rgba(5,5,5,0.78)] p-5 [clip-path:polygon(0_0,calc(100%-16px)_0,100%_16px,100%_100%,16px_100%,0_calc(100%-16px))]">
+                <p className="font-[family-name:var(--font-display)] text-5xl uppercase leading-none tracking-tight text-white">02</p>
+                <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/46">Titles secured</p>
+              </div>
+              <div className="border border-white/10 bg-black/55 p-5 [clip-path:polygon(0_0,calc(100%-16px)_0,100%_16px,100%_100%,16px_100%,0_calc(100%-16px))]">
+                <p className="font-[family-name:var(--font-display)] text-5xl uppercase leading-none tracking-tight text-[color:var(--color-rad-hi)]">03</p>
+                <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/46">Years of growth</p>
+              </div>
+            </div>
           </motion.div>
 
           <motion.ol
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.12 } }
-            }}
-            className="grid w-full flex-1 grid-cols-1 gap-6 sm:grid-cols-2 lg:max-w-2xl lg:grid-cols-4"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+            className="grid gap-4"
           >
-            {milestones.map((m, i) => (
+            {milestones.map((milestone, index) => (
               <motion.li
-                key={m.year}
-                variants={{
-                  hidden: { opacity: 0, y: 24 },
-                  show: { opacity: 1, y: 0 }
-                }}
+                key={milestone.year}
+                variants={{ hidden: { opacity: 0, y: 22 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.7, ease: EASE }}
-                className="group relative flex flex-col gap-2 border-l border-white/10 pl-5 transition-colors hover:border-[color:var(--color-rad)]/60"
+                className="group grid gap-4 border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)),rgba(5,5,5,0.82)] p-5 transition-colors duration-300 hover:border-[color:var(--color-rad)]/36 md:grid-cols-[100px_1fr] md:items-start md:p-6 [clip-path:polygon(0_0,calc(100%-16px)_0,100%_16px,100%_100%,16px_100%,0_calc(100%-16px))]"
               >
-                <span className="absolute -left-[4px] top-1 inline-flex h-2 w-2">
-                  <motion.span
-                    className="absolute inline-flex h-full w-full rounded-full bg-[color:var(--color-rad)]/60"
-                    animate={reduced ? undefined : { scale: [1, 2.2, 1], opacity: [0.7, 0, 0.7] }}
-                    transition={{ duration: 2.6, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
-                  />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_12px_rgb(255_43_69_/_0.8)]" />
-                </span>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/50">
-                  {String(i + 1).padStart(2, "0")} / {m.year}
-                </span>
-                <span className="font-[family-name:var(--font-display)] text-xl uppercase tracking-tight">
-                  {m.title}
-                </span>
-                <span className="text-xs text-white/60">{m.detail}</span>
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-9 min-w-9 items-center justify-center rounded-full border border-[color:var(--color-rad)]/28 bg-[color:var(--color-rad)]/10 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad-hi)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/44">
+                    {milestone.year}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-[family-name:var(--font-display)] text-2xl uppercase leading-none tracking-tight text-white">
+                    {milestone.title}
+                  </h3>
+                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/62 sm:text-base">
+                    {milestone.detail}
+                  </p>
+                </div>
               </motion.li>
             ))}
           </motion.ol>
         </div>
       </Container>
+
+      {!reduced ? (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-rad)]/65 to-transparent"
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ) : null}
     </section>
   );
 }

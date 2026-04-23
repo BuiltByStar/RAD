@@ -42,7 +42,7 @@ export function SectionHeading({
     <motion.header
       {...motionProps}
       className={cn(
-        "relative mb-10 grid gap-5 pb-5",
+        "relative mb-12 grid gap-6 pb-6",
         compact ? "grid-cols-1" : "lg:grid-cols-[1.05fr_0.95fr] lg:items-end",
         className
       )}
@@ -50,7 +50,7 @@ export function SectionHeading({
       <div>
         {eyebrow ? (
           <motion.p
-            className="relative inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]"
+            className="relative inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--color-rad-hi)]"
             initial={reduced ? undefined : { opacity: 0, x: -8 }}
             whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -64,7 +64,7 @@ export function SectionHeading({
             {eyebrow}
           </motion.p>
         ) : null}
-        <h2 className="relative mt-3 font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3.25rem)] uppercase leading-[0.98] tracking-tight text-white [text-wrap:balance]">
+        <h2 className="relative mt-4 max-w-[12ch] font-[family-name:var(--font-display)] text-[clamp(2.2rem,4vw,3.6rem)] uppercase leading-[0.94] tracking-[-0.02em] text-white [text-wrap:balance]">
           {title}
         </h2>
       </div>
@@ -72,7 +72,7 @@ export function SectionHeading({
       {hasMeta ? (
         <div className="flex flex-col items-start gap-4">
           {description ? (
-            <div className="max-w-xl text-sm leading-relaxed text-white/60 sm:text-base">
+            <div className="max-w-xl text-sm leading-relaxed text-white/62 sm:text-base">
               {description}
             </div>
           ) : null}
@@ -100,7 +100,7 @@ export function SectionHeading({
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.9, ease: EASE_EMPHASIS, delay: 0.15 }}
         style={{ originX: 0 }}
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-white/30 via-white/10 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-white/24 via-[color:var(--color-rad)]/18 to-transparent"
       />
     </motion.header>
   );

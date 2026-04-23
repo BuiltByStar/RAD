@@ -192,23 +192,22 @@ function WorldsMatrix() {
 export function HomeWorldsPortal() {
   return (
     <section id="experience" className="relative border-t border-white/10 py-24 sm:py-32">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_26%),rgba(4,4,4,0.98)]" />
       <Container size="xl">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+        <div className="relative z-10 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="max-w-md"
+            className="max-w-lg"
           >
             <Eyebrow>Systems</Eyebrow>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl uppercase leading-[0.95] tracking-tight sm:text-5xl">
-              Four worlds.
-              <br />
-              One organization.
+            <h2 className="mt-4 max-w-[11ch] font-[family-name:var(--font-display)] text-4xl uppercase leading-[0.92] tracking-[-0.02em] sm:text-6xl">
+              Four worlds. One operating system.
             </h2>
-            <p className="mt-5 text-sm text-white/60 sm:text-base">
-              An interactive map of how RAD operates across competition, content, identity, and activations without flattening the org into a single page.
+            <p className="mt-5 max-w-[34rem] text-sm leading-relaxed text-white/62 sm:text-base">
+              RAD is not one roster page and a logo. It is competition, identity, content, and activations tied together in a single public system.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/about" variant="primary">About the org</Button>
@@ -225,7 +224,7 @@ export function HomeWorldsPortal() {
           >
             <div
               aria-hidden
-              className="absolute -inset-px rounded-[28px] opacity-30 [background:conic-gradient(from_var(--border-angle),transparent_0%,rgb(255_43_69_/_0.28)_10%,transparent_32%)] [animation:border-rotate_12s_linear_infinite]"
+              className="absolute -inset-px rounded-[28px] opacity-36 [background:conic-gradient(from_var(--border-angle),transparent_0%,rgb(255_43_69_/_0.22)_10%,transparent_32%)] [animation:border-rotate_14s_linear_infinite]"
             />
             <WorldsMatrix />
           </motion.div>

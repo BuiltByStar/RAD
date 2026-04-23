@@ -7,17 +7,17 @@ type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "relative inline-flex items-center justify-center gap-2 overflow-hidden font-semibold uppercase tracking-[0.12em] transition-[transform,background,border-color,box-shadow] duration-200 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 will-change-transform active:translate-y-[1px] before:pointer-events-none before:absolute before:inset-0 before:-translate-x-full before:bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.35)_50%,transparent_70%)] before:transition-transform before:duration-700 before:ease-out hover:before:translate-x-full";
+  "group relative inline-flex items-center justify-center gap-2 overflow-hidden border font-semibold uppercase tracking-[0.16em] transition-[transform,background,border-color,box-shadow,color] duration-300 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 will-change-transform active:translate-y-[1px] [clip-path:polygon(0_0,calc(100%-16px)_0,100%_50%,calc(100%-16px)_100%,0_100%,0_0)] before:pointer-events-none before:absolute before:inset-0 before:-translate-x-full before:bg-[linear-gradient(110deg,transparent_22%,rgba(255,255,255,0.28)_48%,transparent_74%)] before:transition-transform before:duration-700 before:ease-out hover:before:translate-x-full after:pointer-events-none after:absolute after:inset-[1px] after:[clip-path:polygon(0_0,calc(100%-15px)_0,100%_50%,calc(100%-15px)_100%,0_100%,0_0)] after:transition-opacity after:duration-300";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-[color:var(--color-rad)] text-white hover:bg-[color:var(--color-rad-hi)] shadow-[var(--shadow-glow)] hover:shadow-[0_0_60px_rgb(255_43_69_/_0.5),0_0_120px_rgb(255_43_69_/_0.25)] hover:-translate-y-[1px]",
+    "border-[color:var(--color-rad-hi)]/40 bg-[linear-gradient(135deg,rgba(255,90,111,0.95),rgba(255,43,69,0.88)_52%,rgba(125,8,24,0.98))] text-white shadow-[0_18px_50px_rgba(255,43,69,0.22)] hover:-translate-y-[1px] hover:border-[color:var(--color-rad-hi)]/70 hover:shadow-[0_24px_72px_rgba(255,43,69,0.34)] after:bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.02)_24%,rgba(20,6,8,0.18)_100%)]",
   secondary:
-    "bg-white text-black hover:bg-white/90",
+    "border-white/25 bg-white text-black hover:border-white hover:bg-white/92 after:bg-transparent",
   ghost:
-    "bg-white/[.04] text-white hover:bg-white/[.08] border border-white/10 hover:border-white/20 backdrop-blur",
+    "border-white/12 bg-white/[.05] text-white backdrop-blur-md hover:border-white/28 hover:bg-white/[.09] after:bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.01))]",
   outline:
-    "bg-transparent text-white border border-white/25 hover:border-white hover:bg-white/5"
+    "border-white/20 bg-transparent text-white hover:border-[color:var(--color-rad-hi)]/50 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,43,69,0.05))] after:bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.008))]"
 };
 
 const sizes: Record<Size, string> = {

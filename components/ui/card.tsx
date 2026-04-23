@@ -88,12 +88,12 @@ export function Card({
       onMouseMove={spotlight ? handleMove : onMouseMove}
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
-        "group relative overflow-hidden rounded-2xl border border-white/10",
-        "bg-gradient-to-b from-white/[.035] to-white/[0.005]",
-        "shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_20px_40px_-20px_rgba(0,0,0,0.8)]",
+        "group relative overflow-hidden border border-white/10 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]",
+        "bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.015)_26%,rgba(255,255,255,0.004)_100%)]",
+        "shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_24px_50px_-24px_rgba(0,0,0,0.92)]",
         "transition-[border-color,box-shadow] duration-500",
         "hover:border-[color:var(--color-rad)]/40",
-        "hover:shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_30px_70px_-20px_rgba(255,43,69,0.35)]",
+        "hover:shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_34px_76px_-24px_rgba(255,43,69,0.26)]",
         tones[tone],
         className
       )}
@@ -122,6 +122,14 @@ export function Card({
       <span
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-0 h-5 w-5 border-r border-t border-white/18"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-0 h-5 w-5 border-b border-l border-white/18"
       />
 
       <motion.span

@@ -3,9 +3,17 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
 
 const SESSION_KEY = "rad:home-intro";
+
+const railRows = [
+  "top-[16%]",
+  "top-[28%]",
+  "top-[64%]",
+  "top-[76%]"
+];
 
 export function HomeIntro() {
   const reduced = useReducedMotion();
@@ -21,37 +29,42 @@ export function HomeIntro() {
     setStage("playing");
   }, [reduced]);
 
-  const complete = () => {
-    setStage((s) => {
-      if (s !== "playing") return s;
-      try {
-        sessionStorage.setItem(SESSION_KEY, "1");
-      } catch {
-        /* ignore */
-      }
-      return "exit";
-    });
-  };
-
   useEffect(() => {
     if (stage === "playing") {
       document.body.style.overflow = "hidden";
-      const t = setTimeout(complete, 2600); // Fast, punchy duration
+      const timeout = setTimeout(() => {
+        try {
+          sessionStorage.setItem(SESSION_KEY, "1");
+        } catch {
+          /* ignore */
+        }
+        setStage("exit");
+      }, 3400);
+
       return () => {
-        clearTimeout(t);
+        clearTimeout(timeout);
         document.body.style.overflow = "";
       };
-    } else if (stage === "exit") {
+    }
+
+    if (stage === "exit") {
       document.body.style.overflow = "";
-      const t = setTimeout(() => setStage("idle"), 1000);
-      return () => clearTimeout(t);
+      const timeout = setTimeout(() => setStage("idle"), 900);
+      return () => clearTimeout(timeout);
     }
   }, [stage]);
 
   useEffect(() => {
     if (stage !== "playing") return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" || e.key === "Enter" || e.key === " ") complete();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" || event.key === "Enter" || event.key === " ") {
+        try {
+          sessionStorage.setItem(SESSION_KEY, "1");
+        } catch {
+          /* ignore */
+        }
+        setStage("exit");
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -62,56 +75,113 @@ export function HomeIntro() {
   return (
     <AnimatePresence>
       <motion.div
-        key="intro-layer"
+        key="rad-intro"
         role="dialog"
         aria-modal="true"
         aria-label="RAD introduction"
         tabIndex={-1}
         initial={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
-        className="fixed inset-0 z-[100] flex cursor-pointer flex-col items-center justify-center bg-[#020202] outline-none"
-        onClick={complete}
+        exit={{ opacity: 0, transition: { duration: 0.8, ease: EASE_OUT_EXPO } }}
+        className="fixed inset-0 z-[100] overflow-hidden bg-[#020202]"
       >
-        <div className="absolute inset-0 bg-[url('/assets/noise.png')] opacity-[0.03] mix-blend-overlay" />
-        
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, filter: "blur(12px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, scale: 1.05, filter: "blur(4px)" }}
-          transition={{ duration: 1.4, ease: EASE_OUT_EXPO }}
-          className="relative z-10 flex flex-col items-center"
-        >
-          <Image
-            src="/assets/RadNewLogoWordmarkWhite.png"
-            alt="RAD Esports"
-            width={480}
-            height={140}
-            priority
-            className="h-auto w-[200px] object-contain sm:w-[280px]"
-          />
+        <div className="absolute inset-0 bg-[radial-gradient(72%_54%_at_50%_40%,rgba(255,43,69,0.18),transparent_58%),radial-gradient(90%_70%_at_50%_-10%,rgba(255,255,255,0.06),transparent_45%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.02)),linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.025)_49%,transparent_51%)]" />
 
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 1, ease: EASE_OUT_EXPO }}
-            className="mt-8 flex items-center gap-4"
-          >
-            <div className="h-px w-6 bg-white/20 sm:w-10" />
-            <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/50 sm:text-[10px]">
-              Worlds '26
-            </span>
-            <div className="h-px w-6 bg-white/20 sm:w-10" />
-          </motion.div>
-        </motion.div>
-        
         <motion.div
+          aria-hidden
+          initial={{ scaleY: 1 }}
+          animate={stage === "exit" ? { scaleY: 0, transition: { duration: 0.72, ease: EASE_OUT_EXPO } } : undefined}
+          className="absolute left-0 top-0 h-1/2 w-full origin-top bg-[linear-gradient(180deg,#070707,#0b0b0b)]"
+        />
+        <motion.div
+          aria-hidden
+          initial={{ scaleY: 1 }}
+          animate={stage === "exit" ? { scaleY: 0, transition: { duration: 0.72, ease: EASE_OUT_EXPO } } : undefined}
+          className="absolute bottom-0 left-0 h-1/2 w-full origin-bottom bg-[linear-gradient(180deg,#0b0b0b,#070707)]"
+        />
+
+        <motion.div
+          aria-hidden
+          initial={{ x: "-100%" }}
+          animate={{ x: ["-100%", "120%"] }}
+          transition={{ duration: 1.2, delay: 0.3, ease: EASE_OUT_EXPO }}
+          className="absolute inset-y-[24%] left-0 h-px w-[42%] bg-[linear-gradient(90deg,transparent,rgba(255,43,69,0.85),rgba(255,255,255,0.12),transparent)] blur-[0.6px]"
+        />
+        <motion.div
+          aria-hidden
+          initial={{ x: "100%" }}
+          animate={{ x: ["100%", "-120%"] }}
+          transition={{ duration: 1.3, delay: 0.52, ease: EASE_OUT_EXPO }}
+          className="absolute inset-y-[62%] right-0 h-px w-[38%] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.12),rgba(255,43,69,0.85),transparent)] blur-[0.6px]"
+        />
+
+        {railRows.map((row, index) => (
+          <motion.div
+            key={row}
+            aria-hidden
+            className={`absolute ${row} left-0 h-px w-full bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.08)_30%,rgba(255,43,69,0.5)_50%,rgba(255,255,255,0.08)_70%,transparent_100%)]`}
+            animate={{ opacity: [0.08, 0.36, 0.08] }}
+            transition={{ duration: 2.1, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+          />
+        ))}
+
+        <div className="absolute inset-0 flex items-center justify-center px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.03, filter: "blur(8px)" }}
+            transition={{ duration: 0.95, ease: EASE_OUT_EXPO }}
+            className="relative flex w-full max-w-3xl flex-col items-center"
+          >
+            <motion.div
+              aria-hidden
+              className="absolute inset-x-[14%] top-1/2 h-24 -translate-y-1/2 bg-[radial-gradient(circle,rgba(255,43,69,0.52),transparent_72%)] blur-3xl"
+              animate={{ scaleX: [0.9, 1.12, 0.94], opacity: [0.5, 0.92, 0.56] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            <div className="relative overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015)),rgba(5,5,5,0.84)] px-8 py-8 sm:px-12 sm:py-10 [clip-path:polygon(0_0,calc(100%-20px)_0,100%_20px,100%_100%,20px_100%,0_calc(100%-20px))]">
+              <motion.div
+                aria-hidden
+                className="absolute inset-0 bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.18)_44%,rgba(255,43,69,0.2)_52%,transparent_72%)]"
+                animate={{ x: ["-140%", "140%"] }}
+                transition={{ duration: 1.3, delay: 0.45, ease: EASE_OUT_EXPO }}
+              />
+              <Image
+                src="/assets/RadNewLogoWordmarkWhite.png"
+                alt="RAD Esports"
+                width={920}
+                height={240}
+                priority
+                className="relative z-10 h-auto w-[220px] sm:w-[360px]"
+              />
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.45, ease: EASE_OUT_EXPO }}
+              className="mt-8 flex flex-wrap items-center justify-center gap-3"
+            >
+              <span className="inline-flex items-center gap-2 border border-white/10 bg-white/[0.03] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/55 [clip-path:polygon(0_0,calc(100%-10px)_0,100%_50%,calc(100%-10px)_100%,0_100%,0_0)]">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_8px_rgba(255,43,69,0.8)]" />
+                teamrad.gg
+              </span>
+              <span className="inline-flex items-center gap-2 border border-[color:var(--color-rad)]/24 bg-[color:var(--color-rad)]/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[color:var(--color-rad-hi)] [clip-path:polygon(0_0,calc(100%-10px)_0,100%_50%,calc(100%-10px)_100%,0_100%,0_0)]">
+                World stage
+              </span>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[9px] font-semibold uppercase tracking-[0.3em] text-white/30"
+          transition={{ duration: 0.7, delay: 1.1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[10px] font-semibold uppercase tracking-[0.28em] text-white/32"
         >
-          Skip [ Esc ]
-        </motion.div>
+          Skip / Esc
+        </motion.p>
       </motion.div>
     </AnimatePresence>
   );

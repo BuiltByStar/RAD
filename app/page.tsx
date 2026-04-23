@@ -11,8 +11,8 @@ export default function HomePage() {
       <HomeIntro />
       <HomeHero />
       <MarqueeStrip />
-      <HomeChampionsStrip />
       <HomeWorldsPortal />
+      <HomeChampionsStrip />
       <HomePillars />
     </main>
   );

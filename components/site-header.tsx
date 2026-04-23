@@ -21,13 +21,15 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-[var(--ease-emphasis)] ${
-        scrolled
-          ? "border-b border-white/10 bg-black/70 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
-      }`}
+      className="fixed inset-x-0 top-0 z-50 px-4 pt-4 transition-all duration-300 ease-[var(--ease-emphasis)] sm:px-6 lg:px-8"
     >
-      <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between gap-6 px-6 sm:h-18 sm:px-8 lg:h-20 lg:px-12">
+      <div
+        className={`mx-auto flex h-16 w-full max-w-[1500px] items-center justify-between gap-6 border px-5 sm:h-[4.5rem] sm:px-7 lg:h-20 lg:px-10 ${
+          scrolled
+            ? "border-white/12 bg-[linear-gradient(180deg,rgba(6,6,6,0.88),rgba(6,6,6,0.72))] shadow-[0_20px_40px_-26px_rgba(0,0,0,0.95)] backdrop-blur-2xl"
+            : "border-white/8 bg-[linear-gradient(180deg,rgba(6,6,6,0.56),rgba(6,6,6,0.34))] backdrop-blur-xl"
+        } [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]`}
+      >
         <Link href="/" aria-label="RAD Esports home" className="relative block shrink-0">
           <Image
             src="/assets/RadNewLogoWordmarkWhite.png"
@@ -49,10 +51,10 @@ export function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative rounded-full px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition ${
+                className={`group relative rounded-full px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] transition ${
                   active
                     ? "text-white"
-                    : "text-white/60 hover:text-white"
+                    : "text-white/58 hover:text-white"
                 }`}
                 aria-current={active ? "page" : undefined}
               >
@@ -68,7 +70,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 border-l border-white/10 pl-3 sm:pl-4">
           <AuthWidget />
         </div>
       </div>
