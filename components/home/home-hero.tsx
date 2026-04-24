@@ -12,7 +12,7 @@ const ease = EASE_OUT_EXPO;
 const statItems = [
   { label: "World Titles", value: "01" },
   { label: "Regional Titles", value: "01" },
-  { label: "Live Division", value: "MR" }
+  { label: "Live Titles", value: "01" }
 ];
 
 function HeroConstruct() {
@@ -63,31 +63,34 @@ function HeroConstruct() {
 
         <motion.div
           aria-hidden
-          className="absolute -left-[4%] top-[16%] h-[68%] w-[18%] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,43,69,0.08),rgba(8,8,8,0.9))] [clip-path:polygon(16%_0,100%_0,84%_100%,0_100%)]"
-          animate={reduced ? undefined : { y: [-8, 8, -8], rotate: [-1.2, 1.2, -1.2] }}
+          className="absolute left-[4%] top-[10%] h-[68%] w-[24%] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,43,69,0.08),rgba(8,8,8,0.94))] [clip-path:polygon(18%_0,100%_0,82%_100%,0_100%)]"
+          animate={reduced ? undefined : { y: [-6, 6, -6] }}
           transition={{ duration: 8.8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
           aria-hidden
-          className="absolute right-[-3%] top-[10%] h-[76%] w-[14%] border border-white/10 bg-[linear-gradient(180deg,rgba(255,43,69,0.16),rgba(255,255,255,0.02),rgba(8,8,8,0.92))] [clip-path:polygon(0_0,84%_0,100%_100%,16%_100%)]"
-          animate={reduced ? undefined : { y: [8, -8, 8], rotate: [1.2, -1.2, 1.2] }}
+          className="absolute right-[4%] top-[18%] h-[58%] w-[12%] border border-white/10 bg-[linear-gradient(180deg,rgba(255,43,69,0.18),rgba(255,255,255,0.02),rgba(8,8,8,0.92))] [clip-path:polygon(0_0,82%_0,100%_100%,18%_100%)]"
+          animate={reduced ? undefined : { y: [6, -6, 6] }}
           transition={{ duration: 9.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
         />
 
         <div className="absolute left-5 top-5 flex items-center gap-3 border border-white/10 bg-black/45 px-4 py-2 backdrop-blur-md [clip-path:polygon(0_0,calc(100%-12px)_0,100%_50%,calc(100%-12px)_100%,0_100%,0_0)]">
           <span className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_10px_rgba(255,43,69,0.75)]" />
           <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/62">
-            Pressure-built system
+            Campaign surface
           </span>
         </div>
 
-        <div className="absolute bottom-6 left-6 right-6 grid gap-3 sm:grid-cols-[1.15fr_0.85fr]">
-          <div className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01)),rgba(0,0,0,0.54)] p-4 backdrop-blur-md [clip-path:polygon(0_0,calc(100%-14px)_0,100%_50%,calc(100%-14px)_100%,0_100%,0_0)]">
+        <div className="absolute inset-x-6 bottom-6 grid gap-3 sm:grid-cols-[1.05fr_0.95fr]">
+          <div className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.01)),rgba(0,0,0,0.58)] p-4 backdrop-blur-md [clip-path:polygon(0_0,calc(100%-14px)_0,100%_14px,100%_100%,14px_100%,0_calc(100%-14px))]">
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[color:var(--color-rad-hi)]">
               Featured division
             </p>
             <p className="mt-2 font-[family-name:var(--font-display)] text-3xl uppercase leading-none tracking-tight text-white">
               Marvel Rivals
+            </p>
+            <p className="mt-3 max-w-[26ch] text-xs leading-relaxed text-white/66">
+              The current front line proving the standard on world and regional stages.
             </p>
           </div>
           <div className="border border-white/10 bg-black/48 p-4 backdrop-blur-md [clip-path:polygon(14px_0,100%_0,100%_100%,0_100%,0_14px)]">
@@ -95,8 +98,17 @@ function HeroConstruct() {
               Current proof
             </p>
             <p className="mt-2 text-sm leading-relaxed text-white/70">
-              World champion pedigree, EMEA pressure-tested, structured to scale into the next title.
+              Real wins first, then design language. The site should feel as structured as the org is trying to become.
             </p>
+          </div>
+        </div>
+
+        <div className="absolute right-5 top-[4.5rem] flex w-[170px] flex-col gap-2">
+          <div className="border border-white/10 bg-black/46 px-3 py-2 backdrop-blur-md [clip-path:polygon(12px_0,100%_0,100%_100%,0_100%,0_12px)]">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/42">
+              Story layer
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-white/70">Built for pressure, content, and the next stage of competition.</p>
           </div>
         </div>
       </div>
@@ -115,7 +127,7 @@ export function HomeHero() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative isolate flex min-h-[calc(100svh-84px)] items-center overflow-hidden border-b border-white/8 bg-[#040404] py-16 sm:py-20 lg:py-24">
+    <section className="relative isolate flex min-h-[calc(100svh-84px)] items-start overflow-hidden border-b border-white/8 bg-[#040404] py-10 sm:py-14 lg:min-h-[calc(100svh-120px)] lg:py-16">
       <div className="absolute inset-0 bg-[radial-gradient(70%_55%_at_8%_18%,rgba(255,43,69,0.26),transparent_48%),radial-gradient(42%_36%_at_84%_30%,rgba(255,43,69,0.18),transparent_56%),linear-gradient(180deg,#060606_0%,#040404_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.02)_49%,transparent_51%),linear-gradient(transparent_0%,rgba(255,255,255,0.015)_49%,transparent_51%)] bg-[size:88px_88px] opacity-40" />
 
@@ -133,16 +145,16 @@ export function HomeHero() {
       />
 
       <Container size="xl" className="relative z-10 w-full">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16">
+        <div className="grid items-start gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16">
           <div className="relative z-10 max-w-[620px]">
             <motion.div
               initial={reduced ? undefined : { opacity: 0, y: 10 }}
               animate={reduced ? undefined : { opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease, delay: 0.08 }}
-              className="inline-flex items-center gap-3 border border-white/10 bg-white/[0.03] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/58 [clip-path:polygon(0_0,calc(100%-14px)_0,100%_50%,calc(100%-14px)_100%,0_100%,0_0)]"
+              className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--color-rad-hi)]"
             >
-              <span className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_10px_rgba(255,43,69,0.75)]" />
-              RAD Esports / Teamrad.gg
+              <span className="inline-block h-px w-6 bg-[color:var(--color-rad)]" />
+              RAD Esports
             </motion.div>
 
             <motion.h1
@@ -175,7 +187,7 @@ export function HomeHero() {
               {statItems.map((item) => (
                 <div
                   key={item.label}
-                  className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.01)),rgba(5,5,5,0.72)] px-4 py-4 [clip-path:polygon(0_0,calc(100%-14px)_0,100%_50%,calc(100%-14px)_100%,0_100%,0_0)]"
+                  className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.01)),rgba(5,5,5,0.72)] px-4 py-4 [clip-path:polygon(0_0,calc(100%-14px)_0,100%_14px,100%_100%,14px_100%,0_calc(100%-14px))]"
                 >
                   <p className="font-[family-name:var(--font-display)] text-3xl uppercase leading-none tracking-tight text-white">
                     {item.value}

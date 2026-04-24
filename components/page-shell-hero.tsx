@@ -70,7 +70,7 @@ export function PageShellHero({
     <section className="relative overflow-hidden pb-12 pt-6 sm:pb-18 sm:pt-10">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1100px_520px_at_80%_-10%,rgb(255_43_69_/_0.18),transparent_60%),radial-gradient(900px_400px_at_0%_120%,rgb(255_43_69_/_0.10),transparent_60%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1100px_520px_at_80%_-10%,rgb(255_43_69_/_0.18),transparent_60%),radial-gradient(900px_400px_at_0%_120%,rgb(255_43_69_/_0.10),transparent_60%),linear-gradient(180deg,#060606_0%,#050505_100%)]"
       />
       <div
         aria-hidden
@@ -82,7 +82,7 @@ export function PageShellHero({
           initial={reduced ? undefined : { opacity: 0, y: 20 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE_EMPHASIS }}
-          className="relative grid gap-6 overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.012)),rgba(5,5,5,0.88)] p-5 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:p-10 [clip-path:polygon(0_0,calc(100%-24px)_0,100%_24px,100%_100%,24px_100%,0_calc(100%-24px))]"
+          className="relative grid gap-6 overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(5,5,5,0.9)] p-5 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:p-10 [clip-path:polygon(0_0,calc(100%-24px)_0,100%_24px,100%_100%,24px_100%,0_calc(100%-24px))]"
         >
           <div
             aria-hidden
@@ -146,14 +146,14 @@ export function PageShellHero({
               </motion.p>
               <motion.h1
                 {...item}
-                className="relative mt-4 max-w-[10ch] font-[family-name:var(--font-display)] text-[clamp(2.6rem,6vw,5.4rem)] uppercase leading-[0.88] tracking-[-0.03em] text-white [text-wrap:balance]"
+                className="relative mt-4 max-w-[10ch] font-[family-name:var(--font-display)] text-[clamp(2.8rem,6vw,5.5rem)] uppercase leading-[0.88] tracking-[-0.04em] text-white [text-wrap:balance]"
               >
                 {title.split(" ").map((word, idx) => (
                   <motion.span
                     key={`${word}-${idx}`}
                     className="mr-[0.25em] inline-block"
-                    initial={reduced ? undefined : { opacity: 0, y: 30, filter: "blur(12px)" }}
-                    animate={reduced ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                    initial={reduced ? undefined : { opacity: 0, y: 24 }}
+                    animate={reduced ? undefined : { opacity: 1, y: 0 }}
                     transition={{
                       duration: 0.8,
                       ease: EASE_EMPHASIS,
@@ -163,12 +163,6 @@ export function PageShellHero({
                     {word}
                   </motion.span>
                 ))}
-                <motion.span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)] bg-[length:200%_100%] mix-blend-overlay"
-                  animate={reduced ? undefined : { backgroundPosition: ["200% 0%", "-100% 0%"] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2.5 }}
-                />
               </motion.h1>
               <motion.p
                 {...item}
@@ -248,13 +242,13 @@ export function PageShellHero({
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,transparent_28%,rgba(255,255,255,0.07)_48%,transparent_72%)] mix-blend-overlay"
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,transparent_28%,rgba(255,255,255,0.06)_48%,transparent_72%)] mix-blend-overlay"
               />
               <motion.div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[color:var(--color-rad)]/70 to-transparent"
-                animate={reduced ? undefined : { y: ["0%", "3200%", "0%"] }}
-                transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={reduced ? undefined : { y: ["0%", "3200%"] }}
+                transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
                 style={{ filter: "blur(1px)" }}
               />
 
@@ -288,7 +282,7 @@ export function PageShellHero({
                 initial={reduced ? undefined : { opacity: 0, y: 10 }}
                 animate={reduced ? undefined : { opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: EASE_EMPHASIS, delay: 0.5 }}
-                className="rounded-2xl border border-white/10 bg-white/[.03] p-4 sm:p-5"
+                className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-4 sm:p-5 [clip-path:polygon(0_0,calc(100%-14px)_0,100%_14px,100%_100%,14px_100%,0_calc(100%-14px))]"
               >
                 {note}
               </motion.div>

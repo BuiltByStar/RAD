@@ -68,7 +68,7 @@ export default function RootLayout({
         <AmbientBackground />
         <SiteHeader />
 
-        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-18 lg:pt-20">
+        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem] lg:pt-20">
           <div className="cinematic-noise" />
           <div className="cinematic-vignette" />
 

@@ -57,7 +57,7 @@ export function HomeChampionsStrip() {
               Built fast. Proven early.
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-white/62 sm:text-base">
-              The strongest brand move RAD has is that the story already has results behind it. This section is the short version of why the org carries weight.
+              The brand reads better when the proof is obvious. This is the compact record of why RAD already carries weight beyond visual style.
             </p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -84,7 +84,7 @@ export function HomeChampionsStrip() {
                 key={milestone.year}
                 variants={{ hidden: { opacity: 0, y: 22 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.7, ease: EASE }}
-                className="group grid gap-4 border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)),rgba(5,5,5,0.82)] p-5 transition-colors duration-300 hover:border-[color:var(--color-rad)]/36 md:grid-cols-[100px_1fr] md:items-start md:p-6 [clip-path:polygon(0_0,calc(100%-16px)_0,100%_16px,100%_100%,16px_100%,0_calc(100%-16px))]"
+                className="group grid gap-4 border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)),rgba(5,5,5,0.82)] p-5 transition-colors duration-300 hover:border-[color:var(--color-rad)]/36 md:grid-cols-[120px_1fr_180px] md:items-start md:p-6 [clip-path:polygon(0_0,calc(100%-16px)_0,100%_16px,100%_100%,16px_100%,0_calc(100%-16px))]"
               >
                 <div className="flex items-center gap-3">
                   <span className="inline-flex h-9 min-w-9 items-center justify-center rounded-full border border-[color:var(--color-rad)]/28 bg-[color:var(--color-rad)]/10 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad-hi)]">
@@ -101,6 +101,11 @@ export function HomeChampionsStrip() {
                   <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/62 sm:text-base">
                     {milestone.detail}
                   </p>
+                </div>
+                <div className="flex items-start justify-start md:justify-end">
+                  <div className="border border-white/10 bg-black/35 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/46 [clip-path:polygon(0_0,calc(100%-12px)_0,100%_50%,calc(100%-12px)_100%,0_100%,0_0)]">
+                    {index === 0 ? "Foundation" : index === 1 ? "Breakthrough" : index === 2 ? "World stage" : "Regional repeat"}
+                  </div>
                 </div>
               </motion.li>
             ))}

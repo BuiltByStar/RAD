@@ -55,22 +55,22 @@ function WorldsMatrix() {
   const reduced = useReducedMotion();
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01)),linear-gradient(145deg,rgba(8,8,8,0.96),rgba(4,4,4,1))] shadow-[var(--shadow-card)]">
+    <div className="relative h-full w-full overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.008)),linear-gradient(145deg,rgba(8,8,8,0.98),rgba(4,4,4,1))] shadow-[var(--shadow-card)] [clip-path:polygon(0_0,calc(100%-22px)_0,100%_22px,100%_100%,22px_100%,0_calc(100%-22px))]">
       <div
         aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(44%_32%_at_50%_50%,rgba(255,43,69,0.16),transparent_70%),radial-gradient(60%_44%_at_18%_18%,rgba(255,255,255,0.03),transparent_72%),radial-gradient(60%_42%_at_86%_80%,rgba(255,43,69,0.08),transparent_74%)]"
+        className="absolute inset-0 bg-[radial-gradient(44%_32%_at_50%_50%,rgba(255,43,69,0.14),transparent_70%),radial-gradient(60%_44%_at_18%_18%,rgba(255,255,255,0.03),transparent_72%),radial-gradient(60%_42%_at_86%_80%,rgba(255,43,69,0.08),transparent_74%)]"
       />
 
       <motion.div
         aria-hidden
-        className="absolute left-1/2 top-1/2 h-[54%] w-[54%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,43,69,0.16),rgba(255,43,69,0.06)_42%,transparent_74%)] blur-2xl"
+        className="absolute left-1/2 top-1/2 h-[54%] w-[54%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,43,69,0.13),rgba(255,43,69,0.04)_42%,transparent_74%)] blur-2xl"
         animate={reduced ? undefined : { scale: [0.96, 1.04, 0.98], opacity: [0.5, 0.92, 0.56] }}
         transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="pointer-events-none absolute inset-[6%] rounded-[28px] border border-white/8" />
-      <div className="pointer-events-none absolute inset-[14%] rounded-[26px] border border-white/6" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.03)_49%,transparent_51%),linear-gradient(transparent_0%,rgba(255,255,255,0.03)_49%,transparent_51%)] bg-[size:100%_100%]" />
+      <div className="pointer-events-none absolute inset-[6%] border border-white/8 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]" />
+      <div className="pointer-events-none absolute inset-[14%] border border-white/6 [clip-path:polygon(0_0,calc(100%-16px)_0,100%_16px,100%_100%,16px_100%,0_calc(100%-16px))]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.14] [background-image:linear-gradient(to_right,rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:100px_100px]" />
 
       {systems.map((system, index) => (
         <div key={`${system.key}-rail`}>
@@ -101,31 +101,19 @@ function WorldsMatrix() {
 
       <motion.div
         aria-hidden
-        className="absolute left-1/2 top-1/2 h-[46%] w-[46%] -translate-x-1/2 -translate-y-1/2 [clip-path:polygon(12%_0,88%_0,100%_18%,100%_82%,88%_100%,12%_100%,0_82%,0_18%)] border border-white/10 bg-[linear-gradient(145deg,rgba(255,43,69,0.12),rgba(255,255,255,0.04)_26%,rgba(5,5,5,0.96)_72%)] shadow-[0_28px_72px_rgba(0,0,0,0.5)]"
-        animate={reduced ? undefined : { rotate: [-1.4, 1.4, -1.4], y: [-6, 8, -6] }}
+        className="absolute left-1/2 top-1/2 h-[50%] w-[50%] -translate-x-1/2 -translate-y-1/2 [clip-path:polygon(10%_0,90%_0,100%_16%,100%_84%,90%_100%,10%_100%,0_84%,0_16%)] border border-white/10 bg-[linear-gradient(145deg,rgba(255,43,69,0.10),rgba(255,255,255,0.03)_26%,rgba(5,5,5,0.96)_72%)] shadow-[0_28px_72px_rgba(0,0,0,0.5)]"
+        animate={reduced ? undefined : { y: [-5, 6, -5], scale: [0.99, 1.01, 0.99] }}
         transition={{ duration: 10.4, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden
-        className="absolute left-1/2 top-1/2 h-[38%] w-[38%] -translate-x-1/2 -translate-y-1/2 [clip-path:polygon(14%_0,86%_0,100%_18%,100%_82%,86%_100%,14%_100%,0_82%,0_18%)] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.012)),rgba(5,5,5,0.78)] shadow-[0_24px_58px_rgba(0,0,0,0.44)]"
-        animate={reduced ? undefined : { rotate: [1.6, -1.6, 1.6], scale: [0.985, 1.015, 0.99] }}
+        className="absolute left-1/2 top-1/2 h-[40%] w-[40%] -translate-x-1/2 -translate-y-1/2 [clip-path:polygon(12%_0,88%_0,100%_16%,100%_84%,88%_100%,12%_100%,0_84%,0_16%)] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.012)),rgba(5,5,5,0.82)] shadow-[0_24px_58px_rgba(0,0,0,0.44)]"
+        animate={reduced ? undefined : { y: [4, -4, 4], scale: [0.99, 1.015, 0.99] }}
         transition={{ duration: 9.6, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        aria-hidden
-        className="absolute left-[31%] top-1/2 h-[22%] w-[6%] -translate-y-1/2 [clip-path:polygon(18%_0,100%_0,82%_100%,0_100%)] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,43,69,0.08),rgba(8,8,8,0.9))]"
-        animate={reduced ? undefined : { y: [-6, 5, -6], opacity: [0.45, 0.78, 0.48] }}
-        transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden
-        className="absolute right-[31%] top-1/2 h-[22%] w-[6%] -translate-y-1/2 [clip-path:polygon(0_0,82%_0,100%_100%,18%_100%)] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,43,69,0.08),rgba(8,8,8,0.9))]"
-        animate={reduced ? undefined : { y: [6, -5, 6], opacity: [0.45, 0.78, 0.48] }}
-        transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut", delay: 0.24 }}
-      />
 
-      <div className="absolute left-1/2 top-1/2 flex w-full max-w-[320px] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-        <div className="relative flex w-full items-center justify-center [clip-path:polygon(12%_0,88%_0,100%_18%,100%_82%,88%_100%,12%_100%,0_82%,0_18%)] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.018)),rgba(5,5,5,0.7)] px-10 py-10 shadow-[0_24px_62px_rgba(0,0,0,0.48)]">
+      <div className="absolute left-1/2 top-1/2 flex w-full max-w-[340px] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+        <div className="relative flex w-full flex-col items-center justify-center gap-5 [clip-path:polygon(12%_0,88%_0,100%_18%,100%_82%,88%_100%,12%_100%,0_82%,0_18%)] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.018)),rgba(5,5,5,0.72)] px-10 py-10 shadow-[0_24px_62px_rgba(0,0,0,0.48)]">
           <motion.div
             aria-hidden
             className="absolute inset-x-[14%] bottom-[-12%] h-10 rounded-full bg-[radial-gradient(circle,rgba(255,43,69,0.8),transparent_72%)] blur-xl"
@@ -145,6 +133,14 @@ function WorldsMatrix() {
             height={190}
             className="relative z-10 h-auto w-full max-w-[210px]"
           />
+          <div className="relative z-10 grid w-full gap-2 text-center">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[color:var(--color-rad-hi)]">
+              RAD system map
+            </p>
+            <p className="text-xs leading-relaxed text-white/58">
+              Competition, content, identity, and activations working as one public structure.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -174,6 +170,9 @@ function WorldsMatrix() {
               <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/40">
                 {system.meta}
               </p>
+              <span className="mt-3 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad-hi)]">
+                Open <span aria-hidden>↗</span>
+              </span>
             </Link>
           </motion.div>
         </motion.div>
@@ -207,7 +206,7 @@ export function HomeWorldsPortal() {
               Four worlds. One operating system.
             </h2>
             <p className="mt-5 max-w-[34rem] text-sm leading-relaxed text-white/62 sm:text-base">
-              RAD is not one roster page and a logo. It is competition, identity, content, and activations tied together in a single public system.
+              The org should not read like a roster page with extra tabs. This map shows how the public product stays coherent as RAD grows.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/about" variant="primary">About the org</Button>
@@ -222,10 +221,6 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.9, ease: EASE }}
             className="relative mx-auto aspect-[4/3] w-full max-w-[980px] lg:aspect-[16/11]"
           >
-            <div
-              aria-hidden
-              className="absolute -inset-px rounded-[28px] opacity-36 [background:conic-gradient(from_var(--border-angle),transparent_0%,rgb(255_43_69_/_0.22)_10%,transparent_32%)] [animation:border-rotate_14s_linear_infinite]"
-            />
             <WorldsMatrix />
           </motion.div>
         </div>

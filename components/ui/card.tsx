@@ -89,11 +89,11 @@ export function Card({
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
         "group relative overflow-hidden border border-white/10 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]",
-        "bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.015)_26%,rgba(255,255,255,0.004)_100%)]",
-        "shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_24px_50px_-24px_rgba(0,0,0,0.92)]",
+        "bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.012)_22%,rgba(255,255,255,0.003)_100%),linear-gradient(135deg,rgba(255,43,69,0.07),transparent_34%)]",
+        "shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_26px_58px_-26px_rgba(0,0,0,0.94)]",
         "transition-[border-color,box-shadow] duration-500",
-        "hover:border-[color:var(--color-rad)]/40",
-        "hover:shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_34px_76px_-24px_rgba(255,43,69,0.26)]",
+        "hover:border-[color:var(--color-rad)]/32",
+        "hover:shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_34px_76px_-28px_rgba(255,43,69,0.18)]",
         tones[tone],
         className
       )}
@@ -110,12 +110,12 @@ export function Card({
       {accent ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-1 origin-left bg-gradient-to-r from-[color:var(--color-rad)] via-[color:var(--color-rad-hi)] to-[color:var(--color-rad)]"
+          className="pointer-events-none absolute left-0 top-0 h-[2px] origin-left bg-gradient-to-r from-[color:var(--color-rad)] via-[color:var(--color-rad-hi)] to-transparent"
           initial={reduced ? undefined : { scaleX: 0 }}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.8, ease: EASE_EMPHASIS, delay: 0.1 }}
-          style={{ width: "6rem" }}
+          style={{ width: "8rem" }}
         />
       ) : null}
 
@@ -132,16 +132,9 @@ export function Card({
         className="pointer-events-none absolute bottom-0 left-0 h-5 w-5 border-b border-l border-white/18"
       />
 
-      <motion.span
+      <span
         aria-hidden
-        className="pointer-events-none absolute -inset-x-10 top-0 h-[140%] w-40 -translate-x-full rotate-12 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100"
-        animate={reduced ? undefined : { x: ["-120%", "320%"] }}
-        transition={{
-          duration: 1.4,
-          ease: "easeOut",
-          repeat: Infinity,
-          repeatDelay: 3
-        }}
+        className="pointer-events-none absolute -inset-y-12 left-[-18%] w-24 rotate-[18deg] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
 
       <span

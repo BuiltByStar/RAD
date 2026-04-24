@@ -16,8 +16,12 @@ export function ContactGrid({
         return (
           <article
             key={channel.label}
-            className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[.03] p-4 transition-colors hover:border-white/25 hover:bg-white/[.05]"
+            className="group relative overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-4 transition-[border-color,transform] hover:border-[color:var(--color-rad)]/28 [clip-path:polygon(0_0,calc(100%-14px)_0,100%_14px,100%_100%,14px_100%,0_calc(100%-14px))]"
           >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-rad)]/36 to-transparent"
+            />
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]">
               {channel.label}
             </p>
@@ -25,7 +29,7 @@ export function ContactGrid({
               href={channel.href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="mt-2 block truncate text-sm text-white transition-colors hover:text-white/80"
+              className="mt-2 block truncate text-sm text-white/82 transition-colors hover:text-white"
             >
               {channel.value}
               <span
