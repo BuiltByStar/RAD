@@ -6,34 +6,33 @@
  * are kept so the existing CSS keeps working during the migration.
  * ---------------------------------------------------------------------------- */
 @theme {
-  --color-bg:         #050505;
-  --color-ink:        #0a0a0a;
-  --color-ink-2:      #111111;
-  --color-surface:    rgb(255 255 255 / 0.04);
-  --color-surface-hi: rgb(255 255 255 / 0.08);
-  --color-line:       rgb(255 255 255 / 0.1);
-  --color-line-hi:    rgb(255 255 255 / 0.18);
+  --color-bg:         #050508;
+  --color-surface:    #0A0A0F;
+  --color-surface-md: #12121A;
+  --color-surface-hi: #141414;
+  --color-line:       rgba(255, 255, 255, 0.05);
+  --color-line-hi:    rgba(255, 255, 255, 0.1);
 
-  --color-text:       #ffffff;
-  --color-muted:      rgb(255 255 255 / 0.7);
-  --color-dim:        rgb(255 255 255 / 0.45);
+  --color-text:       #FFFFFF;
+  --color-muted:      #A0A0B8;
+  --color-dim:        #5C5C7A;
 
-  /* Tuned brand red — softer than #ff0000, reads better on OLED + HDR */
   --color-rad:        #ff2b45;
   --color-rad-hi:     #ff4d63;
   --color-rad-deep:   #8a0a1a;
   --color-rad-ember:  #4a0510;
 
-  --font-display: var(--font-display), "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
-  --font-body:    var(--font-body), "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Inter", "Geist Sans", ui-sans-serif, system-ui, sans-serif;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --radius-2xl: 32px;
 
-  --shadow-card: 0 10px 30px -10px rgb(0 0 0 / 0.7);
-  --shadow-glow: 0 0 40px rgb(255 43 69 / 0.25), 0 0 80px rgb(255 43 69 / 0.12);
+  --shadow-card: 0 25px 60px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 40px rgba(255, 43, 69, 0.25);
 
   --ease-emphasis: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -59,45 +58,43 @@
 
 /* ─── Design Tokens ────────────────────────────────────────────────────────── */
 :root {
-  --bg:            #050505;
-  --surface:       rgba(255, 255, 255, 0.03);
-  --surface-md:    rgba(255, 255, 255, 0.06);
-  --surface-hi:    rgba(255, 255, 255, 0.1);
-  --border:        rgba(255, 255, 255, 0.1);
-  --border-md:     rgba(255, 255, 255, 0.2);
-  --text:          #ffffff;
-  --muted:         rgba(255, 255, 255, 0.7);
-  --dim:           rgba(255, 255, 255, 0.45);
+  --bg:            #050508;
+  --surface:       #0A0A0F;
+  --surface-md:    #12121A;
+  --surface-hi:    #141414;
+  --border:        rgba(255, 255, 255, 0.05);
+  --border-md:     rgba(255, 255, 255, 0.1);
+  --text:          #FFFFFF;
+  --muted:         #A0A0B8;
+  --dim:           #5C5C7A;
   
-  --red:           #ff2b45;            /* tuned brand red (was #ff0000) */
+  --red:           #ff2b45;
   --red-hi:        #ff4d63;
-  --red-deep:      #8a0a1a;             /* was mislabeled --orange */
-  --red-ember:     #4a0510;             /* was mislabeled --purple */
-  --red-shadow:    #330608;             /* was mislabeled --blue */
-  --soft-white:    rgba(255, 255, 255, 0.72); /* was mislabeled --gold */
+  --red-deep:      #8a0a1a;
+  --red-ember:     #4a0510;
+  --red-shadow:    rgba(255, 43, 69, 0.25);
+  --soft-white:    rgba(255, 255, 255, 0.72);
   --discord:       #5865f2;
 
-  /* Back-compat aliases — delete once pages are migrated to the new names */
   --orange:        var(--red-deep);
   --purple:        var(--red-ember);
   --blue:          var(--red-shadow);
   --gold:          var(--soft-white);
   
-  --grad-primary:  linear-gradient(90deg, #5e0000 0%, var(--red) 50%, #5e0000 100%);
-  --grad-sunset:   linear-gradient(135deg, rgba(255, 0, 0, 0.18) 0%, rgba(255, 255, 255, 0.02) 100%);
-  --grad-ocean:    linear-gradient(135deg, rgba(255, 0, 0, 0.18) 0%, rgba(255, 255, 255, 0.02) 100%);
-  --grad-surface:  linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
+  --grad-primary:  linear-gradient(135deg, #8a0a1a 0%, var(--red) 50%, #ff4d63 100%);
+  --grad-surface:  linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
 
-  --shadow:        0 12px 48px rgba(0, 0, 0, 0.9);
-  --shadow-lg:     0 24px 80px rgba(0, 0, 0, 0.95);
-  --glow-red:      0 0 50px rgba(255, 50, 50, 0.25), 0 0 100px rgba(230, 0, 0, 0.15);
-  --glow-red-hi:   0 0 60px rgba(255, 50, 50, 0.4), 0 0 120px rgba(230, 0, 0, 0.25);
-  --radius:        14px;
+  --shadow:        0 12px 48px rgba(0, 0, 0, 0.5);
+  --shadow-lg:     0 25px 60px rgba(0, 0, 0, 0.35);
+  --glow-red:      0 0 20px rgba(255, 43, 69, 0.3);
+  --glow-red-hi:   0 0 40px rgba(255, 43, 69, 0.5);
+  
+  --radius:        12px;
   --radius-lg:     24px;
-  --container:     min(1280px, calc(100% - 4rem)); /* Wider, more breathable containers */
-  --font-body:     var(--font-body, "Barlow", ui-sans-serif, system-ui, sans-serif);
-  --font-display:  var(--font-display, "Barlow Condensed", ui-sans-serif, system-ui, sans-serif);
-  --intro-dur:     2.1s;
+  --container:     min(1400px, calc(100% - 4rem));
+  --font-body:     var(--font-body, "Inter", "Geist Sans", ui-sans-serif, system-ui, sans-serif);
+  --font-display:  var(--font-display, "Syne", "Barlow Condensed", ui-sans-serif, system-ui, sans-serif);
+  --intro-dur:     1.2s;
 }
 
 /* ─── Reset ────────────────────────────────────────────────────────────────── */
@@ -147,11 +144,7 @@ p { margin: 0; }
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 0, 0, 0.1), transparent),
-    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(255, 0, 0, 0.04), transparent),
-    radial-gradient(ellipse 70% 60% at 0% 50%, rgba(255, 255, 255, 0.02), transparent),
-    var(--bg);
+  background: var(--bg);
 }
 
 /* ─── Layout ───────────────────────────────────────────────────────────────── */
@@ -167,144 +160,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
 }
 
 /* ─── Premium Textures ─────────────────────────────────────────────────────── */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.042;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50%       { opacity: 1;   transform: scale(1.06); }
-}
-
-@keyframes dot-pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.6); }
-  50%       { opacity: 0.7; box-shadow: 0 0 0 5px rgba(230, 0, 0, 0); }
-}
-
-@keyframes shimmer-sweep {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(100%); }
-}
-
-@keyframes grid-drift {
-  from { background-position: 0 0; }
-  to   { background-position: 48px 48px; }
-}
-
-@keyframes scan-move {
-  0%   { top: 0;    opacity: 1; }
-  95%  { opacity: 0.9; }
-  100% { top: 100%; opacity: 0; }
-}
-
-@keyframes logo-reveal-clip {
-  from { clip-path: inset(0 0 100% 0); }
-  to   { clip-path: inset(0 0 0% 0); }
-}
-
-@keyframes logo-fade-out {
-  to { opacity: 0; transform: translate(-50%, -51%) scale(0.97); }
-}
-
-@keyframes hero-item-in {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: none; }
-}
-
-@keyframes surface-sheen {
-  0% { transform: translateX(-140%) skewX(-18deg); }
-  100% { transform: translateX(140%) skewX(-18deg); }
-}
-
-/* ─── Intro Animation ──────────────────────────────────────────────────────── */
-.rad-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* Black left + right panels */
-.rad-intro__panel {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50.5%;
-  background: #020202;
-  will-change: transform;
-  transition: transform 0.75s cubic-bezier(0.77, 0, 0.175, 1);
-}
-.rad-intro__panel--l { left: 0; }
-.rad-intro__panel--r { right: 0; }
-
-/* Horizontal red scanline */
-.rad-intro__scanline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  top: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(230, 0, 0, 0.25) 15%,
-    #e60000 45%,
-    #ff4040 50%,
-    #e60000 55%,
-    rgba(230, 0, 0, 0.25) 85%,
-    transparent 100%
-  );
-  box-shadow:
-    0 0 14px 3px rgba(230, 0, 0, 0.5),
-    0 0 50px 10px rgba(230, 0, 0, 0.15);
-  opacity: 0;
-  will-change: top, opacity;
-}
-
-/* Logo — centered, hidden until scan reveals it */
-.rad-intro__logo-wrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(440px, 64vw);
-  clip-path: inset(0 0 100% 0);
-  filter: drop-shadow(0 0 60px rgba(230, 0, 0, 0.55)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.08));
-  will-change: clip-path, opacity;
-}
-
-.rad-intro__logo-img { width: 100%; display: block; }
-
-/* ── Phase 1: scanline sweeps, logo materialises ── */
-.rad-intro--1 .rad-intro__scanline {
-  opacity: 1;
-  animation: scan-move 0.62s ease-in 0.06s forwards;
-}
-.rad-intro--1 .rad-intro__logo-wrap {
-  animation: logo-reveal-clip 0.64s ease-in 0.07s forwards;
-}
-
-/* ── Phase 2: fully revealed, resting glow ── */
-.rad-intro--2 .rad-intro__logo-wrap {
-  clip-path: inset(0 0 0% 0);
-  filter:
-    drop-shadow(0 0 80px rgba(230, 0, 0, 0.65))
-    drop-shadow(0 0 20px rgba(255, 255, 255, 0.12));
-}
-
-/* ── Phase 3: panels slide, logo fades ── */
-.rad-intro--3 .rad-intro__panel--l { transform: translateX(-101%); }
-.rad-intro--3 .rad-intro__panel--r { transform: translateX(101%); }
-.rad-intro--3 .rad-intro__logo-wrap {
-  clip-path: inset(0 0 0% 0);
-  animation: logo-fade-out 0.38s ease 0.32s forwards;
-}
+/* Intentionally blanked premium textures and intro animations */
 
 /* ─── Header ───────────────────────────────────────────────────────────────── */
 .site-header {
