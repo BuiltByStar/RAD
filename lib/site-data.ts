@@ -19,6 +19,7 @@ export type Person = {
   group: string;
   descriptor: string;
   bio?: string;
+  image?: string;
   realName?: string;
   specialties?: string[];
   rank?: string;
