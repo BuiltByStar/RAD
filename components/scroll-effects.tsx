@@ -45,24 +45,17 @@ export function ParallaxBackgroundText({
    const y = useTransform(scrollY, [0, 3000], [0, -500 * speed]);
    
    return (
-     <motion.div 
-       ref={ref} 
-       style={{ 
-         y, 
-         position: "absolute", 
-         top,
-         left,
-         zIndex: 0, // Behind content
-         opacity: 0.02, 
-         fontSize: "18vw", 
-         fontWeight: 900, 
-         letterSpacing: "-0.04em",
-         whiteSpace: "nowrap", 
-         pointerEvents: "none", 
-         color: "white" 
-       }}
+     <div
+       ref={ref}
+       className="pointer-events-none absolute z-0 whitespace-nowrap text-white opacity-[0.02]"
+       style={{ top, left }}
      >
-       {text}
-     </motion.div>
+       <motion.div
+         className="text-[18vw] font-black tracking-[-0.04em]"
+         style={{ y }}
+       >
+         {text}
+       </motion.div>
+     </div>
    );
 }

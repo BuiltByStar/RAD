@@ -4,11 +4,11 @@ import { requireAdminAccess } from "@/lib/admin";
 
 export async function GET() {
   const access = await requireAdminAccess();
-  const response = NextResponse.json({
-    authenticated: access.ok || access.status === 403,
-    isAdmin: access.ok,
-    role: access.ok ? access.role : null
-  });
+  const response = NextResponse.json(
+    access.ok
+      ? { staff: true, role: access.role }
+      : { staff: false, role: null }
+  );
 
   response.cookies.delete("staff_role");
   return response;

@@ -163,8 +163,8 @@ export function AuthWidget() {
             </div>
             <div className="auth-dropdown-divider" />
             {isAdmin ? (
-              <Link className="auth-dropdown-item" href="/admin" onClick={() => setDropdownOpen(false)}>
-                Admin Dashboard
+              <Link className="auth-dropdown-item" href="/dashboard" onClick={() => setDropdownOpen(false)}>
+                Dashboard
               </Link>
             ) : null}
             <button className="auth-dropdown-item" onClick={signOut}>

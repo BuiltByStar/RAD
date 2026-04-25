@@ -34,12 +34,7 @@ export function Preloader() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: "blur(8px)" }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="hud-preloader"
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 20
-          }}
+          className="hud-preloader absolute inset-0 z-20"
         >
           <div className="hud-preloader-content">
             <p className="hud-preloader-text">RAD Worlds</p>

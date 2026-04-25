@@ -103,19 +103,18 @@ export function Card({
         <motion.span
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ background: spotlightBg }}
+          style={{ background: spotlightBg } as Record<string, unknown>}
         />
       ) : null}
 
       {accent ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-[2px] origin-left bg-[color:var(--color-rad)]"
+          className="pointer-events-none absolute left-0 top-0 h-[2px] w-32 origin-left bg-[color:var(--color-rad)]"
           initial={reduced ? undefined : { scaleX: 0 }}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.8, ease: EASE_EMPHASIS, delay: 0.1 }}
-          style={{ width: "8rem" }}
         />
       ) : null}
 

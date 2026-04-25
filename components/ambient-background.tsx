@@ -19,21 +19,14 @@ export function AmbientBackground() {
 
       {/* Single slow radial — barely-there brand warmth */}
       <motion.div
-        className="absolute left-1/2 top-[18%] h-[min(92vw,820px)] w-[min(92vw,820px)] -translate-x-1/2 rounded-full blur-[100px]"
-        style={{
-          background: "radial-gradient(circle at 50% 50%, rgba(255,43,69,0.07) 0%, transparent 68%)"
-        }}
+        className="absolute left-1/2 top-[18%] h-[min(92vw,820px)] w-[min(92vw,820px)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,43,69,0.07)_0%,transparent_68%)] blur-[100px]"
         animate={reduced ? undefined : { opacity: [0.55, 0.9, 0.55], scale: [1, 1.04, 1] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Very slow conic “light ray” — low contrast, no hard edges */}
       <motion.div
-        className="absolute -left-1/2 top-0 h-[140vh] w-[200%] opacity-[0.35]"
-        style={{
-          background:
-            "conic-gradient(from 200deg at 50% 0%, transparent 0deg, rgba(255,255,255,0.025) 25deg, transparent 55deg, transparent 360deg)"
-        }}
+        className="absolute -left-1/2 top-0 h-[140vh] w-[200%] bg-[conic-gradient(from_200deg_at_50%_0%,transparent_0deg,rgba(255,255,255,0.025)_25deg,transparent_55deg,transparent_360deg)] opacity-[0.35]"
         animate={reduced ? undefined : { rotate: [0, 360] }}
         transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
       />
