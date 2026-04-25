@@ -719,7 +719,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  border-radius: 8px;
 }
 
 .btn:hover { transform: translateY(-2px); }
@@ -1548,7 +1548,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
   text-transform: none;
   letter-spacing: normal;
   transition: border-color 0.2s;
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  border-radius: 8px;
 }
 
 .contact-form input:focus,
@@ -4488,7 +4488,7 @@ button[disabled] { opacity: 0.45; cursor: not-allowed; }
 .team-note-card,
 .contact-form,
 .partner-card {
-  border-radius: 24px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),

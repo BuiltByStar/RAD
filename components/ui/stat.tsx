@@ -16,7 +16,7 @@ export function Stat({ value, label, sub, className }: StatProps) {
       )}
     >
       <span
-        className="font-[family-name:var(--font-display)] text-4xl leading-none tracking-tight sm:text-5xl"
+        className="font-[family-name:var(--font-display)] text-4xl leading-none tracking-normal sm:text-5xl"
         style={{ fontVariantNumeric: "tabular-nums" }}
       >
         {value}

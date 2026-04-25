@@ -25,7 +25,7 @@ export function DiscordSection() {
             The official RAD Esports server. Scrims, community brackets, and direct lines to the roster.
           </p>
           <a
-            href="https://discord.gg/RADesports"
+            href="https://discord.com/invite/radgg"
             target="_blank"
             rel="noopener noreferrer"
             className="hud-action"

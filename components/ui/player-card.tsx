@@ -67,7 +67,7 @@ export function PlayerCard({
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70 transition-colors hover:border-[color:var(--color-rad)]/26 hover:text-white [clip-path:polygon(0_0,calc(100%-10px)_0,100%_50%,calc(100%-10px)_100%,0_100%,0_0)]"
+              className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 transition-colors hover:border-[color:var(--color-rad)]/26 hover:text-white"
             >
               {social.label}
               <span aria-hidden className="text-white/50">↗</span>

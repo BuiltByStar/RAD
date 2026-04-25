@@ -75,7 +75,7 @@ export function TimelineItem({ date, title, description, className }: TimelineIt
         <span className="relative inline-flex h-2.5 w-2.5 rounded-full border border-[color:var(--color-rad)] bg-black" />
       </span>
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/55">{date}</p>
-      <h3 className="mt-2 font-[family-name:var(--font-display)] text-xl uppercase tracking-tight sm:text-2xl">
+      <h3 className="mt-2 font-[family-name:var(--font-display)] text-xl uppercase tracking-normal sm:text-2xl">
         {title}
       </h3>
       {description ? (

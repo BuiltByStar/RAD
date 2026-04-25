@@ -35,15 +35,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
   title: {
-    default: "RAD Esports — Marvel Rivals World & EMEA Champions",
+    default: "RAD Esports — Built for Pressure",
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is the inaugural Marvel Rivals Ignite: Mid-Season World Champions and reigning Season 6: EMEA PC title holders. Built for pressure. #GoWild",
+    "RAD Esports is a competitive org built for pressure, content, and the next stage of competition. #GoWild",
   openGraph: {
     title: "RAD Esports",
     description:
-      "Marvel Rivals World & EMEA Champions. Untamed, unstoppable, and never by the book.",
+      "A competitive esports brand built for pressure, content, and future growth.",
     images: ["/assets/RadPlayerBannerPNG8.png"],
     type: "website"
   },
@@ -69,9 +69,6 @@ export default function RootLayout({
         <SiteHeader />
 
         <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem] lg:pt-20">
-          <div className="cinematic-noise" />
-          <div className="cinematic-vignette" />
-
           <div className="relative z-10">{children}</div>
         </div>
 

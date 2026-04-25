@@ -16,13 +16,13 @@ export function ContactGrid({
         return (
           <article
             key={channel.label}
-            className="group relative overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-4 transition-[border-color,transform] hover:border-[color:var(--color-rad)]/28 [clip-path:polygon(0_0,calc(100%-14px)_0,100%_14px,100%_100%,14px_100%,0_calc(100%-14px))]"
+            className="group relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] p-4 transition-[border-color,transform] hover:-translate-y-0.5 hover:border-[color:var(--color-rad)]/28"
           >
             <span
               aria-hidden
               className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-rad)]/36 to-transparent"
             />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-rad-hi)]">
               {channel.label}
             </p>
             <a

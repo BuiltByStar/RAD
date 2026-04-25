@@ -88,12 +88,12 @@ export function Card({
       onMouseMove={spotlight ? handleMove : onMouseMove}
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
-        "group relative overflow-hidden border border-white/10 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]",
-        "bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.012)_22%,rgba(255,255,255,0.003)_100%),linear-gradient(135deg,rgba(255,43,69,0.07),transparent_34%)]",
-        "shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_26px_58px_-26px_rgba(0,0,0,0.94)]",
+        "group relative overflow-hidden rounded-lg border border-white/10",
+        "bg-white/[0.035]",
+        "shadow-[0_18px_42px_-30px_rgba(0,0,0,0.95)]",
         "transition-[border-color,box-shadow] duration-500",
-        "hover:border-[color:var(--color-rad)]/32",
-        "hover:shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_34px_76px_-28px_rgba(255,43,69,0.18)]",
+        "hover:border-[color:var(--color-rad)]/34",
+        "hover:shadow-[0_22px_54px_-34px_rgba(255,0,0,0.26)]",
         tones[tone],
         className
       )}
@@ -110,7 +110,7 @@ export function Card({
       {accent ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-[2px] origin-left bg-gradient-to-r from-[color:var(--color-rad)] via-[color:var(--color-rad-hi)] to-transparent"
+          className="pointer-events-none absolute left-0 top-0 h-[2px] origin-left bg-[color:var(--color-rad)]"
           initial={reduced ? undefined : { scaleX: 0 }}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -118,29 +118,6 @@ export function Card({
           style={{ width: "8rem" }}
         />
       ) : null}
-
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute right-0 top-0 h-5 w-5 border-r border-t border-white/18"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-0 h-5 w-5 border-b border-l border-white/18"
-      />
-
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -inset-y-12 left-[-18%] w-24 rotate-[18deg] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
-
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[color:var(--color-rad)]/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      />
 
       <div className="relative z-10">{children}</div>
     </motion.article>
@@ -172,7 +149,7 @@ export function CardTitle({ className, size = "md", ...rest }: CardTitleProps) {
   return (
     <h3
       className={cn(
-        "mt-2 font-[family-name:var(--font-display)] uppercase leading-[1.05] tracking-tight text-white [text-wrap:balance]",
+        "mt-2 font-[family-name:var(--font-display)] uppercase leading-[1.05] tracking-normal text-white [text-wrap:balance]",
         sizes[size],
         className
       )}
@@ -198,7 +175,7 @@ export function CardMetric({ className, children, ...rest }: CardMetricProps) {
   return (
     <p
       className={cn(
-        "font-[family-name:var(--font-display)] text-5xl uppercase leading-none tracking-tight sm:text-6xl",
+        "font-[family-name:var(--font-display)] text-5xl uppercase leading-none tracking-normal sm:text-6xl",
         className
       )}
       style={{ fontVariantNumeric: "tabular-nums" }}

@@ -39,7 +39,7 @@ export function MatchCard({
   const content = (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[.04] to-white/[0.01] p-5 backdrop-blur",
+        "group relative overflow-hidden rounded-lg border border-white/10 bg-white/[.04] p-5 backdrop-blur",
         "transition duration-300 ease-[var(--ease-emphasis)] hover:border-white/20 hover:from-white/[.06]",
         className
       )}
@@ -77,11 +77,11 @@ export function MatchCard({
 
   const isExternal = /^https?:\/\//.test(href);
   return isExternal ? (
-    <a href={href} target="_blank" rel="noreferrer" className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] rounded-2xl">
+    <a href={href} target="_blank" rel="noreferrer" className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)]">
       {content}
     </a>
   ) : (
-    <a href={href} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] rounded-2xl">
+    <a href={href} className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)]">
       {content}
     </a>
   );
@@ -92,7 +92,7 @@ function TeamBlock({ team, align }: { team: Team; align: "left" | "right" }) {
     <div className={cn("flex items-center gap-3", align === "right" ? "justify-end text-right" : "justify-start")}>
       {align === "left" && team.logo ? <TeamLogo src={team.logo} alt={team.name} /> : null}
       <div className="flex flex-col">
-        <span className="font-[family-name:var(--font-display)] text-lg leading-none tracking-tight">
+        <span className="font-[family-name:var(--font-display)] text-lg leading-none tracking-normal">
           {team.name}
         </span>
         {team.score !== undefined ? (

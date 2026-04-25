@@ -53,7 +53,7 @@ export default async function ContentPage() {
           {featured ? (
             <Link
               href={`/content/${featured.slug}`}
-              className="group relative grid overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.012)),rgba(6,6,6,0.82)] transition-colors hover:border-[color:var(--color-rad)]/26 md:grid-cols-[1.1fr_0.9fr] [clip-path:polygon(0_0,calc(100%-20px)_0,100%_20px,100%_100%,20px_100%,0_calc(100%-20px))]"
+              className="group relative grid overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] transition-colors hover:border-[color:var(--color-rad)]/26 md:grid-cols-[1.1fr_0.9fr]"
             >
               <div className="relative aspect-[16/10] md:aspect-auto">
                 <Image
@@ -70,7 +70,7 @@ export default async function ContentPage() {
               </div>
               <div className="flex flex-col justify-center gap-3 p-6 sm:p-8">
                 <CardEyebrow>{featured.category}</CardEyebrow>
-                <h2 className="font-[family-name:var(--font-display)] text-2xl uppercase leading-[1.02] tracking-tight text-white sm:text-3xl">
+                <h2 className="font-[family-name:var(--font-display)] text-2xl uppercase leading-[1.02] tracking-normal text-white sm:text-3xl">
                   {featured.title}
                 </h2>
                 <p className="text-sm leading-relaxed text-white/65 sm:text-base">{featured.summary}</p>
@@ -97,7 +97,7 @@ export default async function ContentPage() {
               <Link
                 key={post.slug}
                 href={`/content/${post.slug}`}
-                className="group relative flex flex-col overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.012)),rgba(6,6,6,0.82)] transition-colors hover:border-[color:var(--color-rad)]/26 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]"
+                className="group relative flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] transition-colors hover:border-[color:var(--color-rad)]/26"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
@@ -114,7 +114,7 @@ export default async function ContentPage() {
                 </div>
                 <div className="flex flex-col gap-2 p-5">
                   <CardEyebrow>{post.category}</CardEyebrow>
-                  <h3 className="font-[family-name:var(--font-display)] text-xl uppercase leading-[1.1] tracking-tight text-white [text-wrap:balance]">
+                  <h3 className="font-[family-name:var(--font-display)] text-xl uppercase leading-[1.1] tracking-normal text-white [text-wrap:balance]">
                     {post.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-white/60">{post.summary}</p>
@@ -137,13 +137,13 @@ export default async function ContentPage() {
           />
 
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-5 sm:p-6 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]">
+            <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
               <CardEyebrow>Featured Video</CardEyebrow>
               <div className="mt-4">
                 <YouTubeFeatured />
               </div>
             </div>
-            <div className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-5 sm:p-6 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]">
+            <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
               <CardEyebrow>Creator Status</CardEyebrow>
               <div className="mt-4">
                 <TwitchCreators />
@@ -151,7 +151,7 @@ export default async function ContentPage() {
             </div>
           </div>
 
-          <div className="mt-5 border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-5 sm:p-6 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]">
+          <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
             <CardEyebrow>Library</CardEyebrow>
             <div className="mt-4">
               <YouTubeLibrary />

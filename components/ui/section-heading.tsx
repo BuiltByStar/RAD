@@ -42,7 +42,7 @@ export function SectionHeading({
     <motion.header
       {...motionProps}
       className={cn(
-        "relative mb-14 grid gap-7 pb-7",
+        "relative mb-10 grid gap-5 pb-6",
         compact ? "grid-cols-1" : "lg:grid-cols-[1.05fr_0.95fr] lg:items-end",
         className
       )}
@@ -64,7 +64,7 @@ export function SectionHeading({
             {eyebrow}
           </motion.p>
         ) : null}
-        <h2 className="relative mt-4 max-w-[11ch] font-[family-name:var(--font-display)] text-[clamp(2.4rem,4.4vw,4rem)] uppercase leading-[0.9] tracking-[-0.03em] text-white [text-wrap:balance]">
+        <h2 className="relative mt-4 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.25rem,4.4vw,4rem)] uppercase leading-[0.96] tracking-normal text-white [text-wrap:balance]">
           {title}
         </h2>
       </div>
@@ -79,7 +79,7 @@ export function SectionHeading({
           {actionHref && actionLabel ? (
             <Link
               href={actionHref}
-              className="group inline-flex items-center gap-2 border border-white/10 bg-white/[0.025] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--color-rad-hi)] transition-[border-color,color,background] hover:border-[color:var(--color-rad)]/30 hover:bg-[color:var(--color-rad)]/8 hover:text-white [clip-path:polygon(0_0,calc(100%-12px)_0,100%_50%,calc(100%-12px)_100%,0_100%,0_0)]"
+              className="group inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)] transition-[border-color,color,background] hover:border-[color:var(--color-rad)]/30 hover:bg-[color:var(--color-rad)]/8 hover:text-white"
             >
               {actionLabel}
               <span

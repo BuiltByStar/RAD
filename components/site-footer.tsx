@@ -5,11 +5,10 @@ import { contactChannels, navLinks } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-0 border-t border-white/10 bg-black">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_320px_at_15%_0%,rgba(255,43,69,0.14),transparent_60%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent_35%)]" />
+    <footer className="relative mt-0 border-t border-white/10 bg-[#050505]">
       <div className="relative mx-auto w-full max-w-[1500px] px-6 pb-8 pt-16 sm:px-8 lg:px-12 lg:pt-20">
-        <div className="relative overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(5,5,5,0.82)] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12 [clip-path:polygon(0_0,calc(100%-22px)_0,100%_22px,100%_100%,22px_100%,0_calc(100%-22px))]">
-          <p className="pointer-events-none absolute right-6 top-4 font-[family-name:var(--font-display)] text-[clamp(4rem,14vw,11rem)] uppercase leading-none tracking-[-0.05em] text-white/[0.04] sm:right-8 lg:right-10">
+        <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+          <p className="pointer-events-none absolute right-6 top-4 font-[family-name:var(--font-display)] text-[clamp(4rem,14vw,11rem)] uppercase leading-none tracking-normal text-white/[0.04] sm:right-8 lg:right-10">
             RAD
           </p>
 
@@ -28,7 +27,7 @@ export function SiteFooter() {
               <p className="mt-5 text-sm leading-relaxed text-white/62 sm:text-base">
                 Competitive pedigree, scalable branding, and a digital presence built to carry RAD across new titles, media, and activations without losing its edge.
               </p>
-              <div className="mt-6 inline-flex items-center gap-3 border border-white/10 bg-white/[0.03] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/58 [clip-path:polygon(0_0,calc(100%-14px)_0,100%_50%,calc(100%-14px)_100%,0_100%,0_0)]">
+              <div className="mt-6 inline-flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/58">
                 <span className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_10px_rgba(255,43,69,0.75)]" />
                 Built for pressure
               </div>

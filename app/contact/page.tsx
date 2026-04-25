@@ -42,7 +42,7 @@ export default function ContactPage() {
       <Section padding="sm">
         <Container>
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-5 sm:p-6 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]">
+            <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
               <SectionHeading
                 eyebrow="Inquiry Form"
                 title="Send a clear message."
@@ -54,7 +54,7 @@ export default function ContactPage() {
             </div>
 
             <div className="flex flex-col gap-5">
-              <div className="border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(6,6,6,0.82)] p-5 sm:p-6 [clip-path:polygon(0_0,calc(100%-18px)_0,100%_18px,100%_100%,18px_100%,0_calc(100%-18px))]">
+              <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
                 <SectionHeading
                   eyebrow="Direct Channels"
                   title="Use the channel that fits the ask."
