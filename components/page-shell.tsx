@@ -41,7 +41,7 @@ const heroMetaMap: Record<Variant, { mark: string; code: string; channel: string
     mark: "RAD // ROSTER",
     code: "FILE 02",
     channel: "competitive core",
-    tags: ["Featured division", "Active lineup", "Role clarity"]
+    tags: []
   },
   staff: {
     mark: "RAD // STAFF",

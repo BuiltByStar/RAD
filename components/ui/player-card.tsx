@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { Card, CardBody, CardEyebrow, CardTitle } from "./card";
+import { Card, CardEyebrow, CardTitle } from "./card";
 import { Chip, ChipRow } from "./chip";
 import { cn } from "./cn";
 
@@ -25,7 +25,6 @@ export function PlayerCard({
   image,
   number,
   descriptor,
-  bio,
   specialties,
   socials,
   id,
@@ -43,12 +42,12 @@ export function PlayerCard({
       tone="default"
       id={id}
       className={cn(
-        "flex min-h-[520px] flex-col p-0",
+        "player-card-shell flex min-h-[430px] flex-col p-0",
         "transition-transform duration-500 hover:-translate-y-1",
         className
       )}
     >
-      <div className="relative aspect-square overflow-hidden rounded-md border border-white/10 bg-[#08080a]">
+      <div className="player-card-media relative aspect-square overflow-hidden rounded-md border border-white/10 bg-[#08080a]">
         {image ? (
           <Image
             src={image}
@@ -67,7 +66,7 @@ export function PlayerCard({
               className="object-cover opacity-[0.32] grayscale"
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(255,43,69,0.28),transparent_48%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.72))]" />
-            <span className="relative font-[family-name:var(--font-display)] text-[clamp(4rem,8vw,7rem)] font-black uppercase leading-none tracking-[-0.08em] text-white/88 drop-shadow-[0_18px_45px_rgba(255,0,0,0.25)]">
+            <span className="player-card-initials relative font-[family-name:var(--font-display)] text-[clamp(4rem,8vw,7rem)] font-black uppercase leading-none tracking-[-0.08em] text-white/88 drop-shadow-[0_18px_45px_rgba(255,0,0,0.25)]">
               {initials}
             </span>
           </div>
@@ -93,14 +92,13 @@ export function PlayerCard({
         />
       </div>
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <CardEyebrow>{descriptor ?? "RAD Player"}</CardEyebrow>
         </div>
 
         <div className="mt-3">
           <CardTitle>{name}</CardTitle>
-          {bio ? <CardBody>{bio}</CardBody> : null}
         </div>
 
         {specialties?.length ? (

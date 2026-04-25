@@ -66,6 +66,7 @@ export function PageShellHero({
   const reduced = useReducedMotion();
   const stagger = reduced ? {} : ({ variants: copyVariants, initial: "hidden", animate: "visible" } as const);
   const item = reduced ? {} : ({ variants: rise } as const);
+  const compact = variant === "roster";
 
   return (
     <section className="relative isolate overflow-hidden border-b border-white/10 bg-black">
@@ -104,7 +105,11 @@ export function PageShellHero({
       <Container size="xl">
         <motion.div
           {...stagger}
-          className="max-w-4xl pb-12 pt-24 sm:pb-16 sm:pt-28 lg:pb-20 lg:pt-32"
+          className={
+            compact
+              ? "max-w-4xl pb-8 pt-16 sm:pb-10 sm:pt-20 lg:pb-12 lg:pt-24"
+              : "max-w-4xl pb-12 pt-24 sm:pb-16 sm:pt-28 lg:pb-20 lg:pt-32"
+          }
         >
           <motion.div
             {...item}
@@ -118,19 +123,27 @@ export function PageShellHero({
 
           <motion.h1
             {...item}
-            className="mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(2.9rem,6.4vw,5.8rem)] font-extrabold uppercase leading-[0.92] tracking-normal text-white"
+            className={
+              compact
+                ? "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(2.8rem,5.6vw,5rem)] font-extrabold uppercase leading-[0.92] tracking-normal text-white"
+                : "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(2.9rem,6.4vw,5.8rem)] font-extrabold uppercase leading-[0.92] tracking-normal text-white"
+            }
           >
             {title}
           </motion.h1>
 
           <motion.p
             {...item}
-            className="mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl"
+            className={
+              compact
+                ? "mt-4 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg"
+                : "mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl"
+            }
           >
             {description}
           </motion.p>
 
-          <motion.div {...item} className="mt-8 flex flex-wrap items-center gap-3">
+          <motion.div {...item} className={compact ? "mt-6 flex flex-wrap items-center gap-3" : "mt-8 flex flex-wrap items-center gap-3"}>
             {status ? (
               <span className="inline-flex rounded-lg border border-[color:var(--color-rad)]/40 bg-[color:var(--color-rad)]/14 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-white">
                 {status}

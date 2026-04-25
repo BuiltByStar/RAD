@@ -3,7 +3,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "./cn";
 
 type Tone = "default" | "surface" | "inverse";
-type Padding = "sm" | "md" | "lg";
+type Padding = "xs" | "sm" | "md" | "lg";
 
 type SectionProps = HTMLAttributes<HTMLElement> & {
   tone?: Tone;
@@ -18,6 +18,7 @@ const tones: Record<Tone, string> = {
 };
 
 const paddings: Record<Padding, string> = {
+  xs: "py-8 sm:py-10",
   sm: "py-14 sm:py-20",
   md: "py-20 sm:py-28",
   lg: "py-28 sm:py-36"

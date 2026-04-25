@@ -159,6 +159,63 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; background
   to   { opacity: 1; transform: none; }
 }
 
+@keyframes rad-card-scan {
+  0%, 42% { transform: translateX(-135%) skewX(-18deg); opacity: 0; }
+  52% { opacity: 0.72; }
+  68%, 100% { transform: translateX(135%) skewX(-18deg); opacity: 0; }
+}
+
+@keyframes rad-initial-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -4px, 0) scale(1.018); }
+}
+
+.player-card-media::before {
+  content: "";
+  position: absolute;
+  inset: -10% -35%;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.08) 47%,
+    rgba(255, 43, 69, 0.26) 52%,
+    rgba(255, 255, 255, 0.08) 57%,
+    transparent 68%
+  );
+  mix-blend-mode: screen;
+  animation: rad-card-scan 5.6s ease-in-out infinite;
+}
+
+.player-card-shell:nth-child(2n) .player-card-media::before { animation-delay: 0.8s; }
+.player-card-shell:nth-child(3n) .player-card-media::before { animation-delay: 1.35s; }
+.player-card-shell:nth-child(4n) .player-card-media::before { animation-delay: 2s; }
+
+.player-card-shell:hover .player-card-media::before {
+  animation-duration: 2.2s;
+}
+
+.player-card-initials {
+  animation: rad-initial-drift 4.8s ease-in-out infinite;
+}
+
+.role-rail-card {
+  overflow: hidden;
+}
+
+.role-rail-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 1.25rem 1.25rem auto;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 43, 69, 0.18), transparent 66%);
+  transform: translate(24%, 24%);
+  pointer-events: none;
+}
+
 /* ─── Premium Textures ─────────────────────────────────────────────────────── */
 /* Intentionally blanked premium textures and intro animations */
 

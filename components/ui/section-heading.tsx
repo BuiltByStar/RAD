@@ -42,8 +42,8 @@ export function SectionHeading({
     <motion.header
       {...motionProps}
       className={cn(
-        "relative mb-10 grid gap-5 pb-6",
-        compact ? "grid-cols-1" : "lg:grid-cols-[1.05fr_0.95fr] lg:items-end",
+        "relative grid",
+        compact ? "mb-6 grid-cols-1 gap-3 pb-4" : "mb-10 gap-5 pb-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end",
         className
       )}
     >
