@@ -35,7 +35,7 @@ export function HomeWorldsPortal() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="experience" className="relative border-y border-white/10 bg-[#070707] py-20 sm:py-24">
+    <section id="experience" className="relative border-y border-white/10 bg-[#070707] py-18 sm:py-24">
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-14">
           <motion.div
@@ -45,10 +45,10 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.65, ease: EASE }}
             className="max-w-xl"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--color-rad)]">
-              Operating system
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad)]">
+              System
             </p>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.96] tracking-normal text-white sm:text-6xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.92] tracking-tight text-white sm:text-6xl">
               One org. Four clear lanes.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/62 sm:text-lg">
@@ -69,7 +69,7 @@ export function HomeWorldsPortal() {
                 alt=""
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"
-                className="object-cover opacity-62"
+                className="object-cover opacity-52"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/25" />
               <div className="relative z-10 flex h-full min-h-[240px] flex-col justify-end p-6 sm:p-8">
@@ -80,7 +80,7 @@ export function HomeWorldsPortal() {
                   height={58}
                   className="h-auto w-[180px] sm:w-[220px]"
                 />
-                <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base">
+                <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/66 sm:text-base">
                   A simple public structure for competition, creative output, community, and future growth.
                 </p>
               </div>
@@ -90,13 +90,13 @@ export function HomeWorldsPortal() {
               <Link
                 key={system.label}
                 href={system.href}
-                className="group rounded-lg border border-white/10 bg-white/[0.035] p-5 transition hover:-translate-y-0.5 hover:border-[color:var(--color-rad)]/45 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)]"
+                className="group rounded-lg border border-white/10 bg-white/[0.03] p-5 transition hover:-translate-y-0.5 hover:border-white/18 hover:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)]"
               >
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-sm text-[color:var(--color-rad)] transition group-hover:translate-x-0.5">
+                  <span className="text-sm text-white/45 transition group-hover:translate-x-0.5 group-hover:text-white/75">
                     →
                   </span>
                 </div>

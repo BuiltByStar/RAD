@@ -50,13 +50,13 @@ export function HomeHero() {
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.42em] text-white/36">The</p>
               <h1 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(4.8rem,16vw,14rem)] font-extrabold uppercase leading-[0.78] tracking-tight text-white">
-                OUTCASTS
+                WILD ONES
               </h1>
             </div>
 
             <div className="grid gap-7 pt-3 lg:grid-cols-[1fr_auto] lg:items-end">
               <p className="max-w-xl text-sm leading-relaxed text-white/62 sm:text-base">
-                Multi-program esports organization built around brand, pressure, and repeatable winning systems.
+                RAD is a multi-program esports brand built around identity, pressure, and repeatable winning systems.
                 Current competitive focus: Marvel Rivals.
               </p>
 

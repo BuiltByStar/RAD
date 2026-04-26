@@ -25,6 +25,7 @@ export function PlayerCard({
   image,
   number,
   descriptor,
+  bio,
   specialties,
   socials,
   id,
@@ -41,13 +42,9 @@ export function PlayerCard({
     <Card
       tone="default"
       id={id}
-      className={cn(
-        "player-card-shell flex min-h-[430px] flex-col p-0",
-        "transition-transform duration-500 hover:-translate-y-1",
-        className
-      )}
+      className={cn("flex min-h-[430px] flex-col overflow-hidden p-0", className)}
     >
-      <div className="player-card-media relative aspect-square overflow-hidden rounded-md border border-white/10 bg-[#08080a]">
+      <div className="relative aspect-square overflow-hidden border-b border-white/10 bg-[#08080a]">
         {image ? (
           <Image
             src={image}
@@ -63,10 +60,10 @@ export function PlayerCard({
               alt=""
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover opacity-[0.32] grayscale"
+              className="object-cover opacity-[0.25] grayscale"
             />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(255,43,69,0.28),transparent_48%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.72))]" />
-            <span className="player-card-initials relative font-[family-name:var(--font-display)] text-[clamp(4rem,8vw,7rem)] font-black uppercase leading-none tracking-[-0.08em] text-white/88 drop-shadow-[0_18px_45px_rgba(255,0,0,0.25)]">
+            <span className="relative font-[family-name:var(--font-display)] text-[clamp(4rem,8vw,7rem)] font-black uppercase leading-none tracking-[-0.08em] text-white/88 drop-shadow-[0_18px_45px_rgba(255,0,0,0.25)]">
               {initials}
             </span>
           </div>
@@ -107,6 +104,10 @@ export function PlayerCard({
               <Chip key={s}>{s}</Chip>
             ))}
           </ChipRow>
+        ) : null}
+
+        {bio ? (
+          <p className="mt-4 text-sm leading-relaxed text-white/62">{bio}</p>
         ) : null}
 
         {socials?.length ? (

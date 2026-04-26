@@ -46,7 +46,7 @@ export function Card({
   tone = "default",
   accent = true,
   hover = true,
-  spotlight = true,
+  spotlight = false,
   className,
   children,
   onMouseMove,
@@ -79,7 +79,7 @@ export function Card({
         initial: "hidden" as const,
         whileInView: "visible" as const,
         viewport: { once: true, margin: "-60px" },
-        whileHover: hover ? { y: -6 } : undefined
+        whileHover: hover ? { y: -3 } : undefined
       };
 
   return (
@@ -89,11 +89,11 @@ export function Card({
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
         "group relative overflow-hidden rounded-lg border border-white/10",
-        "bg-white/[0.035]",
-        "shadow-[0_18px_42px_-30px_rgba(0,0,0,0.95)]",
+        "bg-white/[0.028]",
+        "shadow-[0_16px_36px_-30px_rgba(0,0,0,0.95)]",
         "transition-[border-color,box-shadow] duration-500",
-        "hover:border-[color:var(--color-rad)]/34",
-        "hover:shadow-[0_22px_54px_-34px_rgba(255,0,0,0.26)]",
+        "hover:border-white/18",
+        "hover:shadow-[0_20px_44px_-32px_rgba(0,0,0,0.96)]",
         tones[tone],
         className
       )}
@@ -110,7 +110,7 @@ export function Card({
       {accent ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-[2px] w-32 origin-left bg-[color:var(--color-rad)]"
+          className="pointer-events-none absolute left-0 top-0 h-px w-32 origin-left bg-[color:var(--color-rad)]/85"
           initial={reduced ? undefined : { scaleX: 0 }}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}

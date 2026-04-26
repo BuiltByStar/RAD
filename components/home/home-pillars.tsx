@@ -11,13 +11,13 @@ export function HomePillars() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative bg-[#070707] py-20 sm:py-24">
+    <section className="relative bg-[#070707] py-18 sm:py-24">
       <Container size="xl">
         <div className="mb-10 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--color-rad)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad)]">
             Standard
           </p>
-          <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.96] tracking-normal text-white sm:text-6xl">
+          <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.92] tracking-tight text-white sm:text-6xl">
             Built to scale without losing the edge.
           </h2>
         </div>
@@ -37,7 +37,7 @@ export function HomePillars() {
                 show: reduced ? {} : { opacity: 1, y: 0 }
               }}
               transition={{ duration: 0.6, ease: EASE }}
-              className="rounded-lg border border-white/10 bg-black/45 p-6 transition hover:-translate-y-0.5 hover:border-[color:var(--color-rad)]/38"
+              className="rounded-lg border border-white/10 bg-black/45 p-6 transition hover:-translate-y-0.5 hover:border-white/18"
             >
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/[0.04] text-lg text-[color:var(--color-rad)]">
                 {value.icon}

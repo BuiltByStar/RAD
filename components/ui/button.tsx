@@ -7,11 +7,11 @@ type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg border font-semibold uppercase tracking-[0.12em] transition-[transform,background,border-color,box-shadow,color] duration-300 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 active:translate-y-[1px] before:pointer-events-none before:absolute before:inset-0 before:-translate-x-full before:bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.16)_48%,transparent_74%)] before:transition-transform before:duration-700 before:ease-out hover:before:translate-x-full";
+  "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg border font-semibold uppercase tracking-[0.16em] transition-[transform,background,border-color,box-shadow,color] duration-300 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 active:translate-y-[1px] before:pointer-events-none before:absolute before:inset-0 before:-translate-x-full before:bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.14)_48%,transparent_74%)] before:transition-transform before:duration-700 before:ease-out hover:before:translate-x-full";
 
 const variants: Record<Variant, string> = {
   primary:
-    "border-[color:var(--color-rad)] bg-[color:var(--color-rad)] text-white shadow-[0_16px_36px_rgba(255,0,0,0.22)] hover:-translate-y-[1px] hover:bg-[#ff2020] hover:shadow-[0_22px_50px_rgba(255,0,0,0.28)]",
+    "border-[color:var(--color-rad)] bg-[color:var(--color-rad)] text-white shadow-[0_16px_36px_rgba(255,0,0,0.18)] hover:-translate-y-[1px] hover:bg-[#ff2020] hover:shadow-[0_20px_44px_rgba(255,0,0,0.24)]",
   secondary:
     "border-white/18 bg-white/[0.075] text-white hover:border-white/30 hover:bg-white/[0.11]",
   ghost:
@@ -21,9 +21,9 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-[11px]",
-  md: "h-11 px-6 text-[12px]",
-  lg: "h-14 px-8 text-[13px]"
+  sm: "h-9 px-4 text-[10px]",
+  md: "h-11 px-6 text-[11px]",
+  lg: "h-12 px-7 text-[11px]"
 };
 
 type BaseProps = {
