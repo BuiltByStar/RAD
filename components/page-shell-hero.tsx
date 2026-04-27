@@ -67,9 +67,16 @@ export function PageShellHero({
           className="z-[-3] object-cover opacity-58"
         />
       )}
-      <div aria-hidden className="absolute inset-0 z-[-2] bg-[linear-gradient(90deg,rgba(8,8,12,0.94)_0%,rgba(8,8,12,0.8)_44%,rgba(8,8,12,0.72)_100%)]" />
-      <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(76%_58%_at_50%_20%,rgba(255,43,69,0.14),transparent_62%)]" />
+      <div aria-hidden className="absolute inset-0 z-[-2] bg-[linear-gradient(90deg,rgba(2,2,4,0.95)_0%,rgba(10,0,0,0.78)_48%,rgba(2,2,4,0.72)_100%)]" />
+      <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(76%_58%_at_50%_20%,rgba(255,0,0,0.18),transparent_62%)]" />
       <div aria-hidden className="absolute inset-0 z-[-1] opacity-[0.04] [background-image:linear-gradient(to_right,rgba(255,255,255,0.55)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.55)_1px,transparent_1px)] [background-size:56px_56px]" />
+      <motion.div
+        aria-hidden
+        className="absolute left-[-18%] top-[36%] z-[-1] h-24 w-[80%] rotate-[-8deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.32),rgba(255,255,255,0.1),transparent)] blur-sm"
+        animate={reduced ? undefined : { x: ["-10%", "34%", "-10%"], opacity: [0.22, 0.68, 0.22] }}
+        transition={{ duration: 7.2, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <div aria-hidden className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#ff0000]/55 to-transparent" />
 
       <Container size="xl">
         <motion.div
@@ -78,8 +85,8 @@ export function PageShellHero({
           transition={{ duration: 0.75, ease: EASE_EMPHASIS }}
           className={
             compact
-              ? "max-w-5xl pb-10 pt-20 sm:pb-12 sm:pt-24 lg:pb-14 lg:pt-28"
-              : "max-w-5xl pb-14 pt-24 sm:pb-18 sm:pt-30 lg:pb-22 lg:pt-34"
+              ? "max-w-5xl pb-8 pt-20 sm:pb-10 sm:pt-24 lg:pb-12 lg:pt-26"
+              : "max-w-5xl pb-10 pt-22 sm:pb-12 sm:pt-26 lg:pb-16 lg:pt-30"
           }
         >
           <motion.div
@@ -106,6 +113,22 @@ export function PageShellHero({
             {title}
           </motion.h1>
 
+          <motion.div
+            initial={reduced ? undefined : { opacity: 0, y: 10 }}
+            animate={reduced ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.62, ease: EASE_EMPHASIS, delay: 0.13 }}
+            className="mt-5 flex flex-wrap gap-2"
+          >
+            {meta.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-[#ff0000]/26 bg-[#ff0000]/8 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70"
+              >
+                {tag}
+              </span>
+            ))}
+          </motion.div>
+
           <motion.p
             initial={reduced ? undefined : { opacity: 0, y: 12 }}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -113,7 +136,7 @@ export function PageShellHero({
             className={
               compact
                 ? "mt-4 max-w-2xl text-sm leading-relaxed text-white/64 sm:text-base"
-                : "mt-6 max-w-3xl text-sm leading-relaxed text-white/64 sm:text-lg"
+                : "mt-5 max-w-3xl text-sm leading-relaxed text-white/64 sm:text-lg"
             }
           >
             {description}

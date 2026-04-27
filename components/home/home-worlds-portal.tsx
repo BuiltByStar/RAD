@@ -8,24 +8,28 @@ import { Container } from "@/components/ui";
 
 const systems = [
   {
-    label: "Core",
-    meta: "Identity, culture, and the RAD standard.",
-    href: "/about"
+    label: "Roster",
+    meta: "Player cards, roles, socials, and future PFP uploads.",
+    href: "/roster",
+    stat: "07"
   },
   {
-    label: "Vanguard",
-    meta: "Competitive roster and role structure.",
-    href: "/roster"
+    label: "Content",
+    meta: "YouTube, articles, announcements, and media drops.",
+    href: "/content",
+    stat: "Media"
   },
   {
-    label: "Media",
-    meta: "Stories, video, and creator visibility.",
-    href: "/content"
+    label: "Community",
+    meta: "Discord gateway and fan energy without extra clutter.",
+    href: "https://discord.com/invite/radgg",
+    stat: "RADGG"
   },
   {
-    label: "Alliances",
-    meta: "Partnerships, campaigns, and activations.",
-    href: "/partners"
+    label: "Activations",
+    meta: "Sponsor slots, campaigns, and brand contact paths.",
+    href: "/partners",
+    stat: "Open"
   }
 ] as const;
 
@@ -35,25 +39,36 @@ export function HomeWorldsPortal() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="experience" className="relative border-y border-white/10 bg-[#070707] py-18 sm:py-24">
+    <section id="experience" className="relative overflow-hidden border-y border-white/10 bg-[#070707] py-16 sm:py-24">
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_56%_at_72%_30%,rgba(255,0,0,0.2),transparent_58%)]" />
       <Container size="xl">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-14">
+        <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-14">
           <motion.div
             initial={reduced ? undefined : { opacity: 0, y: 20 }}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease: EASE }}
-            className="max-w-xl"
+            className="relative max-w-xl"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad)]">
-              System
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
+              Esports OS
             </p>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.92] tracking-tight text-white sm:text-6xl">
-              One org. Four clear lanes.
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-white">
+              More than a roster page.
             </h2>
-            <p className="mt-5 text-base leading-relaxed text-white/62 sm:text-lg">
-              RAD should feel easy to understand at a glance: what the org stands for, who competes, where the content lives, and how brands can work with it.
+            <p className="mt-6 text-base leading-relaxed text-white/66 sm:text-lg">
+              The site now needs to behave like an org hub: competitive proof, roster identity, media, community, and sponsor paths all moving in one visual system.
             </p>
+            <div className="mt-8 grid max-w-md grid-cols-2 gap-3">
+              {["Competition", "Media", "Discord", "Partners"].map((item) => (
+                <span
+                  key={item}
+                  className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/72"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div
@@ -61,51 +76,57 @@ export function HomeWorldsPortal() {
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-            className="grid gap-4 sm:grid-cols-2"
+            className="relative"
           >
-            <div className="relative min-h-[240px] overflow-hidden rounded-lg border border-white/12 bg-black sm:col-span-2">
-              <Image
-                src="/assets/RadBanner1920_1080.png"
-                alt=""
-                fill
-                sizes="(max-width: 1024px) 100vw, 58vw"
-                className="object-cover opacity-52"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/25" />
-              <div className="relative z-10 flex h-full min-h-[240px] flex-col justify-end p-6 sm:p-8">
+            <div className="absolute -inset-5 rounded-[2rem] border border-[#ff0000]/20" />
+            <div className="relative grid overflow-hidden rounded-[1.75rem] border border-white/12 bg-black/52 p-4 shadow-[0_34px_120px_rgba(0,0,0,0.66)] backdrop-blur-xl sm:grid-cols-2">
+              <div className="relative min-h-[360px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0b0b0d] sm:col-span-2">
                 <Image
-                  src="/assets/RadNewLogoWordmarkWhite.png"
-                  alt="RAD"
-                  width={220}
-                  height={58}
-                  className="h-auto w-[180px] sm:w-[220px]"
+                  src="/assets/RadBanner1920_1080.png"
+                  alt=""
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                  className="object-cover opacity-76"
                 />
-                <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/66 sm:text-base">
-                  A simple public structure for competition, creative output, community, and future growth.
-                </p>
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(0,0,0,0.76)_44%,rgba(0,0,0,0.18)_100%)]" />
+                <motion.div
+                  aria-hidden
+                  className="absolute left-[-35%] top-[26%] h-24 w-[120%] rotate-[-10deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.22),rgba(255,255,255,0.12),transparent)]"
+                  animate={reduced ? undefined : { x: ["-10%", "20%", "-10%"], opacity: [0.25, 0.7, 0.25] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <div className="relative z-10 flex min-h-[360px] flex-col justify-end p-6 sm:p-8">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
+                    RAD command map
+                  </p>
+                  <h3 className="mt-3 max-w-2xl font-[family-name:var(--font-display)] text-[clamp(2.4rem,5vw,5rem)] font-extrabold uppercase leading-[0.86] text-white">
+                    Competition, content, community, activations.
+                  </h3>
+                </div>
               </div>
-            </div>
 
-            {systems.map((system, index) => (
-              <Link
-                key={system.label}
-                href={system.href}
-                className="group rounded-lg border border-white/10 bg-white/[0.03] p-5 transition hover:-translate-y-0.5 hover:border-white/18 hover:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)]"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">
+              {systems.map((system, index) => (
+                <Link
+                  key={system.label}
+                  href={system.href}
+                  className="group relative min-h-[190px] overflow-hidden border-t border-white/10 bg-white/[0.025] p-5 transition hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] sm:even:border-l"
+                >
+                  <span className="absolute right-4 top-4 font-[family-name:var(--font-display)] text-6xl font-extrabold uppercase leading-none text-white/[0.04]">
+                    {system.stat}
+                  </span>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/42">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-sm text-white/45 transition group-hover:translate-x-0.5 group-hover:text-white/75">
-                    →
+                  <h3 className="mt-9 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-none text-white">
+                    {system.label}
+                  </h3>
+                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/58">{system.meta}</p>
+                  <span className="mt-5 inline-flex text-sm text-[#ff4040] transition group-hover:translate-x-1">
+                    Open →
                   </span>
-                </div>
-                <h3 className="mt-8 font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white">
-                  {system.label}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/58">{system.meta}</p>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </motion.div>
         </div>
       </Container>

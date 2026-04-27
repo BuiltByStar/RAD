@@ -1,4 +1,5 @@
 import { HomeChampionsStrip } from "@/components/home/home-champions-strip";
+import { HomeEsportsFeed } from "@/components/home/home-esports-feed";
 import { HomeHero } from "@/components/home/home-hero";
 import { HomeIntro } from "@/components/home/home-intro";
 import { HomePillars } from "@/components/home/home-pillars";
@@ -13,6 +14,7 @@ export default function HomePage() {
       <MarqueeStrip />
       <HomeWorldsPortal />
       <HomePillars />
+      <HomeEsportsFeed />
       <HomeChampionsStrip />
     </main>
   );

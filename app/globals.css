@@ -1,27 +1,26 @@
 @import "tailwindcss";
 
-/* ─── FlyQuest-Inspired Light Design System ─────────────────────────────────
- * Clean, modern, premium esports brand aesthetic.
- * Off-white backgrounds, dark charcoal text, forest green accents.
+/* ─── RAD arena system ───────────────────────────────────────────────────────
+ * High-contrast red/black esports identity with animated atmospheric layers.
  * -------------------------------------------------------------------------- */
 @theme {
-  --color-bg:         #FCFCFC;
-  --color-bg-alt:     #F5F5F5;
-  --color-surface:    #FFFFFF;
-  --color-surface-md: #F0F0F0;
-  --color-surface-hi: #E8E8E8;
-  --color-line:       #E5E5E5;
-  --color-line-hi:    #D0D0D0;
+  --color-bg:         #030304;
+  --color-bg-alt:     #08080a;
+  --color-surface:    #0d0d11;
+  --color-surface-md: #141419;
+  --color-surface-hi: #1d1d24;
+  --color-line:       rgba(255, 255, 255, 0.1);
+  --color-line-hi:    rgba(255, 255, 255, 0.18);
 
-  --color-text:       #151F21;
-  --color-muted:      #5A6B6F;
-  --color-dim:        #8A9A9E;
+  --color-text:       #ffffff;
+  --color-muted:      #b9b5b5;
+  --color-dim:        #727070;
 
-  --color-rad:        #214439;
-  --color-rad-hi:     #275D38;
-  --color-rad-deep:   #1A3A2E;
-  --color-rad-ember:  #0F2A1F;
-  --color-rad-soft:   #3A8A5C;
+  --color-rad:        #ff0000;
+  --color-rad-hi:     #ff4040;
+  --color-rad-deep:   #990000;
+  --color-rad-ember:  #3b0505;
+  --color-rad-soft:   #ff6b6b;
 
   --color-discord:    #5865F2;
 
@@ -34,9 +33,9 @@
   --radius-xl: 24px;
   --radius-2xl: 32px;
 
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
-  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.1);
-  --shadow-panel: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 22px 70px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 28px 90px rgba(255, 0, 0, 0.18);
+  --shadow-panel: 0 30px 120px rgba(0, 0, 0, 0.65);
 
   --ease-emphasis: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -55,28 +54,32 @@
 
 /* ─── CSS Custom Properties ────────────────────────────────────────────────── */
 :root {
-  --bg:            #FCFCFC;
-  --bg-alt:        #F5F5F5;
-  --surface:       #FFFFFF;
-  --surface-md:    #F0F0F0;
-  --surface-hi:    #E8E8E8;
-  --border:        #E5E5E5;
-  --border-md:     #D0D0D0;
-  --text:          #151F21;
-  --muted:         #5A6B6F;
-  --dim:           #8A9A9E;
+  --bg:            #030304;
+  --bg-alt:        #08080a;
+  --surface:       #0d0d11;
+  --surface-md:    #141419;
+  --surface-hi:    #1d1d24;
+  --border:        rgba(255, 255, 255, 0.1);
+  --border-md:     rgba(255, 255, 255, 0.18);
+  --text:          #ffffff;
+  --muted:         #b9b5b5;
+  --dim:           #727070;
 
-  --green:         #214439;
-  --green-hi:      #275D38;
-  --green-deep:    #1A3A2E;
-  --green-soft:    #3A8A5C;
+  --red:           #ff0000;
+  --red-hi:        #ff4040;
+  --red-deep:      #990000;
+  --red-ember:     #3b0505;
+  --green:         var(--red);
+  --green-hi:      var(--red-hi);
+  --green-deep:    var(--red-deep);
+  --green-soft:    var(--red-hi);
   --discord:       #5865F2;
 
-  --grad-primary:  linear-gradient(135deg, #1A3A2E 0%, #214439 50%, #275D38 100%);
+  --grad-primary:  linear-gradient(135deg, #7a0000 0%, #ff0000 48%, #ff5656 100%);
 
-  --shadow:        0 4px 20px rgba(0, 0, 0, 0.06);
-  --shadow-lg:     0 12px 40px rgba(0, 0, 0, 0.08);
-  --shadow-hover:  0 8px 30px rgba(0, 0, 0, 0.1);
+  --shadow:        0 20px 70px rgba(0, 0, 0, 0.55);
+  --shadow-lg:     0 30px 120px rgba(0, 0, 0, 0.65);
+  --shadow-hover:  0 28px 90px rgba(255, 0, 0, 0.18);
 
   --radius:        10px;
   --radius-lg:     16px;
@@ -88,12 +91,15 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255, 0, 0, 0.22), transparent 28rem),
+    radial-gradient(circle at 82% 18%, rgba(255, 64, 64, 0.13), transparent 30rem),
+    linear-gradient(180deg, #030304 0%, #070608 44%, #030304 100%);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -119,11 +125,11 @@ p { margin: 0; }
 
 /* ─── Scrollbar ────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar             { width: 5px; }
-::-webkit-scrollbar-track       { background: var(--bg); }
-::-webkit-scrollbar-thumb       { background: #C0C0C0; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--green); }
+::-webkit-scrollbar-track       { background: #020202; }
+::-webkit-scrollbar-thumb       { background: rgba(255, 0, 0, 0.5); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
 
-::selection { background: rgba(33, 68, 57, 0.18); color: var(--text); }
+::selection { background: rgba(255, 0, 0, 0.34); color: white; }
 
 /* ─── Layout ───────────────────────────────────────────────────────────────── */
 .container { width: var(--container); margin: 0 auto; }
@@ -138,6 +144,27 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
 @keyframes shimmer-sweep {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+@keyframes rad-background-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-2%, 1.4%, 0) scale(1.04); }
+}
+
+@keyframes rad-signal-pass {
+  0% { transform: translateX(-120%) skewX(-16deg); opacity: 0; }
+  18% { opacity: 0.8; }
+  38%, 100% { transform: translateX(140%) skewX(-16deg); opacity: 0; }
+}
+
+@keyframes rad-grid-slide {
+  from { background-position: 0 0; }
+  to { background-position: 72px 72px; }
+}
+
+@keyframes rad-pulse-core {
+  0%, 100% { box-shadow: 0 0 0 rgba(255, 0, 0, 0); transform: scale(1); }
+  50% { box-shadow: 0 0 42px rgba(255, 0, 0, 0.42); transform: scale(1.015); }
 }
 
 /* ─── Eyebrow ──────────────────────────────────────────────────────────────── */
