@@ -23,7 +23,7 @@ export function HomeHero() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 z-[-3] bg-[radial-gradient(80%_65%_at_50%_26%,rgba(167,79,255,0.32),transparent_64%),linear-gradient(180deg,rgba(5,5,8,0.75)_0%,rgba(5,5,8,0.95)_66%,#050505_100%)]"
+        className="absolute inset-0 z-[-3] bg-[radial-gradient(80%_65%_at_50%_26%,rgba(255,43,69,0.28),transparent_64%),linear-gradient(180deg,rgba(5,5,8,0.75)_0%,rgba(5,5,8,0.95)_66%,#050505_100%)]"
       />
       <div
         aria-hidden

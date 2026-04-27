@@ -80,7 +80,7 @@ export function HomeIntro() {
         }
         className="fixed inset-0 z-[100] overflow-hidden bg-[#04040a]"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(95%_68%_at_50%_-8%,rgba(255,255,255,0.07),transparent_56%),radial-gradient(75%_56%_at_50%_58%,rgba(180,80,255,0.18),transparent_62%),linear-gradient(180deg,#060611,#090915)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(95%_68%_at_50%_-8%,rgba(255,255,255,0.07),transparent_56%),radial-gradient(75%_56%_at_50%_58%,rgba(255,43,69,0.16),transparent_62%),linear-gradient(180deg,#07070a,#0a0a10)]" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(255,255,255,0.02)_100%)]" />
         <motion.div
           aria-hidden
@@ -111,7 +111,7 @@ export function HomeIntro() {
           >
             <motion.div
               aria-hidden
-              className="absolute inset-x-[20%] top-[45%] h-40 -translate-y-1/2 bg-[radial-gradient(circle,rgba(184,84,255,0.5),transparent_70%)] blur-3xl"
+              className="absolute inset-x-[20%] top-[45%] h-40 -translate-y-1/2 bg-[radial-gradient(circle,rgba(255,43,69,0.42),transparent_70%)] blur-3xl"
               animate={{ scaleX: [0.88, 1.08, 0.92], opacity: [0.4, 0.9, 0.45] }}
               transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -120,7 +120,7 @@ export function HomeIntro() {
               <div aria-hidden className="pointer-events-none absolute inset-4 rounded-md border border-white/10" />
               <motion.div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.14)_44%,rgba(184,84,255,0.2)_52%,transparent_72%)]"
+                className="absolute inset-0 bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.14)_44%,rgba(255,43,69,0.22)_52%,transparent_72%)]"
                 animate={{ x: ["-140%", "140%"] }}
                 transition={{ duration: 1.4, delay: 0.55, ease: EASE_OUT_EXPO }}
               />
