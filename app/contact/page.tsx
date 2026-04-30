@@ -42,7 +42,8 @@ export default function ContactPage() {
       <Section padding="sm">
         <Container>
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+            <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.03))] p-5 sm:p-6">
+              <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
               <SectionHeading
                 eyebrow="Inquiry Form"
                 title="Send a clear message."
@@ -54,7 +55,8 @@ export default function ContactPage() {
             </div>
 
             <div className="flex flex-col gap-5">
-              <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+              <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.03))] p-5 sm:p-6">
+                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
                 <SectionHeading
                   eyebrow="Direct Channels"
                   title="Use the channel that fits the ask."
@@ -65,7 +67,7 @@ export default function ContactPage() {
                 <ContactGrid channels={contactChannels} />
               </div>
 
-              <Card>
+              <Card spotlight>
                 <CardEyebrow>What helps</CardEyebrow>
                 <CardTitle size="sm">Send context, not just a name.</CardTitle>
                 <CardBody>

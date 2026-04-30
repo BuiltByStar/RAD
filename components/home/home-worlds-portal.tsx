@@ -39,8 +39,9 @@ export function HomeWorldsPortal() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="experience" className="relative overflow-hidden border-y border-white/10 bg-[#070707] py-16 sm:py-24">
+    <section id="experience" className="relative overflow-hidden border-y border-white/10 bg-[#070707] py-14 sm:py-20">
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_56%_at_72%_30%,rgba(255,0,0,0.2),transparent_58%)]" />
+      <div aria-hidden className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,0,0,0.12),transparent)]" />
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-14">
           <motion.div
@@ -63,7 +64,7 @@ export function HomeWorldsPortal() {
               {["Competition", "Media", "Discord", "Partners"].map((item) => (
                 <span
                   key={item}
-                  className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/72"
+                  className="rounded-xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,0,0,0.12),rgba(255,255,255,0.035))] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
                 >
                   {item}
                 </span>
@@ -109,8 +110,13 @@ export function HomeWorldsPortal() {
                 <Link
                   key={system.label}
                   href={system.href}
-                  className="group relative min-h-[190px] overflow-hidden border-t border-white/10 bg-white/[0.025] p-5 transition hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] sm:even:border-l"
+                  className="group relative min-h-[190px] overflow-hidden border-t border-white/10 bg-white/[0.025] p-5 transition hover:bg-[rgba(255,0,0,0.075)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] sm:even:border-l"
                 >
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-4 top-4 h-px scale-x-0 bg-gradient-to-r from-[#ff0000] to-transparent transition-transform duration-500 group-hover:scale-x-100"
+                    style={{ transformOrigin: "left" }}
+                  />
                   <span className="absolute right-4 top-4 font-[family-name:var(--font-display)] text-6xl font-extrabold uppercase leading-none text-white/[0.04]">
                     {system.stat}
                   </span>

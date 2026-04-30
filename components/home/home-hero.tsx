@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, Container } from "@/components/ui";
-import { discordInviteUrl, players, stats } from "@/lib/site-data";
+import { players, stats } from "@/lib/site-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -19,7 +19,7 @@ export function HomeHero() {
   const featuredPlayers = players.slice(0, 4);
 
   return (
-    <section className="rad-hero relative isolate min-h-[92svh] overflow-hidden border-b border-white/10 bg-[#030304] pt-12 sm:pt-16">
+    <section className="rad-hero relative isolate min-h-[88svh] overflow-hidden border-b border-white/10 bg-[#030304] pt-10 sm:pt-14">
       <video
         autoPlay
         muted
@@ -54,25 +54,42 @@ export function HomeHero() {
         animate={reduced ? undefined : { x: ["-12%", "12%", "-12%"], opacity: [0.2, 0.58, 0.2] }}
         transition={{ duration: 9.5, repeat: Infinity, ease: "easeInOut" }}
       />
+      <motion.div
+        aria-hidden
+        className="absolute bottom-[8%] left-[-18%] z-[-2] h-32 w-[88%] rotate-[7deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.18),transparent)] blur-md"
+        animate={reduced ? undefined : { x: ["-8%", "18%", "-8%"], opacity: [0.1, 0.45, 0.1] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+      />
       <div
         aria-hidden
         className="absolute inset-0 z-[-1] opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.5)_1px,transparent_1px)] [background-size:72px_72px]"
       />
 
       <Container size="xl" className="relative z-10">
-        <div className="grid min-h-[calc(92svh-4rem)] gap-10 pb-14 pt-16 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:pb-20 lg:pt-20">
+        <div className="grid min-h-[calc(88svh-4rem)] gap-8 pb-12 pt-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:pb-16 lg:pt-14">
           <motion.div
             initial={reduced ? undefined : { opacity: 0, y: 28 }}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE }}
             className="max-w-4xl"
           >
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/12 bg-black/42 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70 backdrop-blur-xl">
+            <div className="inline-flex items-center gap-3 rounded-full border border-[#ff0000]/26 bg-black/48 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70 backdrop-blur-xl">
               <span className="h-2 w-2 rounded-full bg-[#ff0000] shadow-[0_0_20px_rgba(255,0,0,0.9)]" />
               RAD Esports // live brand system
             </div>
 
-            <h1 className="mt-7 font-[family-name:var(--font-display)] text-[clamp(4.1rem,12vw,12.5rem)] font-extrabold uppercase leading-[0.76] tracking-[-0.035em] text-white">
+            <div className="mt-5 flex max-w-2xl flex-wrap gap-2">
+              {["World Champions", "EMEA Champions", "Built for pressure"].map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/62"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(4.1rem,11vw,11.5rem)] font-extrabold uppercase leading-[0.76] tracking-[-0.035em] text-white">
               Go
               <span className="block bg-[linear-gradient(90deg,#fff_0%,#ff2b2b_45%,#ff0000_100%)] bg-clip-text text-transparent">
                 Wild.
@@ -88,8 +105,8 @@ export function HomeHero() {
                 View roster
                 <span aria-hidden>→</span>
               </Button>
-              <Button href={discordInviteUrl} variant="outline" size="lg" className="min-w-[180px]">
-                Discord
+              <Button href="/content" variant="outline" size="lg" className="min-w-[180px]">
+                Watch content
               </Button>
             </div>
 
@@ -118,6 +135,12 @@ export function HomeHero() {
           >
             <div className="absolute -inset-8 rounded-[2rem] bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,0,0.22),transparent_60%)] blur-2xl" />
             <div className="relative overflow-hidden rounded-[1.65rem] border border-white/14 bg-black/58 p-4 shadow-[0_40px_140px_rgba(0,0,0,0.72)] backdrop-blur-xl">
+              <motion.span
+                aria-hidden
+                className="absolute left-[-45%] top-10 z-20 h-px w-[90%] bg-gradient-to-r from-transparent via-[#ff0000] to-transparent"
+                animate={reduced ? undefined : { x: ["0%", "210%"], opacity: [0, 0.9, 0] }}
+                transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 2.5, ease: "easeOut" }}
+              />
               <div className="relative min-h-[460px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#09090b]">
                 <Image
                   src="/assets/RadPlayerBannerPNG8.png"

@@ -88,17 +88,26 @@ export function Card({
       onMouseMove={spotlight ? handleMove : onMouseMove}
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
-        "group relative overflow-hidden rounded-lg border border-white/10",
-        "bg-white/[0.028]",
-        "shadow-[0_16px_36px_-30px_rgba(0,0,0,0.95)]",
+        "group relative overflow-hidden rounded-[1.15rem] border border-white/10",
+        "bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018)_48%,rgba(255,0,0,0.035))]",
+        "shadow-[0_18px_52px_-34px_rgba(0,0,0,0.98)]",
         "transition-[border-color,box-shadow] duration-500",
-        "hover:border-white/18",
-        "hover:shadow-[0_20px_44px_-32px_rgba(0,0,0,0.96)]",
+        "hover:border-[#ff0000]/34",
+        "hover:shadow-[0_24px_72px_-42px_rgba(255,0,0,0.5)]",
         tones[tone],
         className
       )}
       {...rest}
     >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(255,0,0,0.16),transparent_34%),linear-gradient(120deg,transparent,rgba(255,255,255,0.04)_42%,transparent_58%)] opacity-70"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-[-45%] top-0 h-px w-[90%] bg-gradient-to-r from-transparent via-[#ff0000]/85 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:[animation:rad-border-run_1.35s_ease-out]"
+      />
+
       {spotlight && !reduced ? (
         <motion.span
           aria-hidden
@@ -110,7 +119,7 @@ export function Card({
       {accent ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-px w-32 origin-left bg-[color:var(--color-rad)]/85"
+          className="pointer-events-none absolute left-0 top-0 h-px w-32 origin-left bg-[color:var(--color-rad)]/90"
           initial={reduced ? undefined : { scaleX: 0 }}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}

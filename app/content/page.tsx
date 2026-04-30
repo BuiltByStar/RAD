@@ -53,8 +53,12 @@ export default async function ContentPage() {
           {featured ? (
             <Link
               href={`/content/${featured.slug}`}
-              className="group relative grid overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] transition-colors hover:border-[color:var(--color-rad)]/26 md:grid-cols-[1.1fr_0.9fr]"
+              className="group relative grid overflow-hidden rounded-[1.45rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.06),rgba(255,0,0,0.035))] shadow-[0_28px_90px_-56px_rgba(255,0,0,0.48)] transition-colors hover:border-[color:var(--color-rad)]/38 md:grid-cols-[1.1fr_0.9fr]"
             >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-gradient-to-r from-transparent via-[#ff0000]/80 to-transparent"
+              />
               <div className="relative aspect-[16/10] md:aspect-auto">
                 <Image
                   src={featured.cover}
@@ -97,7 +101,7 @@ export default async function ContentPage() {
               <Link
                 key={post.slug}
                 href={`/content/${post.slug}`}
-                className="group relative flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] transition-colors hover:border-[color:var(--color-rad)]/26"
+                className="group relative flex flex-col overflow-hidden rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,0,0,0.025))] transition-colors hover:border-[color:var(--color-rad)]/34"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
@@ -137,13 +141,13 @@ export default async function ContentPage() {
           />
 
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+            <div className="rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.025))] p-5 sm:p-6">
               <CardEyebrow>Featured Video</CardEyebrow>
               <div className="mt-4">
                 <YouTubeFeatured />
               </div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+            <div className="rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.025))] p-5 sm:p-6">
               <CardEyebrow>Creator Status</CardEyebrow>
               <div className="mt-4">
                 <TwitchCreators />
@@ -151,7 +155,7 @@ export default async function ContentPage() {
             </div>
           </div>
 
-          <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+          <div className="mt-5 rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.025))] p-5 sm:p-6">
             <CardEyebrow>Library</CardEyebrow>
             <div className="mt-4">
               <YouTubeLibrary />

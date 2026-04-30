@@ -48,21 +48,21 @@ export default function AboutPage() {
           />
 
           <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
-            <Card tone="lead">
+            <Card tone="lead" spotlight>
               <CardBody className="mt-0 text-base leading-relaxed text-white/75 sm:text-lg">
                 {aboutSummary}
               </CardBody>
             </Card>
 
             <div className="grid gap-4 sm:gap-5">
-              <Card>
+              <Card spotlight>
                 <CardEyebrow>Competitive Position</CardEyebrow>
                 <CardTitle size="sm">Pressure-tested on the biggest stages.</CardTitle>
                 <CardBody>
                   The public identity works because there are real results underneath it, not because the site is trying to oversell the org.
                 </CardBody>
               </Card>
-              <Card>
+              <Card spotlight>
                 <CardEyebrow>Brand Direction</CardEyebrow>
                 <CardTitle size="sm">A brand built to move across titles.</CardTitle>
                 <CardBody>
@@ -84,7 +84,7 @@ export default function AboutPage() {
 
           <CardGrid cols={4}>
             {orgValues.map((value) => (
-              <Card key={value.title}>
+              <Card key={value.title} spotlight>
                 <span
                   aria-hidden
                   className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[.03] text-lg text-[color:var(--color-rad-hi)]"
@@ -130,7 +130,7 @@ export default function AboutPage() {
 
           <CardGrid cols={3}>
             {igniteSchedule.map((item, index) => (
-              <Card key={`${item.stage}-${item.dates}`} tone="compact">
+              <Card key={`${item.stage}-${item.dates}`} tone="compact" spotlight>
                 <CardEyebrow>Stage {String(index + 1).padStart(2, "0")}</CardEyebrow>
                 <CardTitle size="sm">{item.stage}</CardTitle>
                 <CardBody>{item.dates}</CardBody>

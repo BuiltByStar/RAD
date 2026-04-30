@@ -71,7 +71,7 @@ export default function PartnersPage() {
 
           <CardGrid cols={3}>
             {processSteps.map((step) => (
-              <Card key={step.title}>
+              <Card key={step.title} spotlight className="min-h-[230px]">
                 <CardEyebrow>{step.label}</CardEyebrow>
                 <CardTitle size="sm">{step.title}</CardTitle>
                 <CardBody>{step.description}</CardBody>
@@ -91,7 +91,7 @@ export default function PartnersPage() {
 
           <CardGrid cols={3}>
             {partners.map((partner) => (
-              <Card key={partner.name} tone="tall" className="flex flex-col">
+              <Card key={partner.name} tone="tall" spotlight className="flex flex-col">
                 <CardEyebrow>{partner.tier}</CardEyebrow>
                 <CardTitle size="sm">{partner.name}</CardTitle>
                 <CardBody>{partner.description}</CardBody>
