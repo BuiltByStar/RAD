@@ -13,7 +13,7 @@ const privacyBlocks = [
     label: "01 // Collection",
     title: "What gets collected",
     copy:
-      "RAD collects information submitted directly through website forms, account flows, or contact channels when that information is necessary to respond or operate the service."
+      "RAD collects information submitted through website forms, account flows, or direct contact when that information is needed to respond or operate the service."
   },
   {
     label: "02 // Use",
@@ -35,9 +35,9 @@ export default function PrivacyPage() {
       variant="legal"
       eyebrow="Legal"
       title="Privacy policy."
-      description="The legal pages should be readable, minimal, and visually aligned with the rest of the product."
+      description="How RAD handles information submitted through the site."
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
-      status="Privacy // current"
+      status="Current"
     >
       <Section padding="sm">
         <Container size="md">

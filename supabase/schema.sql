@@ -76,6 +76,22 @@ create table if not exists public.partner_entries (
   is_open_slot boolean not null default false
 );
 
+create table if not exists public.news_posts (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  display_order integer not null default 0,
+  title text not null,
+  slug text not null unique,
+  date date not null default current_date,
+  summary text not null default '',
+  category text not null default 'Org Update',
+  cover text not null default '/assets/RadBannerNewTest300ppi.png',
+  body text not null default '',
+  featured boolean not null default false,
+  published boolean not null default true
+);
+
 create table if not exists public.site_settings (
   key text primary key,
   value jsonb not null default '{}'::jsonb,
@@ -171,6 +187,11 @@ create trigger partner_entries_touch_updated_at
   before update on public.partner_entries
   for each row execute function public.touch_updated_at();
 
+drop trigger if exists news_posts_touch_updated_at on public.news_posts;
+create trigger news_posts_touch_updated_at
+  before update on public.news_posts
+  for each row execute function public.touch_updated_at();
+
 drop trigger if exists site_settings_touch_updated_at on public.site_settings;
 create trigger site_settings_touch_updated_at
   before update on public.site_settings
@@ -181,6 +202,7 @@ alter table public.contact_inquiries enable row level security;
 alter table public.roster_entries enable row level security;
 alter table public.staff_entries enable row level security;
 alter table public.partner_entries enable row level security;
+alter table public.news_posts enable row level security;
 alter table public.site_settings enable row level security;
 
 drop policy if exists "profiles_read_own_or_staff" on public.profiles;
@@ -249,6 +271,17 @@ create policy "partner_entries_staff_write"
   using (public.is_staff())
   with check (public.is_staff());
 
+drop policy if exists "news_posts_public_read" on public.news_posts;
+create policy "news_posts_public_read"
+  on public.news_posts for select
+  using (published = true);
+
+drop policy if exists "news_posts_staff_write" on public.news_posts;
+create policy "news_posts_staff_write"
+  on public.news_posts for all
+  using (public.is_staff())
+  with check (public.is_staff());
+
 drop policy if exists "site_settings_public_read" on public.site_settings;
 create policy "site_settings_public_read"
   on public.site_settings for select
@@ -308,3 +341,6 @@ comment on table public.contact_inquiries is
 
 comment on table public.profiles is
   'User profile and staff role records. Dashboard authorization reads role from this table.';
+
+comment on table public.news_posts is
+  'RAD news and content posts. Featured is a presentation flag; archive and feature use this same collection.';

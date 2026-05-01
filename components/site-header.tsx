@@ -2,42 +2,186 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 import { AuthWidget } from "@/components/auth-widget";
+import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { primaryNavLinks } from "@/lib/site-data";
+
+const SCROLL_THRESHOLD = 8;
+const NAV_PUSH_DELAY_MS = 350;
+const NAV_GLITCH_OUTRO_MS = 320;
+const NAV_GLITCH_FALLBACK_MS = 1800;
+
+type NavTransition = {
+  href: string;
+  label: string;
+  id: number;
+  phase: "enter" | "exit";
+};
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navTransition, setNavTransition] = useState<NavTransition | null>(null);
+  const pushTimerRef = useRef<number | null>(null);
+  const clearTimerRef = useRef<number | null>(null);
+  const fallbackTimerRef = useRef<number | null>(null);
+
+  function clearNavTimers() {
+    if (pushTimerRef.current) {
+      window.clearTimeout(pushTimerRef.current);
+      pushTimerRef.current = null;
+    }
+    if (clearTimerRef.current) {
+      window.clearTimeout(clearTimerRef.current);
+      clearTimerRef.current = null;
+    }
+    if (fallbackTimerRef.current) {
+      window.clearTimeout(fallbackTimerRef.current);
+      fallbackTimerRef.current = null;
+    }
+  }
+
+  function scheduleNavClear() {
+    if (clearTimerRef.current) {
+      window.clearTimeout(clearTimerRef.current);
+    }
+
+    clearTimerRef.current = window.setTimeout(() => {
+      setNavTransition(null);
+      clearNavTimers();
+    }, NAV_GLITCH_OUTRO_MS);
+  }
+
+  function beginNavExit() {
+    if (pushTimerRef.current) {
+      window.clearTimeout(pushTimerRef.current);
+      pushTimerRef.current = null;
+    }
+    if (fallbackTimerRef.current) {
+      window.clearTimeout(fallbackTimerRef.current);
+      fallbackTimerRef.current = null;
+    }
+
+    setNavTransition((current) => {
+      if (!current || current.phase === "exit") return current;
+      return { ...current, phase: "exit" };
+    });
+    scheduleNavClear();
+  }
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    let frame = 0;
+    let lastScrolled = window.scrollY > SCROLL_THRESHOLD;
+
+    const syncScrolled = () => {
+      frame = 0;
+      const nextScrolled = window.scrollY > SCROLL_THRESHOLD;
+      if (nextScrolled !== lastScrolled) {
+        lastScrolled = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+    };
+
+    const onScroll = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(syncScrolled);
+      }
+    };
+
+    setScrolled(lastScrolled);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
+
+  useEffect(() => clearNavTimers, []);
 
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!navTransition || navTransition.phase === "exit") return;
+    const reachedTarget =
+      pathname === navTransition.href ||
+      (navTransition.href !== "/" && pathname.startsWith(navTransition.href));
+
+    if (reachedTarget) {
+      beginNavExit();
+    }
+  }, [pathname, navTransition]);
+
+  function shouldHandleNavClick(event: MouseEvent<HTMLAnchorElement>) {
+    const target = event.currentTarget.getAttribute("target");
+
+    return (
+      !event.defaultPrevented &&
+      event.button === 0 &&
+      !event.metaKey &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      (!target || target === "_self")
+    );
+  }
+
+  function handlePrimaryNavClick(
+    event: MouseEvent<HTMLAnchorElement>,
+    link: (typeof primaryNavLinks)[number],
+    active: boolean
+  ) {
+    if (!shouldHandleNavClick(event)) return;
+
+    event.preventDefault();
+    setMenuOpen(false);
+
+    if (active || navTransition) return;
+
+    clearNavTimers();
+    setNavTransition({
+      href: link.href,
+      label: link.label,
+      id: window.performance.now(),
+      phase: "enter"
+    });
+
+    pushTimerRef.current = window.setTimeout(() => {
+      router.push(link.href);
+      pushTimerRef.current = null;
+    }, NAV_PUSH_DELAY_MS);
+
+    fallbackTimerRef.current = window.setTimeout(beginNavExit, NAV_GLITCH_FALLBACK_MS);
+  }
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-[var(--ease-emphasis)]">
+    <>
+      <NavGlitchOverlay
+        key={navTransition?.id ?? "idle"}
+        active={!!navTransition}
+        exiting={navTransition?.phase === "exit"}
+        label={navTransition?.label}
+      />
+      <header className="fixed inset-x-0 top-0 z-50 transition-colors duration-200 ease-[var(--ease-emphasis)]">
       <div
-        className={`mx-auto w-full max-w-[1720px] border-b px-4 sm:px-6 lg:px-10 ${
+        className={`mx-auto w-full max-w-[1720px] border-b px-4 sm:px-6 lg:px-10 will-change-[background-color,border-color] ${
           scrolled
-            ? "border-[#ff0000]/20 bg-black/76 shadow-[0_20px_70px_rgba(0,0,0,0.34)] backdrop-blur-2xl"
-            : "border-white/[0.08] bg-black/46 backdrop-blur-xl"
+            ? "border-[#ff0000]/20 bg-black/86 shadow-[0_16px_42px_rgba(0,0,0,0.28)]"
+            : "border-white/[0.08] bg-black/60"
         }`}
       >
         <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-4 sm:h-[4.5rem]">
           <Link href="/" aria-label="RAD Esports home" className="group relative block shrink-0">
             <span
               aria-hidden
-              className="absolute -inset-3 rounded-full bg-[#ff0000]/0 blur-xl transition duration-500 group-hover:bg-[#ff0000]/18"
+              className="absolute -inset-2 rounded-full bg-[#ff0000]/0 transition-colors duration-300 group-hover:bg-[#ff0000]/12"
             />
             <Image
               src="/assets/RadNewLogoWordmarkWhite.png"
@@ -45,13 +189,13 @@ export function SiteHeader() {
               width={108}
               height={28}
               priority
-              className="relative h-6 w-auto transition duration-500 group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_18px_rgba(255,0,0,0.45)] sm:h-7"
+              className="relative h-6 w-auto transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-7"
             />
           </Link>
 
           <nav
             aria-label="Primary navigation"
-            className="hidden w-fit items-center justify-center gap-1 justify-self-center rounded-full border border-white/10 bg-white/[0.035] px-2 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl md:flex"
+            className="hidden w-fit items-center justify-center gap-1 justify-self-center rounded-full border border-white/10 bg-white/[0.045] px-2 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] md:flex"
           >
             {primaryNavLinks.map((link) => {
               const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
@@ -59,6 +203,7 @@ export function SiteHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={(event) => handlePrimaryNavClick(event, link, active)}
                   className={`group relative rounded-full px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] transition ${
                     active ? "text-white" : "text-white/52 hover:text-white"
                   }`}
@@ -108,6 +253,7 @@ export function SiteHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={(event) => handlePrimaryNavClick(event, link, active)}
                     className={`flex items-center justify-between px-2 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] transition ${
                       active ? "text-white" : "text-white/65 hover:text-white"
                     }`}
@@ -122,6 +268,7 @@ export function SiteHeader() {
           </div>
         ) : null}
       </div>
-    </header>
+      </header>
+    </>
   );
 }

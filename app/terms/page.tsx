@@ -35,9 +35,9 @@ export default function TermsPage() {
       variant="legal"
       eyebrow="Legal"
       title="Terms of use."
-      description="A cleaner legal surface keeps these pages readable and consistent with the rest of the site."
+      description="The basic rules for using RAD's public website and connected services."
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
-      status="Terms // active"
+      status="Active"
     >
       <Section padding="sm">
         <Container size="md">

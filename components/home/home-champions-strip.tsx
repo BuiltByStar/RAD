@@ -47,7 +47,7 @@ export function HomeChampionsStrip() {
               Wins that hit the brand.
             </h2>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-white/64">
-              RAD does not need a quiet timeline. It needs proof that feels like a score bug, a trophy room, and a campaign poster at the same time.
+              RAD's proof should feel immediate: titles, pressure, and a brand that can carry the next stage.
             </p>
             <Link
               href="/content"

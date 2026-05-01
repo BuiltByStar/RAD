@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Container } from "@/components/ui";
 
-const systems = [
+const lanes = [
   {
     label: "Roster",
     meta: "Player cards, roles, socials, and future PFP uploads.",
@@ -52,13 +52,13 @@ export function HomeWorldsPortal() {
             className="relative max-w-xl"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
-              Esports OS
+              RAD map
             </p>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-white">
-              More than a roster page.
+              More than the lineup.
             </h2>
             <p className="mt-6 text-base leading-relaxed text-white/66 sm:text-lg">
-              The site now needs to behave like an org hub: competitive proof, roster identity, media, community, and sponsor paths all moving in one visual system.
+              Competitive proof, roster identity, media, community, and partner paths should all feel like RAD.
             </p>
             <div className="mt-8 grid max-w-md grid-cols-2 gap-3">
               {["Competition", "Media", "Discord", "Partners"].map((item) => (
@@ -98,7 +98,7 @@ export function HomeWorldsPortal() {
                 />
                 <div className="relative z-10 flex min-h-[360px] flex-col justify-end p-6 sm:p-8">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
-                    RAD command map
+                    RAD pressure map
                   </p>
                   <h3 className="mt-3 max-w-2xl font-[family-name:var(--font-display)] text-[clamp(2.4rem,5vw,5rem)] font-extrabold uppercase leading-[0.86] text-white">
                     Competition, content, community, activations.
@@ -106,7 +106,7 @@ export function HomeWorldsPortal() {
                 </div>
               </div>
 
-              {systems.map((system, index) => (
+              {lanes.map((system, index) => (
                 <Link
                   key={system.label}
                   href={system.href}

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { PageShell } from "@/components/page-shell";
@@ -14,9 +13,21 @@ import {
   Section,
   SectionHeading
 } from "@/components/ui";
-import { isMaintenanceModeEnabled } from "@/lib/env";
 import { requireAdminAccess } from "@/lib/admin";
-import { partners, players, staff } from "@/lib/site-data";
+
+import {
+  createNewsPost,
+  deleteNewsPost,
+  deletePartnerEntry,
+  deleteRosterEntry,
+  deleteStaffEntry,
+  updateInquiryStatus,
+  updateMaintenanceSetting,
+  updateNewsPost,
+  upsertPartnerEntry,
+  upsertRosterEntry,
+  upsertStaffEntry
+} from "./actions";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -24,6 +35,59 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
+
+type NewsPostRow = {
+  id: string;
+  title: string;
+  slug: string;
+  date: string;
+  summary: string;
+  category: string;
+  cover: string;
+  body: string;
+  featured: boolean;
+  published: boolean;
+  display_order: number;
+};
+
+type RosterRow = {
+  id: string;
+  display_order: number;
+  handle: string;
+  real_name: string | null;
+  player_role: string;
+  roster_header: string;
+  region: string | null;
+  bio: string | null;
+  image_url: string | null;
+  x_url: string | null;
+  twitch_url: string | null;
+  featured: boolean;
+  role_order: string;
+};
+
+type StaffRow = {
+  id: string;
+  display_order: number;
+  name: string;
+  title: string;
+  bio: string | null;
+  x_url: string | null;
+  section: string;
+  leadership: boolean;
+  image_url: string | null;
+};
+
+type PartnerRow = {
+  id: string;
+  display_order: number;
+  name: string | null;
+  tier: string | null;
+  description: string | null;
+  logo_url: string | null;
+  url: string | null;
+  is_open_slot: boolean;
+};
 
 type InquiryRow = {
   id: string;
@@ -35,55 +99,109 @@ type InquiryRow = {
   message: string;
   socials: string | null;
   status: string;
-  source: string;
-  site_url: string | null;
 };
 
-const rosterSortOrder = ["Starter", "Substitute", "Coach", "Manager"];
+type SiteSettingRow = {
+  key: string;
+  value: { enabled?: boolean } | null;
+};
 
-const dashboardSections = [
-  {
-    title: "Roster Management",
-    eyebrow: "Players",
-    body:
-      "Add, edit, delete, reorder, feature, and upload player profile images through protected server routes once the roster CMS table is connected.",
-    items: ["Handle", "Real name", "Role", "Region", "Bio", "Social handles", "Featured state"]
-  },
-  {
-    title: "Staff Management",
-    eyebrow: "Staff",
-    body:
-      "Group leadership, content and social, and general staff while keeping staff writes behind session, role, and RLS checks.",
-    items: ["Name", "Role/title", "Bio", "Twitter/X", "Leadership flag", "Section group"]
-  },
-  {
-    title: "Partners Management",
-    eyebrow: "Sponsors",
-    body:
-      "Manage sponsor entries and empty partner slots without showing fake sponsors on the public site.",
-    items: ["Name", "Tier/tag", "Description", "Logo", "Order", "Open-slot state"]
-  },
-  {
-    title: "System Controls",
-    eyebrow: "Ops",
-    body:
-      "Maintenance controls belong behind admin-only server routes and should never rely on a role cookie.",
-    items: ["Maintenance mode", "Site status", "Admin-only actions", "Audit-ready mutations"]
-  }
-];
+const inputClass =
+  "w-full rounded-md border border-white/10 bg-black/45 px-3 py-2 text-sm text-white outline-none transition focus:border-[color:var(--color-rad)]";
+const labelClass = "grid gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/48";
+const formCardClass = "rounded-lg border border-white/10 bg-white/[0.035] p-4";
+const rowCardClass = "rounded-lg border border-white/10 bg-black/30 p-4";
+const buttonClass =
+  "inline-flex rounded-md border border-[color:var(--color-rad)]/40 bg-[color:var(--color-rad)]/14 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[color:var(--color-rad)]/24";
+const dangerButtonClass =
+  "inline-flex rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60 transition hover:border-[color:var(--color-rad)]/40 hover:text-white";
 
-function SectionList({ items }: { items: string[] }) {
+async function readTable<T>(query: PromiseLike<{ data: unknown; error: { message: string } | null }>) {
+  const { data, error } = await query;
+  return {
+    rows: error ? [] : ((data ?? []) as T[]),
+    error: error?.message ?? null
+  };
+}
+
+function Field({
+  label,
+  name,
+  defaultValue,
+  type = "text",
+  required = false
+}: {
+  label: string;
+  name: string;
+  defaultValue?: string | number | null;
+  type?: string;
+  required?: boolean;
+}) {
   return (
-    <div className="mt-5 flex flex-wrap gap-2">
-      {items.map((item) => (
-        <span
-          key={item}
-          className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/56"
-        >
-          {item}
-        </span>
-      ))}
-    </div>
+    <label className={labelClass}>
+      {label}
+      <input
+        className={inputClass}
+        name={name}
+        type={type}
+        required={required}
+        defaultValue={defaultValue ?? ""}
+      />
+    </label>
+  );
+}
+
+function TextArea({ label, name, defaultValue, rows = 4 }: { label: string; name: string; defaultValue?: string | null; rows?: number }) {
+  return (
+    <label className={labelClass}>
+      {label}
+      <textarea className={inputClass} name={name} rows={rows} defaultValue={defaultValue ?? ""} />
+    </label>
+  );
+}
+
+function Check({ label, name, defaultChecked }: { label: string; name: string; defaultChecked?: boolean }) {
+  return (
+    <label className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/58">
+      <input name={name} type="checkbox" defaultChecked={defaultChecked} className="h-4 w-4 accent-[#ff0000]" />
+      {label}
+    </label>
+  );
+}
+
+function Select({
+  label,
+  name,
+  defaultValue,
+  options
+}: {
+  label: string;
+  name: string;
+  defaultValue?: string | null;
+  options: string[];
+}) {
+  return (
+    <label className={labelClass}>
+      {label}
+      <select className={inputClass} name={name} defaultValue={defaultValue ?? options[0]}>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function DeleteForm({ action, id, label = "Delete" }: { action: (formData: FormData) => void | Promise<void>; id: string; label?: string }) {
+  return (
+    <form action={action}>
+      <input type="hidden" name="id" value={id} />
+      <button className={dangerButtonClass} type="submit">
+        {label}
+      </button>
+    </form>
   );
 }
 
@@ -102,20 +220,20 @@ export default async function DashboardPage() {
         title={access.status === 503 ? "Supabase not ready." : "Access denied."}
         description={
           access.status === 503
-            ? "Supabase environment variables are missing or unavailable, so the protected dashboard cannot verify the live session."
-            : "This dashboard is restricted to owner, admin, and developer roles stored in public.profiles."
+            ? "Supabase environment variables are missing, so RAD cannot verify the protected session."
+            : "Admin access is limited to owner, admin, and developer roles in public.profiles."
         }
         heroImage="/assets/RadRivals_Wallpaper_Black.png"
-        status="Restricted access"
+        status="Restricted"
       >
         <Section padding="sm">
           <Container>
             <Card>
-              <CardEyebrow>Security</CardEyebrow>
-              <CardTitle size="sm">Dashboard access uses profiles.role.</CardTitle>
+              <CardEyebrow>Admin Setup</CardEyebrow>
+              <CardTitle size="sm">Login first, then grant the role.</CardTitle>
               <CardBody>
-                Discord proves identity, Supabase stores the session, and the current database role decides access.
-                Role cookies are not trusted for authorization.
+                A developer signs in with Discord once so Supabase creates their profile. An owner or service-role
+                operator then updates <code>public.profiles.role</code> to developer, admin, or owner.
               </CardBody>
             </Card>
           </Container>
@@ -124,114 +242,224 @@ export default async function DashboardPage() {
     );
   }
 
-  const { data, error } = await access.supabase
-    .from("contact_inquiries")
-    .select("*")
-    .order("submitted_at", { ascending: false })
-    .limit(50);
+  const [news, roster, staff, partners, inquiries, settings] = await Promise.all([
+    readTable<NewsPostRow>(
+      access.supabase
+        .from("news_posts")
+        .select("*")
+        .order("display_order", { ascending: true })
+        .order("date", { ascending: false })
+    ),
+    readTable<RosterRow>(
+      access.supabase
+        .from("roster_entries")
+        .select("*")
+        .order("display_order", { ascending: true })
+    ),
+    readTable<StaffRow>(
+      access.supabase
+        .from("staff_entries")
+        .select("*")
+        .order("display_order", { ascending: true })
+    ),
+    readTable<PartnerRow>(
+      access.supabase
+        .from("partner_entries")
+        .select("*")
+        .order("display_order", { ascending: true })
+    ),
+    readTable<InquiryRow>(
+      access.supabase
+        .from("contact_inquiries")
+        .select("*")
+        .order("submitted_at", { ascending: false })
+        .limit(50)
+    ),
+    readTable<SiteSettingRow>(access.supabase.from("site_settings").select("*"))
+  ]);
 
-  const inquiries = error ? [] : ((data ?? []) as InquiryRow[]);
-  const statusCounts = inquiries.reduce<Record<string, number>>((acc, inquiry) => {
-    acc[inquiry.status] = (acc[inquiry.status] ?? 0) + 1;
-    return acc;
-  }, {});
-
-  const sortedRoster = [...players].sort((a, b) => {
-    const aOrder = rosterSortOrder.findIndex((role) => a.tags?.includes(role));
-    const bOrder = rosterSortOrder.findIndex((role) => b.tags?.includes(role));
-    return (aOrder === -1 ? 99 : aOrder) - (bOrder === -1 ? 99 : bOrder);
-  });
+  const maintenance = settings.rows.find((setting) => setting.key === "maintenance")?.value?.enabled ?? false;
 
   return (
     <PageShell
       variant="default"
       eyebrow="Dashboard"
-      title="RAD Admin Dashboard."
-      description="Protected operational surface for roster, staff, partner, and system management. Server-side role checks gate the page; Supabase RLS still gates the database."
+      title="RAD Admin."
+      description="Manage news, roster, staff, partners, inquiries, and core site settings from one protected panel."
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
       status={`Signed in as ${access.role}`}
     >
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Overview"
-            title="Current site operations."
-            description="These counts combine current site data with live inquiry reads from Supabase using the logged-in session."
-          />
+          <SectionHeading eyebrow="Overview" title="CMS core." />
 
           <CardGrid cols={4}>
             <Card tone="metric">
-              <CardMetric>{String(players.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">Roster Entries</CardEyebrow>
+              <CardMetric>{String(news.rows.length).padStart(2, "0")}</CardMetric>
+              <CardEyebrow className="mt-2">News Posts</CardEyebrow>
             </Card>
             <Card tone="metric">
-              <CardMetric>{String(staff.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">Staff Members</CardEyebrow>
+              <CardMetric>{String(roster.rows.length).padStart(2, "0")}</CardMetric>
+              <CardEyebrow className="mt-2">Roster Rows</CardEyebrow>
             </Card>
             <Card tone="metric">
-              <CardMetric>{String(partners.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">Partner Slots</CardEyebrow>
+              <CardMetric>{String(staff.rows.length).padStart(2, "0")}</CardMetric>
+              <CardEyebrow className="mt-2">Staff Rows</CardEyebrow>
             </Card>
             <Card tone="metric">
-              <CardMetric>{isMaintenanceModeEnabled() ? "ON" : "OK"}</CardMetric>
-              <CardEyebrow className="mt-2">Site Status</CardEyebrow>
+              <CardMetric>{maintenance ? "ON" : "OK"}</CardMetric>
+              <CardEyebrow className="mt-2">Maintenance</CardEyebrow>
             </Card>
           </CardGrid>
-        </Container>
-      </Section>
 
-      <Section padding="sm" className="bg-white/[.015]">
-        <Container>
-          <SectionHeading
-            eyebrow="Management"
-            title="Admin sections are scoped and explicit."
-            description="The UI separates each area, but all real mutations must be handled by protected server routes or server actions."
-          />
-
-          <CardGrid cols={2}>
-            {dashboardSections.map((section) => (
-              <Card key={section.title} tone="lead">
-                <CardEyebrow>{section.eyebrow}</CardEyebrow>
-                <CardTitle size="sm">{section.title}</CardTitle>
-                <CardBody>{section.body}</CardBody>
-                <SectionList items={section.items} />
-              </Card>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {["news", "roster", "staff", "partners", "inquiries", "settings"].map((item) => (
+              <a key={item} href={`#${item}`} className={buttonClass}>
+                {item}
+              </a>
             ))}
-          </CardGrid>
+          </div>
         </Container>
       </Section>
 
-      <Section padding="sm">
+      <Section id="news" padding="sm" className="bg-white/[.015]">
         <Container>
           <SectionHeading
-            eyebrow="Roster Order"
-            title="Display order is controlled."
-            description="Roster management should keep starters first, then subs, coaches, and managers. Current local roster data is shown below until the CMS table is connected."
+            eyebrow="News"
+            title="One posts collection."
+            description="Feature and archive are display choices. The admin edits the same news_posts table."
           />
 
+          {news.error ? (
+            <p className="mb-5 rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{news.error}</p>
+          ) : null}
+
+          <form action={createNewsPost} className={`${formCardClass} grid gap-4 md:grid-cols-2`}>
+            <Field label="Title" name="title" required />
+            <Field label="Slug" name="slug" />
+            <Field label="Date" name="date" type="date" defaultValue={new Date().toISOString().slice(0, 10)} />
+            <Field label="Category" name="category" defaultValue="Org Update" />
+            <Field label="Cover URL" name="cover" defaultValue="/assets/RadBannerNewTest300ppi.png" />
+            <Field label="Order" name="display_order" type="number" defaultValue={0} />
+            <TextArea label="Summary" name="summary" />
+            <TextArea label="Body" name="body" />
+            <div className="flex flex-wrap items-center gap-4 md:col-span-2">
+              <Check label="Featured" name="featured" />
+              <Check label="Published" name="published" defaultChecked />
+              <button className={buttonClass} type="submit">
+                Create Post
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-5 grid gap-4">
+            {news.rows.map((post) => (
+              <div key={post.id} className={rowCardClass}>
+                <form action={updateNewsPost} className="grid gap-4 md:grid-cols-2">
+                  <input type="hidden" name="id" value={post.id} />
+                  <Field label="Title" name="title" defaultValue={post.title} required />
+                  <Field label="Slug" name="slug" defaultValue={post.slug} required />
+                  <Field label="Date" name="date" type="date" defaultValue={post.date} />
+                  <Field label="Category" name="category" defaultValue={post.category} />
+                  <Field label="Cover URL" name="cover" defaultValue={post.cover} />
+                  <Field label="Order" name="display_order" type="number" defaultValue={post.display_order} />
+                  <TextArea label="Summary" name="summary" defaultValue={post.summary} />
+                  <TextArea label="Body" name="body" defaultValue={post.body} rows={7} />
+                  <div className="flex flex-wrap items-center gap-4 md:col-span-2">
+                    <Check label="Featured" name="featured" defaultChecked={post.featured} />
+                    <Check label="Published" name="published" defaultChecked={post.published} />
+                    <button className={buttonClass} type="submit">
+                      Save Post
+                    </button>
+                  </div>
+                </form>
+                <div className="mt-3">
+                  <DeleteForm action={deleteNewsPost} id={post.id} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="roster" padding="sm">
+        <Container>
+          <SectionHeading eyebrow="Roster" title="Manage player records." />
+          <RosterForm />
+          <div className="mt-5 grid gap-4">
+            {roster.rows.map((player) => (
+              <div key={player.id} className={rowCardClass}>
+                <RosterForm row={player} />
+                <div className="mt-3">
+                  <DeleteForm action={deleteRosterEntry} id={player.id} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="staff" padding="sm" className="bg-white/[.015]">
+        <Container>
+          <SectionHeading eyebrow="Staff" title="Manage staff records." />
+          <StaffForm />
+          <div className="mt-5 grid gap-4">
+            {staff.rows.map((member) => (
+              <div key={member.id} className={rowCardClass}>
+                <StaffForm row={member} />
+                <div className="mt-3">
+                  <DeleteForm action={deleteStaffEntry} id={member.id} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="partners" padding="sm">
+        <Container>
+          <SectionHeading eyebrow="Partners" title="Manage partner lanes." />
+          <PartnerForm />
+          <div className="mt-5 grid gap-4">
+            {partners.rows.map((partner) => (
+              <div key={partner.id} className={rowCardClass}>
+                <PartnerForm row={partner} />
+                <div className="mt-3">
+                  <DeleteForm action={deletePartnerEntry} id={partner.id} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="inquiries" padding="sm" className="bg-white/[.015]">
+        <Container>
+          <SectionHeading eyebrow="Inquiries" title="Review contact submissions." />
+          {inquiries.error ? (
+            <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{inquiries.error}</p>
+          ) : null}
           <div className="grid gap-3">
-            {sortedRoster.map((player) => (
-              <div
-                key={player.slug}
-                className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 sm:grid-cols-[1fr_auto] sm:items-center"
-              >
-                <div>
-                  <p className="font-[family-name:var(--font-display)] text-2xl uppercase leading-none text-white">
-                    {player.name}
-                  </p>
-                  <p className="mt-1 text-sm text-white/58">
-                    {player.role} · {player.descriptor}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2 sm:justify-end">
-                  {(player.tags ?? []).slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-md border border-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/55"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+            {inquiries.rows.map((inquiry) => (
+              <div key={inquiry.id} className={rowCardClass}>
+                <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-start">
+                  <div>
+                    <p className="font-[family-name:var(--font-display)] text-2xl uppercase leading-none text-white">
+                      {inquiry.name}
+                    </p>
+                    <p className="mt-1 text-sm text-white/58">
+                      {inquiry.inquiry_type} · {inquiry.email}
+                    </p>
+                    {inquiry.organization ? <p className="mt-1 text-sm text-white/45">{inquiry.organization}</p> : null}
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/62">{inquiry.message}</p>
+                  </div>
+                  <form action={updateInquiryStatus} className="flex flex-wrap items-end gap-3">
+                    <input type="hidden" name="id" value={inquiry.id} />
+                    <Select label="Status" name="status" defaultValue={inquiry.status} options={["new", "reviewing", "replied", "closed"]} />
+                    <button className={buttonClass} type="submit">
+                      Update
+                    </button>
+                  </form>
                 </div>
               </div>
             ))}
@@ -239,105 +467,88 @@ export default async function DashboardPage() {
         </Container>
       </Section>
 
-      <Section padding="sm" className="bg-white/[.015]">
+      <Section id="settings" padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Inquiries"
-            title="Latest contact submissions."
-            description={
-              error
-                ? "Inquiry reads are currently blocked by Supabase configuration or RLS. Apply the updated schema policies before using this table."
-                : "Recent submissions are read with the current Supabase session and database role."
-            }
-          />
-
-          <CardGrid cols={3}>
-            <Card tone="metric">
-              <CardMetric>{String(inquiries.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">Recent Items</CardEyebrow>
-            </Card>
-            <Card tone="metric">
-              <CardMetric>{String(statusCounts.new ?? 0).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">New</CardEyebrow>
-            </Card>
-            <Card tone="metric">
-              <CardMetric>
-                {String(
-                  inquiries.filter((inquiry) => inquiry.inquiry_type.toLowerCase().includes("partner")).length
-                ).padStart(2, "0")}
-              </CardMetric>
-              <CardEyebrow className="mt-2">Partner Leads</CardEyebrow>
-            </Card>
-          </CardGrid>
-
-          <div className="mt-6 overflow-hidden rounded-lg border border-white/10">
-            {inquiries.length === 0 ? (
-              <div className="bg-white/[0.025] p-6 text-sm leading-relaxed text-white/62">
-                {error ? error.message : "No inquiries stored yet."}
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-white/10 text-left text-sm">
-                  <thead className="bg-white/[0.04] text-[11px] uppercase tracking-[0.14em] text-white/48">
-                    <tr>
-                      <th className="px-4 py-3">Name</th>
-                      <th className="px-4 py-3">Type</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Submitted</th>
-                      <th className="px-4 py-3">Contact</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/8 bg-black/30">
-                    {inquiries.map((inquiry) => (
-                      <tr key={inquiry.id}>
-                        <td className="px-4 py-4">
-                          <strong className="text-white">{inquiry.name}</strong>
-                          {inquiry.organization ? (
-                            <span className="mt-1 block text-xs text-white/45">{inquiry.organization}</span>
-                          ) : null}
-                        </td>
-                        <td className="px-4 py-4 text-white/66">{inquiry.inquiry_type}</td>
-                        <td className="px-4 py-4">
-                          <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/58">
-                            {inquiry.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4 text-white/58">
-                          {new Date(inquiry.submitted_at).toLocaleString()}
-                        </td>
-                        <td className="px-4 py-4">
-                          <a href={`mailto:${inquiry.email}`} className="text-[color:var(--color-rad-hi)]">
-                            {inquiry.email}
-                          </a>
-                          {inquiry.socials ? (
-                            <span className="mt-1 block text-xs text-white/45">{inquiry.socials}</span>
-                          ) : null}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </Container>
-      </Section>
-
-      <Section padding="sm">
-        <Container>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/contact" className="text-link">
-              Contact page
-            </Link>
-            <Link href="/content" className="text-link">
-              Content page
-            </Link>
-            <Link href="/api/auth/role" className="text-link">
-              Role endpoint
-            </Link>
-          </div>
+          <SectionHeading eyebrow="Settings" title="Site controls." />
+          <form action={updateMaintenanceSetting} className={`${formCardClass} flex flex-wrap items-center gap-4`}>
+            <Check label="Maintenance mode" name="enabled" defaultChecked={maintenance} />
+            <button className={buttonClass} type="submit">
+              Save Settings
+            </button>
+          </form>
         </Container>
       </Section>
     </PageShell>
+  );
+}
+
+function RosterForm({ row }: { row?: RosterRow }) {
+  return (
+    <form action={upsertRosterEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
+      {row ? <input type="hidden" name="id" value={row.id} /> : null}
+      <Field label="Handle" name="handle" defaultValue={row?.handle} required />
+      <Field label="Real Name" name="real_name" defaultValue={row?.real_name} />
+      <Field label="Player Role" name="player_role" defaultValue={row?.player_role ?? "DPS"} />
+      <Field label="Roster Header" name="roster_header" defaultValue={row?.roster_header ?? "Marvel Rivals"} />
+      <Field label="Region" name="region" defaultValue={row?.region} />
+      <Field label="Image URL" name="image_url" defaultValue={row?.image_url} />
+      <Field label="X URL" name="x_url" defaultValue={row?.x_url} />
+      <Field label="Twitch URL" name="twitch_url" defaultValue={row?.twitch_url} />
+      <Select label="Role Order" name="role_order" defaultValue={row?.role_order} options={["Starter", "Sub", "Coach", "Manager"]} />
+      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
+      <TextArea label="Bio" name="bio" defaultValue={row?.bio} />
+      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
+        <Check label="Featured" name="featured" defaultChecked={row?.featured} />
+        <button className={buttonClass} type="submit">
+          {row ? "Save Player" : "Create Player"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function StaffForm({ row }: { row?: StaffRow }) {
+  return (
+    <form action={upsertStaffEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
+      {row ? <input type="hidden" name="id" value={row.id} /> : null}
+      <Field label="Name" name="name" defaultValue={row?.name} required />
+      <Field label="Title" name="title" defaultValue={row?.title} required />
+      <Field label="Image URL" name="image_url" defaultValue={row?.image_url} />
+      <Field label="X URL" name="x_url" defaultValue={row?.x_url} />
+      <Select
+        label="Section"
+        name="section"
+        defaultValue={row?.section}
+        options={["Leadership", "Content + Social Media", "General Staff"]}
+      />
+      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
+      <TextArea label="Bio" name="bio" defaultValue={row?.bio} />
+      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
+        <Check label="Leadership" name="leadership" defaultChecked={row?.leadership} />
+        <button className={buttonClass} type="submit">
+          {row ? "Save Staff" : "Create Staff"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function PartnerForm({ row }: { row?: PartnerRow }) {
+  return (
+    <form action={upsertPartnerEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
+      {row ? <input type="hidden" name="id" value={row.id} /> : null}
+      <Field label="Name" name="name" defaultValue={row?.name} />
+      <Field label="Tier" name="tier" defaultValue={row?.tier ?? "Open Slot"} />
+      <Field label="Logo URL" name="logo_url" defaultValue={row?.logo_url} />
+      <Field label="URL" name="url" defaultValue={row?.url} />
+      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
+      <TextArea label="Description" name="description" defaultValue={row?.description} />
+      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
+        <Check label="Open Slot" name="is_open_slot" defaultChecked={row?.is_open_slot} />
+        <button className={buttonClass} type="submit">
+          {row ? "Save Partner" : "Create Partner"}
+        </button>
+      </div>
+    </form>
   );
 }

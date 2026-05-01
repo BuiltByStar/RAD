@@ -24,53 +24,53 @@ type PageShellProps = {
   children: ReactNode;
 };
 
-const heroMetaMap: Record<Variant, { mark: string; code: string; channel: string; tags: string[] }> = {
+const heroMetaMap: Record<Variant, { mark: string; code: string; line: string; tags: string[] }> = {
   default: {
-    mark: "RAD // SYSTEM",
-    code: "FILE 00",
-    channel: "teamrad.gg",
+    mark: "RAD // WILD",
+    code: "RAD 00",
+    line: "wild pressure",
     tags: ["Pressure-built", "Red // black // white", "Go wild"]
   },
   about: {
     mark: "RAD // ABOUT",
-    code: "FILE 01",
-    channel: "org identity",
+    code: "RAD 01",
+    line: "org profile",
     tags: ["World champions", "EMEA tested", "Built to scale"]
   },
   roster: {
     mark: "RAD // ROSTER",
-    code: "FILE 02",
-    channel: "competitive core",
+    code: "RAD 02",
+    line: "competitive core",
     tags: []
   },
   staff: {
     mark: "RAD // STAFF",
-    code: "FILE 03",
-    channel: "operations",
+    code: "RAD 03",
+    line: "team behind team",
     tags: ["Brand", "Analytics", "Coaching"]
   },
   content: {
     mark: "RAD // CONTENT",
-    code: "FILE 04",
-    channel: "editorial layer",
+    code: "RAD 04",
+    line: "media",
     tags: ["Stories", "Video", "Community"]
   },
   contact: {
     mark: "RAD // CONTACT",
-    code: "FILE 05",
-    channel: "inquiry path",
+    code: "RAD 05",
+    line: "open line",
     tags: ["Partnerships", "Talent", "Media"]
   },
   partners: {
     mark: "RAD // ACTIVATIONS",
-    code: "FILE 06",
-    channel: "brand fit",
+    code: "RAD 06",
+    line: "brand fit",
     tags: ["Campaigns", "Apparel", "Peripherals"]
   },
   legal: {
     mark: "RAD // POLICY",
-    code: "FILE 07",
-    channel: "public terms",
+    code: "RAD 07",
+    line: "site rules",
     tags: ["Privacy", "Cookies", "Terms"]
   }
 };

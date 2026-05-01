@@ -180,7 +180,311 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
   75% { transform: translate3d(0.7%, 1.2%, 0); }
 }
 
+.ambient-orb,
+.ambient-grid,
+.ambient-sweep {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+}
+
+.ambient-orb--left {
+  animation: ambient-left-drift 18s ease-in-out infinite;
+}
+
+.ambient-orb--right {
+  animation: ambient-right-drift 21s ease-in-out infinite;
+}
+
+.ambient-grid {
+  animation: rad-grid-slide 28s linear infinite;
+}
+
+.ambient-sweep {
+  animation: ambient-sweep-drift 16s ease-in-out infinite;
+}
+
+@keyframes ambient-left-drift {
+  0%, 100% { opacity: 0.48; transform: translate3d(0, 0, 0); }
+  50% { opacity: 0.76; transform: translate3d(32px, 16px, 0); }
+}
+
+@keyframes ambient-right-drift {
+  0%, 100% { opacity: 0.38; transform: translate3d(0, 0, 0) scale(1); }
+  50% { opacity: 0.58; transform: translate3d(-28px, 0, 0) scale(1.04); }
+}
+
+@keyframes ambient-sweep-drift {
+  0%, 100% { opacity: 0.18; transform: translate3d(-5%, 0, 0); }
+  50% { opacity: 0.34; transform: translate3d(5%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb,
+  .ambient-grid,
+  .ambient-sweep {
+    animation: none !important;
+  }
+}
+
 /* ─── Eyebrow ──────────────────────────────────────────────────────────────── */
+/* Nav route glitch */
+.nav-glitch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: auto;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.16), transparent 28rem),
+    rgba(0, 0, 0, 0.9);
+  animation: nav-glitch-shell 680ms steps(1, end) forwards;
+}
+
+.nav-glitch-overlay--exit {
+  animation: nav-glitch-shell-out 320ms var(--ease-out-expo) forwards;
+}
+
+.nav-glitch-field {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 16%, rgba(255, 0, 0, 0.1) 16.3% 16.6%, transparent 17% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 7px);
+  opacity: 0.42;
+  animation: nav-glitch-field 680ms steps(3, end) forwards;
+}
+
+.nav-glitch-scan {
+  position: absolute;
+  left: -15%;
+  width: 130%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.85), rgba(255, 255, 255, 0.7), transparent);
+  opacity: 0;
+  transform: translate3d(0, 0, 0) skewY(-5deg);
+}
+
+.nav-glitch-scan--one {
+  top: 39%;
+  animation: nav-glitch-scan 520ms 40ms steps(2, end) forwards;
+}
+
+.nav-glitch-scan--two {
+  top: 57%;
+  animation: nav-glitch-scan 560ms 120ms steps(2, end) forwards reverse;
+}
+
+.nav-glitch-overlay--exit .nav-glitch-scan--one {
+  animation: nav-glitch-scan-out 280ms ease-out forwards;
+}
+
+.nav-glitch-overlay--exit .nav-glitch-scan--two {
+  animation: nav-glitch-scan-out 320ms ease-out forwards reverse;
+}
+
+.nav-glitch-stage {
+  position: relative;
+  width: min(72vw, 440px);
+  aspect-ratio: 3.8 / 1;
+  transform: translate3d(0, 0, 0);
+  animation: nav-glitch-stage 680ms steps(1, end) forwards;
+}
+
+.nav-glitch-overlay--exit .nav-glitch-stage {
+  animation: nav-glitch-stage-out 320ms var(--ease-out-expo) forwards;
+}
+
+.nav-glitch-logo {
+  --rad-logo-mask: url("/assets/RadNewLogoWordmarkWhite.png");
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, 0, 0);
+  filter: contrast(1.12);
+}
+
+.nav-glitch-logo-base,
+.nav-glitch-logo-layer {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  mask: var(--rad-logo-mask) center / contain no-repeat;
+  -webkit-mask: var(--rad-logo-mask) center / contain no-repeat;
+}
+
+.nav-glitch-logo-base {
+  clip-path: polygon(0 5%, 97% 0, 100% 32%, 93% 34%, 98% 58%, 90% 61%, 100% 100%, 5% 95%, 0 70%, 8% 66%, 2% 38%, 9% 35%);
+  opacity: 0.95;
+  animation: nav-glitch-logo-base 680ms steps(1, end) forwards;
+}
+
+.nav-glitch-overlay--exit .nav-glitch-logo-base {
+  animation: nav-glitch-logo-out 320ms var(--ease-out-expo) forwards;
+}
+
+.nav-glitch-logo-layer {
+  clip-path: var(--slice);
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.nav-glitch-logo-layer--white { background: #fff; }
+.nav-glitch-logo-layer--red { background: #ff0000; }
+.nav-glitch-logo-layer--a { animation: nav-glitch-slice-a 680ms steps(1, end) forwards; }
+.nav-glitch-logo-layer--b { animation: nav-glitch-slice-b 680ms steps(1, end) forwards; }
+.nav-glitch-logo-layer--c { animation: nav-glitch-slice-c 680ms steps(1, end) forwards; }
+
+.nav-glitch-overlay--exit .nav-glitch-logo-layer--a,
+.nav-glitch-overlay--exit .nav-glitch-logo-layer--b,
+.nav-glitch-overlay--exit .nav-glitch-logo-layer--c {
+  animation: nav-glitch-slice-out 260ms ease-out forwards;
+}
+
+.nav-glitch-brush {
+  position: absolute;
+  inset: 9% -3%;
+  background:
+    linear-gradient(100deg, transparent 0 7%, rgba(255, 255, 255, 0.22) 8% 20%, transparent 21% 27%, rgba(255, 0, 0, 0.3) 29% 42%, transparent 43% 50%, rgba(255, 255, 255, 0.18) 52% 71%, transparent 73% 100%);
+  clip-path: polygon(1% 26%, 14% 17%, 31% 28%, 45% 13%, 58% 23%, 76% 12%, 100% 27%, 92% 76%, 73% 67%, 61% 88%, 45% 72%, 26% 85%, 8% 69%);
+  opacity: 0;
+}
+
+.nav-glitch-brush--back {
+  transform: translate3d(-10px, 4px, 0) skewX(-9deg);
+  animation: nav-glitch-brush-back 680ms steps(1, end) forwards;
+}
+
+.nav-glitch-brush--front {
+  transform: translate3d(8px, -3px, 0) skewX(8deg);
+  animation: nav-glitch-brush-front 680ms steps(1, end) forwards;
+}
+
+@keyframes nav-glitch-shell {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes nav-glitch-shell-out {
+  0% { opacity: 1; background-color: rgba(0, 0, 0, 0.9); }
+  100% { opacity: 0; background-color: rgba(0, 0, 0, 0); }
+}
+
+@keyframes nav-glitch-field {
+  0% { transform: translate3d(-2%, 0, 0); opacity: 0; }
+  16% { transform: translate3d(1.5%, 0, 0); opacity: 0.44; }
+  48% { transform: translate3d(-0.8%, 0, 0); opacity: 0.3; }
+  100% { transform: translate3d(0, 0, 0); opacity: 0; }
+}
+
+@keyframes nav-glitch-stage {
+  0% { opacity: 0; transform: translate3d(-18px, 0, 0) scale(0.98) skewX(-7deg); }
+  10% { opacity: 1; transform: translate3d(14px, -2px, 0) scale(1.03) skewX(5deg); }
+  22% { transform: translate3d(-7px, 1px, 0) scale(1) skewX(-3deg); }
+  42% { transform: translate3d(5px, -1px, 0) scale(1.015) skewX(2deg); }
+  64% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) skewX(0); }
+  100% { opacity: 0; transform: translate3d(0, 0, 0) scale(0.99); }
+}
+
+@keyframes nav-glitch-stage-out {
+  0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  100% { opacity: 0; transform: translate3d(0, 0, 0) scale(1.18); }
+}
+
+@keyframes nav-glitch-logo-base {
+  0%, 7% { opacity: 0; transform: translate3d(-18px, 0, 0); }
+  8%, 18% { opacity: 1; transform: translate3d(8px, -1px, 0); }
+  19%, 25% { opacity: 0.46; transform: translate3d(-5px, 1px, 0); }
+  26%, 66% { opacity: 0.95; transform: translate3d(0, 0, 0); }
+  67%, 100% { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes nav-glitch-logo-out {
+  0% { opacity: 0.88; transform: translate3d(0, 0, 0) scale(1); }
+  38% { opacity: 0.7; transform: translate3d(10px, -2px, 0) scale(1.08); }
+  100% { opacity: 0; transform: translate3d(0, 0, 0) scale(1.22); }
+}
+
+@keyframes nav-glitch-slice-out {
+  0% { opacity: 0.72; transform: translate3d(0, 0, 0); }
+  100% { opacity: 0; transform: translate3d(28px, 0, 0); }
+}
+
+@keyframes nav-glitch-slice-a {
+  0%, 8% { opacity: 0; transform: translate3d(0, 0, 0); }
+  9%, 17% { opacity: 0.9; transform: translate3d(-20px, -3px, 0); }
+  18%, 31% { opacity: 0; transform: translate3d(12px, 2px, 0); }
+  32%, 43% { opacity: 0.7; transform: translate3d(18px, 0, 0); }
+  44%, 100% { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes nav-glitch-slice-b {
+  0%, 14% { opacity: 0; transform: translate3d(0, 0, 0); }
+  15%, 24% { opacity: 0.88; transform: translate3d(16px, 3px, 0); }
+  25%, 36% { opacity: 0; transform: translate3d(-10px, -2px, 0); }
+  37%, 53% { opacity: 0.7; transform: translate3d(-14px, 1px, 0); }
+  54%, 100% { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes nav-glitch-slice-c {
+  0%, 20% { opacity: 0; transform: translate3d(0, 0, 0); }
+  21%, 33% { opacity: 0.85; transform: translate3d(22px, -1px, 0); }
+  34%, 47% { opacity: 0; transform: translate3d(-12px, 2px, 0); }
+  48%, 60% { opacity: 0.7; transform: translate3d(-20px, 0, 0); }
+  61%, 100% { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes nav-glitch-brush-back {
+  0%, 12% { opacity: 0; }
+  13%, 29% { opacity: 0.58; }
+  30%, 100% { opacity: 0; }
+}
+
+@keyframes nav-glitch-brush-front {
+  0%, 30% { opacity: 0; }
+  31%, 52% { opacity: 0.45; }
+  53%, 100% { opacity: 0; }
+}
+
+@keyframes nav-glitch-scan {
+  0% { opacity: 0; transform: translate3d(-24%, 0, 0) skewY(-5deg); }
+  22% { opacity: 0.9; }
+  68% { opacity: 0.28; transform: translate3d(24%, 0, 0) skewY(-5deg); }
+  100% { opacity: 0; transform: translate3d(34%, 0, 0) skewY(-5deg); }
+}
+
+@keyframes nav-glitch-scan-out {
+  0% { opacity: 0.76; transform: translate3d(-10%, 0, 0) skewY(-5deg); }
+  100% { opacity: 0; transform: translate3d(48%, 0, 0) skewY(-5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-glitch-overlay {
+    animation: nav-glitch-shell 260ms ease-out forwards !important;
+  }
+
+  .nav-glitch-overlay--exit {
+    animation: nav-glitch-shell-out 180ms ease-out forwards !important;
+  }
+
+  .nav-glitch-field,
+  .nav-glitch-scan,
+  .nav-glitch-logo-layer,
+  .nav-glitch-brush {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .nav-glitch-stage,
+  .nav-glitch-logo-base {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .eyebrow {
   display: flex;
   align-items: center;

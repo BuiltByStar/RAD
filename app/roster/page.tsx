@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { PageShell } from "@/components/page-shell";
+import { RosterRevolver } from "@/components/roster/roster-revolver";
 import {
   Card,
   CardBody,
@@ -10,7 +11,6 @@ import {
   Container,
   Chip,
   ChipRow,
-  PlayerCard,
   Section,
   SectionHeading
 } from "@/components/ui";
@@ -123,26 +123,10 @@ export default function RosterPage() {
         <Container>
           <SectionHeading
             eyebrow="Player profiles"
-            title="Profiles with role clarity."
+            title="Roster revolver."
             compact
           />
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {teamRoster.map((player) => (
-              <PlayerCard
-                key={player.slug}
-                id={player.slug}
-                className={player.featured ? "xl:col-span-2" : undefined}
-                name={player.name}
-                role={player.role}
-                image={player.image}
-                number={typeof player.number === "number" ? player.number : undefined}
-                descriptor={player.descriptor}
-                bio={player.bio ?? player.descriptor}
-                specialties={player.specialties}
-                socials={player.socials}
-              />
-            ))}
-          </div>
+          <RosterRevolver players={teamRoster} />
         </Container>
       </Section>
 

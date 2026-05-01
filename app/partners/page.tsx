@@ -9,7 +9,6 @@ import {
   CardGrid,
   CardTitle,
   Container,
-  NoteStack,
   Section,
   SectionHeading
 } from "@/components/ui";
@@ -23,21 +22,21 @@ export const metadata: Metadata = {
 const processSteps = [
   {
     label: "01 // Brief",
-    title: "Start with the right fit.",
+    title: "Find the fit.",
     description:
-      "Every activation starts by making sure the brand, audience, and competitive surface actually line up."
+      "The best work starts with a brand, audience, and competitive angle that make sense together."
   },
   {
     label: "02 // Concept",
-    title: "Build around competition and content.",
+    title: "Build the idea.",
     description:
-      "RAD's best work sits where competitive credibility meets clean creative execution and brand storytelling."
+      "RAD packages competition, content, and community into a campaign people can actually feel."
   },
   {
     label: "03 // Launch",
-    title: "Roll the activation through real surfaces.",
+    title: "Launch it clean.",
     description:
-      "Strong campaigns move through roster, content, social, and community surfaces without needing a redesign every time."
+      "Campaigns should move through roster, media, social, and community without feeling forced."
   }
 ];
 
@@ -46,25 +45,17 @@ export default function PartnersPage() {
     <PageShell
       variant="partners"
       eyebrow="Activations"
-      title="Open for the right brand fit."
-      description="RAD is open to brand relationships that fit competitive credibility, strong creative execution, and long-term growth."
+      title="Brand fit."
+      description="RAD is open to partners that match competitive credibility, creative work, and long-term growth."
       heroImage="/assets/RadBanner1920_1080.png"
-      status="Partnership inventory // available"
-      note={
-        <NoteStack
-          items={[
-            { label: "Open Categories", value: "Apparel / Peripherals / Campaigns" },
-            { label: "Best Contact", value: "Business inquiries" }
-          ]}
-        />
-      }
+      status="Open to partners"
     >
       <Section padding="sm">
         <Container>
           <SectionHeading
             eyebrow="Positioning"
-            title="Brand-ready without pretending the sponsor wall already exists."
-            description="RAD can present a clear activation case right now without leaning on fake sponsor walls or manufactured proof."
+            title="Real lanes, no fake wall."
+            description="RAD can pitch clear partner work without pretending sponsors already exist."
             actionHref="/contact"
             actionLabel="Contact RAD"
           />
@@ -85,8 +76,7 @@ export default function PartnersPage() {
         <Container>
           <SectionHeading
             eyebrow="Available Angles"
-            title="What RAD can package cleanly."
-            description="These lanes show the kinds of work RAD can support now, not invented sponsors that do not exist."
+            title="What fits RAD."
           />
 
           <CardGrid cols={3}>

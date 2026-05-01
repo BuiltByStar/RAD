@@ -6,7 +6,8 @@ export function ScrollRevealInit() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Small delay to let DOM render after route change
+    let activeObserver: IntersectionObserver | null = null;
+
     const timer = setTimeout(() => {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -21,11 +22,14 @@ export function ScrollRevealInit() {
       );
 
       document.querySelectorAll("[data-reveal]:not(.is-visible)").forEach((el) => observer.observe(el));
-      return () => observer.disconnect();
+      activeObserver = observer;
     }, 100);
 
-    return () => clearTimeout(timer);
-  }, [pathname]); // Re-run on every route change
+    return () => {
+      clearTimeout(timer);
+      activeObserver?.disconnect();
+    };
+  }, [pathname]);
 
   return null;
 }

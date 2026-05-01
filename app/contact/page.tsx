@@ -9,7 +9,6 @@ import {
   CardTitle,
   ContactGrid,
   Container,
-  NoteStack,
   Section,
   SectionHeading
 } from "@/components/ui";
@@ -26,18 +25,10 @@ export default function ContactPage() {
     <PageShell
       variant="contact"
       eyebrow="Contact"
-      title="Open the right line."
-      description="For partnerships, talent inquiries, media requests, and other serious outreach, RAD keeps both structured intake and direct channels visible."
+      title="Reach RAD."
+      description="Partnerships, talent, media, and serious org outreach all start here."
       heroImage="/assets/RadRivals_Wallpaper_Red.png"
-      status="Public inquiry channels // online"
-      note={
-        <NoteStack
-          items={[
-            { label: "Best For", value: "Partnerships / Talent / Media" },
-            { label: "Response Path", value: "Form + direct channels" }
-          ]}
-        />
-      }
+      status="Inquiries open"
     >
       <Section padding="sm">
         <Container>
@@ -46,8 +37,8 @@ export default function ContactPage() {
               <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
               <SectionHeading
                 eyebrow="Inquiry Form"
-                title="Send a clear message."
-                description="Use the form when the request needs context, routing, and a direct response path."
+                title="Send the ask."
+                description="Use the form when RAD needs context before responding."
                 compact
                 className="mb-6"
               />
@@ -58,9 +49,8 @@ export default function ContactPage() {
               <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.03))] p-5 sm:p-6">
                 <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
                 <SectionHeading
-                  eyebrow="Direct Channels"
-                  title="Use the channel that fits the ask."
-                  description="Direct contact stays visible so the page remains useful even when backend services are unavailable."
+                  eyebrow="Direct Contact"
+                  title="Pick the right lane."
                   compact
                   className="mb-0"
                 />
@@ -69,9 +59,9 @@ export default function ContactPage() {
 
               <Card spotlight>
                 <CardEyebrow>What helps</CardEyebrow>
-                <CardTitle size="sm">Send context, not just a name.</CardTitle>
+                <CardTitle size="sm">Send useful context.</CardTitle>
                 <CardBody>
-                  Include the type of request, any relevant brand or org name, the best return channel, and enough context for RAD to assess priority quickly.
+                  Include the request type, brand or org name, best contact path, and the decision RAD needs to make.
                 </CardBody>
               </Card>
             </div>

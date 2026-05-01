@@ -35,9 +35,9 @@ export default function CookiesPage() {
       variant="legal"
       eyebrow="Legal"
       title="Cookie disclosure."
-      description="This page explains the role of cookies and related tracking in a way that matches the rest of the site's tone and quality level."
+      description="How cookies and related tools support the RAD site."
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
-      status="Cookie notice // published"
+      status="Published"
     >
       <Section padding="sm">
         <Container size="md">

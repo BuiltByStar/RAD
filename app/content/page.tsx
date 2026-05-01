@@ -17,22 +17,24 @@ import { getFeaturedPost, getPostMeta } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "Content",
-  description: "RAD's editorial layer across articles, video, and live creator surfaces."
+  description: "RAD news, articles, video, and creator surfaces."
 };
 
 export default async function ContentPage() {
   const featured = await getFeaturedPost();
   const posts = await getPostMeta();
+  // Feature and archive are presentation slices of one posts collection.
+  // Future admin tooling should manage one News/Posts model with a featured flag.
   const feed = posts.filter((post) => post.slug !== featured?.slug);
 
   return (
     <PageShell
       variant="content"
       eyebrow="Content"
-      title="Stories, drops, and org signals."
-      description="RAD's content surface brings together articles, video, and creator visibility without treating media like an afterthought."
+      title="Stories and drops."
+      description="RAD news, articles, video, and creator visibility in one media hub."
       heroImage={featured?.cover ?? "/assets/RadBannerNewTest300ppi.png"}
-      status="Editorial surface // active"
+      status="News + media"
       note={
         <NoteStack
           items={[
@@ -46,8 +48,8 @@ export default async function ContentPage() {
         <Container>
           <SectionHeading
             eyebrow="Feature"
-            title="Lead with the strongest story."
-            description="The lead story should set the tone for the org, not just fill the first slot in the archive."
+            title="Lead story."
+            description="Feature is the highlighted post from the same news collection."
           />
 
           {featured ? (
@@ -92,8 +94,7 @@ export default async function ContentPage() {
         <Container>
           <SectionHeading
             eyebrow="Archive"
-            title="Recent stories and update drops."
-            description="Announcements, recaps, and org updates need enough structure to scale as the editorial library grows."
+            title="Recent stories."
           />
 
           <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -136,8 +137,7 @@ export default async function ContentPage() {
         <Container>
           <SectionHeading
             eyebrow="Live Surfaces"
-            title="Video and creator touchpoints."
-            description="Video and creator visibility give the org another public layer beyond match results and written updates."
+            title="Video and creators."
           />
 
           <div className="grid gap-5 lg:grid-cols-2">

@@ -10,7 +10,6 @@ import {
   Chip,
   ChipRow,
   Container,
-  NoteStack,
   Section,
   SectionHeading
 } from "@/components/ui";
@@ -29,25 +28,16 @@ export default function StaffPage() {
     <PageShell
       variant="staff"
       eyebrow="Staff"
-      title="The system behind the roster."
-      description="RAD's support team shapes the competitive product, the public brand, and the day-to-day standard behind the org."
+      title="Behind the roster."
+      description="The people shaping RAD's competitive standard, media output, and day-to-day org work."
       heroImage="/assets/RadBanner1920_1080.png"
-      status="Creative + competitive support online"
-      note={
-        <NoteStack
-          items={[
-            { label: "Visible Roles", value: String(staff.length) },
-            { label: "Coverage", value: "Brand / Ops / Coaching" }
-          ]}
-        />
-      }
+      status="Support team"
     >
       <Section padding="sm">
         <Container>
           <SectionHeading
             eyebrow="Brand & Media"
-            title="Creative output and public-facing execution."
-            description="These roles shape how RAD looks, how content ships, and how the org carries itself in public."
+            title="Brand team."
           />
 
           <CardGrid cols={3}>
@@ -76,8 +66,8 @@ export default function StaffPage() {
         <Container>
           <SectionHeading
             eyebrow="Operations & Performance"
-            title="Management, analytics, and coaching support."
-            description="This is the layer that turns a lineup into a functioning competitive unit with structure, accountability, and support."
+            title="Performance team."
+            description="Management, analytics, and coaching support for the competitive side."
           />
 
           <CardGrid cols={3}>

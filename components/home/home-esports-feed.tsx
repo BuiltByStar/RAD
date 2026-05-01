@@ -43,7 +43,7 @@ export function HomeEsportsFeed() {
             />
             <div className="relative z-10 flex min-h-[460px] flex-col justify-end p-6 sm:p-8">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
-                Featured drop
+                Lead drop
               </p>
               <h2 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.7rem,6vw,6rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-white">
                 {featured.title}
@@ -69,7 +69,7 @@ export function HomeEsportsFeed() {
               className="rounded-[1.4rem] border border-white/12 bg-white/[0.035] p-5 sm:p-6"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
-                Content queue
+                More media
               </p>
               <div className="mt-5 grid gap-3">
                 {secondary.map((item) => (
@@ -104,7 +104,7 @@ export function HomeEsportsFeed() {
               className="relative overflow-hidden rounded-[1.4rem] border border-[#ff0000]/24 bg-[#ff0000]/10 p-5 sm:p-6"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff6b6b]">
-                Community + contact
+                Community
               </p>
               <h3 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.88] text-white">
                 Discord, email, socials.

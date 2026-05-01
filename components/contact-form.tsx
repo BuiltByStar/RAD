@@ -26,7 +26,7 @@ export function ContactForm({ enabled }: ContactFormProps) {
     type: "idle",
     message: enabled
       ? "Inquiries submit to the backend pipeline once Supabase is configured."
-      : "Supabase is not configured yet. Use the direct contact channels for now."
+      : "Supabase is not configured yet. Use direct contact for now."
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 

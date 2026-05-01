@@ -8,7 +8,7 @@ import { players, stats } from "@/lib/site-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const signals = [
+const proofPoints = [
   { label: "Roster", value: `${players.length} active` },
   { label: "Proof", value: "World + EMEA" },
   { label: "Status", value: "Open activations" }
@@ -75,7 +75,7 @@ export function HomeHero() {
           >
             <div className="inline-flex items-center gap-3 rounded-full border border-[#ff0000]/26 bg-black/48 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70 backdrop-blur-xl">
               <span className="h-2 w-2 rounded-full bg-[#ff0000] shadow-[0_0_20px_rgba(255,0,0,0.9)]" />
-              RAD Esports // live brand system
+              RAD Esports // wild pressure live
             </div>
 
             <div className="mt-5 flex max-w-2xl flex-wrap gap-2">
@@ -97,7 +97,7 @@ export function HomeHero() {
             </h1>
 
             <p className="mt-7 max-w-2xl text-base leading-relaxed text-white/72 sm:text-xl">
-              RAD is the competitive signal: championship roster, content engine, community energy, and brand activations built to move loud.
+              RAD brings championship pressure, sharp content, and a fanbase built to move loud.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -152,7 +152,7 @@ export function HomeHero() {
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.32)_42%,rgba(0,0,0,0.92)_100%),radial-gradient(circle_at_30%_24%,rgba(255,0,0,0.35),transparent_42%)]" />
                 <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
                   <span className="rounded-full border border-[#ff0000]/35 bg-[#ff0000]/14 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white">
-                    command deck
+                    RAD roster
                   </span>
                   <span className="rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/62">
                     teamrad.gg
@@ -168,7 +168,7 @@ export function HomeHero() {
                     className="h-auto w-[170px]"
                   />
                   <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                    {signals.map((signal) => (
+                    {proofPoints.map((signal) => (
                       <div key={signal.label} className="rounded-xl border border-white/10 bg-black/46 p-3 backdrop-blur">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/42">
                           {signal.label}

@@ -17,7 +17,7 @@ type Variant =
   | "partners"
   | "legal";
 
-type HeroMeta = { mark: string; code: string; channel: string; tags: string[] };
+type HeroMeta = { mark: string; code: string; line: string; tags: string[] };
 
 type PageShellHeroProps = {
   title: string;
@@ -97,7 +97,7 @@ export function PageShellHero({
           >
             <span>{eyebrow}</span>
             <span aria-hidden className="h-1 w-1 rounded-full bg-[color:var(--color-rad)]" />
-            <span>{meta.channel}</span>
+            <span>{meta.line}</span>
           </motion.div>
 
           <motion.h1
