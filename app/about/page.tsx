@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { MilestoneWheel, type WheelMilestone } from "@/components/about/milestone-wheel";
 import { PageShell } from "@/components/page-shell";
 import {
   Card,
@@ -10,9 +11,7 @@ import {
   Container,
   NoteStack,
   Section,
-  SectionHeading,
-  Timeline,
-  TimelineItem
+  SectionHeading
 } from "@/components/ui";
 import { igniteSchedule } from "@/lib/site-data";
 
@@ -40,32 +39,47 @@ const standards = [
   }
 ];
 
-const milestones = [
+const milestones: WheelMilestone[] = [
   {
     date: "Sept 2023",
     title: "RAD Founded",
-    description: "The org launches with a competitive-first direction."
+    description: "The org launches with a competitive-first direction.",
+    kind: "history"
   },
   {
     date: "Dec 2024",
     title: "Marvel Rivals",
-    description: "RAD enters the scene with a roster built around pressure and pace."
+    description: "RAD enters the scene with a roster built around pressure and pace.",
+    kind: "history"
   },
   {
     date: "Aug 2025",
     title: "World Champions",
-    description: "RAD wins the inaugural Marvel Rivals Ignite: Mid-Season title."
+    description: "RAD wins the inaugural Marvel Rivals Ignite: Mid-Season title.",
+    kind: "history"
   },
   {
     date: "March 2026",
     title: "EMEA Champions",
-    description: "The team adds a regional title and proves the system can repeat."
+    description: "The team adds a regional title and proves the system can repeat.",
+    kind: "history"
   },
   {
     date: "2026",
     title: "Next Stage",
-    description: "RAD starts building the structure for content, activations, and growth."
+    description: "RAD starts building the structure for content, activations, and growth.",
+    kind: "history"
   }
+];
+
+const milestoneWheelItems: WheelMilestone[] = [
+  ...milestones,
+  ...igniteSchedule.map((item) => ({
+    date: item.dates,
+    title: item.stage,
+    description: `Upcoming season stage: ${item.dates}.`,
+    kind: "future" as const
+  }))
 ];
 
 export default function AboutPage() {
@@ -145,35 +159,7 @@ export default function AboutPage() {
             title="Milestones."
           />
 
-          <Timeline>
-            {milestones.map((event) => (
-              <TimelineItem
-                key={`${event.date}-${event.title}`}
-                date={event.date}
-                title={event.title}
-                description={event.description}
-              />
-            ))}
-          </Timeline>
-        </Container>
-      </Section>
-
-      <Section padding="sm" className="bg-white/[.015]">
-        <Container>
-          <SectionHeading
-            eyebrow="Next"
-            title="What comes next."
-          />
-
-          <CardGrid cols={3}>
-            {igniteSchedule.map((item, index) => (
-              <Card key={`${item.stage}-${item.dates}`} tone="compact" spotlight>
-                <CardEyebrow>Stage {String(index + 1).padStart(2, "0")}</CardEyebrow>
-                <CardTitle size="sm">{item.stage}</CardTitle>
-                <CardBody>{item.dates}</CardBody>
-              </Card>
-            ))}
-          </CardGrid>
+          <MilestoneWheel items={milestoneWheelItems} />
         </Container>
       </Section>
     </PageShell>

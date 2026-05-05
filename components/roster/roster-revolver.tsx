@@ -11,8 +11,9 @@ type RosterRevolverProps = {
   players: Person[];
 };
 
-const AUTO_DELAY_MS = 3600;
+const AUTO_DELAY_MS = 10000;
 const DRAG_THRESHOLD = 72;
+const REVOLVER_EASE = [0.22, 1, 0.36, 1] as const;
 
 function wrapIndex(index: number, length: number) {
   return ((index % length) + length) % length;
@@ -27,6 +28,13 @@ function getInitials(name: string) {
     .toUpperCase();
 }
 
+function getShortestOffset(index: number, active: number, length: number) {
+  let offset = index - active;
+  if (offset > length / 2) offset -= length;
+  if (offset < -length / 2) offset += length;
+  return offset;
+}
+
 export function RosterRevolver({ players }: RosterRevolverProps) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
@@ -36,10 +44,12 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
   const stagedPlayers = useMemo(() => {
     if (!players.length) return [];
 
-    return [-2, -1, 0, 1, 2].map((offset) => {
-      const index = wrapIndex(active + offset, players.length);
-      return { player: players[index], offset };
-    });
+    return players
+      .map((player, index) => ({
+        player,
+        offset: getShortestOffset(index, active, players.length)
+      }))
+      .filter(({ offset }) => Math.abs(offset) <= 2);
   }, [active, players]);
 
   const goTo = useCallback(
@@ -87,7 +97,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
               initial={reduced ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={reduced ? undefined : { opacity: 0, y: -12 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.52, ease: REVOLVER_EASE }}
             >
               <h3 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.7rem,6vw,6.2rem)] font-extrabold uppercase leading-[0.78] tracking-normal text-white">
                 {activePlayer.name}
@@ -124,6 +134,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         drag={players.length > 1 ? "x" : false}
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.16}
+        dragMomentum={false}
         onDragStart={() => setPaused(true)}
         onDragEnd={(_, info) => {
           setPaused(false);
@@ -134,20 +145,21 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         <div className="absolute inset-0 [perspective:1300px]">
           {stagedPlayers.map(({ player, offset }) => (
             <motion.article
-              key={`${player.slug}-${offset}`}
+              key={player.slug}
               className={cn(
                 "absolute left-1/2 top-2 h-[480px] w-[min(78vw,330px)] origin-center overflow-hidden rounded-[1.1rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] sm:w-[360px] lg:h-[560px] lg:w-[390px]",
                 offset === 0 ? "z-30 border-[#ff0000]/42" : "z-10 border-white/10"
               )}
               animate={{
-                x: `calc(-50% + ${offset * 58}%)`,
-                y: Math.abs(offset) * 24,
-                rotateY: offset * -28,
-                rotateZ: offset * -1.8,
-                scale: offset === 0 ? 1 : 0.86 - Math.abs(offset) * 0.035,
-                opacity: Math.abs(offset) > 1 ? 0.34 : offset === 0 ? 1 : 0.72
+                x: `calc(-50% + ${offset * 50}%)`,
+                y: Math.abs(offset) * 16 + (offset === 0 ? 0 : 10),
+                rotateY: offset * -20,
+                rotateZ: offset * -1.15,
+                scale: offset === 0 ? 1 : Math.max(0.74, 0.91 - Math.abs(offset) * 0.03),
+                opacity: Math.abs(offset) > 1 ? 0.52 : offset === 0 ? 1 : 0.82,
+                filter: offset === 0 ? "brightness(1)" : "brightness(0.74)"
               }}
-              transition={reduced ? { duration: 0 } : { duration: 0.62, ease: [0.16, 1, 0.3, 1] }}
+              transition={reduced ? { duration: 0 } : { duration: 1.28, ease: REVOLVER_EASE }}
             >
               <span aria-hidden className="absolute inset-y-0 left-0 z-20 w-px bg-gradient-to-b from-transparent via-[#ff0000] to-transparent opacity-80" />
               <span aria-hidden className="absolute inset-y-0 right-0 z-20 w-px bg-gradient-to-b from-transparent via-white/28 to-transparent" />
@@ -180,15 +192,10 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                 )}
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.24)_42%,#050506_100%),radial-gradient(circle_at_50%_12%,rgba(255,0,0,0.34),transparent_46%)]" />
 
-                <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
+                <div className="absolute left-4 right-4 top-4 flex items-start gap-3">
                   <span className="rounded-md border border-[#ff0000]/38 bg-[#ff0000]/16 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
                     {player.role}
                   </span>
-                  {typeof player.number === "number" ? (
-                    <span className="font-[family-name:var(--font-display)] text-6xl font-black uppercase leading-none text-white/90">
-                      {String(player.number).padStart(2, "0")}
-                    </span>
-                  ) : null}
                 </div>
               </div>
 
