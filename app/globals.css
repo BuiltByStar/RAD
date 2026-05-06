@@ -1,35 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #fcfcfc;
-  --color-bg-alt: #f5f6f6;
-  --color-surface: #ffffff;
-  --color-surface-hi: #f0f2f2;
-  --color-line: #e4e8e8;
-  --color-line-hi: #d4dddd;
-  --color-text: #151f21;
-  --color-muted: #5a6b6f;
-  --color-dim: #8a9a9e;
-  --color-rad: #214439;
-  --color-rad-hi: #275d38;
-  --color-rad-soft: #3a8a5c;
+  --color-bg: #050507;
+  --color-bg-alt: #0b0b0f;
+  --color-surface: #121219;
+  --color-surface-hi: #1a1a24;
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-line-hi: rgba(255, 255, 255, 0.2);
+  --color-text: #f8f8fb;
+  --color-muted: #b7b7c7;
+  --color-dim: #7e7e93;
+  --color-rad: #ff2b45;
+  --color-rad-hi: #ff5b70;
+  --color-rad-soft: #ff8f9e;
+  --color-rad-ember: #2d0d13;
   --ease-emphasis: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 :root {
-  --bg: #fcfcfc;
-  --bg-alt: #f5f6f6;
-  --surface: #ffffff;
-  --surface-hi: #f0f2f2;
-  --border: #e4e8e8;
-  --border-md: #d4dddd;
-  --text: #151f21;
-  --muted: #5a6b6f;
-  --dim: #8a9a9e;
-  --red: #214439;
-  --red-hi: #275d38;
-  --shadow: 0 8px 28px rgba(17, 31, 33, 0.08);
-  --shadow-lg: 0 22px 60px rgba(17, 31, 33, 0.12);
+  --bg: #050507;
+  --bg-alt: #0b0b0f;
+  --surface: #121219;
+  --surface-hi: #1a1a24;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-md: rgba(255, 255, 255, 0.2);
+  --text: #f8f8fb;
+  --muted: #b7b7c7;
+  --dim: #7e7e93;
+  --red: #ff2b45;
+  --red-hi: #ff5b70;
+  --shadow: 0 18px 52px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 26px 80px rgba(0, 0, 0, 0.6);
 }
 
 *,
@@ -40,12 +41,15 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #fcfcfc 0%, #f7f8f8 100%);
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255, 43, 69, 0.16), transparent 26rem),
+    radial-gradient(circle at 88% 16%, rgba(255, 91, 112, 0.1), transparent 30rem),
+    linear-gradient(180deg, #050507 0%, #09090e 100%);
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;

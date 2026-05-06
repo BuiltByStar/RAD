@@ -57,7 +57,7 @@ export function Card({
 
   const mouseX = useMotionValue(-200);
   const mouseY = useMotionValue(-200);
-  const spotlightBg = useMotionTemplate`radial-gradient(280px circle at ${mouseX}px ${mouseY}px, rgba(39,93,56,0.15), transparent 65%)`;
+  const spotlightBg = useMotionTemplate`radial-gradient(280px circle at ${mouseX}px ${mouseY}px, rgba(255,43,69,0.22), transparent 65%)`;
 
   const handleMove = (event: MouseEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -89,9 +89,10 @@ export function Card({
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
         "group relative overflow-hidden rounded-xl border border-[var(--border)]",
-        "bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)]",
+        "bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015)_48%,rgba(255,43,69,0.04))]",
+        "shadow-[var(--shadow)]",
         "transition-[border-color,box-shadow] duration-500",
-        "hover:border-[var(--border-md)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)]",
+        "hover:border-[var(--border-md)] hover:shadow-[var(--shadow-lg)]",
         tones[tone],
         className
       )}
@@ -99,7 +100,7 @@ export function Card({
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(33,68,57,0.08),transparent_36%)] opacity-70"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(255,43,69,0.18),transparent_36%)] opacity-70"
       />
       <span
         aria-hidden

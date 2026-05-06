@@ -75,7 +75,7 @@ export function SectionHeading({
           {actionHref && actionLabel ? (
             <Link
               href={actionHref}
-              className="group inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)] transition-[border-color,color,background] hover:border-[var(--border-md)] hover:bg-[var(--bg-alt)] hover:text-[var(--text)]"
+              className="group inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)] transition-[border-color,color,background] hover:border-[var(--border-md)] hover:bg-[var(--surface-hi)] hover:text-[var(--text)]"
             >
               {actionLabel}
               <span

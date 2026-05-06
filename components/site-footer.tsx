@@ -5,7 +5,7 @@ import { contactChannels, navLinks } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-0 bg-[#151f21] text-white">
+    <footer className="mt-0 border-t border-[var(--border)] bg-[#09090d] text-white">
       <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-14 sm:px-8 lg:grid-cols-3 lg:px-12">
         <div>
           <Image src="/assets/RadNewLogoWordmarkWhite.png" alt="RAD Esports" width={180} height={46} />
@@ -49,7 +49,7 @@ export function SiteFooter() {
             />
             <button
               type="submit"
-              className="h-10 rounded-md bg-white px-3 text-xs font-semibold uppercase tracking-[0.08em] text-[#151f21]"
+              className="h-10 rounded-md bg-[var(--color-rad)] px-3 text-xs font-semibold uppercase tracking-[0.08em] text-white hover:bg-[var(--color-rad-hi)]"
             >
               Join
             </button>

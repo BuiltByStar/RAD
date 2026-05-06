@@ -23,15 +23,15 @@ export function SiteHeader() {
   useEffect(() => setMenuOpen(false), [pathname]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--border)] bg-[rgba(252,252,252,0.92)] backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--border)] bg-[rgba(5,5,7,0.72)] backdrop-blur-xl">
       <div
         className={`mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-12 ${
-          scrolled ? "shadow-[0_8px_26px_rgba(17,31,33,0.08)]" : ""
+          scrolled ? "shadow-[0_16px_40px_rgba(0,0,0,0.4)]" : ""
         }`}
       >
         <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-4">
           <Link href="/" aria-label="RAD Esports home">
-            <Image src="/assets/RadNewLogoWordmarkRed.png" alt="RAD Esports" width={116} height={30} priority />
+            <Image src="/assets/RadNewLogoWordmarkWhite.png" alt="RAD Esports" width={116} height={30} priority />
           </Link>
 
           <nav aria-label="Primary navigation" className="hidden items-center justify-center gap-7 md:flex">
@@ -42,7 +42,7 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   className={`relative py-1 text-sm font-medium transition ${
-                    active ? "text-[var(--text)]" : "text-[var(--muted)] hover:text-[var(--text)]"
+                    active ? "text-white" : "text-white/62 hover:text-white"
                   }`}
                   aria-current={active ? "page" : undefined}
                 >
@@ -62,7 +62,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--border)] text-[var(--text)] md:hidden"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--border)] text-white md:hidden"
               aria-expanded={menuOpen}
               aria-label="Toggle menu"
             >
@@ -85,7 +85,7 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   className={`rounded-md px-2 py-3 text-sm ${
-                    active ? "bg-[var(--color-surface-hi)] text-[var(--text)]" : "text-[var(--muted)]"
+                    active ? "bg-[var(--surface-hi)] text-white" : "text-white/66"
                   }`}
                   aria-current={active ? "page" : undefined}
                 >

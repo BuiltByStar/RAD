@@ -14,7 +14,7 @@ type SectionProps = HTMLAttributes<HTMLElement> & {
 const tones: Record<Tone, string> = {
   default: "bg-transparent text-[var(--text)]",
   surface: "bg-[var(--bg-alt)] text-[var(--text)]",
-  inverse: "bg-[#151f21] text-white"
+  inverse: "bg-white text-[#111111]"
 };
 
 const paddings: Record<Padding, string> = {
