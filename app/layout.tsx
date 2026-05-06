@@ -1,30 +1,32 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 
+import { AmbientBackground } from "@/components/ambient-background";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
+import "./cinematic.css";
 
-const inter = Inter({
+const barlow = Barlow({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",
   display: "swap"
 });
 
-const outfit = Outfit({
+const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
-  weight: ["600", "700", "800", "900"],
+  weight: ["600", "700", "800"],
   variable: "--font-display",
   display: "swap"
 });
 
 export const viewport: Viewport = {
-  themeColor: "#fcfcfc",
-  colorScheme: "light",
+  themeColor: "#050505",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover"
@@ -33,15 +35,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
   title: {
-    default: "RAD Esports — The Wild Ones",
+    default: "RAD Esports - Competitive Esports",
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is a competitive org built for pressure, content, and the next stage of competition. #GoWild",
+    "RAD Esports is a competitive org focused on roster, content, merch, and future growth.",
   openGraph: {
     title: "RAD Esports",
     description:
-      "A competitive esports brand built for pressure, content, and future growth.",
+      "A competitive esports brand focused on roster, content, merch, and future growth.",
     images: ["/assets/RadPlayerBannerPNG8.png"],
     type: "website"
   },
@@ -60,12 +62,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${outfit.variable} bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[color:var(--color-rad)]/20`}
+        className={`${barlow.variable} ${barlowCondensed.variable} bg-black text-white selection:bg-[color:var(--color-rad)]/30 antialiased`}
       >
         <ScrollRevealInit />
+        <AmbientBackground />
         <SiteHeader />
 
-        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem]">
+        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem] lg:pt-20">
           <div className="relative z-10">{children}</div>
         </div>
 

@@ -10,8 +10,8 @@ type BadgeProps = {
 
 const tones: Record<NonNullable<BadgeProps["tone"]>, string> = {
   neutral: "bg-white/5 text-white/80 border-white/10",
-  rad: "bg-[color:var(--color-rad-ember)]/72 text-[color:var(--color-rad-hi)] border-[color:var(--color-rad)]/40",
-  live: "bg-[color:var(--color-rad-ember)]/90 text-white border-[color:var(--color-rad)]/50"
+  rad: "bg-[color:var(--color-rad-ember)]/60 text-[color:var(--color-rad-hi)] border-[color:var(--color-rad)]/40",
+  live: "bg-[color:var(--color-rad-ember)]/80 text-white border-[color:var(--color-rad)]/50"
 };
 
 export function Badge({ tone = "neutral", className, children }: BadgeProps) {

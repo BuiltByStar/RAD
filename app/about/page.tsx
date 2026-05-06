@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { MilestoneWheel, type WheelMilestone } from "@/components/about/milestone-wheel";
 import { PageShell } from "@/components/page-shell";
 import {
   Card,
@@ -10,63 +11,119 @@ import {
   Container,
   NoteStack,
   Section,
-  SectionHeading,
-  Timeline,
-  TimelineItem
+  SectionHeading
 } from "@/components/ui";
-import { aboutSummary, igniteSchedule, orgTimeline, orgValues } from "@/lib/site-data";
+import { igniteSchedule } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "About",
   description: "Identity, milestones, and the operating standard behind RAD Esports."
 };
 
+const standards = [
+  {
+    title: "Competition first",
+    description: "Build around performance, preparation, and players who can handle pressure."
+  },
+  {
+    title: "Raw energy",
+    description: "Keep the brand sharp, loud, and recognisable without dressing it up too much."
+  },
+  {
+    title: "Community",
+    description: "Treat fans as part of the story, not a number attached to it."
+  },
+  {
+    title: "Built to scale",
+    description: "Make systems that can support new titles, partners, and content without starting over."
+  }
+];
+
+const milestones: WheelMilestone[] = [
+  {
+    date: "Sept 2023",
+    title: "RAD Founded",
+    description: "The org launches with a competitive-first direction.",
+    kind: "history"
+  },
+  {
+    date: "Dec 2024",
+    title: "Marvel Rivals",
+    description: "RAD enters the scene with a roster built around pressure and pace.",
+    kind: "history"
+  },
+  {
+    date: "Aug 2025",
+    title: "World Champions",
+    description: "RAD wins the inaugural Marvel Rivals Ignite: Mid-Season title.",
+    kind: "history"
+  },
+  {
+    date: "March 2026",
+    title: "EMEA Champions",
+    description: "The team adds a regional title and proves the system can repeat.",
+    kind: "history"
+  },
+  {
+    date: "2026",
+    title: "Next Stage",
+    description: "RAD starts building the structure for content, activations, and growth.",
+    kind: "history"
+  }
+];
+
+const milestoneWheelItems: WheelMilestone[] = [
+  ...milestones,
+  ...igniteSchedule.map((item) => ({
+    date: item.dates,
+    title: item.stage,
+    description: `Upcoming season stage: ${item.dates}.`,
+    kind: "future" as const
+  }))
+];
+
 export default function AboutPage() {
   return (
     <PageShell
       variant="about"
       eyebrow="About RAD"
-      title="Pressure made the identity."
-      description="RAD turned heads early with real wins and a clear point of view. The org is being built to grow into new titles, bigger stories, and stronger stages without losing its edge."
+      title="About RAD"
+      description="RAD is a competitive esports org built around strong results, clear identity, and steady growth."
       heroImage="/assets/RadBannerNewTest300ppi.png"
-      status="World title secured // EMEA pressure-tested"
+      status="World title // EMEA title"
       note={
         <NoteStack
           items={[
-            { label: "Primary Division", value: "Marvel Rivals" },
-            { label: "Operating Region", value: "EMEA / Global" }
+            { label: "Division", value: "Marvel Rivals" },
+            { label: "Region", value: "EMEA / Global" }
           ]}
         />
       }
     >
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Identity"
-            title="An org story with proof behind it."
-            description="RAD did not wait for an invitation to matter. The identity already has championships behind it, which gives the brand a real foundation."
-          />
+          <SectionHeading eyebrow="Overview" title="Who We Are" />
 
           <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
             <Card tone="lead" spotlight>
-              <CardBody className="mt-0 text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-                {aboutSummary}
+              <CardBody className="mt-0 text-base leading-relaxed text-white/75 sm:text-lg">
+                RAD has been turning heads since 2023. The org became the inaugural Marvel Rivals Ignite: Mid-Season World Champions and later secured the Season 6 EMEA PC title. The goal now is simple: keep winning, keep building, and keep the identity unmistakably RAD.
               </CardBody>
             </Card>
 
             <div className="grid gap-4 sm:gap-5">
               <Card spotlight>
-                <CardEyebrow>Competitive Position</CardEyebrow>
-                <CardTitle size="sm">Pressure-tested on the biggest stages.</CardTitle>
+                <CardEyebrow>Proof</CardEyebrow>
+                <CardTitle size="sm">Results matter.</CardTitle>
                 <CardBody>
-                  The public identity works because there are real results underneath it, not because the site is trying to oversell the org.
+                  The site does not need to oversell the org. The results already give the identity weight.
                 </CardBody>
               </Card>
               <Card spotlight>
-                <CardEyebrow>Brand Direction</CardEyebrow>
-                <CardTitle size="sm">A brand built to move across titles.</CardTitle>
+                <CardEyebrow>Direction</CardEyebrow>
+                <CardTitle size="sm">Built to grow.</CardTitle>
                 <CardBody>
-                  RAD needs to stay recognisable whether it is presenting a roster, an activation, or the next division added to the org.
+                  RAD should feel consistent across rosters, content, activations, and whatever division comes next.
                 </CardBody>
               </Card>
             </div>
@@ -74,23 +131,13 @@ export default function AboutPage() {
         </Container>
       </Section>
 
-      <Section padding="sm" className="bg-[var(--bg-alt)]">
+      <Section padding="sm" className="bg-white/[.015]">
         <Container>
-          <SectionHeading
-            eyebrow="Standards"
-            title="The values that shape the public product."
-            description="Results matter, but the long-term standard is what turns a winning roster into a real organization."
-          />
+          <SectionHeading eyebrow="Standards" title="Standards" />
 
           <CardGrid cols={4}>
-            {orgValues.map((value) => (
+            {standards.map((value) => (
               <Card key={value.title} spotlight>
-                <span
-                  aria-hidden
-                  className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--bg-alt)] text-lg text-[color:var(--color-rad-hi)]"
-                >
-                  {value.icon}
-                </span>
                 <CardTitle size="sm">{value.title}</CardTitle>
                 <CardBody>{value.description}</CardBody>
               </Card>
@@ -101,42 +148,9 @@ export default function AboutPage() {
 
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Timeline"
-            title="How RAD established credibility."
-            description="The key moments below show how the org earned credibility early and why the brand already carries weight."
-          />
+          <SectionHeading eyebrow="Timeline" title="Milestones" />
 
-          <Timeline>
-            {orgTimeline.map((event) => (
-              <TimelineItem
-                key={`${event.date}-${event.title}`}
-                date={event.date}
-                title={event.title}
-                description={event.description}
-              />
-            ))}
-          </Timeline>
-        </Container>
-      </Section>
-
-      <Section padding="sm" className="bg-[var(--bg-alt)]">
-        <Container>
-          <SectionHeading
-            eyebrow="Roadmap"
-            title="Structured for the next competitive cycle."
-            description="The story does not stop at titles already won. The next stage is about expanding the org without lowering the standard."
-          />
-
-          <CardGrid cols={3}>
-            {igniteSchedule.map((item, index) => (
-              <Card key={`${item.stage}-${item.dates}`} tone="compact" spotlight>
-                <CardEyebrow>Stage {String(index + 1).padStart(2, "0")}</CardEyebrow>
-                <CardTitle size="sm">{item.stage}</CardTitle>
-                <CardBody>{item.dates}</CardBody>
-              </Card>
-            ))}
-          </CardGrid>
+          <MilestoneWheel items={milestoneWheelItems} />
         </Container>
       </Section>
     </PageShell>
