@@ -12,7 +12,8 @@ import { primaryNavLinks } from "@/lib/site-data";
 const SCROLL_THRESHOLD = 8;
 const NAV_PUSH_DELAY_MS = 140;
 const NAV_GLITCH_OUTRO_MS = 420;
-const NAV_GLITCH_FALLBACK_MS = 3200;
+const NAV_READY_FALLBACK_MS = 1800;
+const NAV_HARD_FALLBACK_MS = 9000;
 
 type NavTransition = {
   href: string;
@@ -29,7 +30,8 @@ export function SiteHeader() {
   const [navTransition, setNavTransition] = useState<NavTransition | null>(null);
   const pushTimerRef = useRef<number | null>(null);
   const clearTimerRef = useRef<number | null>(null);
-  const fallbackTimerRef = useRef<number | null>(null);
+  const readyTimerRef = useRef<number | null>(null);
+  const hardFallbackTimerRef = useRef<number | null>(null);
   const readyRouteRef = useRef<string | null>(null);
 
   function clearNavTimers() {
@@ -41,9 +43,13 @@ export function SiteHeader() {
       window.clearTimeout(clearTimerRef.current);
       clearTimerRef.current = null;
     }
-    if (fallbackTimerRef.current) {
-      window.clearTimeout(fallbackTimerRef.current);
-      fallbackTimerRef.current = null;
+    if (readyTimerRef.current) {
+      window.clearTimeout(readyTimerRef.current);
+      readyTimerRef.current = null;
+    }
+    if (hardFallbackTimerRef.current) {
+      window.clearTimeout(hardFallbackTimerRef.current);
+      hardFallbackTimerRef.current = null;
     }
   }
 
@@ -62,10 +68,6 @@ export function SiteHeader() {
     if (pushTimerRef.current) {
       window.clearTimeout(pushTimerRef.current);
       pushTimerRef.current = null;
-    }
-    if (fallbackTimerRef.current) {
-      window.clearTimeout(fallbackTimerRef.current);
-      fallbackTimerRef.current = null;
     }
 
     setNavTransition((current) => {
@@ -125,14 +127,14 @@ export function SiteHeader() {
         detail.route === navTransition.href ||
         (navTransition.href !== "/" && detail.route.startsWith(navTransition.href));
 
-      if (reachedTarget) {
+      if (reachedTarget && (pathname === navTransition.href || (navTransition.href !== "/" && pathname.startsWith(navTransition.href)))) {
         beginNavExit();
       }
     };
 
     window.addEventListener("rad:page-ready", handleReady as EventListener);
     return () => window.removeEventListener("rad:page-ready", handleReady as EventListener);
-  }, [navTransition]);
+  }, [navTransition, pathname]);
 
   useEffect(() => {
     if (!navTransition || navTransition.phase === "exit") return;
@@ -140,9 +142,23 @@ export function SiteHeader() {
       pathname === navTransition.href ||
       (navTransition.href !== "/" && pathname.startsWith(navTransition.href));
 
-    if (reachedTarget && readyRouteRef.current === navTransition.href) {
+    if (!reachedTarget) return;
+
+    if (
+      readyRouteRef.current === navTransition.href ||
+      (navTransition.href !== "/" && readyRouteRef.current?.startsWith(navTransition.href))
+    ) {
       beginNavExit();
+      return;
     }
+
+    if (readyTimerRef.current) {
+      window.clearTimeout(readyTimerRef.current);
+    }
+
+    readyTimerRef.current = window.setTimeout(() => {
+      beginNavExit();
+    }, NAV_READY_FALLBACK_MS);
   }, [pathname, navTransition]);
 
   function shouldHandleNavClick(event: MouseEvent<HTMLAnchorElement>) {
@@ -185,7 +201,7 @@ export function SiteHeader() {
       pushTimerRef.current = null;
     }, NAV_PUSH_DELAY_MS);
 
-    fallbackTimerRef.current = window.setTimeout(beginNavExit, NAV_GLITCH_FALLBACK_MS);
+    hardFallbackTimerRef.current = window.setTimeout(beginNavExit, NAV_HARD_FALLBACK_MS);
   }
 
   return (
