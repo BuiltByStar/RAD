@@ -31,8 +31,8 @@ export default async function ContentPage() {
     <PageShell
       variant="content"
       eyebrow="Content"
-      title="Stories and drops."
-      description="RAD news, articles, video, and creator visibility in one media hub."
+      title="Content"
+      description="News, video, and creator updates in one place."
       heroImage={featured?.cover ?? "/assets/RadBannerNewTest300ppi.png"}
       status="News + media"
       note={
@@ -46,11 +46,7 @@ export default async function ContentPage() {
     >
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Feature"
-            title="Lead story."
-            description="Feature is the highlighted post from the same news collection."
-          />
+          <SectionHeading eyebrow="Feature" title="Featured Story" />
 
           {featured ? (
             <Link
@@ -92,10 +88,7 @@ export default async function ContentPage() {
 
       <Section padding="sm" className="bg-white/[.015]">
         <Container>
-          <SectionHeading
-            eyebrow="Archive"
-            title="Recent stories."
-          />
+          <SectionHeading eyebrow="Archive" title="Latest Stories" />
 
           <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
             {feed.map((post) => (
@@ -135,10 +128,7 @@ export default async function ContentPage() {
 
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Live Surfaces"
-            title="Video and creators."
-          />
+          <SectionHeading eyebrow="Channels" title="Video and Creators" />
 
           <div className="grid gap-5 lg:grid-cols-2">
             <div className="rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.025))] p-5 sm:p-6">

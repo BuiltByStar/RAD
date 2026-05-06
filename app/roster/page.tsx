@@ -46,19 +46,14 @@ export default function RosterPage() {
     <PageShell
       variant="roster"
       eyebrow="Roster"
-      title="The lineup."
-      description="A cleaner roster surface built around role clarity, identity, and high-pressure performance."
+      title="Roster"
+      description="Current lineup, player cards, and role breakdown."
       heroImage="/assets/RadPlayerBannerPNG8.png"
       status={team.status}
     >
       <Section padding="sm" className="bg-white/[.01]">
         <Container>
-          <SectionHeading
-            eyebrow="Players"
-            title="The current competitive core."
-            description="Seven players, each with defined responsibilities across engagement, pressure, utility, and finish."
-            compact
-          />
+          <SectionHeading eyebrow="Lineup" title="Current Team" description="Seven players across vanguard, duelist, and strategist roles." compact />
           <div className="grid gap-5 xl:grid-cols-[1.15fr_1fr]">
             <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black">
               <Image
@@ -121,22 +116,14 @@ export default function RosterPage() {
 
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Player profiles"
-            title="Roster revolver."
-            compact
-          />
+          <SectionHeading eyebrow="Players" title="Current Roster" compact />
           <RosterRevolver players={teamRoster} />
         </Container>
       </Section>
 
       <Section padding="sm" className="bg-white/[.01]">
         <Container>
-          <SectionHeading
-            eyebrow="Role Map"
-            title="How the lineup is shaped."
-            compact
-          />
+          <SectionHeading eyebrow="Roles" title="Role Breakdown" compact />
 
           <div className="grid gap-3 lg:grid-cols-3">
             {roleGroups.map((group) => (

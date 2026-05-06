@@ -90,7 +90,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
 
       <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">Roster revolver</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">Current roster</p>
           <AnimatePresence mode="wait">
             <motion.div
               key={activePlayer.slug}

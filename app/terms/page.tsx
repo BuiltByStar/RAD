@@ -5,7 +5,7 @@ import { Container, LegalCard, Section } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Terms",
-  description: "Terms of service for the RAD Esports website."
+  description: "The rules for using the RAD website and connected services."
 };
 
 const termsBlocks = [
@@ -34,8 +34,8 @@ export default function TermsPage() {
     <PageShell
       variant="legal"
       eyebrow="Legal"
-      title="Terms of use."
-      description="The basic rules for using RAD's public website and connected services."
+      title="Terms"
+      description="The rules for using RAD's public website and connected services."
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
       status="Active"
     >

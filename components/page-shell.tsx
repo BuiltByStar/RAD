@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { PageReadySignal } from "@/components/page-ready-signal";
 import { PageShellHero } from "@/components/page-shell-hero";
 
 type Variant =
@@ -10,7 +11,8 @@ type Variant =
   | "content"
   | "contact"
   | "partners"
-  | "legal";
+  | "legal"
+  | "merch";
 
 type PageShellProps = {
   title: string;
@@ -28,50 +30,56 @@ const heroMetaMap: Record<Variant, { mark: string; code: string; line: string; t
   default: {
     mark: "RAD // WILD",
     code: "RAD 00",
-    line: "wild pressure",
-    tags: ["Pressure-built", "Red // black // white", "Go wild"]
+    line: "home",
+    tags: ["World champions", "Content", "Merch"]
   },
   about: {
     mark: "RAD // ABOUT",
     code: "RAD 01",
-    line: "org profile",
-    tags: ["World champions", "EMEA tested", "Built to scale"]
+    line: "about",
+    tags: ["History", "Titles", "Growth"]
   },
   roster: {
     mark: "RAD // ROSTER",
     code: "RAD 02",
-    line: "competitive core",
-    tags: []
+    line: "roster",
+    tags: ["Players", "Roles", "Results"]
   },
   staff: {
     mark: "RAD // STAFF",
     code: "RAD 03",
-    line: "team behind team",
+    line: "staff",
     tags: ["Brand", "Analytics", "Coaching"]
   },
   content: {
     mark: "RAD // CONTENT",
     code: "RAD 04",
-    line: "media",
+    line: "news",
     tags: ["Stories", "Video", "Community"]
   },
   contact: {
     mark: "RAD // CONTACT",
     code: "RAD 05",
-    line: "open line",
+    line: "contact",
     tags: ["Partnerships", "Talent", "Media"]
   },
   partners: {
-    mark: "RAD // ACTIVATIONS",
+    mark: "RAD // PARTNERS",
     code: "RAD 06",
-    line: "brand fit",
+    line: "partners",
     tags: ["Campaigns", "Apparel", "Peripherals"]
   },
   legal: {
     mark: "RAD // POLICY",
     code: "RAD 07",
-    line: "site rules",
+    line: "legal",
     tags: ["Privacy", "Cookies", "Terms"]
+  },
+  merch: {
+    mark: "RAD // MERCH",
+    code: "RAD 08",
+    line: "merch",
+    tags: ["Drop 01", "Featured item", "Coming soon"]
   }
 };
 
@@ -88,6 +96,7 @@ export function PageShell({
 }: PageShellProps) {
   return (
     <main className="relative isolate">
+      <PageReadySignal route={variant === "default" ? "/" : `/${variant}`} delayMs={170} />
       <PageShellHero
         title={title}
         eyebrow={eyebrow}

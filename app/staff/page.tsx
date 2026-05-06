@@ -28,17 +28,14 @@ export default function StaffPage() {
     <PageShell
       variant="staff"
       eyebrow="Staff"
-      title="Behind the roster."
-      description="The people shaping RAD's competitive standard, media output, and day-to-day org work."
+      title="Staff"
+      description="The people behind RAD's competition, content, and day-to-day work."
       heroImage="/assets/RadBanner1920_1080.png"
       status="Support team"
     >
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Brand & Media"
-            title="Brand team."
-          />
+          <SectionHeading eyebrow="Brand & Media" title="Brand Team" />
 
           <CardGrid cols={3}>
             {brandStaff.map((member) => (
@@ -64,11 +61,7 @@ export default function StaffPage() {
 
       <Section padding="sm" className="bg-white/[.015]">
         <Container>
-          <SectionHeading
-            eyebrow="Operations & Performance"
-            title="Performance team."
-            description="Management, analytics, and coaching support for the competitive side."
-          />
+          <SectionHeading eyebrow="Operations & Performance" title="Performance Team" description="Management, analytics, and coaching support." />
 
           <CardGrid cols={3}>
             {operationsStaff.map((member) => (

@@ -3,20 +3,15 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
+import { JerseyToggleViewer } from "@/components/merch/jersey-toggle-viewer";
 import { Button, Container } from "@/components/ui";
-import { players, stats } from "@/lib/site-data";
+import { merchCollection, merchItems, stats } from "@/lib/site-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const proofPoints = [
-  { label: "Roster", value: `${players.length} active` },
-  { label: "Proof", value: "World + EMEA" },
-  { label: "Status", value: "Open activations" }
-];
-
 export function HomeHero() {
   const reduced = useReducedMotion();
-  const featuredPlayers = players.slice(0, 4);
+  const featuredMerch = merchItems.find((item) => item.featured);
 
   return (
     <section className="rad-hero relative isolate min-h-[88svh] overflow-hidden border-b border-white/10 bg-[#030304] pt-10 sm:pt-14">
@@ -25,6 +20,7 @@ export function HomeHero() {
         muted
         loop
         playsInline
+        preload="metadata"
         poster="/assets/RadPlayerBannerPNG8.png"
         className="absolute inset-0 z-[-5] h-full w-full object-cover opacity-30 mix-blend-screen"
       >
@@ -34,7 +30,6 @@ export function HomeHero() {
         src="/assets/RadPlayerBannerPNG8.png"
         alt=""
         fill
-        priority
         sizes="100vw"
         className="z-[-6] object-cover object-center opacity-55"
       />
@@ -79,7 +74,7 @@ export function HomeHero() {
             </div>
 
             <div className="mt-5 flex max-w-2xl flex-wrap gap-2">
-              {["World Champions", "EMEA Champions", "Built for pressure"].map((item) => (
+              {["World Champions", "EMEA Champions", "Drop 01 incoming"].map((item) => (
                 <span
                   key={item}
                   className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/62"
@@ -97,15 +92,18 @@ export function HomeHero() {
             </h1>
 
             <p className="mt-7 max-w-2xl text-base leading-relaxed text-white/72 sm:text-xl">
-              RAD brings championship pressure, sharp content, and a fanbase built to move loud.
+              RAD brings championship pressure, sharp content, and a first merch drop built to carry that identity cleanly.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button href="/roster" size="lg" className="min-w-[180px]">
                 View roster
-                <span aria-hidden>→</span>
+                <span aria-hidden>{">"}</span>
               </Button>
-              <Button href="/content" variant="outline" size="lg" className="min-w-[180px]">
+              <Button href="/merch" variant="outline" size="lg" className="min-w-[180px]">
+                View merch
+              </Button>
+              <Button href="/content" variant="ghost" size="lg" className="min-w-[180px]">
                 Watch content
               </Button>
             </div>
@@ -141,58 +139,30 @@ export function HomeHero() {
                 animate={reduced ? undefined : { x: ["0%", "210%"], opacity: [0, 0.9, 0] }}
                 transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 2.5, ease: "easeOut" }}
               />
-              <div className="relative min-h-[460px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#09090b]">
-                <Image
-                  src="/assets/RadPlayerBannerPNG8.png"
-                  alt=""
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 46vw"
-                  className="object-cover opacity-78"
+
+              {featuredMerch?.frontImage && featuredMerch.backImage ? (
+                <JerseyToggleViewer
+                  frontImage={featuredMerch.frontImage}
+                  backImage={featuredMerch.backImage}
+                  name={featuredMerch.name}
+                  status={featuredMerch.status}
+                  compact
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.32)_42%,rgba(0,0,0,0.92)_100%),radial-gradient(circle_at_30%_24%,rgba(255,0,0,0.35),transparent_42%)]" />
-                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
-                  <span className="rounded-full border border-[#ff0000]/35 bg-[#ff0000]/14 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white">
-                    RAD roster
-                  </span>
-                  <span className="rounded-full border border-white/12 bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/62">
-                    teamrad.gg
-                  </span>
-                </div>
-
-                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
-                  <Image
-                    src="/assets/RadNewLogoWordmarkWhite.png"
-                    alt="RAD"
-                    width={320}
-                    height={86}
-                    className="h-auto w-[170px]"
-                  />
-                  <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                    {proofPoints.map((signal) => (
-                      <div key={signal.label} className="rounded-xl border border-white/10 bg-black/46 p-3 backdrop-blur">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/42">
-                          {signal.label}
-                        </p>
-                        <p className="mt-1 text-sm font-semibold uppercase tracking-[0.08em] text-white">
-                          {signal.value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                {featuredPlayers.map((player) => (
-                  <div key={player.slug} className="rounded-xl border border-white/10 bg-white/[0.045] p-3">
-                    <p className="font-[family-name:var(--font-display)] text-2xl font-extrabold uppercase leading-none text-white">
-                      {player.name}
+              ) : null}
+              <div className="mt-4 rounded-[1.1rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-4 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#ff5f5f]">
+                      {featuredMerch?.category ?? merchCollection.spotlight}
                     </p>
-                    <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#ff5656]">
-                      {player.role}
+                    <p className="mt-1 font-[family-name:var(--font-display)] text-2xl font-extrabold uppercase leading-none text-white">
+                      {featuredMerch?.name ?? merchCollection.title}
                     </p>
                   </div>
-                ))}
+                  <span className="rounded-full border border-[#ff0000]/18 bg-[#ff0000]/8 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/66">
+                    {featuredMerch?.status ?? merchCollection.status}
+                  </span>
+                </div>
               </div>
             </div>
           </motion.div>

@@ -25,8 +25,8 @@ export default function ContactPage() {
     <PageShell
       variant="contact"
       eyebrow="Contact"
-      title="Reach RAD."
-      description="Partnerships, talent, media, and serious org outreach all start here."
+      title="Contact"
+      description="Partnership, talent, media, and business inquiries start here."
       heroImage="/assets/RadRivals_Wallpaper_Red.png"
       status="Inquiries open"
     >
@@ -35,31 +35,20 @@ export default function ContactPage() {
           <div className="grid gap-5 lg:grid-cols-2">
             <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.03))] p-5 sm:p-6">
               <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
-              <SectionHeading
-                eyebrow="Inquiry Form"
-                title="Send the ask."
-                description="Use the form when RAD needs context before responding."
-                compact
-                className="mb-6"
-              />
+              <SectionHeading eyebrow="Inquiry Form" title="Inquiry Form" compact className="mb-6" />
               <ContactForm enabled={hasSupabaseServiceEnv()} />
             </div>
 
             <div className="flex flex-col gap-5">
               <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.03))] p-5 sm:p-6">
                 <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
-                <SectionHeading
-                  eyebrow="Direct Contact"
-                  title="Pick the right lane."
-                  compact
-                  className="mb-0"
-                />
+                <SectionHeading eyebrow="Direct Contact" title="Direct Contact" compact className="mb-0" />
                 <ContactGrid channels={contactChannels} />
               </div>
 
               <Card spotlight>
-                <CardEyebrow>What helps</CardEyebrow>
-                <CardTitle size="sm">Send useful context.</CardTitle>
+                <CardEyebrow>Tips</CardEyebrow>
+                <CardTitle size="sm">What to include</CardTitle>
                 <CardBody>
                   Include the request type, brand or org name, best contact path, and the decision RAD needs to make.
                 </CardBody>

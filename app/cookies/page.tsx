@@ -5,7 +5,7 @@ import { Container, LegalCard, Section } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Cookies",
-  description: "Cookie disclosure for the RAD Esports website."
+  description: "How RAD uses cookies across the site."
 };
 
 const cookieBlocks = [
@@ -34,8 +34,8 @@ export default function CookiesPage() {
     <PageShell
       variant="legal"
       eyebrow="Legal"
-      title="Cookie disclosure."
-      description="How cookies and related tools support the RAD site."
+      title="Cookies"
+      description="How RAD uses cookies and similar tools across the site."
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
       status="Published"
     >

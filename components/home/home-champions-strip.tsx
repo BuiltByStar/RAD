@@ -40,14 +40,12 @@ export function HomeChampionsStrip() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease: EASE }}
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
-              Results stack
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">Results</p>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-white">
-              Wins that hit the brand.
+              Recent Titles.
             </h2>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-white/64">
-              RAD's proof should feel immediate: titles, pressure, and a brand that can carry the next stage.
+              The results should be easy to read: titles, timing, and what comes next.
             </p>
             <Link
               href="/content"

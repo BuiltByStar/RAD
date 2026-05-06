@@ -129,7 +129,6 @@ export function HomeIntro() {
                 alt="RAD Esports"
                 width={920}
                 height={240}
-                priority
                 className="relative z-10 h-auto w-[260px] sm:w-[420px]"
               />
             </div>

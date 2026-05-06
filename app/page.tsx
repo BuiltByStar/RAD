@@ -4,10 +4,12 @@ import { HomeHero } from "@/components/home/home-hero";
 import { HomeIntro } from "@/components/home/home-intro";
 import { HomeWorldsPortal } from "@/components/home/home-worlds-portal";
 import { MarqueeStrip } from "@/components/home/marquee-strip";
+import { PageReadySignal } from "@/components/page-ready-signal";
 
 export default function HomePage() {
   return (
     <main className="relative isolate">
+      <PageReadySignal route="/" delayMs={220} />
       <HomeIntro />
       <HomeHero />
       <MarqueeStrip />

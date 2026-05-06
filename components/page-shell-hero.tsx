@@ -15,7 +15,8 @@ type Variant =
   | "content"
   | "contact"
   | "partners"
-  | "legal";
+  | "legal"
+  | "merch";
 
 type HeroMeta = { mark: string; code: string; line: string; tags: string[] };
 
@@ -62,7 +63,6 @@ export function PageShellHero({
           src={heroImage}
           alt=""
           fill
-          priority
           sizes="100vw"
           className="z-[-3] object-cover opacity-58"
         />

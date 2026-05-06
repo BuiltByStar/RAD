@@ -36,6 +36,17 @@ export type Partner = {
   description: string;
 };
 
+export type MerchItem = {
+  name: string;
+  category: string;
+  description: string;
+  accent: string;
+  status: string;
+  frontImage?: string;
+  backImage?: string;
+  featured?: boolean;
+};
+
 export type ContactChannel = {
   label: string;
   value: string;
@@ -67,7 +78,8 @@ export const primaryNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/roster", label: "Roster" },
-  { href: "/content", label: "Content" }
+  { href: "/content", label: "Content" },
+  { href: "/merch", label: "Merch" }
 ];
 
 export const navLinks: NavLink[] = [
@@ -76,6 +88,7 @@ export const navLinks: NavLink[] = [
   { href: "/roster", label: "Roster" },
   { href: "/staff", label: "Staff" },
   { href: "/content", label: "Content" },
+  { href: "/merch", label: "Merch" },
   { href: "/partners", label: "Activations" },
   { href: "/contact", label: "Contact" }
 ];
@@ -287,6 +300,46 @@ export const partners: Partner[] = [
     href: "/contact",
     description:
       "RAD can support launch announcements, creator-facing campaigns, community activations, and branded competitive content."
+  }
+];
+
+export const merchCollection = {
+  title: "Pressure Kit // Drop 01",
+  eyebrow: "Merch",
+  description: "A first RAD jersey concept built to feel sharp, aggressive, and unmistakably RAD.",
+  status: "Coming soon",
+  conceptImage: "/assets/merch-rad-concept-sheet.png",
+  frontImage: "/assets/merch-rad-jersey-front.png",
+  backImage: "/assets/merch-rad-jersey-back.png",
+  spotlight: "Flagship jersey"
+};
+
+export const merchItems: MerchItem[] = [
+  {
+    name: "Pressure Jersey",
+    category: "Flagship",
+    description: "The hero piece of the first drop, built to carry the full RAD identity.",
+    accent: "Primary release",
+    status: "Coming soon",
+    frontImage: "/assets/merch-rad-jersey-front.png",
+    backImage: "/assets/merch-rad-jersey-back.png",
+    featured: true
+  },
+  {
+    name: "Wild Hoodie",
+    category: "Layer",
+    description: "Heavyweight black layer with sharp red trims and understated front branding.",
+    accent: "Cold-weather staple",
+    status: "Coming soon",
+    frontImage: "/assets/merch-rad-hoodie-front.png",
+    backImage: "/assets/merch-rad-hoodie-back.png"
+  },
+  {
+    name: "Match Cap",
+    category: "Accessory",
+    description: "Low-profile cap for daily wear with the clean wordmark up front.",
+    accent: "Everyday rotation",
+    status: "Coming soon"
   }
 ];
 

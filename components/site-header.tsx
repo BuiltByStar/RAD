@@ -10,9 +10,9 @@ import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { primaryNavLinks } from "@/lib/site-data";
 
 const SCROLL_THRESHOLD = 8;
-const NAV_PUSH_DELAY_MS = 350;
-const NAV_GLITCH_OUTRO_MS = 320;
-const NAV_GLITCH_FALLBACK_MS = 1800;
+const NAV_PUSH_DELAY_MS = 140;
+const NAV_GLITCH_OUTRO_MS = 420;
+const NAV_GLITCH_FALLBACK_MS = 3200;
 
 type NavTransition = {
   href: string;
@@ -30,6 +30,7 @@ export function SiteHeader() {
   const pushTimerRef = useRef<number | null>(null);
   const clearTimerRef = useRef<number | null>(null);
   const fallbackTimerRef = useRef<number | null>(null);
+  const readyRouteRef = useRef<string | null>(null);
 
   function clearNavTimers() {
     if (pushTimerRef.current) {
@@ -109,12 +110,37 @@ export function SiteHeader() {
   }, [pathname]);
 
   useEffect(() => {
+    primaryNavLinks.forEach((link) => router.prefetch(link.href));
+  }, [router]);
+
+  useEffect(() => {
+    const handleReady = (event: Event) => {
+      const detail = (event as CustomEvent<{ route?: string }>).detail;
+      if (!detail?.route) return;
+      readyRouteRef.current = detail.route;
+
+      if (!navTransition || navTransition.phase === "exit") return;
+
+      const reachedTarget =
+        detail.route === navTransition.href ||
+        (navTransition.href !== "/" && detail.route.startsWith(navTransition.href));
+
+      if (reachedTarget) {
+        beginNavExit();
+      }
+    };
+
+    window.addEventListener("rad:page-ready", handleReady as EventListener);
+    return () => window.removeEventListener("rad:page-ready", handleReady as EventListener);
+  }, [navTransition]);
+
+  useEffect(() => {
     if (!navTransition || navTransition.phase === "exit") return;
     const reachedTarget =
       pathname === navTransition.href ||
       (navTransition.href !== "/" && pathname.startsWith(navTransition.href));
 
-    if (reachedTarget) {
+    if (reachedTarget && readyRouteRef.current === navTransition.href) {
       beginNavExit();
     }
   }, [pathname, navTransition]);
@@ -146,6 +172,7 @@ export function SiteHeader() {
     if (active || navTransition) return;
 
     clearNavTimers();
+    readyRouteRef.current = null;
     setNavTransition({
       href: link.href,
       label: link.label,
@@ -188,7 +215,6 @@ export function SiteHeader() {
               alt="RAD Esports"
               width={108}
               height={28}
-              priority
               className="relative h-6 w-auto transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-7"
             />
           </Link>

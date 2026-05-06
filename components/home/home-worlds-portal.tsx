@@ -51,14 +51,12 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.65, ease: EASE }}
             className="relative max-w-xl"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
-              RAD map
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">Explore</p>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-white">
-              More than the lineup.
+              Explore RAD.
             </h2>
             <p className="mt-6 text-base leading-relaxed text-white/66 sm:text-lg">
-              Competitive proof, roster identity, media, community, and partner paths should all feel like RAD.
+              Roster, content, community, and partner pages should all feel like the same org.
             </p>
             <div className="mt-8 grid max-w-md grid-cols-2 gap-3">
               {["Competition", "Media", "Discord", "Partners"].map((item) => (
@@ -98,10 +96,10 @@ export function HomeWorldsPortal() {
                 />
                 <div className="relative z-10 flex min-h-[360px] flex-col justify-end p-6 sm:p-8">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
-                    RAD pressure map
+                    Site sections
                   </p>
                   <h3 className="mt-3 max-w-2xl font-[family-name:var(--font-display)] text-[clamp(2.4rem,5vw,5rem)] font-extrabold uppercase leading-[0.86] text-white">
-                    Competition, content, community, activations.
+                    Roster, content, community, partners.
                   </h3>
                 </div>
               </div>

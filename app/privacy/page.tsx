@@ -5,7 +5,7 @@ import { Container, LegalCard, Section } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "Privacy policy for the RAD Esports website."
+  description: "How RAD handles information shared through the site."
 };
 
 const privacyBlocks = [
@@ -34,8 +34,8 @@ export default function PrivacyPage() {
     <PageShell
       variant="legal"
       eyebrow="Legal"
-      title="Privacy policy."
-      description="How RAD handles information submitted through the site."
+      title="Privacy"
+      description="How RAD handles information shared through the site."
       heroImage="/assets/RadRivals_Wallpaper_Black.png"
       status="Current"
     >

@@ -15,8 +15,8 @@ import {
 import { partners } from "@/lib/site-data";
 
 export const metadata: Metadata = {
-  title: "Activations",
-  description: "RAD's public-facing page for sponsorships, campaigns, and branded activations."
+  title: "Partners",
+  description: "Partnership opportunities, campaigns, and branded work for RAD."
 };
 
 const processSteps = [
@@ -44,21 +44,15 @@ export default function PartnersPage() {
   return (
     <PageShell
       variant="partners"
-      eyebrow="Activations"
-      title="Brand fit."
-      description="RAD is open to partners that match competitive credibility, creative work, and long-term growth."
+      eyebrow="Partners"
+      title="Partners"
+      description="RAD is open to partner work that fits the team, the audience, and the brand."
       heroImage="/assets/RadBanner1920_1080.png"
       status="Open to partners"
     >
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Positioning"
-            title="Real lanes, no fake wall."
-            description="RAD can pitch clear partner work without pretending sponsors already exist."
-            actionHref="/contact"
-            actionLabel="Contact RAD"
-          />
+          <SectionHeading eyebrow="Process" title="How We Work" description="Clear partner work from brief to launch." actionHref="/contact" actionLabel="Contact RAD" />
 
           <CardGrid cols={3}>
             {processSteps.map((step) => (
@@ -74,10 +68,7 @@ export default function PartnersPage() {
 
       <Section padding="sm" className="bg-white/[.015]">
         <Container>
-          <SectionHeading
-            eyebrow="Available Angles"
-            title="What fits RAD."
-          />
+          <SectionHeading eyebrow="Partner Lanes" title="Opportunities" />
 
           <CardGrid cols={3}>
             {partners.map((partner) => (

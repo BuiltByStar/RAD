@@ -107,7 +107,7 @@ export function HomeEsportsFeed() {
                 Community
               </p>
               <h3 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.88] text-white">
-                Discord, email, socials.
+                Join RAD.
               </h3>
               <div className="mt-5 flex flex-wrap gap-2">
                 <Button href={discordInviteUrl} size="sm">Discord</Button>

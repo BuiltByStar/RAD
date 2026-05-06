@@ -87,8 +87,8 @@ export default function AboutPage() {
     <PageShell
       variant="about"
       eyebrow="About RAD"
-      title="Built for pressure."
-      description="RAD is a competitive esports org with real results, a sharp identity, and room to grow without losing its edge."
+      title="About RAD"
+      description="RAD is a competitive esports org built around strong results, clear identity, and steady growth."
       heroImage="/assets/RadBannerNewTest300ppi.png"
       status="World title // EMEA title"
       note={
@@ -102,10 +102,7 @@ export default function AboutPage() {
     >
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Identity"
-            title="Who RAD is."
-          />
+          <SectionHeading eyebrow="Overview" title="Who We Are" />
 
           <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
             <Card tone="lead" spotlight>
@@ -117,14 +114,14 @@ export default function AboutPage() {
             <div className="grid gap-4 sm:gap-5">
               <Card spotlight>
                 <CardEyebrow>Proof</CardEyebrow>
-                <CardTitle size="sm">Titles back the brand.</CardTitle>
+                <CardTitle size="sm">Results matter.</CardTitle>
                 <CardBody>
                   The site does not need to oversell the org. The results already give the identity weight.
                 </CardBody>
               </Card>
               <Card spotlight>
                 <CardEyebrow>Direction</CardEyebrow>
-                <CardTitle size="sm">Ready for more.</CardTitle>
+                <CardTitle size="sm">Built to grow.</CardTitle>
                 <CardBody>
                   RAD should feel consistent across rosters, content, activations, and whatever division comes next.
                 </CardBody>
@@ -136,10 +133,7 @@ export default function AboutPage() {
 
       <Section padding="sm" className="bg-white/[.015]">
         <Container>
-          <SectionHeading
-            eyebrow="Standards"
-            title="How RAD operates."
-          />
+          <SectionHeading eyebrow="Standards" title="Standards" />
 
           <CardGrid cols={4}>
             {standards.map((value) => (
@@ -154,10 +148,7 @@ export default function AboutPage() {
 
       <Section padding="sm">
         <Container>
-          <SectionHeading
-            eyebrow="Proof"
-            title="Milestones."
-          />
+          <SectionHeading eyebrow="Timeline" title="Milestones" />
 
           <MilestoneWheel items={milestoneWheelItems} />
         </Container>

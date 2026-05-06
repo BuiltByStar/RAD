@@ -25,11 +25,11 @@ export function SiteFooter() {
                 className="mt-4 h-auto w-[200px] sm:w-[220px]"
               />
               <p className="mt-5 text-sm leading-relaxed text-white/62 sm:text-base">
-                Competitive pedigree, scalable branding, and a digital presence built to carry RAD across new titles, media, and activations without losing its edge.
+                Competition, content, and partner work built to grow with RAD.
               </p>
               <div className="mt-6 inline-flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/58">
                 <span className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_10px_rgba(255,43,69,0.75)]" />
-                Built for pressure
+                RAD Esports
               </div>
             </div>
 
@@ -71,9 +71,9 @@ export function SiteFooter() {
 
         <div className="mt-6 flex flex-col gap-4 border-t border-white/8 pt-5 text-[11px] font-medium uppercase tracking-[0.18em] text-white/45 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-            <p>© {new Date().getFullYear()} RAD Esports</p>
+            <p>(c) {new Date().getFullYear()} RAD Esports</p>
             <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline-block" />
-            <span>Built for pressure, content, and the next stage of competition.</span>
+            <span>Competition, content, and partner work.</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-white/52">

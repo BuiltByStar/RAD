@@ -35,15 +35,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
   title: {
-    default: "RAD Esports — Built for Pressure",
+    default: "RAD Esports - Competitive Esports",
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is a competitive org built for pressure, content, and the next stage of competition. #GoWild",
+    "RAD Esports is a competitive org focused on roster, content, merch, and future growth.",
   openGraph: {
     title: "RAD Esports",
     description:
-      "A competitive esports brand built for pressure, content, and future growth.",
+      "A competitive esports brand focused on roster, content, merch, and future growth.",
     images: ["/assets/RadPlayerBannerPNG8.png"],
     type: "website"
   },
