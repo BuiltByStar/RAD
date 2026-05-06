@@ -5,78 +5,62 @@ import { contactChannels, navLinks } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-0 border-t border-white/10 bg-[#050505]">
-      <div className="relative mx-auto w-full max-w-[1500px] px-6 pb-8 pt-16 sm:px-8 lg:px-12 lg:pt-20">
-        <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-          <p className="pointer-events-none absolute right-6 top-4 font-[family-name:var(--font-display)] text-[clamp(4rem,14vw,11rem)] uppercase leading-none tracking-normal text-white/[0.04] sm:right-8 lg:right-10">
-            RAD
+    <footer className="mt-0 bg-[#151f21] text-white">
+      <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-6 py-14 sm:px-8 lg:grid-cols-3 lg:px-12">
+        <div>
+          <Image src="/assets/RadNewLogoWordmarkWhite.png" alt="RAD Esports" width={180} height={46} />
+          <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/68">
+            Built for pressure, made for modern competition, and designed to scale across roster, content, and
+            partnerships.
           </p>
+        </div>
 
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.75fr_0.75fr]">
-            <div className="relative z-10 max-w-xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--color-rad-hi)]">
-                RAD Esports
-              </p>
-              <Image
-                src="/assets/RadNewLogoWordmarkRed.png"
-                alt="RAD Esports"
-                width={220}
-                height={60}
-                className="mt-4 h-auto w-[200px] sm:w-[220px]"
-              />
-              <p className="mt-5 text-sm leading-relaxed text-white/62 sm:text-base">
-                Competition, content, and partner work built to grow with RAD.
-              </p>
-              <div className="mt-6 inline-flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/58">
-                <span className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_10px_rgba(255,43,69,0.75)]" />
-                RAD Esports
-              </div>
-            </div>
-
-            <div className="relative z-10">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/42">Navigate</p>
-              <div className="mt-5 flex flex-col gap-3">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="inline-flex w-fit items-center gap-2 text-sm font-medium uppercase tracking-[0.12em] text-white/70 transition-colors hover:text-white"
-                  >
-                    <span className="inline-block h-px w-4 bg-[color:var(--color-rad)]/65" />
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative z-10">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/42">Connect</p>
-              <div className="mt-5 flex flex-col gap-3">
-                {contactChannels.map((channel) => (
-                  <a
-                    key={channel.label}
-                    href={channel.href}
-                    target={channel.href.startsWith("http") ? "_blank" : undefined}
-                    rel={channel.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="inline-flex w-fit items-center gap-2 text-sm font-medium uppercase tracking-[0.12em] text-white/70 transition-colors hover:text-white"
-                  >
-                    <span className="inline-block h-px w-4 bg-white/20" />
-                    {channel.value}
-                  </a>
-                ))}
-              </div>
-            </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/80">Navigate</p>
+          <div className="mt-4 grid gap-2">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="text-sm text-white/70 transition hover:text-white">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 border-t border-white/8 pt-5 text-[11px] font-medium uppercase tracking-[0.18em] text-white/45 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-            <p>(c) {new Date().getFullYear()} RAD Esports</p>
-            <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline-block" />
-            <span>Competition, content, and partner work.</span>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/80">Connect</p>
+          <div className="mt-4 grid gap-2">
+            {contactChannels.map((channel) => (
+              <a
+                key={channel.label}
+                href={channel.href}
+                target={channel.href.startsWith("http") ? "_blank" : undefined}
+                rel={channel.href.startsWith("http") ? "noreferrer" : undefined}
+                className="text-sm text-white/70 transition hover:text-white"
+              >
+                {channel.value}
+              </a>
+            ))}
           </div>
+          <form className="mt-6 flex gap-2">
+            <input
+              type="email"
+              placeholder="Email address"
+              className="h-10 w-full rounded-md border border-white/15 bg-white/10 px-3 text-sm text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="h-10 rounded-md bg-white px-3 text-xs font-semibold uppercase tracking-[0.08em] text-[#151f21]"
+            >
+              Join
+            </button>
+          </form>
+        </div>
+      </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-white/52">
+      <div className="border-t border-white/12">
+        <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 px-6 py-4 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
+          <p>© {new Date().getFullYear()} RAD Esports</p>
+          <div className="flex items-center gap-4">
             <Link href="/terms">Terms</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/cookies">Cookies</Link>
