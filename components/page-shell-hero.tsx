@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { Container } from "@/components/ui";
 
-type Variant = "default" | "about" | "roster" | "staff" | "content" | "contact" | "partners" | "legal";
+type Variant = "default" | "about" | "roster" | "merch" | "staff" | "content" | "contact" | "partners" | "legal";
 type HeroMeta = { mark: string; code: string; channel: string; tags: string[] };
 
 type PageShellHeroProps = {

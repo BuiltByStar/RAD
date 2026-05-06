@@ -6,6 +6,7 @@ type Variant =
   | "default"
   | "about"
   | "roster"
+  | "merch"
   | "staff"
   | "content"
   | "contact"
@@ -42,6 +43,12 @@ const heroMetaMap: Record<Variant, { mark: string; code: string; channel: string
     code: "Profile 02",
     channel: "competitive core",
     tags: []
+  },
+  merch: {
+    mark: "RAD // MERCH",
+    code: "Profile 08",
+    channel: "drop desk",
+    tags: ["Featured Pieces", "Upcoming Releases", "Brand Essentials"]
   },
   staff: {
     mark: "RAD // STAFF",
