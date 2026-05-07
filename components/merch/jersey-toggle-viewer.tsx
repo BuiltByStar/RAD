@@ -19,6 +19,7 @@ type JerseyToggleViewerProps = {
 const VIEW_EASE = [0.22, 1, 0.36, 1] as const;
 const ZOOM_SCALE = 2.8;
 const LENS_SIZE = 120;
+type ViewSide = "front" | "back";
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -39,17 +40,42 @@ export function JerseyToggleViewer({
   const inspectorHostRef = useRef<HTMLDivElement | null>(null);
   const frameRef = useRef<number | null>(null);
   const imageAreaRef = useRef<HTMLDivElement | null>(null);
+  const imageNaturalRef = useRef<Record<ViewSide, { width: number; height: number } | null>>({
+    front: null,
+    back: null
+  });
 
   const activeImage = side === "front" ? frontImage : backImage;
   const activeLabel = `${side} view`;
 
   function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
-    const nextX = clamp((event.clientX - rect.left) / rect.width, 0, 1);
-    const nextY = clamp((event.clientY - rect.top) / rect.height, 0, 1);
     const host = inspectorHostRef.current;
+    const natural = imageNaturalRef.current[side];
 
-    if (!host) return;
+    if (!host || !natural) return;
+
+    const scale = Math.min(rect.width / natural.width, rect.height / natural.height);
+    const fittedWidth = natural.width * scale;
+    const fittedHeight = natural.height * scale;
+    const imageLeft = (rect.width - fittedWidth) / 2;
+    const imageTop = (rect.height - fittedHeight) / 2;
+    const localX = event.clientX - rect.left;
+    const localY = event.clientY - rect.top;
+
+    if (
+      localX < imageLeft ||
+      localX > imageLeft + fittedWidth ||
+      localY < imageTop ||
+      localY > imageTop + fittedHeight
+    ) {
+      setPointerInside(false);
+      return;
+    }
+
+    const nextX = clamp((localX - imageLeft) / fittedWidth, 0, 1);
+    const nextY = clamp((localY - imageTop) / fittedHeight, 0, 1);
+    setPointerInside(true);
 
     if (frameRef.current) {
       cancelAnimationFrame(frameRef.current);
@@ -58,6 +84,8 @@ export function JerseyToggleViewer({
     frameRef.current = requestAnimationFrame(() => {
       host.style.setProperty("--focus-x", `${nextX * 100}%`);
       host.style.setProperty("--focus-y", `${nextY * 100}%`);
+      host.style.setProperty("--lens-left", `${imageLeft + nextX * fittedWidth}px`);
+      host.style.setProperty("--lens-top", `${imageTop + nextY * fittedHeight}px`);
       frameRef.current = null;
     });
   }
@@ -68,7 +96,12 @@ export function JerseyToggleViewer({
     <div
       ref={inspectorHostRef}
       className={cn("relative overflow-hidden rounded-[1.55rem] border border-white/12 bg-[#080809]", className)}
-      style={{ ["--focus-x" as string]: "50%", ["--focus-y" as string]: "40%" }}
+      style={{
+        ["--focus-x" as string]: "50%",
+        ["--focus-y" as string]: "40%",
+        ["--lens-left" as string]: "50%",
+        ["--lens-top" as string]: "40%"
+      }}
     >
       <div
         aria-hidden
@@ -133,10 +166,6 @@ export function JerseyToggleViewer({
                     ? "aspect-[4/3] max-w-none"
                     : "aspect-[5/6] max-w-[880px]"
               )}
-              onPointerMove={handlePointerMove}
-              onPointerEnter={() => setPointerInside(true)}
-              onPointerLeave={() => setPointerInside(false)}
-              onPointerDown={handlePointerMove}
             >
               <div aria-hidden className="absolute inset-x-[18%] top-[8%] h-24 rounded-full bg-[radial-gradient(circle,rgba(255,0,0,0.13),transparent_72%)] blur-3xl" />
               <div className="absolute inset-0 p-4 sm:p-5">
@@ -152,6 +181,12 @@ export function JerseyToggleViewer({
                     src={activeImage}
                     alt={`${name} ${activeLabel}`}
                     fill
+                    onLoad={(event) => {
+                      imageNaturalRef.current[side] = {
+                        width: event.currentTarget.naturalWidth,
+                        height: event.currentTarget.naturalHeight
+                      };
+                    }}
                     sizes={
                       compact
                         ? "(max-width: 1280px) 420px, 420px"
@@ -168,8 +203,8 @@ export function JerseyToggleViewer({
                   aria-hidden
                   className="pointer-events-none absolute overflow-hidden rounded-full border border-[#ff6a6a]/65 bg-black/28 shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_18px_44px_rgba(0,0,0,0.36)]"
                   style={{
-                    left: `calc(var(--focus-x) - ${LENS_SIZE / 2}px)`,
-                    top: `calc(var(--focus-y) - ${LENS_SIZE / 2}px)`,
+                    left: `calc(var(--lens-left) - ${LENS_SIZE / 2}px)`,
+                    top: `calc(var(--lens-top) - ${LENS_SIZE / 2}px)`,
                     width: `${LENS_SIZE}px`,
                     height: `${LENS_SIZE}px`
                   }}
