@@ -1,47 +1,17 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 
 import { Container } from "@/components/ui";
 
-const lanes = [
-  {
-    label: "Roster",
-    meta: "Player cards, roles, socials, and future PFP uploads.",
-    href: "/roster",
-    stat: "07"
-  },
-  {
-    label: "Content",
-    meta: "YouTube, articles, announcements, and media drops.",
-    href: "/content",
-    stat: "Media"
-  },
-  {
-    label: "Community",
-    meta: "Discord gateway and fan energy without extra clutter.",
-    href: "https://discord.com/invite/radgg",
-    stat: "RADGG"
-  },
-  {
-    label: "Activations",
-    meta: "Sponsor slots, campaigns, and brand contact paths.",
-    href: "/partners",
-    stat: "Open"
-  }
-] as const;
-
-const EASE = [0.16, 1, 0.3, 1] as const;
+const systems = [
+  { label: "Roster", href: "/roster", meta: "Players, roles, and socials." },
+  { label: "Content", href: "/content", meta: "Video drops and editorial updates." },
+  { label: "Partners", href: "/partners", meta: "Activation formats and contact." },
+  { label: "Contact", href: "/contact", meta: "Direct channels to the team." }
+];
 
 export function HomeWorldsPortal() {
-  const reduced = useReducedMotion();
-
   return (
-    <section id="experience" className="relative overflow-hidden border-y border-white/10 bg-[#070707] py-14 sm:py-20">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_56%_at_72%_30%,rgba(255,0,0,0.2),transparent_58%)]" />
-      <div aria-hidden className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,0,0,0.12),transparent)]" />
+    <section className="border-y border-[var(--border)] bg-white py-14 sm:py-18">
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-14">
           <motion.div

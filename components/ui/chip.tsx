@@ -44,9 +44,9 @@ export function Chip({ className, children, ...rest }: ChipProps) {
   return (
     <motion.span
       variants={reduced ? undefined : chipVariants}
-      whileHover={reduced ? undefined : { y: -2, borderColor: "rgba(255,255,255,0.35)" }}
+      whileHover={reduced ? undefined : { y: -2, borderColor: "rgba(255,43,69,0.55)" }}
       className={cn(
-        "inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70",
+        "inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]",
         className
       )}
       {...rest}

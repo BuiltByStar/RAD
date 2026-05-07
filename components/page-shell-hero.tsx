@@ -1,24 +1,10 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { Container } from "@/components/ui";
-import { EASE_EMPHASIS } from "@/components/ui/motion-tokens";
 
-type Variant =
-  | "default"
-  | "about"
-  | "roster"
-  | "staff"
-  | "content"
-  | "contact"
-  | "partners"
-  | "legal"
-  | "merch";
-
-type HeroMeta = { mark: string; code: string; line: string; tags: string[] };
+type Variant = "default" | "about" | "roster" | "merch" | "staff" | "content" | "contact" | "partners" | "legal";
+type HeroMeta = { mark: string; code: string; channel: string; tags: string[] };
 
 type PageShellHeroProps = {
   title: string;
@@ -40,43 +26,20 @@ export function PageShellHero({
   heroVideo,
   status,
   note,
-  meta,
-  variant
+  meta
 }: PageShellHeroProps) {
-  const reduced = useReducedMotion();
-  const compact = variant === "roster";
-
   return (
-    <section className="relative isolate overflow-hidden border-b border-white/10 bg-black">
-      {heroVideo ? (
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 z-[-3] h-full w-full object-cover opacity-55"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-      ) : (
-        <Image
-          src={heroImage}
-          alt=""
-          fill
-          sizes="100vw"
-          className="z-[-3] object-cover opacity-58"
-        />
-      )}
-      <div aria-hidden className="absolute inset-0 z-[-2] bg-[linear-gradient(90deg,rgba(2,2,4,0.95)_0%,rgba(10,0,0,0.78)_48%,rgba(2,2,4,0.72)_100%)]" />
-      <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(76%_58%_at_50%_20%,rgba(255,0,0,0.18),transparent_62%)]" />
-      <div aria-hidden className="absolute inset-0 z-[-1] opacity-[0.04] [background-image:linear-gradient(to_right,rgba(255,255,255,0.55)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.55)_1px,transparent_1px)] [background-size:56px_56px]" />
-      <motion.div
-        aria-hidden
-        className="absolute left-[-18%] top-[36%] z-[-1] h-24 w-[80%] rotate-[-8deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.32),rgba(255,255,255,0.1),transparent)] blur-sm"
-        animate={reduced ? undefined : { x: ["-10%", "34%", "-10%"], opacity: [0.22, 0.68, 0.22] }}
-        transition={{ duration: 7.2, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <div aria-hidden className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#ff0000]/55 to-transparent" />
+    <section className="relative overflow-hidden border-b border-[var(--border)] bg-[var(--bg-alt)]">
+      <div className="absolute inset-0">
+        {heroVideo ? (
+          <video autoPlay muted loop playsInline className="h-full w-full object-cover opacity-48">
+            <source src={heroVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <Image src={heroImage} alt="" fill priority sizes="100vw" className="object-cover opacity-56" />
+        )}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,5,7,0.92)_0%,rgba(5,5,7,0.8)_45%,rgba(5,5,7,0.92)_100%)]" />
+      </div>
 
       <Container size="xl">
         <motion.div

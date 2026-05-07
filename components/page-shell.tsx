@@ -1,18 +1,17 @@
 import type { ReactNode } from "react";
 
-import { PageReadySignal } from "@/components/page-ready-signal";
 import { PageShellHero } from "@/components/page-shell-hero";
 
 type Variant =
   | "default"
   | "about"
   | "roster"
+  | "merch"
   | "staff"
   | "content"
   | "contact"
   | "partners"
-  | "legal"
-  | "merch";
+  | "legal";
 
 type PageShellProps = {
   title: string;
@@ -26,60 +25,60 @@ type PageShellProps = {
   children: ReactNode;
 };
 
-const heroMetaMap: Record<Variant, { mark: string; code: string; line: string; tags: string[] }> = {
+const heroMetaMap: Record<Variant, { mark: string; code: string; channel: string; tags: string[] }> = {
   default: {
-    mark: "RAD // WILD",
-    code: "RAD 00",
-    line: "home",
-    tags: ["World champions", "Content", "Merch"]
+    mark: "RAD // SYSTEM",
+    code: "Profile 00",
+    channel: "teamrad.gg",
+    tags: ["The Wild Ones", "Competitive Identity", "Modern Platform"]
   },
   about: {
     mark: "RAD // ABOUT",
-    code: "RAD 01",
-    line: "about",
-    tags: ["History", "Titles", "Growth"]
+    code: "Profile 01",
+    channel: "org identity",
+    tags: ["World champions", "EMEA tested", "Built to scale"]
   },
   roster: {
     mark: "RAD // ROSTER",
-    code: "RAD 02",
-    line: "roster",
-    tags: ["Players", "Roles", "Results"]
+    code: "Profile 02",
+    channel: "competitive core",
+    tags: []
+  },
+  merch: {
+    mark: "RAD // MERCH",
+    code: "Profile 08",
+    channel: "drop desk",
+    tags: ["Featured Pieces", "Upcoming Releases", "Brand Essentials"]
   },
   staff: {
     mark: "RAD // STAFF",
-    code: "RAD 03",
-    line: "staff",
+    code: "Profile 03",
+    channel: "operations",
     tags: ["Brand", "Analytics", "Coaching"]
   },
   content: {
     mark: "RAD // CONTENT",
-    code: "RAD 04",
-    line: "news",
+    code: "Profile 04",
+    channel: "editorial layer",
     tags: ["Stories", "Video", "Community"]
   },
   contact: {
     mark: "RAD // CONTACT",
-    code: "RAD 05",
-    line: "contact",
+    code: "Profile 05",
+    channel: "inquiry path",
     tags: ["Partnerships", "Talent", "Media"]
   },
   partners: {
-    mark: "RAD // PARTNERS",
-    code: "RAD 06",
-    line: "partners",
+    mark: "RAD // ACTIVATIONS",
+    code: "Profile 06",
+    channel: "brand fit",
     tags: ["Campaigns", "Apparel", "Peripherals"]
   },
   legal: {
     mark: "RAD // POLICY",
-    code: "RAD 07",
-    line: "legal",
+    code: "Profile 07",
+    channel: "public terms",
     tags: ["Privacy", "Cookies", "Terms"]
-  },
-  merch: {
-    mark: "RAD // MERCH",
-    code: "RAD 08",
-    line: "merch",
-    tags: ["Drop 01", "Featured item", "Coming soon"]
   }
 };
 

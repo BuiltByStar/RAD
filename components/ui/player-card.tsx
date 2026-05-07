@@ -44,7 +44,7 @@ export function PlayerCard({
       id={id}
       className={cn("flex min-h-[430px] flex-col overflow-hidden p-0", className)}
     >
-      <div className="relative aspect-square overflow-hidden border-b border-white/10 bg-[#08080a]">
+      <div className="relative aspect-square overflow-hidden border-b border-[var(--border)] bg-[var(--bg-alt)]">
         {image ? (
           <Image
             src={image}
@@ -60,22 +60,22 @@ export function PlayerCard({
               alt=""
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover opacity-[0.25] grayscale"
+              className="object-cover opacity-[0.2] grayscale"
             />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(255,43,69,0.28),transparent_48%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.72))]" />
-            <span className="relative font-[family-name:var(--font-display)] text-[clamp(4rem,8vw,7rem)] font-black uppercase leading-none tracking-[-0.08em] text-white/88 drop-shadow-[0_18px_45px_rgba(255,0,0,0.25)]">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(33,68,57,0.16),transparent_48%),linear-gradient(180deg,rgba(255,255,255,0.2),rgba(21,31,33,0.2))]" />
+            <span className="relative font-[family-name:var(--font-display)] text-[clamp(4rem,8vw,7rem)] font-black uppercase leading-none tracking-[-0.08em] text-[var(--text)]/70">
               {initials}
             </span>
           </div>
         )}
 
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
-          <span className="rounded-full border border-white/10 bg-black/55 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/74 backdrop-blur-md">
+          <span className="rounded-full border border-[var(--border)] bg-white/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
             {role}
           </span>
           {typeof number === "number" ? (
             <span
-              className="font-[family-name:var(--font-display)] text-5xl font-black uppercase leading-none text-white/85"
+              className="font-[family-name:var(--font-display)] text-5xl font-black uppercase leading-none text-[var(--text)]/75"
               style={{ fontVariantNumeric: "tabular-nums" }}
             >
               {String(number).padStart(2, "0")}
@@ -85,7 +85,7 @@ export function PlayerCard({
 
         <span
           aria-hidden
-          className="absolute left-4 top-4 h-2 w-10 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_20px_rgba(255,43,69,0.65)]"
+          className="absolute left-4 top-4 h-2 w-10 rounded-full bg-[color:var(--color-rad)]"
         />
       </div>
 
@@ -107,7 +107,7 @@ export function PlayerCard({
         ) : null}
 
         {bio ? (
-          <p className="mt-4 text-sm leading-relaxed text-white/62">{bio}</p>
+          <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">{bio}</p>
         ) : null}
 
         {socials?.length ? (
@@ -118,10 +118,10 @@ export function PlayerCard({
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 transition-colors hover:border-[color:var(--color-rad)]/26 hover:text-white"
+                className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--bg-alt)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--muted)] transition-colors hover:border-[color:var(--color-rad)] hover:text-[var(--text)]"
               >
                 {social.label}
-                <span aria-hidden className="text-white/50">↗</span>
+                <span aria-hidden className="text-[var(--dim)]">↗</span>
               </a>
             ))}
           </div>
