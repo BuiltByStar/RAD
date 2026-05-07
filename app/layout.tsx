@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
+import "./cinematic.css";
 
 const localFontVars: CSSProperties = {
   "--font-body": "\"Segoe UI\", Inter, Arial, sans-serif",
@@ -15,8 +16,8 @@ const localFontVars: CSSProperties = {
 } as CSSProperties;
 
 export const viewport: Viewport = {
-  themeColor: "#fcfcfc",
-  colorScheme: "light",
+  themeColor: "#050505",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover"
@@ -25,15 +26,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
   title: {
-    default: "RAD Esports — The Wild Ones",
+    default: "RAD Esports - Competitive Esports",
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is a competitive org built for pressure, content, and the next stage of competition. #GoWild",
+    "RAD Esports is a competitive org focused on roster, content, merch, and future growth.",
   openGraph: {
     title: "RAD Esports",
     description:
-      "A competitive esports brand built for pressure, content, and future growth.",
+      "A competitive esports brand focused on roster, content, merch, and future growth.",
     images: ["/assets/RadPlayerBannerPNG8.png"],
     type: "website"
   },
@@ -58,7 +59,7 @@ export default function RootLayout({
         <AmbientBackground />
         <SiteHeader />
 
-        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem]">
+        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem] lg:pt-20">
           <div className="relative z-10">{children}</div>
         </div>
 

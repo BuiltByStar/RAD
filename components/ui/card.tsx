@@ -88,11 +88,12 @@ export function Card({
       onMouseMove={spotlight ? handleMove : onMouseMove}
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
-        "group relative overflow-hidden rounded-xl border border-[var(--border)]",
-        "bg-[linear-gradient(145deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015)_48%,rgba(255,43,69,0.04))]",
-        "shadow-[var(--shadow)]",
+        "group relative overflow-hidden rounded-[1.15rem] border border-white/10",
+        "bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018)_48%,rgba(255,0,0,0.035))]",
+        "shadow-[0_18px_52px_-34px_rgba(0,0,0,0.98)]",
         "transition-[border-color,box-shadow] duration-500",
-        "hover:border-[var(--border-md)] hover:shadow-[var(--shadow-lg)]",
+        "hover:border-[#ff0000]/34",
+        "hover:shadow-[0_24px_72px_-42px_rgba(255,0,0,0.5)]",
         tones[tone],
         className
       )}
@@ -100,11 +101,11 @@ export function Card({
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(255,43,69,0.18),transparent_36%)] opacity-70"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(255,0,0,0.16),transparent_34%),linear-gradient(120deg,transparent,rgba(255,255,255,0.04)_42%,transparent_58%)] opacity-70"
       />
       <span
         aria-hidden
-        className="pointer-events-none absolute left-0 top-0 h-px w-24 bg-[color:var(--color-rad)]/70 opacity-60"
+        className="pointer-events-none absolute left-[-45%] top-0 h-px w-[90%] bg-gradient-to-r from-transparent via-[#ff0000]/85 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:[animation:rad-border-run_1.35s_ease-out]"
       />
 
       {spotlight && !reduced ? (
@@ -136,7 +137,7 @@ export function CardEyebrow({ className, ...rest }: CardEyebrowProps) {
   return (
     <p
       className={cn(
-        "text-[11px] font-semibold uppercase tracking-[0.12em] text-[color:var(--color-rad-hi)]",
+        "text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]",
         className
       )}
       {...rest}
@@ -156,7 +157,7 @@ export function CardTitle({ className, size = "md", ...rest }: CardTitleProps) {
   return (
     <h3
       className={cn(
-        "mt-2 font-[family-name:var(--font-display)] uppercase leading-[1.05] tracking-normal text-[var(--text)] [text-wrap:balance]",
+        "mt-2 font-[family-name:var(--font-display)] uppercase leading-[1.05] tracking-normal text-white [text-wrap:balance]",
         sizes[size],
         className
       )}
@@ -168,7 +169,7 @@ export function CardTitle({ className, size = "md", ...rest }: CardTitleProps) {
 type CardBodyProps = HTMLAttributes<HTMLParagraphElement>;
 export function CardBody({ className, ...rest }: CardBodyProps) {
   return (
-    <p className={cn("mt-3 text-sm leading-relaxed text-[var(--muted)] sm:text-[0.95rem]", className)} {...rest} />
+    <p className={cn("mt-3 text-sm leading-relaxed text-white/65 sm:text-[0.95rem]", className)} {...rest} />
   );
 }
 
