@@ -3,11 +3,15 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
+import { JerseyToggleViewer } from "@/components/merch/jersey-toggle-viewer";
 import { Button, Container } from "@/components/ui";
-import { players, stats } from "@/lib/site-data";
+import { merchCollection, merchItems, stats } from "@/lib/site-data";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function HomeHero() {
   const reduced = useReducedMotion();
+  const featuredMerch = merchItems.find((item) => item.featured);
 
   return (
     <section className="rad-hero relative isolate min-h-[88svh] overflow-hidden border-b border-white/10 bg-[#030304] pt-10 sm:pt-14">
@@ -80,20 +84,23 @@ export function HomeHero() {
                 Wild.
               </span>
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-              Competitive identity, championship-level execution, and a cleaner digital platform designed for roster,
-              content, and activations.
+
+            <p className="mt-7 max-w-2xl text-base leading-relaxed text-white/72 sm:text-xl">
+              RAD brings championship pressure, sharp content, and a first merch drop built to carry that identity cleanly.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/roster" size="lg">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button href="/roster" size="lg" className="min-w-[180px]">
                 View roster
+                <span aria-hidden>{">"}</span>
               </Button>
-              <Button href="/partners" variant="outline" size="lg">
-                Partner with RAD
+              <Button href="/merch" variant="outline" size="lg" className="min-w-[180px]">
+                View merch
+              </Button>
+              <Button href="/content" variant="ghost" size="lg" className="min-w-[180px]">
+                Watch content
               </Button>
             </div>
-          </div>
 
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
               {stats.map((stat) => (
@@ -149,11 +156,11 @@ export function HomeHero() {
                   <span className="rounded-full border border-[#ff0000]/18 bg-[#ff0000]/8 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/66">
                     {featuredMerch?.status ?? merchCollection.status}
                   </span>
-                ))}
+                </div>
               </div>
-            </article>
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </Container>
     </section>
   );

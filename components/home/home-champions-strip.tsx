@@ -1,14 +1,37 @@
+"use client";
+
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
+
 import { Container } from "@/components/ui";
+import { igniteSchedule } from "@/lib/site-data";
 
 const milestones = [
-  { year: "2023", title: "Founded", detail: "Identity built and brand direction established." },
-  { year: "2025", title: "World Title", detail: "Ignite mid-season world champions." },
-  { year: "2026", title: "EMEA Crown", detail: "Season 6 EMEA PC champions." }
+  {
+    year: "2023",
+    title: "Founded",
+    detail: "Identity locked early: red, black, white, and a name built to travel."
+  },
+  {
+    year: "2025",
+    title: "World title",
+    detail: "Inaugural Marvel Rivals Ignite: Mid-Season World Champions."
+  },
+  {
+    year: "2026",
+    title: "EMEA crown",
+    detail: "Season 6 EMEA PC Champions. Proof that the standard repeats."
+  }
 ];
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 export function HomeChampionsStrip() {
+  const reduced = useReducedMotion();
+
   return (
-    <section className="border-t border-[var(--border)] bg-[var(--bg-alt)] py-14 sm:py-18">
+    <section className="relative overflow-hidden bg-black py-16 sm:py-24">
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_52%_at_22%_40%,rgba(255,0,0,0.18),transparent_60%)]" />
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <motion.div

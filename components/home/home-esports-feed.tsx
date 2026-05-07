@@ -1,15 +1,23 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 
-import { Container } from "@/components/ui";
+import { Button, Container } from "@/components/ui";
 import { fallbackContent } from "@/lib/content-data";
+import { contactChannels, discordInviteUrl } from "@/lib/site-data";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function HomeEsportsFeed() {
+  const reduced = useReducedMotion();
   const featured = fallbackContent[0];
   const secondary = fallbackContent.slice(1, 4);
 
   return (
-    <section className="bg-white py-14 sm:py-18">
+    <section className="relative overflow-hidden border-y border-white/10 bg-[#08080a] py-12 sm:py-16">
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_60%_at_82%_18%,rgba(255,0,0,0.2),transparent_58%)]" />
       <Container size="xl">
         <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
           <motion.article
