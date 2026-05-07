@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { JerseyToggleViewer } from "@/components/merch/jersey-toggle-viewer";
 import { PageShell } from "@/components/page-shell";
@@ -37,6 +38,32 @@ function MerchCta({
   );
 }
 
+function MerchMetaStrip({
+  category,
+  status,
+  action
+}: {
+  category: string;
+  status: string;
+  action: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-4 border-t border-white/10 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/52">
+          {category}
+        </span>
+        <span className="rounded-full border border-[#ff0000]/18 bg-[#ff0000]/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/66">
+          {status}
+        </span>
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        {action}
+      </div>
+    </div>
+  );
+}
+
 export default function MerchPage() {
   const visualMerch = merchItems.filter((item) => item.frontImage && item.backImage);
   const featuredMerch = visualMerch.find((item) => item.featured);
@@ -68,56 +95,46 @@ export default function MerchPage() {
 
           <div className="grid gap-8">
             {featuredMerch?.frontImage && featuredMerch.backImage ? (
-              <section className="grid gap-5 xl:grid-cols-[minmax(0,1.28fr)_minmax(320px,0.72fr)] xl:items-start">
-                <div className="rounded-[1.65rem] border border-white/12 bg-[linear-gradient(145deg,rgba(255,255,255,0.06),rgba(255,0,0,0.04))] p-4 shadow-[0_38px_140px_-70px_rgba(255,0,0,0.55)] sm:p-5">
-                  <JerseyToggleViewer
-                    frontImage={featuredMerch.frontImage}
-                    backImage={featuredMerch.backImage}
-                    name={featuredMerch.name}
-                    status={featuredMerch.status}
-                    layout="wide"
-                  />
-                </div>
-
-                <div className="grid gap-4">
-                  <div className="rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-6">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5959]">
-                      {featuredMerch.category}
-                    </p>
-                    <h2 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.9rem,5vw,5.2rem)] font-extrabold uppercase leading-[0.9] text-white">
-                      {featuredMerch.name}
-                    </h2>
-                    <p className="mt-4 text-sm leading-relaxed text-white/64 sm:text-base">
-                      {featuredMerch.description}
-                    </p>
-
-                    <div className="mt-6 flex flex-wrap items-center gap-3">
-                      <MerchCta href={featuredShopUrl} label={featuredShopLabel} />
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
-                        Opens in a new tab when the storefront is live.
-                      </span>
+              <section className="grid gap-5">
+                <div className="overflow-hidden rounded-[1.65rem] border border-white/12 bg-[linear-gradient(145deg,rgba(255,255,255,0.06),rgba(255,0,0,0.04))] shadow-[0_38px_140px_-70px_rgba(255,0,0,0.55)]">
+                  <div className="border-b border-white/10 px-5 py-5 sm:px-6">
+                    <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5959]">
+                          {featuredMerch.category}
+                        </p>
+                        <h2 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.8rem,6vw,5.8rem)] font-extrabold uppercase leading-[0.9] text-white">
+                          {featuredMerch.name}
+                        </h2>
+                      </div>
+                      <p className="max-w-xl text-sm leading-relaxed text-white/62 sm:text-base xl:text-right">
+                        {featuredMerch.description}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
-                    {[
-                      { label: "Item", value: featuredMerch.name },
-                      { label: "Views", value: "Front + back" },
-                      { label: "Status", value: featuredMerch.status }
-                    ].map((item) => (
-                      <div
-                        key={item.label}
-                        className="rounded-xl border border-white/10 bg-black/22 px-4 py-4"
-                      >
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/36">
-                          {item.label}
-                        </p>
-                        <p className="mt-2 font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-none text-white">
-                          {item.value}
-                        </p>
-                      </div>
-                    ))}
+                  <div className="p-4 sm:p-5">
+                    <JerseyToggleViewer
+                      frontImage={featuredMerch.frontImage}
+                      backImage={featuredMerch.backImage}
+                      name={featuredMerch.name}
+                      status={featuredMerch.status}
+                      layout="wide"
+                    />
                   </div>
+
+                  <MerchMetaStrip
+                    category={featuredMerch.category}
+                    status={featuredMerch.status}
+                    action={
+                      <>
+                        <MerchCta href={featuredShopUrl} label={featuredShopLabel} />
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
+                          Opens in a new tab when the storefront is live.
+                        </span>
+                      </>
+                    }
+                  />
                 </div>
               </section>
             ) : null}
@@ -143,7 +160,7 @@ export default function MerchPage() {
                       className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))]"
                     >
                       <div className="border-b border-white/10 px-5 py-5">
-                        <div className="flex items-start justify-between gap-4">
+                        <div className="flex flex-col gap-4">
                           <div>
                             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5f5f]">
                               {item.category}
@@ -152,13 +169,10 @@ export default function MerchPage() {
                               {item.name}
                             </h3>
                           </div>
-                          <span className="rounded-full border border-[#ff0000]/18 bg-[#ff0000]/8 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/66">
-                            {item.status}
-                          </span>
+                          <p className="max-w-xl text-sm leading-relaxed text-white/58">
+                            {item.description}
+                          </p>
                         </div>
-                        <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/58">
-                          {item.description}
-                        </p>
                       </div>
 
                       <div className="p-4">
@@ -170,6 +184,20 @@ export default function MerchPage() {
                           layout="wide"
                         />
                       </div>
+
+                      <MerchMetaStrip
+                        category={item.category}
+                        status={item.status}
+                        action={
+                          item.externalUrl ? (
+                            <MerchCta href={item.externalUrl} label={item.ctaLabel ?? "Shop now"} />
+                          ) : (
+                            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">
+                              Storefront not live yet.
+                            </span>
+                          )
+                        }
+                      />
                     </article>
                   ))}
                 </div>
