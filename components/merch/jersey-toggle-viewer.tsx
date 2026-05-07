@@ -13,6 +13,7 @@ type JerseyToggleViewerProps = {
   status: string;
   className?: string;
   compact?: boolean;
+  layout?: "default" | "wide";
 };
 
 const VIEW_EASE = [0.22, 1, 0.36, 1] as const;
@@ -28,7 +29,8 @@ export function JerseyToggleViewer({
   name,
   status,
   className,
-  compact = false
+  compact = false,
+  layout = "default"
 }: JerseyToggleViewerProps) {
   const reduced = useReducedMotion();
   const [side, setSide] = useState<"front" | "back">("front");
@@ -58,6 +60,8 @@ export function JerseyToggleViewer({
     });
   }
 
+  const wide = layout === "wide" && !compact;
+
   return (
     <div
       ref={inspectorHostRef}
@@ -68,7 +72,7 @@ export function JerseyToggleViewer({
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(56%_40%_at_50%_16%,rgba(255,0,0,0.14),transparent_62%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,0,0,0.03)_48%,rgba(0,0,0,0.12)_100%)]"
       />
-      <div aria-hidden className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(to_right,rgba(255,255,255,0.8)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.8)_1px,transparent_1px)] [background-size:54px_54px]" />
+      <div aria-hidden className="absolute inset-0 opacity-[0.012] [background-image:linear-gradient(to_right,rgba(255,255,255,0.8)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.8)_1px,transparent_1px)] [background-size:72px_72px]" />
 
       <div className="relative z-10 flex items-center justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5">
         <div>
@@ -105,7 +109,12 @@ export function JerseyToggleViewer({
           </div>
         </div>
 
-        <div className={cn("grid gap-4", compact ? "xl:grid-cols-1" : "xl:grid-cols-[1.08fr_0.92fr]")}>
+        <div
+          className={cn(
+            "grid gap-4",
+            compact ? "xl:grid-cols-1" : wide ? "xl:grid-cols-[1.32fr_0.68fr]" : "xl:grid-cols-[1.08fr_0.92fr]"
+          )}
+        >
           <motion.div
             key={side}
             initial={reduced ? false : { opacity: 0, y: 10 }}
@@ -116,7 +125,11 @@ export function JerseyToggleViewer({
             <div
               className={cn(
                 "relative mx-auto w-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,#09090a,#050506)]",
-                compact ? "aspect-[10/11] max-w-[420px]" : "aspect-[5/6] max-w-[880px]"
+                compact
+                  ? "aspect-[10/11] max-w-[420px]"
+                  : wide
+                    ? "aspect-[4/3] max-w-none"
+                    : "aspect-[5/6] max-w-[880px]"
               )}
               onPointerMove={handlePointerMove}
               onPointerEnter={() => setPointerInside(true)}
@@ -130,7 +143,13 @@ export function JerseyToggleViewer({
                     src={activeImage}
                     alt={`${name} ${activeLabel}`}
                     fill
-                    sizes={compact ? "(max-width: 1280px) 420px, 420px" : "(max-width: 1280px) 880px, 880px"}
+                    sizes={
+                      compact
+                        ? "(max-width: 1280px) 420px, 420px"
+                        : wide
+                          ? "(max-width: 1280px) 100vw, 980px"
+                          : "(max-width: 1280px) 880px, 880px"
+                    }
                     className="object-contain"
                   />
                 </div>
@@ -164,7 +183,7 @@ export function JerseyToggleViewer({
                 </span>
               </div>
 
-              <div className="mt-4 relative aspect-square overflow-hidden rounded-[1.15rem] border border-white/10 bg-[#070708]">
+              <div className={cn("mt-4 relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-[#070708]", wide ? "aspect-[4/3]" : "aspect-square")}>
                 <div
                   className="absolute inset-0"
                   style={{

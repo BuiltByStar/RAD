@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Chip, ChipRow, cn } from "@/components/ui";
 import type { Person } from "@/lib/site-data";
@@ -14,6 +14,8 @@ type RosterRevolverProps = {
 const AUTO_DELAY_MS = 10000;
 const DRAG_THRESHOLD = 72;
 const REVOLVER_EASE = [0.22, 1, 0.36, 1] as const;
+const TRANSITION_MS = 920;
+const STAGE_DEPTH = 4;
 
 function wrapIndex(index: number, length: number) {
   return ((index % length) + length) % length;
@@ -39,6 +41,9 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [direction, setDirection] = useState<1 | -1>(1);
+  const [transitioning, setTransitioning] = useState(false);
+  const releaseTimerRef = useRef<number | null>(null);
 
   const activePlayer = players[active];
   const stagedPlayers = useMemo(() => {
@@ -49,29 +54,70 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         player,
         offset: getShortestOffset(index, active, players.length)
       }))
-      .filter(({ offset }) => Math.abs(offset) <= 2);
+      .filter(({ offset }) => Math.abs(offset) <= STAGE_DEPTH);
   }, [active, players]);
 
   const goTo = useCallback(
-    (index: number) => {
-      if (!players.length) return;
+    (index: number, nextDirection?: 1 | -1) => {
+      if (!players.length || transitioning) return;
+      const target = wrapIndex(index, players.length);
+      const rawDelta = target - active;
+      const shortestDelta =
+        Math.abs(rawDelta) > players.length / 2
+          ? rawDelta > 0
+            ? rawDelta - players.length
+            : rawDelta + players.length
+          : rawDelta;
+
+      const resolvedDirection = nextDirection ?? (shortestDelta >= 0 ? 1 : -1);
+
+      setDirection(resolvedDirection);
+      setTransitioning(true);
+      if (releaseTimerRef.current) {
+        window.clearTimeout(releaseTimerRef.current);
+      }
       setActive(wrapIndex(index, players.length));
+      if (!reduced) {
+        releaseTimerRef.current = window.setTimeout(() => {
+          setTransitioning(false);
+          releaseTimerRef.current = null;
+        }, TRANSITION_MS);
+      } else {
+        setTransitioning(false);
+      }
     },
-    [players.length]
+    [active, players.length, reduced, transitioning]
   );
 
-  const goNext = useCallback(() => goTo(active + 1), [active, goTo]);
-  const goPrev = useCallback(() => goTo(active - 1), [active, goTo]);
+  const goNext = useCallback(() => goTo(active + 1, 1), [active, goTo]);
+  const goPrev = useCallback(() => goTo(active - 1, -1), [active, goTo]);
 
   useEffect(() => {
-    if (reduced || paused || players.length < 2) return;
+    if (reduced || paused || transitioning || players.length < 2) return;
 
     const interval = window.setInterval(() => {
+      setDirection(1);
       setActive((current) => wrapIndex(current + 1, players.length));
+      setTransitioning(true);
+      if (releaseTimerRef.current) {
+        window.clearTimeout(releaseTimerRef.current);
+      }
+      releaseTimerRef.current = window.setTimeout(() => {
+        setTransitioning(false);
+        releaseTimerRef.current = null;
+      }, TRANSITION_MS);
     }, AUTO_DELAY_MS);
 
     return () => window.clearInterval(interval);
-  }, [paused, players.length, reduced]);
+  }, [paused, players.length, reduced, transitioning]);
+
+  useEffect(() => {
+    return () => {
+      if (releaseTimerRef.current) {
+        window.clearTimeout(releaseTimerRef.current);
+      }
+    };
+  }, []);
 
   if (!players.length || !activePlayer) return null;
 
@@ -84,9 +130,14 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
       onBlur={() => setPaused(false)}
     >
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(68%_60%_at_50%_18%,rgba(255,0,0,0.24),transparent_62%),linear-gradient(90deg,rgba(255,0,0,0.12),transparent_24%,transparent_76%,rgba(255,0,0,0.12))]" />
-      <div aria-hidden className="absolute inset-0 opacity-[0.055] [background-image:linear-gradient(to_right,rgba(255,255,255,0.75)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.75)_1px,transparent_1px)] [background-size:48px_48px]" />
+      <div aria-hidden className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(to_right,rgba(255,255,255,0.75)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.75)_1px,transparent_1px)] [background-size:56px_56px]" />
       <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000] to-transparent" />
       <span aria-hidden className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      <span
+        aria-hidden
+        className="absolute left-1/2 top-[55%] h-px w-[78%] bg-gradient-to-r from-transparent via-[#ff0000]/30 to-transparent transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ transform: `translate(calc(-50% + ${direction * 10}px), -50%)` }}
+      />
 
       <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
@@ -113,6 +164,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
           <button
             type="button"
             onClick={goPrev}
+            disabled={transitioning}
             className="grid h-11 w-11 place-items-center rounded-md border border-white/12 bg-white/[0.04] text-xl text-white/72 transition hover:border-[#ff0000]/42 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000]"
             aria-label="Previous player"
           >
@@ -121,6 +173,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
           <button
             type="button"
             onClick={goNext}
+            disabled={transitioning}
             className="grid h-11 w-11 place-items-center rounded-md border border-white/12 bg-white/[0.04] text-xl text-white/72 transition hover:border-[#ff0000]/42 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000]"
             aria-label="Next player"
           >
@@ -131,9 +184,9 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
 
       <motion.div
         className="relative z-10 mt-7 h-[520px] touch-pan-y overflow-hidden sm:h-[560px] lg:h-[610px]"
-        drag={players.length > 1 ? "x" : false}
+        drag={players.length > 1 && !transitioning ? "x" : false}
         dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.16}
+        dragElastic={0.12}
         dragMomentum={false}
         onDragStart={() => setPaused(true)}
         onDragEnd={(_, info) => {
@@ -151,15 +204,78 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                 offset === 0 ? "z-30 border-[#ff0000]/42" : "z-10 border-white/10"
               )}
               animate={{
-                x: `calc(-50% + ${offset * 50}%)`,
-                y: Math.abs(offset) * 16 + (offset === 0 ? 0 : 10),
-                rotateY: offset * -20,
-                rotateZ: offset * -1.15,
-                scale: offset === 0 ? 1 : Math.max(0.74, 0.91 - Math.abs(offset) * 0.03),
-                opacity: Math.abs(offset) > 1 ? 0.52 : offset === 0 ? 1 : 0.82,
-                filter: offset === 0 ? "brightness(1)" : "brightness(0.74)"
+                x:
+                  offset === 0
+                    ? "calc(-50% + 0%)"
+                    : offset === -1
+                      ? "calc(-50% - 46%)"
+                      : offset === 1
+                        ? "calc(-50% + 46%)"
+                        : offset === -2
+                          ? "calc(-50% - 82%)"
+                          : offset === 2
+                            ? "calc(-50% + 82%)"
+                            : offset < 0
+                              ? "calc(-50% - 118%)"
+                              : "calc(-50% + 118%)",
+                y:
+                  offset === 0
+                    ? 0
+                    : Math.abs(offset) === 1
+                      ? 26
+                      : Math.abs(offset) === 2
+                        ? 48
+                        : 68,
+                rotateY:
+                  offset === 0
+                    ? 0
+                    : Math.abs(offset) === 1
+                      ? offset * -16
+                      : Math.abs(offset) === 2
+                        ? offset * -22
+                        : offset * -28,
+                rotateZ: offset === 0 ? 0 : Math.sign(offset) * -0.8,
+                scale:
+                  offset === 0
+                    ? 1
+                    : Math.abs(offset) === 1
+                      ? 0.9
+                      : Math.abs(offset) === 2
+                        ? 0.78
+                        : 0.62,
+                opacity:
+                  offset === 0
+                    ? 1
+                    : Math.abs(offset) === 1
+                      ? 0.84
+                      : Math.abs(offset) === 2
+                        ? 0.42
+                        : 0.08,
+                filter:
+                  offset === 0
+                    ? "brightness(1)"
+                    : Math.abs(offset) === 1
+                      ? "brightness(0.82)"
+                      : "brightness(0.65)"
               }}
-              transition={reduced ? { duration: 0 } : { duration: 1.28, ease: REVOLVER_EASE }}
+              transition={
+                reduced
+                  ? { duration: 0 }
+                  : {
+                      duration: transitioning ? TRANSITION_MS / 1000 : 1.08,
+                      ease: REVOLVER_EASE
+                    }
+              }
+              style={{
+                zIndex:
+                  offset === 0
+                    ? 40
+                    : Math.abs(offset) === 1
+                      ? 30
+                      : Math.abs(offset) === 2
+                        ? 20
+                        : 10
+              }}
             >
               <span aria-hidden className="absolute inset-y-0 left-0 z-20 w-px bg-gradient-to-b from-transparent via-[#ff0000] to-transparent opacity-80" />
               <span aria-hidden className="absolute inset-y-0 right-0 z-20 w-px bg-gradient-to-b from-transparent via-white/28 to-transparent" />
@@ -239,7 +355,11 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
           <button
             key={player.slug}
             type="button"
-            onClick={() => goTo(index)}
+            onClick={() => {
+              const offset = getShortestOffset(index, active, players.length);
+              goTo(index, offset >= 0 ? 1 : -1);
+            }}
+            disabled={transitioning}
             className={cn(
               "h-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000]",
               index === active ? "w-10 bg-[#ff0000]" : "w-4 bg-white/24 hover:bg-white/52"

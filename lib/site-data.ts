@@ -45,6 +45,8 @@ export type MerchItem = {
   frontImage?: string;
   backImage?: string;
   featured?: boolean;
+  externalUrl?: string;
+  ctaLabel?: string;
 };
 
 export type ContactChannel = {
@@ -311,7 +313,8 @@ export const merchCollection = {
   conceptImage: "/assets/merch-rad-concept-sheet.png",
   frontImage: "/assets/merch-rad-jersey-front.png",
   backImage: "/assets/merch-rad-jersey-back.png",
-  spotlight: "Flagship jersey"
+  spotlight: "Flagship jersey",
+  shopUrl: undefined as string | undefined
 };
 
 export const merchItems: MerchItem[] = [
@@ -323,7 +326,9 @@ export const merchItems: MerchItem[] = [
     status: "Coming soon",
     frontImage: "/assets/merch-rad-jersey-front.png",
     backImage: "/assets/merch-rad-jersey-back.png",
-    featured: true
+    featured: true,
+    externalUrl: undefined,
+    ctaLabel: "Shop the drop"
   },
   {
     name: "Wild Hoodie",
@@ -332,7 +337,9 @@ export const merchItems: MerchItem[] = [
     accent: "Cold-weather staple",
     status: "Coming soon",
     frontImage: "/assets/merch-rad-hoodie-front.png",
-    backImage: "/assets/merch-rad-hoodie-back.png"
+    backImage: "/assets/merch-rad-hoodie-back.png",
+    externalUrl: undefined,
+    ctaLabel: "Shop the layer"
   },
   {
     name: "Pressure Socks",
@@ -341,7 +348,9 @@ export const merchItems: MerchItem[] = [
     accent: "Game-day detail",
     status: "Coming soon",
     frontImage: "/assets/merch-rad-socks-front.png",
-    backImage: "/assets/merch-rad-socks-back.png"
+    backImage: "/assets/merch-rad-socks-back.png",
+    externalUrl: undefined,
+    ctaLabel: "Shop the detail"
   },
   {
     name: "Match Cap",

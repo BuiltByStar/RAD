@@ -69,7 +69,6 @@ export function PageShellHero({
       )}
       <div aria-hidden className="absolute inset-0 z-[-2] bg-[linear-gradient(90deg,rgba(2,2,4,0.95)_0%,rgba(10,0,0,0.78)_48%,rgba(2,2,4,0.72)_100%)]" />
       <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(76%_58%_at_50%_20%,rgba(255,0,0,0.18),transparent_62%)]" />
-      <div aria-hidden className="absolute inset-0 z-[-1] opacity-[0.04] [background-image:linear-gradient(to_right,rgba(255,255,255,0.55)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.55)_1px,transparent_1px)] [background-size:56px_56px]" />
       <motion.div
         aria-hidden
         className="absolute left-[-18%] top-[36%] z-[-1] h-24 w-[80%] rotate-[-8deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.32),rgba(255,255,255,0.1),transparent)] blur-sm"

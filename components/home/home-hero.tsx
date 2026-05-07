@@ -51,7 +51,7 @@ export function HomeHero() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 z-[-1] opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.5)_1px,transparent_1px)] [background-size:72px_72px]"
+        className="absolute inset-0 z-[-1] opacity-[0.045] [background-image:linear-gradient(to_right,rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.5)_1px,transparent_1px)] [background-size:88px_88px]"
       />
 
       <Container size="xl" className="relative z-10">
@@ -127,13 +127,6 @@ export function HomeHero() {
           >
             <div className="absolute -inset-8 rounded-[2rem] bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,0,0.22),transparent_60%)] blur-2xl" />
             <div className="relative overflow-hidden rounded-[1.65rem] border border-white/14 bg-black/58 p-4 shadow-[0_40px_140px_rgba(0,0,0,0.72)] backdrop-blur-xl">
-              <motion.span
-                aria-hidden
-                className="absolute left-[-45%] top-10 z-20 h-px w-[90%] bg-gradient-to-r from-transparent via-[#ff0000] to-transparent"
-                animate={reduced ? undefined : { x: ["0%", "210%"], opacity: [0, 0.9, 0] }}
-                transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 2.5, ease: "easeOut" }}
-              />
-
               {featuredMerch?.frontImage && featuredMerch.backImage ? (
                 <JerseyToggleViewer
                   frontImage={featuredMerch.frontImage}
