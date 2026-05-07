@@ -45,7 +45,7 @@ export function HomeWorldsPortal() {
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-14">
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 20 }}
+            initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease: EASE }}
@@ -71,7 +71,7 @@ export function HomeWorldsPortal() {
           </motion.div>
 
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 24 }}
+            initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
@@ -88,11 +88,9 @@ export function HomeWorldsPortal() {
                   className="object-cover opacity-76"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(0,0,0,0.76)_44%,rgba(0,0,0,0.18)_100%)]" />
-                <motion.div
+                <div
                   aria-hidden
-                  className="absolute left-[-35%] top-[26%] h-24 w-[120%] rotate-[-10deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.22),rgba(255,255,255,0.12),transparent)]"
-                  animate={reduced ? undefined : { x: ["-10%", "20%", "-10%"], opacity: [0.25, 0.7, 0.25] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute left-[-35%] top-[26%] h-24 w-[120%] rotate-[-10deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.22),rgba(255,255,255,0.12),transparent)] opacity-45"
                 />
                 <div className="relative z-10 flex min-h-[360px] flex-col justify-end p-6 sm:p-8">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">

@@ -76,7 +76,7 @@ export function Card({
     ? {}
     : {
         variants: cardVariants,
-        initial: "hidden" as const,
+        initial: false,
         whileInView: "visible" as const,
         viewport: { once: true, margin: "-60px" },
         whileHover: hover ? { y: -3 } : undefined
@@ -120,7 +120,7 @@ export function Card({
         <motion.span
           aria-hidden
           className="pointer-events-none absolute left-0 top-0 h-px w-32 origin-left bg-[color:var(--color-rad)]/90"
-          initial={reduced ? undefined : { scaleX: 0 }}
+          initial={false}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.8, ease: EASE_EMPHASIS, delay: 0.1 }}

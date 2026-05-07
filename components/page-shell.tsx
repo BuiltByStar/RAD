@@ -96,7 +96,7 @@ export function PageShell({
 }: PageShellProps) {
   return (
     <main className="relative isolate">
-      <PageReadySignal route={variant === "default" ? "/" : `/${variant}`} delayMs={170} />
+      <PageReadySignal route={variant === "default" ? "/" : `/${variant}`} delayMs={32} />
       <PageShellHero
         title={title}
         eyebrow={eyebrow}

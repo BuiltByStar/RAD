@@ -9,7 +9,7 @@ import { PageReadySignal } from "@/components/page-ready-signal";
 export default function HomePage() {
   return (
     <main className="relative isolate">
-      <PageReadySignal route="/" delayMs={220} />
+      <PageReadySignal route="/" delayMs={40} />
       <HomeIntro />
       <HomeHero />
       <MarqueeStrip />

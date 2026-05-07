@@ -1,0 +1,32 @@
+<svg width="1200" height="1440" viewBox="0 0 1200 1440" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1440" fill="#09090B"/>
+  <ellipse cx="600" cy="210" rx="250" ry="110" fill="url(#glow)" opacity="0.42"/>
+  <g filter="url(#shadow)">
+    <path d="M480 180H720V760C720 870 756 962 814 1046L936 1220V1300H744L578 1052C511 952 480 854 480 748V180Z" fill="url(#sockBody)"/>
+    <path d="M480 180H720V248H480V180Z" fill="#111116"/>
+    <path d="M480 278H720V320H480V278Z" fill="#9C141B"/>
+    <path d="M532 430H668V486H532V430Z" fill="#111116" stroke="#B8262B" stroke-width="4"/>
+    <text x="600" y="472" text-anchor="middle" fill="#F4F1F1" font-size="44" font-weight="800" font-family="Arial Black, Arial, sans-serif" letter-spacing="3">GO WILD</text>
+    <path d="M528 610H672" stroke="#B71E24" stroke-width="18" stroke-linecap="round"/>
+    <path d="M548 676H652" stroke="#701014" stroke-width="28" stroke-linecap="round" opacity="0.75"/>
+    <path d="M556 748H644" stroke="#B71E24" stroke-width="14" stroke-linecap="round"/>
+    <path d="M560 936L702 1094" stroke="#D12A31" stroke-width="22" stroke-linecap="round"/>
+    <path d="M524 886L718 1102" stroke="#651014" stroke-width="34" stroke-linecap="round" opacity="0.74"/>
+  </g>
+  <text x="600" y="1268" text-anchor="middle" fill="#ECE7E7" font-size="58" font-weight="800" font-family="Arial Black, Arial, sans-serif" letter-spacing="8">RAD SOCKS</text>
+  <defs>
+    <linearGradient id="sockBody" x1="600" y1="180" x2="600" y2="1300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B1B20"/>
+      <stop offset="0.42" stop-color="#0F1014"/>
+      <stop offset="0.72" stop-color="#120708"/>
+      <stop offset="1" stop-color="#231112"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 210) rotate(90) scale(150 320)">
+      <stop stop-color="#FF2B2B"/>
+      <stop offset="1" stop-color="#FF2B2B" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="390" y="140" width="636" height="1260" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="34" stdDeviation="32" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+</svg>

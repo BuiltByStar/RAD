@@ -21,7 +21,7 @@ export function HomeEsportsFeed() {
       <Container size="xl">
         <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
           <motion.article
-            initial={reduced ? undefined : { opacity: 0, y: 24 }}
+            initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: EASE }}
@@ -35,11 +35,9 @@ export function HomeEsportsFeed() {
               className="object-cover opacity-78"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.58)_48%,#050505_100%),radial-gradient(circle_at_68%_20%,rgba(255,0,0,0.28),transparent_44%)]" />
-            <motion.div
+            <div
               aria-hidden
-              className="absolute left-[-30%] top-[38%] h-24 w-[130%] rotate-[-8deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.26),rgba(255,255,255,0.1),transparent)]"
-              animate={reduced ? undefined : { x: ["-12%", "18%", "-12%"], opacity: [0.25, 0.66, 0.25] }}
-              transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute left-[-30%] top-[38%] h-24 w-[130%] rotate-[-8deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.26),rgba(255,255,255,0.1),transparent)] opacity-45"
             />
             <div className="relative z-10 flex min-h-[460px] flex-col justify-end p-6 sm:p-8">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
@@ -62,7 +60,7 @@ export function HomeEsportsFeed() {
 
           <div className="grid gap-5">
             <motion.div
-              initial={reduced ? undefined : { opacity: 0, x: 20 }}
+              initial={false}
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, ease: EASE, delay: 0.05 }}
@@ -97,7 +95,7 @@ export function HomeEsportsFeed() {
             </motion.div>
 
             <motion.div
-              initial={reduced ? undefined : { opacity: 0, x: 20 }}
+              initial={false}
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, ease: EASE, delay: 0.12 }}

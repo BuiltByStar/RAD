@@ -7,7 +7,7 @@ type PageReadySignalProps = {
   delayMs?: number;
 };
 
-export function PageReadySignal({ route, delayMs = 140 }: PageReadySignalProps) {
+export function PageReadySignal({ route, delayMs = 24 }: PageReadySignalProps) {
   useEffect(() => {
     let timeoutId: number | null = null;
     let frameOne = 0;
@@ -23,6 +23,11 @@ export function PageReadySignal({ route, delayMs = 140 }: PageReadySignalProps) 
 
     frameOne = window.requestAnimationFrame(() => {
       frameTwo = window.requestAnimationFrame(() => {
+        if (delayMs <= 0) {
+          dispatchReady();
+          return;
+        }
+
         timeoutId = window.setTimeout(dispatchReady, delayMs);
       });
     });

@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { ReactNode } from "react";
+import { cache, type ReactNode } from "react";
 
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -24,6 +24,7 @@ export type Post = PostMeta & {
 };
 
 const postsDirectory = path.join(process.cwd(), "content", "posts");
+const REMOTE_POST_TIMEOUT_MS = 1200;
 
 type NewsPostRow = {
   title: string;
@@ -42,12 +43,12 @@ async function readPostFile(slug: string) {
   return fs.readFile(fullPath, "utf8");
 }
 
-async function getLocalPostSlugs() {
+const getLocalPostSlugs = cache(async function getLocalPostSlugs() {
   const files = await fs.readdir(postsDirectory);
   return files
     .filter((file) => file.endsWith(".mdx"))
     .map((file) => file.replace(/\.mdx$/, ""));
-}
+});
 
 export async function getPostSlugs() {
   const localSlugs = await getLocalPostSlugs();
@@ -58,7 +59,7 @@ export async function getPostSlugs() {
   return Array.from(new Set([...localSlugs, ...remoteSlugs]));
 }
 
-async function getLocalPostMeta() {
+const getLocalPostMeta = cache(async function getLocalPostMeta() {
   const slugs = await getLocalPostSlugs();
   const posts = await Promise.all(
     slugs.map(async (slug) => {
@@ -77,7 +78,7 @@ async function getLocalPostMeta() {
   );
 
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-}
+});
 
 function mapNewsPost(row: NewsPostRow): PostMeta {
   return {
@@ -91,24 +92,46 @@ function mapNewsPost(row: NewsPostRow): PostMeta {
   };
 }
 
-async function getSupabasePostRows() {
+async function withTimeout<T>(promise: Promise<T>, fallback: T, timeoutMs = REMOTE_POST_TIMEOUT_MS) {
+  let timeoutId: NodeJS.Timeout | null = null;
+
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<T>((resolve) => {
+        timeoutId = setTimeout(() => resolve(fallback), timeoutMs);
+      })
+    ]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
+
+const getSupabasePostRows = cache(async function getSupabasePostRows() {
   if (!hasSupabaseBrowserEnv()) return null;
 
   try {
-    const supabase = await createSupabaseServerClient();
-    const { data, error } = await supabase
-      .from("news_posts")
-      .select("title, slug, date, summary, category, cover, body, featured, display_order")
-      .eq("published", true)
-      .order("display_order", { ascending: true })
-      .order("date", { ascending: false });
+    const result = await withTimeout(
+      (async () => {
+        const supabase = await createSupabaseServerClient();
+        const { data, error } = await supabase
+          .from("news_posts")
+          .select("title, slug, date, summary, category, cover, body, featured, display_order")
+          .eq("published", true)
+          .order("display_order", { ascending: true })
+          .order("date", { ascending: false });
 
-    if (error) return null;
-    return (data ?? []) as NewsPostRow[];
+        if (error) return null;
+        return (data ?? []) as NewsPostRow[];
+      })(),
+      null
+    );
+
+    return result;
   } catch {
     return null;
   }
-}
+});
 
 async function getSupabasePostMeta() {
   const rows = await getSupabasePostRows();

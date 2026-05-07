@@ -35,7 +35,7 @@ export function HomeChampionsStrip() {
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 20 }}
+            initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease: EASE }}
@@ -59,7 +59,7 @@ export function HomeChampionsStrip() {
             {milestones.map((milestone, index) => (
               <motion.article
                 key={milestone.title}
-                initial={reduced ? undefined : { opacity: 0, x: 22 }}
+                initial={false}
                 whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, ease: EASE, delay: index * 0.06 }}
@@ -84,7 +84,7 @@ export function HomeChampionsStrip() {
             ))}
 
             <motion.div
-              initial={reduced ? undefined : { opacity: 0, y: 20 }}
+              initial={false}
               whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.64, ease: EASE, delay: 0.18 }}

@@ -80,7 +80,7 @@ export function PageShellHero({
 
       <Container size="xl">
         <motion.div
-          initial={reduced ? undefined : { opacity: 0, y: 20 }}
+          initial={false}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.75, ease: EASE_EMPHASIS }}
           className={
@@ -90,7 +90,7 @@ export function PageShellHero({
           }
         >
           <motion.div
-            initial={reduced ? undefined : { opacity: 0 }}
+            initial={false}
             animate={reduced ? undefined : { opacity: 1 }}
             transition={{ duration: 0.55, delay: 0.05 }}
             className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/52"
@@ -101,20 +101,20 @@ export function PageShellHero({
           </motion.div>
 
           <motion.h1
-            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            initial={false}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease: EASE_EMPHASIS, delay: 0.08 }}
             className={
               compact
-                ? "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(3rem,6.2vw,6rem)] font-extrabold uppercase leading-[0.88] tracking-tight text-white"
-                : "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(3.2rem,7vw,6.4rem)] font-extrabold uppercase leading-[0.88] tracking-tight text-white"
+                ? "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(3rem,6.2vw,6rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.01em] text-white"
+                : "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(3.2rem,7vw,6.4rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.01em] text-white"
             }
           >
             {title}
           </motion.h1>
 
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 10 }}
+            initial={false}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.62, ease: EASE_EMPHASIS, delay: 0.13 }}
             className="mt-5 flex flex-wrap gap-2"
@@ -130,7 +130,7 @@ export function PageShellHero({
           </motion.div>
 
           <motion.p
-            initial={reduced ? undefined : { opacity: 0, y: 12 }}
+            initial={false}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: EASE_EMPHASIS, delay: 0.16 }}
             className={
@@ -143,7 +143,7 @@ export function PageShellHero({
           </motion.p>
 
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 10 }}
+            initial={false}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: EASE_EMPHASIS, delay: 0.22 }}
             className={compact ? "mt-6 flex flex-wrap items-center gap-3" : "mt-8 flex flex-wrap items-center gap-3"}
@@ -157,7 +157,7 @@ export function PageShellHero({
 
           {note ? (
             <motion.div
-              initial={reduced ? undefined : { opacity: 0, y: 10 }}
+              initial={false}
               animate={reduced ? undefined : { opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE_EMPHASIS, delay: 0.28 }}
               className="mt-8 max-w-2xl rounded-md border border-white/12 bg-black/42 p-4 backdrop-blur"

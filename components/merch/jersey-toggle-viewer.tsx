@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 
 import { cn } from "@/components/ui";
 
@@ -13,11 +13,6 @@ type JerseyToggleViewerProps = {
   status: string;
   className?: string;
   compact?: boolean;
-};
-
-type FocusPoint = {
-  x: number;
-  y: number;
 };
 
 const VIEW_EASE = [0.22, 1, 0.36, 1] as const;
@@ -38,7 +33,8 @@ export function JerseyToggleViewer({
   const reduced = useReducedMotion();
   const [side, setSide] = useState<"front" | "back">("front");
   const [pointerInside, setPointerInside] = useState(false);
-  const [focusPoint, setFocusPoint] = useState<FocusPoint>({ x: 0.5, y: 0.4 });
+  const inspectorHostRef = useRef<HTMLDivElement | null>(null);
+  const frameRef = useRef<number | null>(null);
 
   const activeImage = side === "front" ? frontImage : backImage;
   const activeLabel = `${side} view`;
@@ -47,11 +43,27 @@ export function JerseyToggleViewer({
     const rect = event.currentTarget.getBoundingClientRect();
     const nextX = clamp((event.clientX - rect.left) / rect.width, 0, 1);
     const nextY = clamp((event.clientY - rect.top) / rect.height, 0, 1);
-    setFocusPoint({ x: nextX, y: nextY });
+    const host = inspectorHostRef.current;
+
+    if (!host) return;
+
+    if (frameRef.current) {
+      cancelAnimationFrame(frameRef.current);
+    }
+
+    frameRef.current = requestAnimationFrame(() => {
+      host.style.setProperty("--focus-x", `${nextX * 100}%`);
+      host.style.setProperty("--focus-y", `${nextY * 100}%`);
+      frameRef.current = null;
+    });
   }
 
   return (
-    <div className={cn("relative overflow-hidden rounded-[1.55rem] border border-white/12 bg-[#080809]", className)}>
+    <div
+      ref={inspectorHostRef}
+      className={cn("relative overflow-hidden rounded-[1.55rem] border border-white/12 bg-[#080809]", className)}
+      style={{ ["--focus-x" as string]: "50%", ["--focus-y" as string]: "40%" }}
+    >
       <div
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(56%_40%_at_50%_16%,rgba(255,0,0,0.14),transparent_62%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,0,0,0.03)_48%,rgba(0,0,0,0.12)_100%)]"
@@ -60,7 +72,7 @@ export function JerseyToggleViewer({
 
       <div className="relative z-10 flex items-center justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5555]">Featured merch</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5555]">Merch</p>
           <h3 className="mt-1 font-[family-name:var(--font-display)] text-2xl font-extrabold uppercase leading-none text-white">
             {name}
           </h3>
@@ -128,13 +140,13 @@ export function JerseyToggleViewer({
                   aria-hidden
                   className="pointer-events-none absolute h-24 w-24 rounded-full border border-[#ff6a6a]/65 bg-white/[0.03] shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_18px_44px_rgba(0,0,0,0.36)] backdrop-blur-[1px]"
                   style={{
-                    left: `calc(${focusPoint.x * 100}% - 3rem)`,
-                    top: `calc(${focusPoint.y * 100}% - 3rem)`
+                    left: "calc(var(--focus-x) - 3rem)",
+                    top: "calc(var(--focus-y) - 3rem)"
                   }}
                 />
               ) : null}
               <div className="absolute inset-x-4 bottom-4 flex items-center justify-between rounded-full border border-white/10 bg-black/42 px-4 py-2 backdrop-blur">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/38">RAD concept art</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/38">RAD product render</span>
                 <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/52">{activeLabel}</span>
               </div>
             </div>
@@ -159,7 +171,7 @@ export function JerseyToggleViewer({
                     backgroundImage: `url(${activeImage})`,
                     backgroundRepeat: "no-repeat",
                     backgroundSize: `${ZOOM_SCALE * 100}%`,
-                    backgroundPosition: `${focusPoint.x * 100}% ${focusPoint.y * 100}%`
+                    backgroundPosition: "var(--focus-x) var(--focus-y)"
                   }}
                 />
               </div>

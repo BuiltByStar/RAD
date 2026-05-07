@@ -10,10 +10,10 @@ import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { primaryNavLinks } from "@/lib/site-data";
 
 const SCROLL_THRESHOLD = 8;
-const NAV_PUSH_DELAY_MS = 140;
-const NAV_GLITCH_OUTRO_MS = 420;
-const NAV_READY_FALLBACK_MS = 1800;
-const NAV_HARD_FALLBACK_MS = 9000;
+const NAV_PUSH_DELAY_MS = 90;
+const NAV_GLITCH_OUTRO_MS = 320;
+const NAV_READY_FALLBACK_MS = 950;
+const NAV_HARD_FALLBACK_MS = 5000;
 
 type NavTransition = {
   href: string;
@@ -112,7 +112,41 @@ export function SiteHeader() {
   }, [pathname]);
 
   useEffect(() => {
-    primaryNavLinks.forEach((link) => router.prefetch(link.href));
+    const prefetchRoutes = () => {
+      primaryNavLinks.forEach((link) => router.prefetch(link.href));
+
+      if (process.env.NODE_ENV === "development") {
+        const warmTargets = primaryNavLinks
+          .map((link) => link.href)
+          .filter((href) => href !== "/");
+
+        void (async () => {
+          for (const href of warmTargets) {
+            try {
+              await fetch(href, {
+                method: "GET",
+                cache: "no-store",
+                credentials: "same-origin"
+              });
+            } catch {
+              // Dev warmup is best-effort only.
+            }
+          }
+        })();
+      }
+    };
+
+    if ("requestIdleCallback" in window) {
+      const idleHost = window as Window & {
+        requestIdleCallback: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+        cancelIdleCallback: (handle: number) => void;
+      };
+      const idleId = idleHost.requestIdleCallback(prefetchRoutes, { timeout: 1200 });
+      return () => idleHost.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = globalThis.setTimeout(prefetchRoutes, 250);
+    return () => globalThis.clearTimeout(timeoutId);
   }, [router]);
 
   useEffect(() => {

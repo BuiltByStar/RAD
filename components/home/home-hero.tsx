@@ -20,7 +20,7 @@ export function HomeHero() {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         poster="/assets/RadPlayerBannerPNG8.png"
         className="absolute inset-0 z-[-5] h-full w-full object-cover opacity-30 mix-blend-screen"
       >
@@ -37,23 +37,17 @@ export function HomeHero() {
         aria-hidden
         className="absolute inset-0 z-[-4] bg-[radial-gradient(70%_50%_at_62%_35%,rgba(255,0,0,0.38),transparent_62%),linear-gradient(90deg,#030304_0%,rgba(3,3,4,0.86)_42%,rgba(3,3,4,0.58)_70%,#030304_100%)]"
       />
-      <motion.div
+      <div
         aria-hidden
         className="absolute -right-[24%] top-[10%] z-[-3] h-[36rem] w-[36rem] rounded-full border border-[#ff0000]/24"
-        animate={reduced ? undefined : { rotate: [0, 360], scale: [1, 1.06, 1] }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
       />
-      <motion.div
+      <div
         aria-hidden
-        className="absolute left-[-20%] top-[16%] z-[-2] h-20 w-[140%] rotate-[-10deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.24),rgba(255,255,255,0.12),transparent)] blur-sm"
-        animate={reduced ? undefined : { x: ["-12%", "12%", "-12%"], opacity: [0.2, 0.58, 0.2] }}
-        transition={{ duration: 9.5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute left-[-20%] top-[16%] z-[-2] h-20 w-[140%] rotate-[-10deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.24),rgba(255,255,255,0.12),transparent)] blur-sm opacity-35"
       />
-      <motion.div
+      <div
         aria-hidden
-        className="absolute bottom-[8%] left-[-18%] z-[-2] h-32 w-[88%] rotate-[7deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.18),transparent)] blur-md"
-        animate={reduced ? undefined : { x: ["-8%", "18%", "-8%"], opacity: [0.1, 0.45, 0.1] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+        className="absolute bottom-[8%] left-[-18%] z-[-2] h-32 w-[88%] rotate-[7deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.18),transparent)] blur-md opacity-30"
       />
       <div
         aria-hidden
@@ -63,7 +57,7 @@ export function HomeHero() {
       <Container size="xl" className="relative z-10">
         <div className="grid min-h-[calc(88svh-4rem)] gap-8 pb-12 pt-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:pb-16 lg:pt-14">
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 28 }}
+            initial={false}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE }}
             className="max-w-4xl"
@@ -84,7 +78,7 @@ export function HomeHero() {
               ))}
             </div>
 
-            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(4.1rem,11vw,11.5rem)] font-extrabold uppercase leading-[0.76] tracking-[-0.035em] text-white">
+            <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(4.1rem,11vw,11.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.015em] text-white sm:tracking-[-0.02em]">
               Go
               <span className="block bg-[linear-gradient(90deg,#fff_0%,#ff2b2b_45%,#ff0000_100%)] bg-clip-text text-transparent">
                 Wild.
@@ -126,7 +120,7 @@ export function HomeHero() {
           </motion.div>
 
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, x: 28, rotate: 1.2 }}
+            initial={false}
             animate={reduced ? undefined : { opacity: 1, x: 0, rotate: 0 }}
             transition={{ duration: 0.85, ease: EASE, delay: 0.12 }}
             className="relative"

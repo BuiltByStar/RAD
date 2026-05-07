@@ -32,7 +32,7 @@ export function SectionHeading({
   const motionProps = reduced
     ? {}
     : {
-        initial: { opacity: 0, y: 14 },
+        initial: false,
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, margin: "-80px" },
         transition: { duration: 0.6, ease: EASE_EMPHASIS }
@@ -51,7 +51,7 @@ export function SectionHeading({
         {eyebrow ? (
           <motion.p
             className="relative inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--color-rad-hi)]/90"
-            initial={reduced ? undefined : { opacity: 0, x: -8 }}
+            initial={false}
             whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, ease: EASE_EMPHASIS }}
@@ -91,7 +91,7 @@ export function SectionHeading({
 
       <motion.span
         aria-hidden
-        initial={reduced ? undefined : { scaleX: 0 }}
+        initial={false}
         whileInView={reduced ? undefined : { scaleX: 1 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.9, ease: EASE_EMPHASIS, delay: 0.15 }}

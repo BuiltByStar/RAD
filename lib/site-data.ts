@@ -335,6 +335,15 @@ export const merchItems: MerchItem[] = [
     backImage: "/assets/merch-rad-hoodie-back.png"
   },
   {
+    name: "Pressure Socks",
+    category: "Accessory",
+    description: "Tall black match socks with red trims and a sharp RAD hit through the shin.",
+    accent: "Game-day detail",
+    status: "Coming soon",
+    frontImage: "/assets/merch-rad-socks-front.png",
+    backImage: "/assets/merch-rad-socks-back.png"
+  },
+  {
     name: "Match Cap",
     category: "Accessory",
     description: "Low-profile cap for daily wear with the clean wordmark up front.",

@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Barlow, Barlow_Condensed } from "next/font/google";
+import type { CSSProperties } from "react";
 
 import { AmbientBackground } from "@/components/ambient-background";
-import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPublicSiteUrl } from "@/lib/env";
@@ -10,19 +9,11 @@ import { getPublicSiteUrl } from "@/lib/env";
 import "./globals.css";
 import "./cinematic.css";
 
-const barlow = Barlow({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
-  display: "swap"
-});
-
-const barlowCondensed = Barlow_Condensed({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-display",
-  display: "swap"
-});
+const localFontVars: CSSProperties = {
+  "--font-body": "\"Segoe UI\", Inter, Arial, sans-serif",
+  "--font-display":
+    "\"Arial Narrow\", \"Franklin Gothic Medium Cond\", Bahnschrift, Impact, Haettenschweiler, sans-serif"
+} as CSSProperties;
 
 export const viewport: Viewport = {
   themeColor: "#050505",
@@ -60,11 +51,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body
-        className={`${barlow.variable} ${barlowCondensed.variable} bg-black text-white selection:bg-[color:var(--color-rad)]/30 antialiased`}
+        className="bg-black text-white selection:bg-[color:var(--color-rad)]/30 antialiased"
+        style={localFontVars}
       >
-        <ScrollRevealInit />
         <AmbientBackground />
         <SiteHeader />
 

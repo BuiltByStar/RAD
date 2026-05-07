@@ -7,8 +7,9 @@ export function ScrollRevealInit() {
 
   useEffect(() => {
     let activeObserver: IntersectionObserver | null = null;
+    let frame = 0;
 
-    const timer = setTimeout(() => {
+    const attachObserver = () => {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -23,10 +24,14 @@ export function ScrollRevealInit() {
 
       document.querySelectorAll("[data-reveal]:not(.is-visible)").forEach((el) => observer.observe(el));
       activeObserver = observer;
-    }, 100);
+    };
+
+    frame = window.requestAnimationFrame(attachObserver);
 
     return () => {
-      clearTimeout(timer);
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
       activeObserver?.disconnect();
     };
   }, [pathname]);
