@@ -27,10 +27,10 @@ type CardProps = Omit<HTMLMotionProps<"article">, "children"> & {
 
 const tones: Record<Tone, string> = {
   default: "p-5 sm:p-6",
-  lead: "p-6 sm:p-8",
-  metric: "p-6 min-h-[180px] grid content-end gap-1",
-  compact: "p-5 min-h-[190px]",
-  tall: "p-6 min-h-[260px] grid content-start gap-3"
+  lead: "p-6 sm:p-7",
+  metric: "p-5 sm:p-6 min-h-[150px] grid content-end gap-1",
+  compact: "p-5 min-h-[160px]",
+  tall: "p-5 sm:p-6 min-h-[220px] grid content-start gap-3"
 };
 
 const cardVariants: Variants = {
@@ -57,7 +57,7 @@ export function Card({
 
   const mouseX = useMotionValue(-200);
   const mouseY = useMotionValue(-200);
-  const spotlightBg = useMotionTemplate`radial-gradient(280px circle at ${mouseX}px ${mouseY}px, rgba(255,43,69,0.22), transparent 65%)`;
+  const spotlightBg = useMotionTemplate`radial-gradient(260px circle at ${mouseX}px ${mouseY}px, rgba(255,0,0,0.12), transparent 68%)`;
 
   const handleMove = (event: MouseEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -79,7 +79,7 @@ export function Card({
         initial: false,
         whileInView: "visible" as const,
         viewport: { once: true, margin: "-60px" },
-        whileHover: hover ? { y: -3 } : undefined
+        whileHover: hover ? { y: -2 } : undefined
       };
 
   return (
@@ -89,11 +89,10 @@ export function Card({
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
         "group relative overflow-hidden rounded-[1.15rem] border border-white/10",
-        "bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018)_48%,rgba(255,0,0,0.035))]",
-        "shadow-[0_18px_52px_-34px_rgba(0,0,0,0.98)]",
-        "transition-[border-color,box-shadow] duration-500",
-        "hover:border-[#ff0000]/34",
-        "hover:shadow-[0_24px_72px_-42px_rgba(255,0,0,0.5)]",
+        "bg-white/[0.035]",
+        "shadow-[0_18px_50px_-42px_rgba(0,0,0,0.9)]",
+        "transition-[border-color,background,box-shadow] duration-300",
+        "hover:border-white/20 hover:bg-white/[0.055]",
         tones[tone],
         className
       )}
@@ -101,11 +100,7 @@ export function Card({
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(255,0,0,0.16),transparent_34%),linear-gradient(120deg,transparent,rgba(255,255,255,0.04)_42%,transparent_58%)] opacity-70"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute left-[-45%] top-0 h-px w-[90%] bg-gradient-to-r from-transparent via-[#ff0000]/85 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:[animation:rad-border-run_1.35s_ease-out]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/22 to-transparent"
       />
 
       {spotlight && !reduced ? (
@@ -119,7 +114,7 @@ export function Card({
       {accent ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-px w-32 origin-left bg-[color:var(--color-rad)]/90"
+          className="pointer-events-none absolute left-0 top-0 h-px w-20 origin-left bg-[color:var(--color-rad)]/80"
           initial={false}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}

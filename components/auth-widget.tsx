@@ -185,7 +185,7 @@ export function AuthWidget() {
         title={!available ? "Supabase environment variables (URL/Anon Key) are missing. Check .env.local" : "Login with Discord"}
       >
         <DiscordIcon size={14} />
-        <span>{available ? "Login" : "System Offline"}</span>
+        <span>Login</span>
       </button>
     </div>
   );

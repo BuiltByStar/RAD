@@ -43,24 +43,24 @@ export function SectionHeading({
       {...motionProps}
       className={cn(
         "relative grid",
-        compact ? "mb-6 grid-cols-1 gap-3 pb-4" : "mb-10 gap-5 pb-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end",
+        compact ? "mb-5 grid-cols-1 gap-3 pb-3" : "mb-8 gap-4 pb-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-end",
         className
       )}
     >
       <div>
         {eyebrow ? (
           <motion.p
-            className="relative inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[color:var(--color-rad-hi)]/90"
+            className="relative inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad-hi)]/90"
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, ease: EASE_EMPHASIS }}
           >
-            <span className="inline-block h-[6px] w-[6px] rounded-full bg-[color:var(--color-rad)]" />
+            <span className="inline-block h-px w-7 bg-[color:var(--color-rad)]" />
             {eyebrow}
           </motion.p>
         ) : null}
-        <h2 className="relative mt-4 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.25rem,4.4vw,4rem)] uppercase leading-[0.96] tracking-normal text-white [text-wrap:balance]">
+        <h2 className="relative mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3.35rem)] uppercase leading-[0.98] tracking-normal text-white [text-wrap:balance]">
           {title}
         </h2>
       </div>

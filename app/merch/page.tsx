@@ -96,14 +96,14 @@ export default function MerchPage() {
           <div className="grid gap-8">
             {featuredMerch?.frontImage && featuredMerch.backImage ? (
               <section className="grid gap-5">
-                <div className="overflow-hidden rounded-[1.65rem] border border-white/12 bg-[linear-gradient(145deg,rgba(255,255,255,0.06),rgba(255,0,0,0.04))] shadow-[0_38px_140px_-70px_rgba(255,0,0,0.55)]">
+                <div className="overflow-hidden rounded-xl border border-white/12 bg-white/[0.03] shadow-[0_22px_80px_-58px_rgba(0,0,0,0.95)]">
                   <div className="border-b border-white/10 px-5 py-5 sm:px-6">
                     <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                       <div>
                         <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5959]">
                           {featuredMerch.category}
                         </p>
-                        <h2 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.8rem,6vw,5.8rem)] font-extrabold uppercase leading-[0.9] text-white">
+                    <h2 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.5rem,5.5vw,4.8rem)] font-extrabold uppercase leading-[0.92] text-white">
                           {featuredMerch.name}
                         </h2>
                       </div>
@@ -157,7 +157,7 @@ export default function MerchPage() {
                   {supportingVisualMerch.map((item) => (
                     <article
                       key={item.name}
-                      className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))]"
+                    className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]"
                     >
                       <div className="border-b border-white/10 px-5 py-5">
                         <div className="flex flex-col gap-4">
@@ -165,7 +165,7 @@ export default function MerchPage() {
                             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5f5f]">
                               {item.category}
                             </p>
-                            <h3 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3rem)] font-extrabold uppercase leading-[0.94] text-white">
+                            <h3 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(1.9rem,4vw,2.8rem)] font-extrabold uppercase leading-[0.96] text-white">
                               {item.name}
                             </h3>
                           </div>
@@ -205,7 +205,7 @@ export default function MerchPage() {
             ) : null}
 
             {accessoryMerch.length ? (
-              <section className="rounded-[1.25rem] border border-white/10 bg-black/18 px-5 py-5">
+              <section className="rounded-xl border border-white/10 bg-white/[0.025] px-5 py-5">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff5959]">Accessories</p>

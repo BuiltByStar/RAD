@@ -7,23 +7,23 @@ type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg border font-semibold uppercase tracking-[0.16em] transition-[transform,background,border-color,box-shadow,color] duration-300 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 active:translate-y-[1px] before:pointer-events-none before:absolute before:inset-0 before:-translate-x-full before:bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.14)_48%,transparent_74%)] before:transition-transform before:duration-700 before:ease-out hover:before:translate-x-full";
+  "inline-flex items-center justify-center gap-2 rounded-md border font-semibold uppercase tracking-[0.14em] transition-[transform,background,border-color,box-shadow,color] duration-200 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 active:translate-y-[1px]";
 
 const variants: Record<Variant, string> = {
   primary:
-    "border-[color:var(--color-rad)] bg-[color:var(--color-rad)] text-white shadow-[0_16px_36px_rgba(255,0,0,0.18)] hover:-translate-y-[1px] hover:bg-[#ff2020] hover:shadow-[0_20px_44px_rgba(255,0,0,0.24)]",
+    "border-[color:var(--color-rad)] bg-[color:var(--color-rad)] text-white shadow-[0_12px_28px_rgba(255,0,0,0.18)] hover:-translate-y-[1px] hover:bg-[#ff2424]",
   secondary:
-    "border-white/18 bg-white/[0.075] text-white hover:border-white/30 hover:bg-white/[0.11]",
+    "border-white/14 bg-white/[0.06] text-white hover:border-white/26 hover:bg-white/[0.1]",
   ghost:
-    "border-white/12 bg-white/[.05] text-white backdrop-blur-md hover:border-white/22 hover:bg-white/[.08]",
+    "border-transparent bg-transparent text-white/74 hover:border-white/14 hover:bg-white/[0.05] hover:text-white",
   outline:
-    "border-white/22 bg-black/35 text-white hover:border-[color:var(--color-rad)]/55 hover:bg-white/[0.07]"
+    "border-white/18 bg-black/20 text-white hover:border-white/34 hover:bg-white/[0.06]"
 };
 
 const sizes: Record<Size, string> = {
   sm: "h-9 px-4 text-[10px]",
-  md: "h-11 px-6 text-[11px]",
-  lg: "h-12 px-7 text-[11px]"
+  md: "h-11 px-5 text-[11px]",
+  lg: "h-12 px-6 text-[11px]"
 };
 
 type BaseProps = {
@@ -48,7 +48,7 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 export function Button({ variant = "primary", size = "md", className, children, ...rest }: ButtonProps) {
   const cls = cn(base, variants[variant], sizes[size], className);
 
-  const content = <span className="relative z-10 inline-flex items-center gap-2">{children}</span>;
+  const content = <span className="inline-flex items-center gap-2">{children}</span>;
 
   if ("href" in rest && rest.href) {
     const { href, ...anchorProps } = rest;

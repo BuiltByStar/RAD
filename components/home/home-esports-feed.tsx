@@ -16,16 +16,16 @@ export function HomeEsportsFeed() {
   const secondary = fallbackContent.slice(1, 4);
 
   return (
-    <section className="relative overflow-hidden border-y border-white/10 bg-[#08080a] py-12 sm:py-16">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_60%_at_82%_18%,rgba(255,0,0,0.2),transparent_58%)]" />
+    <section className="relative overflow-hidden border-y border-white/10 bg-[#08080a] py-10 sm:py-14">
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_60%_at_82%_18%,rgba(255,0,0,0.1),transparent_58%)]" />
       <Container size="xl">
-        <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.article
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: EASE }}
-            className="relative min-h-[460px] overflow-hidden rounded-[1.65rem] border border-white/12 bg-black shadow-[0_40px_130px_rgba(0,0,0,0.66)]"
+            className="relative min-h-[390px] overflow-hidden rounded-xl border border-white/12 bg-black shadow-[0_24px_74px_-50px_rgba(0,0,0,0.9)]"
           >
             <Image
               src={featured.thumbnail}
@@ -34,24 +34,20 @@ export function HomeEsportsFeed() {
               sizes="(max-width: 1024px) 100vw, 58vw"
               className="object-cover opacity-78"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.58)_48%,#050505_100%),radial-gradient(circle_at_68%_20%,rgba(255,0,0,0.28),transparent_44%)]" />
-            <div
-              aria-hidden
-              className="absolute left-[-30%] top-[38%] h-24 w-[130%] rotate-[-8deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.26),rgba(255,255,255,0.1),transparent)] opacity-45"
-            />
-            <div className="relative z-10 flex min-h-[460px] flex-col justify-end p-6 sm:p-8">
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.58)_52%,#050505_100%)]" />
+            <div className="relative z-10 flex min-h-[390px] flex-col justify-end p-5 sm:p-7">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
                 Lead drop
               </p>
-              <h2 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.7rem,6vw,6rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-white">
+              <h2 className="mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.4rem,5.4vw,4.8rem)] font-extrabold uppercase leading-[0.86] tracking-[-0.02em] text-white">
                 {featured.title}
               </h2>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/66">
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/66 sm:text-base">
                 {featured.description}
               </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Button href="/content" size="lg">Open content</Button>
-                <Button href="https://www.youtube.com/@RadEsport" variant="outline" size="lg">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Button href="/content">Open content</Button>
+                <Button href="https://www.youtube.com/@RadEsport" variant="outline">
                   YouTube
                 </Button>
               </div>
@@ -64,7 +60,7 @@ export function HomeEsportsFeed() {
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, ease: EASE, delay: 0.05 }}
-              className="rounded-[1.4rem] border border-white/12 bg-white/[0.035] p-5 sm:p-6"
+              className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
                 More media
@@ -74,7 +70,7 @@ export function HomeEsportsFeed() {
                   <Link
                     key={item.id}
                     href={item.url}
-                    className="group grid grid-cols-[88px_1fr] gap-3 rounded-xl border border-white/10 bg-black/28 p-2 transition hover:border-[#ff0000]/34 hover:bg-black/42"
+                    className="group grid grid-cols-[88px_1fr] gap-3 rounded-lg border border-white/10 bg-black/24 p-2 transition hover:border-white/22 hover:bg-white/[0.04]"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -99,13 +95,13 @@ export function HomeEsportsFeed() {
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, ease: EASE, delay: 0.12 }}
-              className="relative overflow-hidden rounded-[1.4rem] border border-[#ff0000]/24 bg-[#ff0000]/10 p-5 sm:p-6"
+              className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff6b6b]">
                 Community
               </p>
-              <h3 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.88] text-white">
-                Join RAD.
+              <h3 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.9] text-white">
+                RAD channels.
               </h3>
               <div className="mt-5 flex flex-wrap gap-2">
                 <Button href={discordInviteUrl} size="sm">Discord</Button>

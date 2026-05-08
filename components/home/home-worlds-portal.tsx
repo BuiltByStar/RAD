@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -39,11 +38,10 @@ export function HomeWorldsPortal() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="experience" className="relative overflow-hidden border-y border-white/10 bg-[#070707] py-14 sm:py-20">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_56%_at_72%_30%,rgba(255,0,0,0.2),transparent_58%)]" />
-      <div aria-hidden className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,0,0,0.12),transparent)]" />
+    <section id="experience" className="relative overflow-hidden border-y border-white/10 bg-[#070707] py-12 sm:py-16">
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_54%_at_84%_18%,rgba(255,0,0,0.12),transparent_60%)]" />
       <Container size="xl">
-        <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-14">
+        <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-12">
           <motion.div
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -52,22 +50,12 @@ export function HomeWorldsPortal() {
             className="relative max-w-xl"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">Explore</p>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-white">
+            <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(2.7rem,5vw,5.3rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.02em] text-white">
               Explore RAD.
             </h2>
-            <p className="mt-6 text-base leading-relaxed text-white/66 sm:text-lg">
-              Roster, content, community, and partner pages should all feel like the same org.
+            <p className="mt-5 text-base leading-relaxed text-white/66 sm:text-lg">
+              A cleaner route into the important parts of the org: players, content, community, and business.
             </p>
-            <div className="mt-8 grid max-w-md grid-cols-2 gap-3">
-              {["Competition", "Media", "Discord", "Partners"].map((item) => (
-                <span
-                  key={item}
-                  className="rounded-xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,0,0,0.12),rgba(255,255,255,0.035))] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
           </motion.div>
 
           <motion.div
@@ -77,49 +65,25 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
             className="relative"
           >
-            <div className="absolute -inset-5 rounded-[2rem] border border-[#ff0000]/20" />
-            <div className="relative grid overflow-hidden rounded-[1.75rem] border border-white/12 bg-black/52 p-4 shadow-[0_34px_120px_rgba(0,0,0,0.66)] backdrop-blur-xl sm:grid-cols-2">
-              <div className="relative min-h-[360px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0b0b0d] sm:col-span-2">
-                <Image
-                  src="/assets/RadBanner1920_1080.png"
-                  alt=""
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                  className="object-cover opacity-76"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(0,0,0,0.76)_44%,rgba(0,0,0,0.18)_100%)]" />
-                <div
-                  aria-hidden
-                  className="absolute left-[-35%] top-[26%] h-24 w-[120%] rotate-[-10deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.22),rgba(255,255,255,0.12),transparent)] opacity-45"
-                />
-                <div className="relative z-10 flex min-h-[360px] flex-col justify-end p-6 sm:p-8">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
-                    Site sections
-                  </p>
-                  <h3 className="mt-3 max-w-2xl font-[family-name:var(--font-display)] text-[clamp(2.4rem,5vw,5rem)] font-extrabold uppercase leading-[0.86] text-white">
-                    Roster, content, community, partners.
-                  </h3>
-                </div>
-              </div>
-
+            <div className="relative grid overflow-hidden rounded-xl border border-white/10 bg-white/[0.025] sm:grid-cols-2">
               {lanes.map((system, index) => (
                 <Link
                   key={system.label}
                   href={system.href}
-                  className="group relative min-h-[190px] overflow-hidden border-t border-white/10 bg-white/[0.025] p-5 transition hover:bg-[rgba(255,0,0,0.075)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] sm:even:border-l"
+                  className="group relative min-h-[170px] overflow-hidden border-white/10 p-5 transition hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] sm:border-l sm:[&:nth-child(odd)]:border-l-0 sm:[&:nth-child(n+3)]:border-t"
                 >
                   <span
                     aria-hidden
-                    className="absolute inset-x-4 top-4 h-px scale-x-0 bg-gradient-to-r from-[#ff0000] to-transparent transition-transform duration-500 group-hover:scale-x-100"
+                    className="absolute inset-x-5 top-5 h-px scale-x-0 bg-[#ff0000] transition-transform duration-500 group-hover:scale-x-100"
                     style={{ transformOrigin: "left" }}
                   />
-                  <span className="absolute right-4 top-4 font-[family-name:var(--font-display)] text-6xl font-extrabold uppercase leading-none text-white/[0.04]">
+                  <span className="absolute right-5 top-5 font-[family-name:var(--font-display)] text-5xl font-extrabold uppercase leading-none text-white/[0.035]">
                     {system.stat}
                   </span>
                   <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/42">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-9 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-none text-white">
+                  <h3 className="mt-8 font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl">
                     {system.label}
                   </h3>
                   <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/58">{system.meta}</p>

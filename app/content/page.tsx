@@ -51,11 +51,11 @@ export default async function ContentPage() {
           {featured ? (
             <Link
               href={`/content/${featured.slug}`}
-              className="group relative grid overflow-hidden rounded-[1.45rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.06),rgba(255,0,0,0.035))] shadow-[0_28px_90px_-56px_rgba(255,0,0,0.48)] transition-colors hover:border-[color:var(--color-rad)]/38 md:grid-cols-[1.1fr_0.9fr]"
+              className="group relative grid overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] shadow-[0_18px_60px_-48px_rgba(0,0,0,0.9)] transition-colors hover:border-white/22 md:grid-cols-[1.1fr_0.9fr]"
             >
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-gradient-to-r from-transparent via-[#ff0000]/80 to-transparent"
+                className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent"
               />
               <div className="relative aspect-[16/10] md:aspect-auto">
                 <Image
@@ -70,7 +70,7 @@ export default async function ContentPage() {
                   className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"
                 />
               </div>
-              <div className="flex flex-col justify-center gap-3 p-6 sm:p-8">
+              <div className="flex flex-col justify-center gap-3 p-5 sm:p-7">
                 <CardEyebrow>{featured.category}</CardEyebrow>
                 <h2 className="font-[family-name:var(--font-display)] text-2xl uppercase leading-[1.02] tracking-normal text-white sm:text-3xl">
                   {featured.title}
@@ -95,7 +95,7 @@ export default async function ContentPage() {
               <Link
                 key={post.slug}
                 href={`/content/${post.slug}`}
-                className="group relative flex flex-col overflow-hidden rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,0,0,0.025))] transition-colors hover:border-[color:var(--color-rad)]/34"
+                className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] transition-colors hover:border-white/22 hover:bg-white/[0.045]"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
@@ -131,13 +131,13 @@ export default async function ContentPage() {
           <SectionHeading eyebrow="Channels" title="Video and Creators" />
 
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.025))] p-5 sm:p-6">
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
               <CardEyebrow>Featured Video</CardEyebrow>
               <div className="mt-4">
                 <YouTubeFeatured />
               </div>
             </div>
-            <div className="rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.025))] p-5 sm:p-6">
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
               <CardEyebrow>Creator Status</CardEyebrow>
               <div className="mt-4">
                 <TwitchCreators />
@@ -145,7 +145,7 @@ export default async function ContentPage() {
             </div>
           </div>
 
-          <div className="mt-5 rounded-[1.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.025))] p-5 sm:p-6">
+          <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
             <CardEyebrow>Library</CardEyebrow>
             <div className="mt-4">
               <YouTubeLibrary />

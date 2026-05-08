@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
 
@@ -11,6 +12,11 @@ const SESSION_KEY = "rad:home-intro";
 export function HomeIntro() {
   const reduced = useReducedMotion();
   const [stage, setStage] = useState<"idle" | "playing" | "exit">("idle");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const skipIntro = useCallback(() => {
     try {
@@ -36,7 +42,7 @@ export function HomeIntro() {
       document.body.style.overflow = "hidden";
       const timeout = setTimeout(() => {
         skipIntro();
-      }, 4300);
+      }, 2600);
 
       return () => {
         clearTimeout(timeout);
@@ -62,9 +68,9 @@ export function HomeIntro() {
     return () => window.removeEventListener("keydown", onKey);
   }, [skipIntro, stage]);
 
-  if (reduced || stage === "idle") return null;
+  if (reduced || !mounted || stage === "idle") return null;
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
         key="rad-intro"
@@ -75,23 +81,22 @@ export function HomeIntro() {
         initial={{ opacity: 1 }}
         animate={
           stage === "exit"
-            ? { opacity: 0, y: -18, scale: 0.986, transition: { duration: 0.82, ease: EASE_OUT_EXPO } }
+            ? { opacity: 0, y: -12, scale: 0.99, transition: { duration: 0.55, ease: EASE_OUT_EXPO } }
             : { opacity: 1, y: 0, scale: 1 }
         }
-        className="fixed inset-0 z-[100] overflow-hidden bg-[#04040a]"
+        className="fixed inset-0 z-[100] overflow-hidden bg-[#030304]"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(95%_68%_at_50%_-8%,rgba(255,255,255,0.07),transparent_56%),radial-gradient(75%_56%_at_50%_58%,rgba(255,43,69,0.16),transparent_62%),linear-gradient(180deg,#07070a,#0a0a10)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(255,255,255,0.02)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(72%_54%_at_50%_42%,rgba(255,0,0,0.18),transparent_64%),linear-gradient(180deg,#030304,#080607)]" />
         <motion.div
           aria-hidden
-          className="absolute -left-[50%] top-[-32%] h-[150vh] w-[200%] opacity-45 [background:conic-gradient(from_210deg_at_50%_0%,transparent_0deg,rgba(255,255,255,0.07)_22deg,transparent_48deg,transparent_360deg)]"
-          animate={{ rotate: [0, 8, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-[-30%] top-1/2 h-px w-[160%] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.95),rgba(255,255,255,0.52),transparent)]"
+          animate={{ x: ["-18%", "18%"], opacity: [0, 1, 0] }}
+          transition={{ duration: 1.25, delay: 0.35, ease: EASE_OUT_EXPO }}
         />
 
         <motion.div
           aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(0,0,0,0.45)_100%)]"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_18%,rgba(0,0,0,0.5)_100%)]"
         />
 
         <button
@@ -106,23 +111,22 @@ export function HomeIntro() {
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1, ease: EASE_OUT_EXPO }}
-            className="relative flex w-full max-w-5xl flex-col items-center"
+            transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
+            className="relative flex w-full max-w-4xl flex-col items-center"
           >
             <motion.div
               aria-hidden
-              className="absolute inset-x-[20%] top-[45%] h-40 -translate-y-1/2 bg-[radial-gradient(circle,rgba(255,43,69,0.42),transparent_70%)] blur-3xl"
-              animate={{ scaleX: [0.88, 1.08, 0.92], opacity: [0.4, 0.9, 0.45] }}
-              transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-x-[18%] top-[48%] h-24 -translate-y-1/2 bg-[radial-gradient(circle,rgba(255,0,0,0.34),transparent_70%)] blur-3xl"
+              animate={{ scaleX: [0.92, 1.06, 0.96], opacity: [0.34, 0.7, 0.34] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
             />
 
-            <div className="relative overflow-hidden rounded-lg border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01)),rgba(8,8,12,0.92)] px-10 py-10 sm:px-16 sm:py-12">
-              <div aria-hidden className="pointer-events-none absolute inset-4 rounded-md border border-white/10" />
+            <div className="relative overflow-hidden px-8 py-8 sm:px-12 sm:py-10">
               <motion.div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.14)_44%,rgba(255,43,69,0.22)_52%,transparent_72%)]"
+                className="absolute inset-0 bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.18)_44%,rgba(255,0,0,0.2)_52%,transparent_72%)]"
                 animate={{ x: ["-140%", "140%"] }}
-                transition={{ duration: 1.4, delay: 0.55, ease: EASE_OUT_EXPO }}
+                transition={{ duration: 1.15, delay: 0.35, ease: EASE_OUT_EXPO }}
               />
               <Image
                 src="/assets/RadNewLogoWordmarkWhite.png"
@@ -136,10 +140,10 @@ export function HomeIntro() {
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.5, ease: EASE_OUT_EXPO }}
-              className="mt-9 text-center font-[family-name:var(--font-display)] text-[clamp(1.5rem,3.2vw,2.7rem)] uppercase tracking-[0.04em] text-white/92"
+              transition={{ duration: 0.65, delay: 0.42, ease: EASE_OUT_EXPO }}
+              className="mt-5 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white/52"
             >
-              The Wild Ones
+              Enter the wild
             </motion.p>
           </motion.div>
         </div>
@@ -147,12 +151,13 @@ export function HomeIntro() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 1.1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[11px] font-medium text-white/36"
+          transition={{ duration: 0.5, delay: 0.9 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[11px] font-medium text-white/30"
         >
           Esc to continue
         </motion.p>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

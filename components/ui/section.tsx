@@ -18,10 +18,10 @@ const tones: Record<Tone, string> = {
 };
 
 const paddings: Record<Padding, string> = {
-  xs: "py-8 sm:py-10",
-  sm: "py-12 sm:py-16",
-  md: "py-16 sm:py-22",
-  lg: "py-20 sm:py-28"
+  xs: "py-7 sm:py-9",
+  sm: "py-10 sm:py-14",
+  md: "py-12 sm:py-18",
+  lg: "py-16 sm:py-22"
 };
 
 export function Section({

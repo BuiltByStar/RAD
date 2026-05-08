@@ -47,14 +47,14 @@ export function PageShellHero({
   const compact = variant === "roster";
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-white/10 bg-black">
+    <section className="relative isolate overflow-hidden border-b border-white/10 bg-[#050505]">
       {heroVideo ? (
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 z-[-3] h-full w-full object-cover opacity-55"
+          className="absolute inset-0 z-[-3] h-full w-full object-cover opacity-36"
         >
           <source src={heroVideo} type="video/mp4" />
         </video>
@@ -64,18 +64,17 @@ export function PageShellHero({
           alt=""
           fill
           sizes="100vw"
-          className="z-[-3] object-cover opacity-58"
+          className="z-[-3] object-cover opacity-36"
         />
       )}
-      <div aria-hidden className="absolute inset-0 z-[-2] bg-[linear-gradient(90deg,rgba(2,2,4,0.95)_0%,rgba(10,0,0,0.78)_48%,rgba(2,2,4,0.72)_100%)]" />
-      <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(76%_58%_at_50%_20%,rgba(255,0,0,0.18),transparent_62%)]" />
+      <div aria-hidden className="absolute inset-0 z-[-2] bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.88)_54%,rgba(5,5,5,0.64)_100%)]" />
+      <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(70%_48%_at_20%_10%,rgba(255,0,0,0.15),transparent_60%)]" />
       <motion.div
         aria-hidden
-        className="absolute left-[-18%] top-[36%] z-[-1] h-24 w-[80%] rotate-[-8deg] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.32),rgba(255,255,255,0.1),transparent)] blur-sm"
-        animate={reduced ? undefined : { x: ["-10%", "34%", "-10%"], opacity: [0.22, 0.68, 0.22] }}
-        transition={{ duration: 7.2, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute left-[-18%] top-[52%] z-[-1] h-px w-[70%] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.8),transparent)]"
+        animate={reduced ? undefined : { x: ["0%", "18%", "0%"], opacity: [0.22, 0.55, 0.22] }}
+        transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
       />
-      <div aria-hidden className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#ff0000]/55 to-transparent" />
 
       <Container size="xl">
         <motion.div
@@ -84,18 +83,18 @@ export function PageShellHero({
           transition={{ duration: 0.75, ease: EASE_EMPHASIS }}
           className={
             compact
-              ? "max-w-5xl pb-8 pt-20 sm:pb-10 sm:pt-24 lg:pb-12 lg:pt-26"
-              : "max-w-5xl pb-10 pt-22 sm:pb-12 sm:pt-26 lg:pb-16 lg:pt-30"
+              ? "max-w-4xl pb-7 pt-18 sm:pb-8 sm:pt-22 lg:pb-9 lg:pt-24"
+              : "max-w-4xl pb-10 pt-22 sm:pb-12 sm:pt-26 lg:pb-14 lg:pt-28"
           }
         >
           <motion.div
             initial={false}
             animate={reduced ? undefined : { opacity: 1 }}
             transition={{ duration: 0.55, delay: 0.05 }}
-            className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/52"
+            className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/52"
           >
             <span>{eyebrow}</span>
-            <span aria-hidden className="h-1 w-1 rounded-full bg-[color:var(--color-rad)]" />
+            <span aria-hidden className="h-px w-8 bg-[color:var(--color-rad)]" />
             <span>{meta.line}</span>
           </motion.div>
 
@@ -105,28 +104,12 @@ export function PageShellHero({
             transition={{ duration: 0.75, ease: EASE_EMPHASIS, delay: 0.08 }}
             className={
               compact
-                ? "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(3rem,6.2vw,6rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.01em] text-white"
-                : "mt-5 max-w-5xl font-[family-name:var(--font-display)] text-[clamp(3.2rem,7vw,6.4rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.01em] text-white"
+                ? "mt-4 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(2.8rem,5.6vw,5rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.01em] text-white"
+                : "mt-4 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(3rem,6.5vw,5.9rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.01em] text-white"
             }
           >
             {title}
           </motion.h1>
-
-          <motion.div
-            initial={false}
-            animate={reduced ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.62, ease: EASE_EMPHASIS, delay: 0.13 }}
-            className="mt-5 flex flex-wrap gap-2"
-          >
-            {meta.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-[#ff0000]/26 bg-[#ff0000]/8 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70"
-              >
-                {tag}
-              </span>
-            ))}
-          </motion.div>
 
           <motion.p
             initial={false}
@@ -134,8 +117,8 @@ export function PageShellHero({
             transition={{ duration: 0.65, ease: EASE_EMPHASIS, delay: 0.16 }}
             className={
               compact
-                ? "mt-4 max-w-2xl text-sm leading-relaxed text-white/64 sm:text-base"
-                : "mt-5 max-w-3xl text-sm leading-relaxed text-white/64 sm:text-lg"
+                ? "mt-4 max-w-2xl text-sm leading-relaxed text-white/68 sm:text-base"
+                : "mt-5 max-w-3xl text-sm leading-relaxed text-white/68 sm:text-lg"
             }
           >
             {description}
@@ -145,13 +128,16 @@ export function PageShellHero({
             initial={false}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: EASE_EMPHASIS, delay: 0.22 }}
-            className={compact ? "mt-6 flex flex-wrap items-center gap-3" : "mt-8 flex flex-wrap items-center gap-3"}
+            className={compact ? "mt-6 flex flex-wrap items-center gap-3" : "mt-7 flex flex-wrap items-center gap-3"}
           >
             {status ? (
-              <span className="inline-flex rounded-md border border-white/14 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/78">
+              <span className="inline-flex rounded-md border border-white/12 bg-white/[0.04] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/76">
                 {status}
               </span>
             ) : null}
+            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/34">
+              {meta.tags.join(" / ")}
+            </span>
           </motion.div>
 
           {note ? (
@@ -159,7 +145,7 @@ export function PageShellHero({
               initial={false}
               animate={reduced ? undefined : { opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE_EMPHASIS, delay: 0.28 }}
-              className="mt-8 max-w-2xl rounded-md border border-white/12 bg-black/42 p-4 backdrop-blur"
+              className="mt-6 max-w-2xl rounded-md border border-white/10 bg-white/[0.035] p-4"
             >
               {note}
             </motion.div>

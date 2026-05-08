@@ -246,19 +246,19 @@ export function SiteHeader() {
         exiting={navTransition?.phase === "exit"}
         label={navTransition?.label}
       />
-      <header className="fixed inset-x-0 top-0 z-50 transition-colors duration-200 ease-[var(--ease-emphasis)]">
+      <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-colors duration-200 ease-[var(--ease-emphasis)]">
       <div
-        className={`mx-auto w-full max-w-[1720px] border-b px-4 sm:px-6 lg:px-10 will-change-[background-color,border-color] ${
+        className={`mx-auto w-full max-w-[1440px] rounded-xl border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] ${
           scrolled
-            ? "border-[#ff0000]/20 bg-black/86 shadow-[0_16px_42px_rgba(0,0,0,0.28)]"
-            : "border-white/[0.08] bg-black/60"
+            ? "border-white/14 bg-black/86 shadow-[0_14px_36px_rgba(0,0,0,0.32)]"
+            : "border-white/[0.09] bg-black/58"
         }`}
       >
-        <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-4 sm:h-[4.5rem]">
+        <div className="grid h-14 grid-cols-[auto_1fr_auto] items-center gap-4 sm:h-16">
           <Link href="/" aria-label="RAD Esports home" className="group relative block shrink-0">
             <span
               aria-hidden
-              className="absolute -inset-2 rounded-full bg-[#ff0000]/0 transition-colors duration-300 group-hover:bg-[#ff0000]/12"
+              className="absolute -inset-2 rounded-lg bg-[#ff0000]/0 transition-colors duration-300 group-hover:bg-[#ff0000]/8"
             />
             <Image
               src="/assets/RadNewLogoWordmarkWhite.png"
@@ -271,7 +271,7 @@ export function SiteHeader() {
 
           <nav
             aria-label="Primary navigation"
-            className="hidden w-fit items-center justify-center gap-1 justify-self-center rounded-full border border-white/10 bg-white/[0.045] px-2 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] md:flex"
+            className="hidden w-fit items-center justify-center gap-1 justify-self-center md:flex"
           >
             {primaryNavLinks.map((link) => {
               const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
@@ -280,20 +280,20 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={(event) => handlePrimaryNavClick(event, link, active)}
-                  className={`group relative rounded-full px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] transition ${
+                  className={`group relative rounded-md px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
                     active ? "text-white" : "text-white/52 hover:text-white"
                   }`}
                   aria-current={active ? "page" : undefined}
                 >
                   <span
                     aria-hidden
-                    className={`absolute inset-0 rounded-full bg-[#ff0000]/0 transition duration-300 ${
-                      active ? "bg-[#ff0000]/12" : "group-hover:bg-white/[0.045]"
+                    className={`absolute inset-0 rounded-md bg-[#ff0000]/0 transition duration-300 ${
+                      active ? "bg-[#ff0000]/10" : "group-hover:bg-white/[0.045]"
                     }`}
                   />
                   <span className="relative z-10">{link.label}</span>
                   <span
-                    className={`pointer-events-none absolute inset-x-4 bottom-0 h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-[color:var(--color-rad)] to-transparent transition-transform duration-300 ${
+                    className={`pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center scale-x-0 bg-[color:var(--color-rad)] transition-transform duration-300 ${
                       active ? "scale-x-100" : "group-hover:scale-x-100"
                     }`}
                     aria-hidden
@@ -307,7 +307,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-9 items-center rounded border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/64 transition-colors hover:border-white/20 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] md:hidden"
+              className="inline-flex h-9 items-center rounded-md border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors hover:border-white/20 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] md:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-rad-nav"
             >
@@ -330,7 +330,7 @@ export function SiteHeader() {
                     key={link.href}
                     href={link.href}
                     onClick={(event) => handlePrimaryNavClick(event, link, active)}
-                    className={`flex items-center justify-between px-2 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] transition ${
+                    className={`flex items-center justify-between px-2 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] ${
                       active ? "text-white" : "text-white/65 hover:text-white"
                     }`}
                     aria-current={active ? "page" : undefined}

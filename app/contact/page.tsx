@@ -33,15 +33,15 @@ export default function ContactPage() {
       <Section padding="sm">
         <Container>
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.03))] p-5 sm:p-6">
-              <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
+            <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+              <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent" />
               <SectionHeading eyebrow="Inquiry Form" title="Inquiry Form" compact className="mb-6" />
               <ContactForm enabled={hasSupabaseServiceEnv()} />
             </div>
 
             <div className="flex flex-col gap-5">
-              <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,0,0,0.03))] p-5 sm:p-6">
-                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff0000]/70 to-transparent" />
+              <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent" />
                 <SectionHeading eyebrow="Direct Contact" title="Direct Contact" compact className="mb-0" />
                 <ContactGrid channels={contactChannels} />
               </div>

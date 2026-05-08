@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 import { Chip, ChipRow, cn } from "@/components/ui";
 import type { Person } from "@/lib/site-data";
@@ -272,10 +272,10 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                     ? 40
                     : Math.abs(offset) === 1
                       ? 30
-                      : Math.abs(offset) === 2
-                        ? 20
-                        : 10
-              }}
+                    : Math.abs(offset) === 2
+                      ? 20
+                      : 10
+              } as CSSProperties}
             >
               <span aria-hidden className="absolute inset-y-0 left-0 z-20 w-px bg-gradient-to-b from-transparent via-[#ff0000] to-transparent opacity-80" />
               <span aria-hidden className="absolute inset-y-0 right-0 z-20 w-px bg-gradient-to-b from-transparent via-white/28 to-transparent" />
