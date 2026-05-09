@@ -35,7 +35,7 @@ export function CinematicHero({
       ) : (
         <div
           className="cinematic-hero-bg"
-          style={{ backgroundImage: `url('${imageSrc || "/assets/RadRivals_Wallpaper_Black.png"}')` }}
+          style={{ backgroundImage: `url('${imageSrc || "/assets/rad-bg-red.png"}')` }}
         />
       )}
       <div className="cinematic-hero-overlay" />

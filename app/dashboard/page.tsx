@@ -163,7 +163,7 @@ function TextArea({ label, name, defaultValue, rows = 4 }: { label: string; name
 function Check({ label, name, defaultChecked }: { label: string; name: string; defaultChecked?: boolean }) {
   return (
     <label className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/58">
-      <input name={name} type="checkbox" defaultChecked={defaultChecked} className="h-4 w-4 accent-[#ff0000]" />
+      <input name={name} type="checkbox" defaultChecked={defaultChecked} className="h-4 w-4 accent-[#dc143c]" />
       {label}
     </label>
   );
@@ -223,7 +223,7 @@ export default async function DashboardPage() {
             ? "Supabase environment variables are missing, so RAD cannot verify the protected session."
             : "Admin access is limited to owner, admin, and developer roles in public.profiles."
         }
-        heroImage="/assets/RadRivals_Wallpaper_Black.png"
+        heroImage="/assets/rad-bg-red.png"
         status="Restricted"
       >
         <Section padding="sm">
@@ -286,7 +286,7 @@ export default async function DashboardPage() {
       eyebrow="Dashboard"
       title="RAD Admin."
       description="Manage news, roster, staff, partners, inquiries, and core site settings from one protected panel."
-      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      heroImage="/assets/rad-bg-red.png"
       status={`Signed in as ${access.role}`}
     >
       <Section padding="sm">
@@ -339,7 +339,7 @@ export default async function DashboardPage() {
             <Field label="Slug" name="slug" />
             <Field label="Date" name="date" type="date" defaultValue={new Date().toISOString().slice(0, 10)} />
             <Field label="Category" name="category" defaultValue="Org Update" />
-            <Field label="Cover URL" name="cover" defaultValue="/assets/RadBannerNewTest300ppi.png" />
+            <Field label="Cover URL" name="cover" defaultValue="/assets/rad-bg-red.png" />
             <Field label="Order" name="display_order" type="number" defaultValue={0} />
             <TextArea label="Summary" name="summary" />
             <TextArea label="Body" name="body" />

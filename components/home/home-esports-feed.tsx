@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, Container } from "@/components/ui";
+import { assets } from "@/lib/assets";
 import { fallbackContent } from "@/lib/content-data";
 import { contactChannels, discordInviteUrl } from "@/lib/site-data";
 
@@ -17,7 +18,14 @@ export function HomeEsportsFeed() {
 
   return (
     <section className="relative overflow-hidden border-y border-white/10 bg-[#08080a] py-10 sm:py-14">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_60%_at_82%_18%,rgba(255,0,0,0.1),transparent_58%)]" />
+      <Image
+        src={assets.bgRed}
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover opacity-[0.06]"
+      />
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_60%_at_82%_18%,rgba(220,20,60,0.13),transparent_58%)]" />
       <Container size="xl">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.article
@@ -98,7 +106,7 @@ export function HomeEsportsFeed() {
               className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff6b6b]">
-                Community
+                Socials
               </p>
               <h3 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.9] text-white">
                 RAD channels.

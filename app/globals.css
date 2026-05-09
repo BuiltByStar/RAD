@@ -16,11 +16,11 @@
   --color-muted:      #b9b5b5;
   --color-dim:        #727070;
 
-  --color-rad:        #ff0000;
-  --color-rad-hi:     #ff4040;
-  --color-rad-deep:   #990000;
-  --color-rad-ember:  #3b0505;
-  --color-rad-soft:   #ff6b6b;
+  --color-rad:        #dc143c;
+  --color-rad-hi:     #f13a5d;
+  --color-rad-deep:   #7a0714;
+  --color-rad-ember:  #340106;
+  --color-rad-soft:   #ff6f88;
 
   --color-discord:    #ff0000;
 
@@ -65,17 +65,17 @@
   --muted:         #b9b5b5;
   --dim:           #727070;
 
-  --red:           #ff0000;
-  --red-hi:        #ff4040;
-  --red-deep:      #990000;
-  --red-ember:     #3b0505;
+  --red:           #dc143c;
+  --red-hi:        #f13a5d;
+  --red-deep:      #7a0714;
+  --red-ember:     #340106;
   --green:         var(--red);
   --green-hi:      var(--red-hi);
   --green-deep:    var(--red-deep);
   --green-soft:    var(--red-hi);
   --discord:       var(--red);
 
-  --grad-primary:  linear-gradient(135deg, #7a0000 0%, #ff0000 48%, #ff5656 100%);
+  --grad-primary:  linear-gradient(135deg, #340106 0%, #dc143c 48%, #f25c73 100%);
 
   --shadow:        0 16px 48px rgba(0, 0, 0, 0.42);
   --shadow-lg:     0 24px 76px rgba(0, 0, 0, 0.55);
@@ -296,7 +296,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
 }
 
 .nav-glitch-logo {
-  --rad-logo-mask: url("/assets/RadNewLogoWordmarkWhite.png");
+  --rad-logo-mask: url("/assets/rad-wordmark.png");
   position: absolute;
   inset: 0;
   transform: translate3d(0, 0, 0);
@@ -901,7 +901,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
 }
 
 .nav-glitch-logo {
-  --rad-logo-mask: url("/assets/RadNewLogoWordmarkWhite.png");
+  --rad-logo-mask: url("/assets/rad-wordmark.png");
   position: absolute;
   inset: 0;
   transform: translate3d(0, 0, 0);

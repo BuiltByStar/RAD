@@ -1,5 +1,7 @@
 // ─── Content Data (fallback for YouTube API) ───────────────────────────────
 
+import { assets } from "./assets";
+
 export type ContentItem = {
   id: string;
   title: string;
@@ -18,7 +20,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "Watch RAD's full tournament run through the Ignite: Mid-Season World Championship. Every round, every clutch, every call.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadPlayerBannerPNG8.png",
+    thumbnail: assets.bgRed,
     type: "video",
     tags: ["highlights", "tournament", "marvel-rivals"],
     featured: true
@@ -29,7 +31,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "RAD vs the best of EMEA. This is the series that locked the regional title.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadBanner1920_1080.png",
+    thumbnail: assets.brandBoard,
     type: "video",
     tags: ["emea", "vod", "marvel-rivals"]
   },
@@ -39,7 +41,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "A behind-the-scenes look at how RAD trains, builds, and competes at the highest level.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadBannerNewTest300ppi.png",
+    thumbnail: assets.goWild,
     type: "video",
     tags: ["documentary", "behind-the-scenes"]
   },
@@ -49,7 +51,7 @@ export const fallbackContent: ContentItem[] = [
     description:
       "Team Captain Mash breaks down meta reads, shot calling, and the mindset behind winning.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/PFP_2048_2048.jpg",
+    thumbnail: assets.pfpRed,
     type: "video",
     tags: ["podcast", "strategy"]
   },
@@ -58,7 +60,7 @@ export const fallbackContent: ContentItem[] = [
     title: "RAD Announcement — Open for Activations",
     description: "RAD outlines the kinds of brand and campaign collaborations it wants to build as the org expands.",
     url: "https://www.youtube.com/@RadEsport",
-    thumbnail: "/assets/RadBanner1920_1080.png",
+    thumbnail: assets.wordmark,
     type: "video",
     tags: ["announcement", "activations"]
   }

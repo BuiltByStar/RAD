@@ -36,7 +36,7 @@ export default function CookiesPage() {
       eyebrow="Legal"
       title="Cookies"
       description="How RAD uses cookies and similar tools across the site."
-      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      heroImage="/assets/rad-bg-red.png"
       status="Published"
     >
       <Section padding="sm">

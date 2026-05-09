@@ -1,27 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { assets } from "@/lib/assets";
 import { contactChannels, navLinks } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-0 border-t border-white/10 bg-[#040404]">
+    <footer className="relative mt-0 overflow-hidden border-t border-white/10 bg-[#040404]">
+      <Image
+        src={assets.bgRed}
+        alt=""
+        fill
+        sizes="100vw"
+        className="z-0 object-cover opacity-[0.08]"
+      />
       <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-8 pt-12 sm:px-8 lg:px-12 lg:pt-14">
-        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.025] px-6 py-7 sm:px-8 sm:py-9">
+        <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-black/58 px-6 py-7 shadow-[0_24px_90px_rgba(0,0,0,0.45)] sm:px-8 sm:py-9">
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.75fr_0.75fr]">
             <div className="relative z-10 max-w-xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad-hi)]">
-                RAD Esports
-              </p>
               <Image
-                src="/assets/RadNewLogoWordmarkRed.png"
+                src={assets.wordmark}
                 alt="RAD Esports"
-                width={220}
-                height={60}
-                className="mt-4 h-auto w-[200px] sm:w-[220px]"
+                width={505}
+                height={129}
+                className="h-auto w-[180px] sm:w-[220px]"
               />
-              <p className="mt-4 text-sm leading-relaxed text-white/62 sm:text-base">
-                Competition, content, and partner work built to grow with RAD.
+              <p className="mt-5 max-w-lg text-sm leading-relaxed text-white/66 sm:text-base">
+                Built around players. Remembered through history. Welcome to the wild.
               </p>
             </div>
 

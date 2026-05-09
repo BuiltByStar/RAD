@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
+import { assets } from "@/lib/assets";
 
 const SESSION_KEY = "rad:home-intro";
 
@@ -84,12 +85,20 @@ export function HomeIntro() {
             ? { opacity: 0, y: -12, scale: 0.99, transition: { duration: 0.55, ease: EASE_OUT_EXPO } }
             : { opacity: 1, y: 0, scale: 1 }
         }
-        className="fixed inset-0 z-[100] overflow-hidden bg-[#030304]"
+        className="fixed inset-0 z-[100] overflow-hidden bg-[#050102]"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(72%_54%_at_50%_42%,rgba(255,0,0,0.18),transparent_64%),linear-gradient(180deg,#030304,#080607)]" />
+        <Image
+          src={assets.bgRed}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(72%_54%_at_50%_42%,rgba(220,20,60,0.24),transparent_64%),linear-gradient(180deg,rgba(5,1,2,0.88),#050102)]" />
         <motion.div
           aria-hidden
-          className="absolute left-[-30%] top-1/2 h-px w-[160%] bg-[linear-gradient(90deg,transparent,rgba(255,0,0,0.95),rgba(255,255,255,0.52),transparent)]"
+          className="absolute left-[-30%] top-1/2 h-px w-[160%] bg-[linear-gradient(90deg,transparent,rgba(220,20,60,0.95),rgba(255,255,255,0.52),transparent)]"
           animate={{ x: ["-18%", "18%"], opacity: [0, 1, 0] }}
           transition={{ duration: 1.25, delay: 0.35, ease: EASE_OUT_EXPO }}
         />
@@ -124,12 +133,12 @@ export function HomeIntro() {
             <div className="relative overflow-hidden px-8 py-8 sm:px-12 sm:py-10">
               <motion.div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.18)_44%,rgba(255,0,0,0.2)_52%,transparent_72%)]"
+                className="absolute inset-0 bg-[linear-gradient(110deg,transparent_24%,rgba(255,255,255,0.2)_44%,rgba(220,20,60,0.22)_52%,transparent_72%)]"
                 animate={{ x: ["-140%", "140%"] }}
                 transition={{ duration: 1.15, delay: 0.35, ease: EASE_OUT_EXPO }}
               />
               <Image
-                src="/assets/RadNewLogoWordmarkWhite.png"
+                src={assets.wordmark}
                 alt="RAD Esports"
                 width={920}
                 height={240}

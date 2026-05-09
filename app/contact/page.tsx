@@ -27,7 +27,7 @@ export default function ContactPage() {
       eyebrow="Contact"
       title="Contact"
       description="Partnership, talent, media, and business inquiries start here."
-      heroImage="/assets/RadRivals_Wallpaper_Red.png"
+      heroImage="/assets/rad-bg-red.png"
       status="Inquiries open"
     >
       <Section padding="sm">

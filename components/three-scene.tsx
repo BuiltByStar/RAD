@@ -402,7 +402,7 @@ function StaticFallback() {
     <div className="relative h-full w-full overflow-hidden bg-black">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/assets/RadRivals_Wallpaper_Red.png"
+        src="/assets/rad-bg-red.png"
         alt="RAD worlds"
         className="absolute inset-0 h-full w-full object-cover opacity-55"
       />

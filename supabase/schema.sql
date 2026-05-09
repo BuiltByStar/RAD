@@ -86,7 +86,7 @@ create table if not exists public.news_posts (
   date date not null default current_date,
   summary text not null default '',
   category text not null default 'Org Update',
-  cover text not null default '/assets/RadBannerNewTest300ppi.png',
+  cover text not null default '/assets/rad-bg-red.png',
   body text not null default '',
   featured boolean not null default false,
   published boolean not null default true

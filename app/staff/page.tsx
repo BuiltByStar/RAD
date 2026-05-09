@@ -30,7 +30,7 @@ export default function StaffPage() {
       eyebrow="Staff"
       title="Staff"
       description="The people behind RAD's competition, content, and day-to-day work."
-      heroImage="/assets/RadBanner1920_1080.png"
+      heroImage="/assets/rad-brand-board.png"
       status="Support team"
     >
       <Section padding="sm">

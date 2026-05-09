@@ -47,7 +47,7 @@ export default function PartnersPage() {
       eyebrow="Partners"
       title="Partners"
       description="RAD is open to partner work that fits the team, the audience, and the brand."
-      heroImage="/assets/RadBanner1920_1080.png"
+      heroImage="/assets/rad-bg-white.png"
       status="Open to partners"
     >
       <Section padding="sm">

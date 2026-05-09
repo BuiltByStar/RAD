@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 import { AuthWidget } from "@/components/auth-widget";
 import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
+import { assets } from "@/lib/assets";
 import { primaryNavLinks } from "@/lib/site-data";
 
 const SCROLL_THRESHOLD = 8;
@@ -248,24 +249,25 @@ export function SiteHeader() {
       />
       <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-colors duration-200 ease-[var(--ease-emphasis)]">
       <div
-        className={`mx-auto w-full max-w-[1440px] rounded-xl border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] ${
+        className={`mx-auto w-full max-w-[1440px] rounded-[1.25rem] border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] ${
           scrolled
-            ? "border-white/14 bg-black/86 shadow-[0_14px_36px_rgba(0,0,0,0.32)]"
-            : "border-white/[0.09] bg-black/58"
+            ? "border-[#dc143c]/26 bg-black/88 shadow-[0_16px_44px_rgba(52,1,6,0.45)]"
+            : "border-white/[0.11] bg-black/64"
         }`}
       >
         <div className="grid h-14 grid-cols-[auto_1fr_auto] items-center gap-4 sm:h-16">
           <Link href="/" aria-label="RAD Esports home" className="group relative block shrink-0">
             <span
               aria-hidden
-              className="absolute -inset-2 rounded-lg bg-[#ff0000]/0 transition-colors duration-300 group-hover:bg-[#ff0000]/8"
+              className="absolute -inset-2 rounded-lg bg-[#dc143c]/0 transition-colors duration-300 group-hover:bg-[#dc143c]/10"
             />
             <Image
-              src="/assets/RadNewLogoWordmarkWhite.png"
+              src={assets.wordmark}
               alt="RAD Esports"
-              width={108}
-              height={28}
-              className="relative h-6 w-auto transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-7"
+              width={176}
+              height={45}
+              className="relative h-auto w-[92px] transition-transform duration-300 group-hover:-translate-y-0.5 sm:w-[112px]"
+              priority
             />
           </Link>
 
@@ -280,20 +282,20 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={(event) => handlePrimaryNavClick(event, link, active)}
-                  className={`group relative rounded-md px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+                  className={`group relative rounded-md px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
                     active ? "text-white" : "text-white/52 hover:text-white"
                   }`}
                   aria-current={active ? "page" : undefined}
                 >
                   <span
                     aria-hidden
-                    className={`absolute inset-0 rounded-md bg-[#ff0000]/0 transition duration-300 ${
-                      active ? "bg-[#ff0000]/10" : "group-hover:bg-white/[0.045]"
+                    className={`absolute inset-0 rounded-md bg-[#dc143c]/0 transition duration-300 ${
+                      active ? "bg-[#dc143c]/12" : "group-hover:bg-white/[0.045]"
                     }`}
                   />
                   <span className="relative z-10">{link.label}</span>
                   <span
-                    className={`pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center scale-x-0 bg-[color:var(--color-rad)] transition-transform duration-300 ${
+                    className={`pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center scale-x-0 bg-[#dc143c] transition-transform duration-300 ${
                       active ? "scale-x-100" : "group-hover:scale-x-100"
                     }`}
                     aria-hidden
@@ -307,7 +309,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-9 items-center rounded-md border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors hover:border-white/20 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] md:hidden"
+              className="inline-flex h-9 items-center rounded-md border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors hover:border-white/20 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] md:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-rad-nav"
             >
@@ -330,7 +332,7 @@ export function SiteHeader() {
                     key={link.href}
                     href={link.href}
                     onClick={(event) => handlePrimaryNavClick(event, link, active)}
-                    className={`flex items-center justify-between px-2 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000] ${
+                    className={`flex items-center justify-between px-2 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] ${
                       active ? "text-white" : "text-white/65 hover:text-white"
                     }`}
                     aria-current={active ? "page" : undefined}

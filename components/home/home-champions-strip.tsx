@@ -15,7 +15,7 @@ const milestones = [
   {
     year: "2025",
     title: "World title",
-    detail: "Inaugural Marvel Rivals Ignite: Mid-Season World Champions."
+    detail: "A championship result that gave the RAD identity real competitive weight."
   },
   {
     year: "2026",
@@ -31,7 +31,7 @@ export function HomeChampionsStrip() {
 
   return (
     <section className="relative overflow-hidden bg-black py-12 sm:py-18">
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_52%_at_22%_40%,rgba(255,0,0,0.08),transparent_60%)]" />
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_52%_at_22%_40%,rgba(220,20,60,0.11),transparent_60%)]" />
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <motion.div
@@ -40,12 +40,12 @@ export function HomeChampionsStrip() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease: EASE }}
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff4040]">Results</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">Proof</p>
             <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(2.7rem,5vw,5.2rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.02em] text-white">
-              Recent Titles.
+              Proof, not filler.
             </h2>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-white/64">
-              The results should be easy to read: titles, timing, and what comes next.
+              Short, readable milestones tell the client what matters without bloating the page.
             </p>
             <Link
               href="/content"
@@ -65,7 +65,7 @@ export function HomeChampionsStrip() {
                 transition={{ duration: 0.6, ease: EASE, delay: index * 0.06 }}
                 className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-white/20 hover:bg-white/[0.05] sm:grid sm:grid-cols-[120px_1fr_auto] sm:items-center sm:gap-6 sm:p-6"
               >
-                <div className="absolute inset-y-0 left-0 w-1 bg-[#ff0000] opacity-70" />
+                <div className="absolute inset-y-0 left-0 w-1 bg-[#dc143c] opacity-70" />
                 <p className="font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-none text-white sm:text-5xl">
                   {milestone.year}
                 </p>
@@ -77,7 +77,7 @@ export function HomeChampionsStrip() {
                     {milestone.detail}
                   </p>
                 </div>
-                <span className="mt-5 inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-[#ff4040] transition group-hover:translate-x-1 sm:mt-0">
+                <span className="mt-5 inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-[#ff6f88] transition group-hover:translate-x-1 sm:mt-0">
                   →
                 </span>
               </motion.article>

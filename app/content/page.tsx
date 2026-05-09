@@ -33,7 +33,7 @@ export default async function ContentPage() {
       eyebrow="Content"
       title="Content"
       description="News, video, and creator updates in one place."
-      heroImage={featured?.cover ?? "/assets/RadBannerNewTest300ppi.png"}
+      heroImage={featured?.cover ?? "/assets/rad-bg-red.png"}
       status="News + media"
       note={
         <NoteStack

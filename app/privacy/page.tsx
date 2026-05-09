@@ -36,7 +36,7 @@ export default function PrivacyPage() {
       eyebrow="Legal"
       title="Privacy"
       description="How RAD handles information shared through the site."
-      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      heroImage="/assets/rad-bg-red.png"
       status="Current"
     >
       <Section padding="sm">

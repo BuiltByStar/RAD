@@ -36,7 +36,7 @@ export default function TermsPage() {
       eyebrow="Legal"
       title="Terms"
       description="The rules for using RAD's public website and connected services."
-      heroImage="/assets/RadRivals_Wallpaper_Black.png"
+      heroImage="/assets/rad-bg-red.png"
       status="Active"
     >
       <Section padding="sm">

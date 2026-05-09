@@ -1,3 +1,5 @@
+import { assets } from "./assets";
+
 export type NavLink = {
   href: string;
   label: string;
@@ -308,54 +310,54 @@ export const partners: Partner[] = [
 export const merchCollection = {
   title: "Pressure Kit // Drop 01",
   eyebrow: "Merch",
-  description: "A first RAD jersey concept built to feel sharp, aggressive, and unmistakably RAD.",
+  description: "A future RAD merch lane built around the current brand system and ready for final product assets.",
   status: "Coming soon",
-  conceptImage: "/assets/merch-rad-concept-sheet.png",
-  frontImage: "/assets/merch-rad-jersey-front.png",
-  backImage: "/assets/merch-rad-jersey-back.png",
-  spotlight: "Flagship jersey",
+  conceptImage: assets.brandBoard,
+  frontImage: assets.bgRed,
+  backImage: assets.bgWhite,
+  spotlight: "Brand direction",
   shopUrl: undefined as string | undefined
 };
 
 export const merchItems: MerchItem[] = [
   {
-    name: "Pressure Jersey",
-    category: "Flagship",
-    description: "The hero piece of the first drop, built to carry the full RAD identity.",
-    accent: "Primary release",
+    name: "GO WILD Capsule",
+    category: "Future Drop",
+    description: "A clean merch direction anchored by the new wordmark, GO WILD lockup, and red texture system.",
+    accent: "Brand-led release",
     status: "Coming soon",
-    frontImage: "/assets/merch-rad-jersey-front.png",
-    backImage: "/assets/merch-rad-jersey-back.png",
+    frontImage: assets.goWild,
+    backImage: assets.wordmark,
     featured: true,
     externalUrl: undefined,
     ctaLabel: "Shop the drop"
   },
   {
-    name: "Wild Hoodie",
-    category: "Layer",
-    description: "Heavyweight black layer with sharp red trims and understated front branding.",
-    accent: "Cold-weather staple",
+    name: "Player Essentials",
+    category: "Apparel Lane",
+    description: "Minimal black-and-red pieces designed to support players first instead of overloading the brand.",
+    accent: "Player focused",
     status: "Coming soon",
-    frontImage: "/assets/merch-rad-hoodie-front.png",
-    backImage: "/assets/merch-rad-hoodie-back.png",
+    frontImage: assets.logoMark,
+    backImage: assets.bgRed,
     externalUrl: undefined,
     ctaLabel: "Shop the layer"
   },
   {
-    name: "Pressure Socks",
-    category: "Accessory",
-    description: "Tall black match socks with red trims and a sharp RAD hit through the shin.",
-    accent: "Game-day detail",
+    name: "Matchday Graphics",
+    category: "Graphic Kit",
+    description: "Social-ready visual assets for announcements, roster swaps, drops, and live match moments.",
+    accent: "Creative system",
     status: "Coming soon",
-    frontImage: "/assets/merch-rad-socks-front.png",
-    backImage: "/assets/merch-rad-socks-back.png",
+    frontImage: assets.brandBoard,
+    backImage: assets.bgWhite,
     externalUrl: undefined,
     ctaLabel: "Shop the detail"
   },
   {
-    name: "Match Cap",
-    category: "Accessory",
-    description: "Low-profile cap for daily wear with the clean wordmark up front.",
+    name: "Partner Capsules",
+    category: "Activation",
+    description: "A future lane for co-branded partner drops when RAD signs the right fit.",
     accent: "Everyday rotation",
     status: "Coming soon"
   }

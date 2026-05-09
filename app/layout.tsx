@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { AmbientBackground } from "@/components/ambient-background";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { assets } from "@/lib/assets";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
@@ -16,7 +17,7 @@ const localFontVars: CSSProperties = {
 } as CSSProperties;
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#340106",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -30,12 +31,12 @@ export const metadata: Metadata = {
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is a competitive org focused on roster, content, merch, and future growth.",
+    "RAD Esports is built around players, remembered through history, and ready for the next stage of competition.",
   openGraph: {
     title: "RAD Esports",
     description:
-      "A competitive esports brand focused on roster, content, merch, and future growth.",
-    images: ["/assets/RadPlayerBannerPNG8.png"],
+      "Built around players. Remembered through history. Welcome to the wild.",
+    images: [assets.bgRed],
     type: "website"
   },
   twitter: {

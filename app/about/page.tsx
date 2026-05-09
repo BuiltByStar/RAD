@@ -48,7 +48,7 @@ const milestones: WheelMilestone[] = [
   },
   {
     date: "Dec 2024",
-    title: "Marvel Rivals",
+    title: "Competitive roster",
     description: "RAD enters the scene with a roster built around pressure and pace.",
     kind: "history"
   },
@@ -89,12 +89,12 @@ export default function AboutPage() {
       eyebrow="About RAD"
       title="About RAD"
       description="RAD is a competitive esports org built around strong results, clear identity, and steady growth."
-      heroImage="/assets/RadBannerNewTest300ppi.png"
+      heroImage="/assets/rad-bg-red.png"
       status="World title // EMEA title"
       note={
         <NoteStack
           items={[
-            { label: "Division", value: "Marvel Rivals" },
+            { label: "Current Division", value: "Marvel Rivals" },
             { label: "Region", value: "EMEA / Global" }
           ]}
         />
