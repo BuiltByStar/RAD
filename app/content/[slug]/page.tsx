@@ -48,7 +48,7 @@ export default async function PostPage({
             className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1100px_520px_at_80%_-10%,rgb(255_43_69_/_0.18),transparent_60%),radial-gradient(900px_400px_at_0%_120%,rgb(255_43_69_/_0.10),transparent_60%)]"
           />
           <Container size="xl">
-            <div className="relative grid gap-6 overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] p-5 sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:p-10">
+            <div className="relative grid gap-6 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] p-5 shadow-[0_24px_80px_-54px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:p-10">
               <div className="relative z-10 flex flex-col justify-between gap-8">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[color:var(--color-rad-hi)]">
                   {post.category}
@@ -74,7 +74,7 @@ export default async function PostPage({
                 </div>
               </div>
 
-              <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-white/10 bg-black sm:aspect-[5/6] lg:aspect-[4/5]">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.55rem] border border-white/10 bg-black sm:aspect-[5/6] lg:aspect-[4/5]">
                 <Image
                   src={post.cover}
                   alt={post.title}

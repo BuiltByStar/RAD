@@ -15,7 +15,9 @@ export function SiteFooter() {
         className="z-0 object-cover opacity-[0.08]"
       />
       <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-8 pt-12 sm:px-8 lg:px-12 lg:pt-14">
-        <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-black/58 px-6 py-7 shadow-[0_24px_90px_rgba(0,0,0,0.45)] sm:px-8 sm:py-9">
+        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/48 px-6 py-7 shadow-[0_28px_100px_rgba(0,0,0,0.42)] backdrop-blur-xl sm:px-8 sm:py-9">
+          <div aria-hidden className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#dc143c]/14 blur-3xl" />
+          <div aria-hidden className="absolute -bottom-24 left-10 h-72 w-72 rounded-full bg-white/[0.04] blur-3xl" />
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.75fr_0.75fr]">
             <div className="relative z-10 max-w-xl">
               <Image
@@ -39,7 +41,7 @@ export function SiteFooter() {
                     href={link.href}
                     className="inline-flex w-fit items-center gap-2 text-sm font-medium uppercase tracking-[0.1em] text-white/70 transition-colors hover:text-white"
                   >
-                    <span className="inline-block h-px w-3 bg-[color:var(--color-rad)]/65" />
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-rad)]/75" />
                     {link.label}
                   </Link>
                 ))}
@@ -57,7 +59,7 @@ export function SiteFooter() {
                     rel={channel.href.startsWith("http") ? "noreferrer" : undefined}
                     className="inline-flex w-fit items-center gap-2 text-sm font-medium uppercase tracking-[0.1em] text-white/70 transition-colors hover:text-white"
                   >
-                    <span className="inline-block h-px w-3 bg-white/20" />
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/24" />
                     {channel.value}
                   </a>
                 ))}

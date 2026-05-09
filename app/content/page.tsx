@@ -51,7 +51,7 @@ export default async function ContentPage() {
           {featured ? (
             <Link
               href={`/content/${featured.slug}`}
-              className="group relative grid overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] shadow-[0_18px_60px_-48px_rgba(0,0,0,0.9)] transition-colors hover:border-white/22 md:grid-cols-[1.1fr_0.9fr]"
+              className="group relative grid overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.04] shadow-[0_24px_80px_-52px_rgba(0,0,0,0.95)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/22 md:grid-cols-[1.1fr_0.9fr]"
             >
               <span
                 aria-hidden
@@ -95,7 +95,7 @@ export default async function ContentPage() {
               <Link
                 key={post.slug}
                 href={`/content/${post.slug}`}
-                className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] transition-colors hover:border-white/22 hover:bg-white/[0.045]"
+                className="group relative flex flex-col overflow-hidden rounded-[1.55rem] border border-white/10 bg-white/[0.035] shadow-[0_18px_60px_-52px_rgba(0,0,0,0.95)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/22 hover:bg-white/[0.055]"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
@@ -131,13 +131,13 @@ export default async function ContentPage() {
           <SectionHeading eyebrow="Channels" title="Video and Creators" />
 
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+            <div className="rounded-[1.55rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_18px_60px_-52px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6">
               <CardEyebrow>Featured Video</CardEyebrow>
               <div className="mt-4">
                 <YouTubeFeatured />
               </div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+            <div className="rounded-[1.55rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_18px_60px_-52px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6">
               <CardEyebrow>Creator Status</CardEyebrow>
               <div className="mt-4">
                 <TwitchCreators />
@@ -145,7 +145,7 @@ export default async function ContentPage() {
             </div>
           </div>
 
-          <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+          <div className="mt-5 rounded-[1.55rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_18px_60px_-52px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6">
             <CardEyebrow>Library</CardEyebrow>
             <div className="mt-4">
               <YouTubeLibrary />

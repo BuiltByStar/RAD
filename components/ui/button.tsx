@@ -7,17 +7,17 @@ type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-md border font-semibold uppercase tracking-[0.14em] transition-[transform,background,border-color,box-shadow,color] duration-200 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 active:translate-y-[1px]";
+  "inline-flex items-center justify-center gap-2 rounded-full border font-semibold uppercase tracking-[0.14em] transition-[transform,background,border-color,box-shadow,color] duration-300 ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 active:translate-y-[1px]";
 
 const variants: Record<Variant, string> = {
   primary:
-    "border-[color:var(--color-rad)] bg-[color:var(--color-rad)] text-white shadow-[0_12px_28px_rgba(255,0,0,0.18)] hover:-translate-y-[1px] hover:bg-[#ff2424]",
+    "border-[color:var(--color-rad)] bg-[linear-gradient(135deg,#dc143c,#f13a5d)] text-white shadow-[0_18px_38px_rgba(220,20,60,0.22)] hover:-translate-y-[2px] hover:shadow-[0_24px_54px_rgba(220,20,60,0.28)]",
   secondary:
-    "border-white/14 bg-white/[0.06] text-white hover:border-white/26 hover:bg-white/[0.1]",
+    "border-white/14 bg-white/[0.075] text-white backdrop-blur-xl hover:border-white/26 hover:bg-white/[0.12]",
   ghost:
-    "border-transparent bg-transparent text-white/74 hover:border-white/14 hover:bg-white/[0.05] hover:text-white",
+    "border-transparent bg-transparent text-white/74 hover:border-white/14 hover:bg-white/[0.06] hover:text-white",
   outline:
-    "border-white/18 bg-black/20 text-white hover:border-white/34 hover:bg-white/[0.06]"
+    "border-white/18 bg-black/18 text-white backdrop-blur-xl hover:border-white/34 hover:bg-white/[0.07]"
 };
 
 const sizes: Record<Size, string> = {

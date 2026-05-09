@@ -124,7 +124,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
 
   return (
     <div
-      className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/45 px-3 py-5 shadow-[0_34px_120px_-72px_rgba(220,20,60,0.62)] sm:px-5 sm:py-7"
+      className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-black/36 px-3 py-5 shadow-[0_34px_120px_-72px_rgba(220,20,60,0.62)] backdrop-blur-xl sm:px-5 sm:py-7"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -173,7 +173,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
             type="button"
             onClick={goPrev}
             disabled={transitioning}
-            className="grid h-11 w-11 place-items-center rounded-md border border-white/12 bg-white/[0.04] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
             aria-label="Previous player"
           >
             <span aria-hidden>&larr;</span>
@@ -182,7 +182,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
             type="button"
             onClick={goNext}
             disabled={transitioning}
-            className="grid h-11 w-11 place-items-center rounded-md border border-white/12 bg-white/[0.04] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
             aria-label="Next player"
           >
             <span aria-hidden>&rarr;</span>
@@ -208,7 +208,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
             <motion.article
               key={player.slug}
               className={cn(
-                "absolute left-1/2 top-2 h-[480px] w-[min(78vw,330px)] origin-center overflow-hidden rounded-[1.1rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] sm:w-[360px] lg:h-[560px] lg:w-[390px]",
+                "absolute left-1/2 top-2 h-[480px] w-[min(78vw,330px)] origin-center overflow-hidden rounded-[1.85rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] sm:w-[360px] lg:h-[560px] lg:w-[390px]",
                 offset === 0 ? "z-30 border-[#dc143c]/42" : "z-10 border-white/10"
               )}
               animate={{
@@ -317,7 +317,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.24)_42%,#050506_100%),radial-gradient(circle_at_50%_12%,rgba(220,20,60,0.34),transparent_46%)]" />
 
                 <div className="absolute left-4 right-4 top-4 flex items-start gap-3">
-                  <span className="rounded-md border border-[#dc143c]/38 bg-[#dc143c]/16 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
+                  <span className="rounded-full border border-[#dc143c]/38 bg-[#dc143c]/16 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-xl">
                     {player.role}
                   </span>
                 </div>
@@ -345,7 +345,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 transition hover:border-[#dc143c]/38 hover:text-white"
+                        className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 transition hover:border-[#dc143c]/38 hover:bg-white/[0.09] hover:text-white"
                       >
                         {social.label}
                       </a>

@@ -33,14 +33,14 @@ export default function ContactPage() {
       <Section padding="sm">
         <Container>
           <div className="grid gap-5 lg:grid-cols-2">
-            <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+            <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_22px_70px_-56px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6">
               <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent" />
               <SectionHeading eyebrow="Inquiry Form" title="Inquiry Form" compact className="mb-6" />
               <ContactForm enabled={hasSupabaseServiceEnv()} />
             </div>
 
             <div className="flex flex-col gap-5">
-              <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
+              <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_22px_70px_-56px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6">
                 <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent" />
                 <SectionHeading eyebrow="Direct Contact" title="Direct Contact" compact className="mb-0" />
                 <ContactGrid channels={contactChannels} />

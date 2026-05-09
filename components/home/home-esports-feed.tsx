@@ -33,7 +33,7 @@ export function HomeEsportsFeed() {
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: EASE }}
-            className="relative min-h-[390px] overflow-hidden rounded-xl border border-white/12 bg-black shadow-[0_24px_74px_-50px_rgba(0,0,0,0.9)]"
+            className="relative min-h-[390px] overflow-hidden rounded-[2rem] border border-white/12 bg-black shadow-[0_28px_90px_-54px_rgba(0,0,0,0.95)]"
           >
             <Image
               src={featured.thumbnail}
@@ -68,7 +68,7 @@ export function HomeEsportsFeed() {
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, ease: EASE, delay: 0.05 }}
-              className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6"
+              className="rounded-[1.65rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
                 More media
@@ -78,11 +78,11 @@ export function HomeEsportsFeed() {
                   <Link
                     key={item.id}
                     href={item.url}
-                    className="group grid grid-cols-[88px_1fr] gap-3 rounded-lg border border-white/10 bg-black/24 p-2 transition hover:border-white/22 hover:bg-white/[0.04]"
+                    className="group grid grid-cols-[88px_1fr] gap-3 rounded-[1.15rem] border border-white/10 bg-black/24 p-2 transition hover:-translate-y-0.5 hover:border-white/22 hover:bg-white/[0.055]"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <div className="relative h-20 overflow-hidden rounded-lg bg-white/5">
+                    <div className="relative h-20 overflow-hidden rounded-[0.9rem] bg-white/5">
                       <Image src={item.thumbnail} alt="" fill sizes="88px" className="object-cover" />
                     </div>
                     <div className="py-1">
@@ -103,7 +103,7 @@ export function HomeEsportsFeed() {
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, ease: EASE, delay: 0.12 }}
-              className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6"
+              className="relative overflow-hidden rounded-[1.65rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff6b6b]">
                 Socials
@@ -119,7 +119,7 @@ export function HomeEsportsFeed() {
                     href={channel.href}
                     target={channel.href.startsWith("http") ? "_blank" : undefined}
                     rel={channel.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/62 transition hover:text-white"
+                    className="rounded-full border border-white/10 bg-black/30 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/62 transition hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
                   >
                     {channel.label}
                   </Link>

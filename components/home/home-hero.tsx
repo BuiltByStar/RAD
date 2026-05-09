@@ -34,6 +34,12 @@ export function HomeHero() {
         aria-hidden
         className="absolute inset-0 z-[-1] opacity-[0.025] [background-image:linear-gradient(to_right,rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.5)_1px,transparent_1px)] [background-size:96px_96px]"
       />
+      <motion.div
+        aria-hidden
+        className="absolute right-[-14rem] top-[14%] z-[-1] h-[34rem] w-[34rem] rounded-full bg-[#dc143c]/16 blur-3xl"
+        animate={reduced ? undefined : { scale: [0.94, 1.08, 0.94], opacity: [0.45, 0.72, 0.45] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <Container size="xl" className="relative z-10">
         <div className="grid min-h-[calc(74svh-5rem)] gap-8 pb-10 pt-6 lg:grid-cols-[0.94fr_1.06fr] lg:items-center lg:pb-12">
@@ -41,7 +47,7 @@ export function HomeHero() {
             initial={false}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE }}
-          className="min-w-0 max-w-[calc(100vw-3rem)] sm:max-w-4xl"
+            className="min-w-0 max-w-[calc(100vw-3rem)] sm:max-w-4xl"
           >
             <div className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/58">
               <span className="h-px w-8 bg-[#dc143c]" />
@@ -70,11 +76,11 @@ export function HomeHero() {
               </Button>
             </div>
 
-            <dl className="mt-7 grid max-w-2xl gap-5 border-t border-white/10 pt-5 sm:grid-cols-3">
+            <dl className="mt-7 grid max-w-2xl gap-3 border-t border-white/10 pt-5 sm:grid-cols-3">
               {stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="border-l border-[#dc143c]/50 pl-4"
+                  className="rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3 backdrop-blur-xl"
                 >
                   <dt className="font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-none text-white">
                     {stat.value}
@@ -93,7 +99,7 @@ export function HomeHero() {
             transition={{ duration: 0.85, ease: EASE, delay: 0.12 }}
             className="relative"
           >
-            <div className="relative overflow-hidden rounded-[1.4rem] border border-white/12 bg-black/48 shadow-[0_24px_90px_-48px_rgba(0,0,0,0.95)]">
+            <div className="relative overflow-hidden rounded-[2.15rem] border border-white/12 bg-black/38 shadow-[0_26px_100px_-48px_rgba(0,0,0,0.95)] backdrop-blur-xl">
               <div className="relative aspect-[16/11] min-h-[360px]">
                 <Image
                   src={assets.brandBoard}
@@ -102,12 +108,12 @@ export function HomeHero() {
                   sizes="(max-width: 1024px) 100vw, 54vw"
                   className="object-cover opacity-72"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,0,0,0.78),rgba(0,0,0,0.28)_48%,rgba(52,1,6,0.72))]" />
+                <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,0,0,0.72),rgba(0,0,0,0.2)_48%,rgba(52,1,6,0.68))]" />
                 <div className="absolute inset-x-5 top-5 flex items-center justify-between gap-3">
-                  <span className="rounded-full border border-white/12 bg-black/42 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/68">
+                  <span className="rounded-full border border-white/12 bg-black/34 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/68 backdrop-blur-xl">
                     teamrad.gg
                   </span>
-                  <span className="rounded-full border border-[#dc143c]/30 bg-[#dc143c]/12 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/72">
+                  <span className="rounded-full border border-[#dc143c]/30 bg-[#dc143c]/12 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/72 backdrop-blur-xl">
                     #GoWild
                   </span>
                 </div>
@@ -116,6 +122,12 @@ export function HomeHero() {
                   className="absolute right-[-12%] top-[10%] h-[78%] w-[56%] rounded-full bg-[#dc143c]/22 blur-3xl"
                   animate={reduced ? undefined : { scale: [0.92, 1.08, 0.92], opacity: [0.22, 0.38, 0.22] }}
                   transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  aria-hidden
+                  className="absolute left-[-18%] top-[42%] h-24 w-[70%] rounded-full bg-white/[0.055] blur-2xl"
+                  animate={reduced ? undefined : { x: ["-8%", "12%", "-8%"], opacity: [0.18, 0.32, 0.18] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <div className="absolute inset-x-5 bottom-5 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
                   <div>

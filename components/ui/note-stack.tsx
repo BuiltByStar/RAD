@@ -9,7 +9,7 @@ export function NoteStack({ items }: NoteStackProps) {
       {items.map((item) => (
         <div
           key={item.label}
-          className="flex flex-col gap-1 rounded-md border border-white/10 bg-white/[0.04] px-4 py-3"
+          className="flex flex-col gap-1 rounded-[1rem] border border-white/10 bg-white/[0.05] px-4 py-3 backdrop-blur-xl"
         >
           <dt className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/42">
             {item.label}

@@ -57,7 +57,7 @@ export function Card({
 
   const mouseX = useMotionValue(-200);
   const mouseY = useMotionValue(-200);
-  const spotlightBg = useMotionTemplate`radial-gradient(260px circle at ${mouseX}px ${mouseY}px, rgba(255,0,0,0.12), transparent 68%)`;
+  const spotlightBg = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, rgba(241,58,93,0.16), transparent 70%)`;
 
   const handleMove = (event: MouseEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -88,11 +88,11 @@ export function Card({
       onMouseMove={spotlight ? handleMove : onMouseMove}
       onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
-        "group relative overflow-hidden rounded-[1.15rem] border border-white/10",
-        "bg-white/[0.035]",
-        "shadow-[0_18px_50px_-42px_rgba(0,0,0,0.9)]",
+        "group relative overflow-hidden rounded-[1.65rem] border border-white/[0.085]",
+        "bg-[linear-gradient(145deg,rgba(255,255,255,0.065),rgba(255,255,255,0.025)_44%,rgba(220,20,60,0.045))] backdrop-blur-xl",
+        "shadow-[0_24px_70px_-52px_rgba(0,0,0,0.95)]",
         "transition-[border-color,background,box-shadow] duration-300",
-        "hover:border-white/20 hover:bg-white/[0.055]",
+        "hover:border-white/18 hover:bg-white/[0.07] hover:shadow-[0_30px_90px_-58px_rgba(220,20,60,0.55)]",
         tones[tone],
         className
       )}
@@ -100,7 +100,7 @@ export function Card({
     >
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/22 to-transparent"
+        className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent"
       />
 
       {spotlight && !reduced ? (
@@ -114,7 +114,7 @@ export function Card({
       {accent ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-px w-20 origin-left bg-[color:var(--color-rad)]/80"
+          className="pointer-events-none absolute left-5 top-5 h-1.5 w-10 origin-left rounded-full bg-[color:var(--color-rad)]/80 shadow-[0_0_22px_rgba(220,20,60,0.3)]"
           initial={false}
           whileInView={reduced ? undefined : { scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}

@@ -49,7 +49,7 @@ export default function RosterPage() {
             {teamRoster.map((player) => (
               <article
                 key={player.slug}
-                className="group rounded-xl border border-white/10 bg-black/36 p-4 transition hover:border-[color:var(--color-rad)]/40 hover:bg-white/[0.04]"
+                className="group rounded-[1.45rem] border border-white/10 bg-black/30 p-4 shadow-[0_18px_60px_-52px_rgba(0,0,0,0.95)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[color:var(--color-rad)]/40 hover:bg-white/[0.055]"
               >
                 <p className="font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white">
                   {player.name}

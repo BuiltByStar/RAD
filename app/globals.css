@@ -22,7 +22,7 @@
   --color-rad-ember:  #340106;
   --color-rad-soft:   #ff6f88;
 
-  --color-discord:    #ff0000;
+  --color-discord:    #dc143c;
 
   --font-display: var(--font-display);
   --font-body:    var(--font-body);
@@ -329,7 +329,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
 }
 
 .nav-glitch-logo-layer--white { background: #fff; }
-.nav-glitch-logo-layer--red { background: #ff0000; }
+.nav-glitch-logo-layer--red { background: #dc143c; }
 .nav-glitch-logo-layer--a { animation: nav-glitch-slice-a 680ms steps(1, end) forwards; }
 .nav-glitch-logo-layer--b { animation: nav-glitch-slice-b 680ms steps(1, end) forwards; }
 .nav-glitch-logo-layer--c { animation: nav-glitch-slice-c 680ms steps(1, end) forwards; }
@@ -934,7 +934,7 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
 }
 
 .nav-glitch-logo-layer--white { background: #fff; }
-.nav-glitch-logo-layer--red { background: #ff0000; }
+.nav-glitch-logo-layer--red { background: #dc143c; }
 .nav-glitch-logo-layer--a { animation: nav-glitch-slice-a 680ms steps(1, end) forwards; }
 .nav-glitch-logo-layer--b { animation: nav-glitch-slice-b 680ms steps(1, end) forwards; }
 .nav-glitch-logo-layer--c { animation: nav-glitch-slice-c 680ms steps(1, end) forwards; }

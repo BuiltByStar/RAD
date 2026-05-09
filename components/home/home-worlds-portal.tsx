@@ -50,7 +50,7 @@ export function HomeWorldsPortal() {
       />
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_54%_at_84%_18%,rgba(220,20,60,0.16),transparent_60%)]" />
       <Container size="xl">
-        <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-12">
+        <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-12">
           <motion.div
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -65,7 +65,7 @@ export function HomeWorldsPortal() {
             <p className="mt-5 text-base leading-relaxed text-white/66 sm:text-lg">
               The site should get people to the roster, content, community, and partner path without burying them in heavy chrome.
             </p>
-            <div className="mt-7 overflow-hidden rounded-[1rem] border border-white/10 bg-black/42 p-4">
+            <div className="mt-7 overflow-hidden rounded-[2rem] border border-white/10 bg-black/32 p-5 shadow-[0_24px_70px_-52px_rgba(220,20,60,0.45)] backdrop-blur-xl">
               <Image
                 src={assets.goWild}
                 alt="Go Wild"
@@ -83,16 +83,20 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
             className="relative"
           >
-            <div className="relative grid overflow-hidden rounded-[1.25rem] border border-white/10 bg-black/40 sm:grid-cols-2">
+            <div className="relative grid gap-4 sm:grid-cols-2">
               {lanes.map((system, index) => (
                 <Link
                   key={system.label}
                   href={system.href}
-                  className="group relative min-h-[180px] overflow-hidden border-white/10 p-5 transition hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] sm:border-l sm:[&:nth-child(odd)]:border-l-0 sm:[&:nth-child(n+3)]:border-t"
+                  className="group relative min-h-[180px] overflow-hidden rounded-[1.75rem] border border-white/10 bg-black/32 p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
                 >
                   <span
                     aria-hidden
-                    className="absolute inset-x-5 top-5 h-px scale-x-0 bg-[#dc143c] transition-transform duration-500 group-hover:scale-x-100"
+                    className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[#dc143c]/10 blur-2xl transition-opacity group-hover:opacity-100"
+                  />
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-6 top-5 h-1.5 origin-left scale-x-0 rounded-full bg-[#dc143c] transition-transform duration-500 group-hover:scale-x-100"
                     style={{ transformOrigin: "left" }}
                   />
                   <span className="absolute right-5 top-5 font-[family-name:var(--font-display)] text-5xl font-extrabold uppercase leading-none text-white/[0.04]">
@@ -105,7 +109,7 @@ export function HomeWorldsPortal() {
                     {system.label}
                   </h3>
                   <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/58">{system.meta}</p>
-                  <span className="mt-5 inline-flex text-sm text-[#ff6f88] transition group-hover:translate-x-1">
+                  <span className="mt-5 inline-flex rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#ff6f88] transition group-hover:translate-x-1 group-hover:border-white/20 group-hover:text-white">
                     Open page →
                   </span>
                 </Link>

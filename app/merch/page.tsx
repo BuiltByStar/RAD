@@ -32,7 +32,7 @@ export default function MerchPage() {
                 description={merchCollection.description}
                 compact
               />
-              <div className="mt-6 rounded-xl border border-white/10 bg-black/36 p-5">
+              <div className="mt-6 rounded-[1.6rem] border border-white/10 bg-black/30 p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/42">
                   Store status
                 </p>
@@ -45,14 +45,14 @@ export default function MerchPage() {
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-5 inline-flex rounded-md border border-[color:var(--color-rad)]/36 bg-[color:var(--color-rad)]/14 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[color:var(--color-rad)]/22"
+                  className="mt-5 inline-flex rounded-full border border-[color:var(--color-rad)]/36 bg-[color:var(--color-rad)]/14 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-[color:var(--color-rad)]/22"
                 >
                   Ask about merch
                 </Link>
               </div>
             </div>
 
-            <div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/45 p-5 shadow-[0_24px_90px_rgba(0,0,0,0.42)]">
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/36 p-5 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl">
               <Image
                 src={assets.bgRed}
                 alt=""
@@ -61,7 +61,7 @@ export default function MerchPage() {
                 className="object-cover opacity-18"
               />
               <div className="relative z-10 grid gap-4">
-                <div className="relative min-h-[290px] overflow-hidden rounded-xl border border-white/10 bg-black/38 p-6">
+                <div className="relative min-h-[290px] overflow-hidden rounded-[1.65rem] border border-white/10 bg-black/32 p-6">
                   <Image
                     src={assets.goWild}
                     alt="GO WILD"
@@ -77,7 +77,7 @@ export default function MerchPage() {
 
                 <div className="grid gap-3 sm:grid-cols-3">
                   {merchItems.slice(0, 3).map((item) => (
-                    <article key={item.name} className="rounded-xl border border-white/10 bg-black/42 p-4">
+                    <article key={item.name} className="rounded-[1.25rem] border border-white/10 bg-black/34 p-4 transition hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.045]">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff6f88]">
                         {item.category}
                       </p>

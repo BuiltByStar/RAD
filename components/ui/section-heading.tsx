@@ -56,7 +56,7 @@ export function SectionHeading({
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, ease: EASE_EMPHASIS }}
           >
-            <span className="inline-block h-px w-7 bg-[color:var(--color-rad)]" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_18px_rgba(220,20,60,0.55)]" />
             {eyebrow}
           </motion.p>
         ) : null}
@@ -75,7 +75,7 @@ export function SectionHeading({
           {actionHref && actionLabel ? (
             <Link
               href={actionHref}
-              className="group inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/78 transition-[border-color,color,background] hover:border-white/24 hover:bg-white/[0.07] hover:text-white"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.055] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/78 backdrop-blur-xl transition-[border-color,color,background,transform] hover:-translate-y-0.5 hover:border-white/24 hover:bg-white/[0.09] hover:text-white"
             >
               {actionLabel}
               <span
@@ -96,7 +96,7 @@ export function SectionHeading({
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.9, ease: EASE_EMPHASIS, delay: 0.15 }}
         style={{ originX: 0 }}
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-white/14 via-white/22 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent"
       />
     </motion.header>
   );

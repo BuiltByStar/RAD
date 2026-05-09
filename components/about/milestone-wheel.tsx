@@ -65,7 +65,7 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
               type="button"
               onClick={() => goTo(index)}
               className={cn(
-                "grid w-full grid-cols-[88px_1fr] items-start gap-3 rounded-lg border px-3 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000]",
+                "grid w-full grid-cols-[88px_1fr] items-start gap-3 rounded-[1.2rem] border px-3 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]",
                 isActive
                   ? "border-[#ff7a7a]/28 bg-[linear-gradient(145deg,rgba(255,94,94,0.14),rgba(255,255,255,0.04))] text-white shadow-[0_14px_38px_-24px_rgba(255,70,70,0.72)]"
                   : "border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.018))] text-white/62 hover:border-white/16 hover:bg-white/[0.045]"
@@ -122,7 +122,7 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
           <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff6a6a] to-transparent" />
           <div aria-hidden className="absolute inset-y-5 left-5 w-px bg-gradient-to-b from-[#ff6a6a]/0 via-[#ff6a6a]/70 to-[#ff6a6a]/0" />
           <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-full border border-[#ff0000]/28 bg-[#ff0000]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/78">
+            <span className="rounded-full border border-[#dc143c]/28 bg-[#dc143c]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/78">
               {activeItem.kind === "future" ? "Next stage" : "Past milestone"}
             </span>
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/42">{activeItem.date}</span>
@@ -138,7 +138,7 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
             <button
               type="button"
               onClick={() => goTo(active - 1)}
-              className="grid h-11 w-11 place-items-center rounded-md border border-white/12 bg-white/[0.04] text-xl text-white/72 transition hover:border-[#ff0000]/42 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000]"
+              className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
               aria-label="Previous milestone"
             >
               <span aria-hidden>&uarr;</span>
@@ -146,7 +146,7 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
             <button
               type="button"
               onClick={() => goTo(active + 1)}
-              className="grid h-11 w-11 place-items-center rounded-md border border-white/12 bg-white/[0.04] text-xl text-white/72 transition hover:border-[#ff0000]/42 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff0000]"
+              className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
               aria-label="Next milestone"
             >
               <span aria-hidden>&darr;</span>
