@@ -134,6 +134,28 @@ p { margin: 0; }
 .container { width: var(--container); margin: 0 auto; }
 main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
 
+@media (max-width: 640px) {
+  .auth-discord-btn {
+    width: 38px;
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .auth-discord-btn span {
+    display: none;
+  }
+
+  .auth-user-btn {
+    max-width: 42px;
+    padding-inline: 0.45rem;
+  }
+
+  .auth-username,
+  .auth-chevron {
+    display: none;
+  }
+}
+
 /* ─── @keyframes ───────────────────────────────────────────────────────────── */
 @keyframes float-up {
   from { opacity: 0; transform: translateY(16px); }
