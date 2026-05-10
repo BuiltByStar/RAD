@@ -83,7 +83,7 @@ export const primaryNavLinks: NavLink[] = [
   { href: "/about", label: "About" },
   { href: "/roster", label: "Roster" },
   { href: "/content", label: "Content" },
-  { href: "/merch", label: "Merch" }
+  { href: "/shop", label: "Shop" }
 ];
 
 export const navLinks: NavLink[] = [
@@ -92,7 +92,7 @@ export const navLinks: NavLink[] = [
   { href: "/roster", label: "Roster" },
   { href: "/staff", label: "Staff" },
   { href: "/content", label: "Content" },
-  { href: "/merch", label: "Merch" },
+  { href: "/shop", label: "Shop" },
   { href: "/partners", label: "Activations" },
   { href: "/contact", label: "Contact" }
 ];
@@ -321,9 +321,9 @@ export const merchCollection = {
 
 export const merchItems: MerchItem[] = [
   {
-    name: "GO WILD Capsule",
-    category: "Future Drop",
-    description: "A clean merch direction anchored by the new wordmark, GO WILD lockup, and red texture system.",
+    name: "GO WILD Jersey",
+    category: "Jerseys",
+    description: "A match-day jersey concept anchored by the RAD wordmark, GO WILD lockup, and red texture system.",
     accent: "Brand-led release",
     status: "Coming soon",
     frontImage: assets.goWild,
@@ -334,8 +334,8 @@ export const merchItems: MerchItem[] = [
   },
   {
     name: "Player Essentials",
-    category: "Apparel Lane",
-    description: "Minimal black-and-red pieces designed to support players first instead of overloading the brand.",
+    category: "Apparel",
+    description: "Minimal black-and-red apparel designed to support players first instead of overloading the brand.",
     accent: "Player focused",
     status: "Coming soon",
     frontImage: assets.logoMark,
@@ -344,10 +344,10 @@ export const merchItems: MerchItem[] = [
     ctaLabel: "Shop the layer"
   },
   {
-    name: "Matchday Graphics",
-    category: "Graphic Kit",
-    description: "Social-ready visual assets for announcements, roster swaps, drops, and live match moments.",
-    accent: "Creative system",
+    name: "RAD Desk Mat",
+    category: "Mousepads",
+    description: "A clean desk mat direction using the RAD red texture system for future player setups.",
+    accent: "Setup focused",
     status: "Coming soon",
     frontImage: assets.brandBoard,
     backImage: assets.bgWhite,
@@ -355,10 +355,10 @@ export const merchItems: MerchItem[] = [
     ctaLabel: "Shop the detail"
   },
   {
-    name: "Partner Capsules",
-    category: "Activation",
-    description: "A future lane for co-branded partner drops when RAD signs the right fit.",
-    accent: "Everyday rotation",
+    name: "Matchday Graphics",
+    category: "Accessories",
+    description: "Smaller drop concepts for stickers, lanyards, and social-ready supporter pieces.",
+    accent: "Creative system",
     status: "Coming soon"
   }
 ];

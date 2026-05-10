@@ -249,7 +249,7 @@ export function SiteHeader() {
       />
       <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-colors duration-200 ease-[var(--ease-emphasis)]">
       <div
-        className={`mx-auto w-full max-w-[1440px] border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] ${
+        className={`mx-auto max-w-[1440px] border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] ${
           menuOpen ? "rounded-[1.75rem]" : "rounded-full"
         } ${
           scrolled
@@ -257,7 +257,7 @@ export function SiteHeader() {
             : "border-white/[0.11] bg-black/64"
         }`}
       >
-        <div className="grid h-14 grid-cols-[auto_1fr_auto] items-center gap-4 sm:h-16">
+        <div className="grid h-14 min-w-0 grid-cols-[auto_1fr_auto] items-center gap-2 sm:h-16 sm:gap-4">
           <Link href="/" aria-label="RAD Esports home" className="group relative block shrink-0">
             <span
               aria-hidden
@@ -311,11 +311,22 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-9 items-center rounded-full border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] md:hidden"
+              className="inline-flex h-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] md:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-rad-nav"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
             >
-              Menu
+              <span className="mobile-menu-label">Menu</span>
+              <svg
+                className="mobile-menu-icon"
+                width="16"
+                height="12"
+                viewBox="0 0 16 12"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
             </button>
             <AuthWidget />
           </div>

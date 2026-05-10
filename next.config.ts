@@ -13,26 +13,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname)
   },
-  async redirects() {
-    if (process.env.NODE_ENV !== "development") {
-      return [];
-    }
-
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "127.0.0.1" }],
-        destination: "http://localhost:3000/:path*",
-        permanent: false
-      },
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "::1" }],
-        destination: "http://localhost:3000/:path*",
-        permanent: false
-      }
-    ];
-  },
   async headers() {
     const csp = [
       "default-src 'self'",

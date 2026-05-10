@@ -154,6 +154,32 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
   .auth-chevron {
     display: none;
   }
+
+  .auth-action-group,
+  .auth-user {
+    display: none;
+  }
+
+  .mobile-menu-label {
+    display: none;
+  }
+
+  .mobile-menu-icon {
+    display: block !important;
+  }
+
+  button[aria-controls="mobile-rad-nav"] {
+    position: fixed;
+    right: 1.5rem;
+    top: 1.45rem;
+    z-index: 60;
+    width: 38px;
+    padding-inline: 0;
+  }
+}
+
+.mobile-menu-icon {
+  display: none;
 }
 
 /* ─── @keyframes ───────────────────────────────────────────────────────────── */
@@ -192,6 +218,15 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
   0% { transform: translateX(-115%); opacity: 0; }
   22% { opacity: 0.75; }
   54%, 100% { transform: translateX(115%); opacity: 0; }
+}
+
+@keyframes keep-scrolling-nudge {
+  0%, 100% { transform: translateY(0); opacity: 0.65; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+
+.keep-scrolling-arrow {
+  animation: keep-scrolling-nudge 1.3s ease-in-out infinite;
 }
 
 @keyframes rad-noise-shift {

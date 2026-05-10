@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
 
 import { AmbientBackground } from "@/components/ambient-background";
+import { KeepScrolling } from "@/components/keep-scrolling";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { assets } from "@/lib/assets";
@@ -59,6 +60,7 @@ export default function RootLayout({
       >
         <AmbientBackground />
         <SiteHeader />
+        <KeepScrolling />
 
         <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem] lg:pt-20">
           <div className="relative z-10">{children}</div>
