@@ -5,8 +5,11 @@ import { HomeIntro } from "@/components/home/home-intro";
 import { HomeWorldsPortal } from "@/components/home/home-worlds-portal";
 import { MarqueeStrip } from "@/components/home/marquee-strip";
 import { PageReadySignal } from "@/components/page-ready-signal";
+import { getManagedContentItems } from "@/lib/content-data.server";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const contentItems = await getManagedContentItems();
+
   return (
     <main className="relative isolate">
       <PageReadySignal route="/" delayMs={40} />
@@ -14,7 +17,7 @@ export default function HomePage() {
       <HomeHero />
       <MarqueeStrip />
       <HomeWorldsPortal />
-      <HomeEsportsFeed />
+      <HomeEsportsFeed items={contentItems} />
       <HomeChampionsStrip />
     </main>
   );

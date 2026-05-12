@@ -30,7 +30,7 @@ export function HomeChampionsStrip() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden bg-black py-12 sm:py-18">
+    <section className="rad-dot-surface relative overflow-hidden bg-black py-12 sm:py-18">
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_52%_at_22%_40%,rgba(220,20,60,0.11),transparent_60%)]" />
       <Container size="xl">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">

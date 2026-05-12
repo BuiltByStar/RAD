@@ -1488,3 +1488,109 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
 
 .form-status-success { color: rgba(255, 255, 255, 0.82); }
 .form-status-error { color: #ff6b6b; }
+
+.rad-dot-surface::before,
+.rad-dot-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rad-dot-surface::before {
+  opacity: 0.1;
+  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.84) 0.7px, transparent 0.82px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 84%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 84%);
+}
+
+.rad-dot-surface::after {
+  opacity: 0.06;
+  background-image: radial-gradient(circle at center, rgba(220, 20, 60, 0.9) 0.55px, transparent 0.72px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(ellipse at center, black 18%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 18%, transparent 78%);
+}
+
+@media (pointer: fine) {
+  html,
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  summary {
+    cursor: none !important;
+  }
+
+  .cursor-dot {
+    position: fixed;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    z-index: 500;
+    will-change: left, top, transform, opacity;
+  }
+
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #ff1744;
+    transform: translate(-50%, -50%);
+    transition: background-color 120ms ease, opacity 120ms ease;
+  }
+
+  .cursor-dot::before,
+  .cursor-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+  }
+
+  .cursor-dot::before {
+    border: 1px solid #ffffff;
+    transform: scale(1);
+  }
+
+  .cursor-dot::after {
+    background: #ff1744;
+    transform: scale(1);
+  }
+
+  .cursor-dot--glitch {
+    animation: cursor-dot-glitch 180ms steps(2, end);
+  }
+
+  .cursor-dot--glitch::before {
+    opacity: 0.9;
+    animation: cursor-pulse-ring 180ms ease-out;
+  }
+
+  .cursor-dot--glitch::after {
+    opacity: 1;
+    animation: cursor-hit-core 180ms ease-out;
+  }
+}
+
+@keyframes cursor-dot-glitch {
+  0% { background: #ff1744; }
+  49% { background: #ffffff; }
+  50% { background: #ff1744; }
+  100% { background: #ff1744; }
+}
+
+@keyframes cursor-pulse-ring {
+  0% { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(3.4); }
+}
+
+@keyframes cursor-hit-core {
+  0% { opacity: 0.95; transform: scale(1); }
+  100% { opacity: 0; transform: scale(2); }
+}

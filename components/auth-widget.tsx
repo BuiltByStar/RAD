@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
+
+const localAdminBypassEnabled = process.env.NEXT_PUBLIC_LOCAL_ADMIN_BYPASS === "1";
 
 function DiscordIcon({ size = 16 }: { size?: number }) {
   return (
@@ -19,14 +21,27 @@ function DiscordIcon({ size = 16 }: { size?: number }) {
 }
 
 export function AuthWidget() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [available, setAvailable] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const canAccessDashboard = localAdminBypassEnabled || isAdmin;
+  const adminLinkHref = pathname?.startsWith("/dashboard") ? "/" : "/dashboard";
+  const adminLinkLabel = pathname?.startsWith("/dashboard") ? "View Site" : "Dashboard";
+  const [currentOrigin, setCurrentOrigin] = useState("http://localhost:3000");
 
   useEffect(() => {
+    if (localAdminBypassEnabled) {
+      setAvailable(true);
+      setIsAdmin(true);
+      setLoading(false);
+      return;
+    }
+
     let unsubscribe: (() => void) | undefined;
 
     (async () => {
@@ -62,6 +77,12 @@ export function AuthWidget() {
     return () => unsubscribe?.();
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.origin) {
+      setCurrentOrigin(window.location.origin);
+    }
+  }, []);
+
   async function refreshAdminStatus() {
     try {
       const response = await fetch("/api/admin/status", { cache: "no-store" });
@@ -88,6 +109,10 @@ export function AuthWidget() {
   }, []);
 
   async function signIn() {
+    if (localAdminBypassEnabled) {
+      setDropdownOpen((open) => !open);
+      return;
+    }
     if (!available) return;
     try {
       const { createSupabaseBrowserClient } = await import("@/lib/supabase/browser");
@@ -102,6 +127,10 @@ export function AuthWidget() {
   }
 
   async function signOut() {
+    if (localAdminBypassEnabled) {
+      setDropdownOpen(false);
+      return;
+    }
     if (!available) return;
     try {
       const { createSupabaseBrowserClient } = await import("@/lib/supabase/browser");
@@ -114,9 +143,72 @@ export function AuthWidget() {
     }
   }
 
+  function stabilizeDropdownAction(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  function openAdminRoute(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    const targetUrl = new URL(adminLinkHref, currentOrigin).toString();
+    setDropdownOpen(false);
+    router.push(adminLinkHref);
+
+    window.setTimeout(() => {
+      if (window.location.href !== targetUrl) {
+        window.location.assign(targetUrl);
+      }
+    }, 120);
+  }
+
   if (loading) {
     return (
       <div className="auth-skeleton-mini" aria-hidden="true" />
+    );
+  }
+
+  if (localAdminBypassEnabled) {
+    return (
+      <div className="auth-user" ref={dropdownRef}>
+        <button
+          className="auth-user-btn"
+          onClick={() => setDropdownOpen((o) => !o)}
+          aria-expanded={dropdownOpen}
+          aria-label="Local admin session"
+        >
+          <span className="auth-online-dot" aria-hidden="true" />
+          <span className="auth-avatar auth-avatar-initials">LA</span>
+          <span className="auth-username">Local Admin</span>
+          <svg
+            className={`auth-chevron${dropdownOpen ? " auth-chevron--open" : ""}`}
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="currentColor"
+          >
+            <path d="M0 0l5 6 5-6z" />
+          </svg>
+        </button>
+
+        {dropdownOpen && (
+          <div className="auth-dropdown">
+            <div className="auth-dropdown-header">
+              <DiscordIcon size={12} />
+              <span>Local admin bypass</span>
+            </div>
+            <div className="auth-dropdown-divider" />
+            <button
+              className="auth-dropdown-item"
+              type="button"
+              onMouseDown={stabilizeDropdownAction}
+              onClick={openAdminRoute}
+            >
+              {adminLinkLabel}
+            </button>
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -162,10 +254,15 @@ export function AuthWidget() {
               <span>Connected via Discord</span>
             </div>
             <div className="auth-dropdown-divider" />
-            {isAdmin ? (
-              <Link className="auth-dropdown-item" href="/dashboard" onClick={() => setDropdownOpen(false)}>
-                Dashboard
-              </Link>
+            {canAccessDashboard ? (
+              <button
+                className="auth-dropdown-item"
+                type="button"
+                onMouseDown={stabilizeDropdownAction}
+                onClick={openAdminRoute}
+              >
+                {adminLinkLabel}
+              </button>
             ) : null}
             <button className="auth-dropdown-item" onClick={signOut}>
               Sign out

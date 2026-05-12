@@ -45,7 +45,7 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
 
   return (
     <>
-      <section className="border-b border-white/10 bg-[#171719] px-6 py-16 text-center sm:px-8 sm:py-20 lg:px-12">
+      <section className="rad-dot-surface border-b border-white/10 bg-[#171719] px-6 py-16 text-center sm:px-8 sm:py-20 lg:px-12">
         <div className="mx-auto max-w-[320px] sm:max-w-3xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.38em] text-[color:var(--color-rad-hi)]">
             RAD Storefront
@@ -59,7 +59,7 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#050505] px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
+      <section className="rad-dot-surface relative overflow-hidden bg-[#050505] px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
         <div
           aria-hidden
           className="absolute inset-0 bg-[radial-gradient(760px_360px_at_50%_0%,rgba(220,20,60,0.14),transparent_62%)]"

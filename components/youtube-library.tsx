@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { fallbackContent } from "@/lib/content-data";
+import type { ContentItem } from "@/lib/content-data";
 
 type Video = {
   videoId: string;
@@ -12,12 +12,25 @@ type Video = {
   url?: string;
 };
 
-export function YouTubeLibrary() {
+export function YouTubeLibrary({
+  fallbackItems,
+  preferManaged = false
+}: {
+  fallbackItems: ContentItem[];
+  preferManaged?: boolean;
+}) {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [usedFallback, setUsedFallback] = useState(false);
 
   useEffect(() => {
+    if (preferManaged) {
+      setVideos([]);
+      setUsedFallback(true);
+      setLoading(false);
+      return;
+    }
+
     let mounted = true;
 
     fetch("/api/youtube/latest")
@@ -45,7 +58,7 @@ export function YouTubeLibrary() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [preferManaged]);
 
   if (loading) {
     return (
@@ -65,7 +78,7 @@ export function YouTubeLibrary() {
   }
 
   const displayItems: Video[] = usedFallback
-    ? fallbackContent
+    ? fallbackItems
         .filter((item) => !item.featured)
         .map((item) => ({
           videoId: item.id,

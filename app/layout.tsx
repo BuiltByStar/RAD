@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
 
 import { AmbientBackground } from "@/components/ambient-background";
+import { CustomCursor } from "@/components/custom-cursor";
 import { KeepScrolling } from "@/components/keep-scrolling";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -59,6 +60,7 @@ export default function RootLayout({
         style={localFontVars}
       >
         <AmbientBackground />
+        <CustomCursor />
         <SiteHeader />
         <KeepScrolling />
 

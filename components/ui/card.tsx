@@ -122,7 +122,7 @@ export function Card({
         />
       ) : null}
 
-      <div className="relative z-10">{children}</div>
+      <div className={cn("relative z-10", accent ? "pt-4" : null)}>{children}</div>
     </motion.article>
   );
 }

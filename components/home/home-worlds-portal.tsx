@@ -40,7 +40,7 @@ export function HomeWorldsPortal() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="experience" className="relative overflow-hidden border-y border-white/10 bg-[#050102] py-14 sm:py-18">
+    <section id="experience" className="rad-dot-surface relative overflow-hidden border-y border-white/10 bg-[#050102] py-14 sm:py-18">
       <Image
         src={assets.bgWhite}
         alt=""

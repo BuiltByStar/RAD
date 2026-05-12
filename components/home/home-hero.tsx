@@ -13,7 +13,7 @@ export function HomeHero() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="rad-hero relative isolate min-h-[82svh] overflow-hidden border-b border-white/10 bg-[#050102] pt-20 sm:pt-24">
+    <section className="rad-dot-surface rad-hero relative isolate min-h-[82svh] overflow-hidden border-b border-white/10 bg-[#050102] pt-20 sm:pt-24">
       <Image
         src={assets.bgRed}
         alt=""
@@ -28,11 +28,19 @@ export function HomeHero() {
       />
       <div
         aria-hidden
-        className="absolute left-0 top-[22%] z-[-2] h-px w-[56vw] bg-[linear-gradient(90deg,#dc143c,transparent)] opacity-70"
+        className="absolute left-0 top-[24%] z-[-2] h-px w-[56vw] bg-[linear-gradient(90deg,#dc143c,transparent)] opacity-70"
       />
       <div
         aria-hidden
-        className="absolute inset-0 z-[-1] opacity-[0.025] [background-image:linear-gradient(to_right,rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.5)_1px,transparent_1px)] [background-size:96px_96px]"
+        className="absolute inset-0 z-[-1] opacity-[0.14] [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.88)_0.7px,transparent_0.82px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_22%,transparent_84%)]"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[-1] opacity-[0.08] [background-image:radial-gradient(circle_at_center,rgba(220,20,60,0.95)_0.55px,transparent_0.72px)] [background-size:30px_30px] [mask-image:radial-gradient(ellipse_at_center,black_18%,transparent_78%)]"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[-1] opacity-[0.05] [background-image:linear-gradient(115deg,transparent_0%,transparent_44%,rgba(255,255,255,0.72)_49%,transparent_54%,transparent_100%)] [background-size:100%_100%] [mask-image:radial-gradient(ellipse_at_center,black_18%,transparent_76%)]"
       />
       <motion.div
         aria-hidden
@@ -49,7 +57,7 @@ export function HomeHero() {
             transition={{ duration: 0.8, ease: EASE }}
             className="min-w-0 max-w-[calc(100vw-3rem)] sm:max-w-4xl"
           >
-            <div className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/58">
+            <div className="inline-flex items-center gap-3 rounded-full bg-[#050102]/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/58 backdrop-blur-sm">
               <span className="h-px w-8 bg-[#dc143c]" />
               RAD Esports
             </div>

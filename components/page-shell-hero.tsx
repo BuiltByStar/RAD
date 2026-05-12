@@ -48,7 +48,7 @@ export function PageShellHero({
   const compact = variant === "roster";
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-white/10 bg-[#050102]">
+    <section className="rad-dot-surface relative isolate overflow-hidden border-b border-white/10 bg-[#050102]">
       {heroVideo ? (
         <video
           autoPlay
@@ -70,6 +70,10 @@ export function PageShellHero({
       )}
       <div aria-hidden className="absolute inset-0 z-[-2] bg-[linear-gradient(90deg,#050102_0%,rgba(5,1,2,0.92)_52%,rgba(52,1,6,0.78)_100%)]" />
       <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(70%_48%_at_20%_10%,rgba(220,20,60,0.18),transparent_60%)]" />
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[-1] opacity-[0.12] [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.86)_0.7px,transparent_0.8px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_82%)]"
+      />
       <div
         aria-hidden
         className="absolute right-[-14rem] top-[-12rem] z-[-1] h-[32rem] w-[32rem] rounded-full bg-[#dc143c]/14 blur-3xl"

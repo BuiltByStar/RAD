@@ -8,8 +8,8 @@ import { YouTubeFeatured } from "@/components/youtube-featured";
 import { YouTubeLibrary } from "@/components/youtube-library";
 import { Button, Container } from "@/components/ui";
 import { assets } from "@/lib/assets";
+import { getManagedContentItemsState } from "@/lib/content-data.server";
 import { contentCreators } from "@/lib/creators";
-import { fallbackContent } from "@/lib/content-data";
 import { getFeaturedPost, getPostMeta } from "@/lib/posts";
 import { contactChannels } from "@/lib/site-data";
 
@@ -18,11 +18,14 @@ export const metadata: Metadata = {
   description: "RAD videos, creator streams, and editorial updates."
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function ContentPage() {
+  const { items: managedContent, usingDashboardItems } = await getManagedContentItemsState();
   const featuredPost = await getFeaturedPost();
   const posts = await getPostMeta();
   const articleFeed = posts.filter((post) => post.slug !== featuredPost?.slug);
-  const featuredDrop = fallbackContent.find((item) => item.featured) ?? fallbackContent[0];
+  const featuredDrop = managedContent.find((item) => item.featured) ?? managedContent[0];
   const youtube = contactChannels.find((channel) => channel.label === "YouTube");
   const x = contactChannels.find((channel) => channel.label === "X");
 
@@ -30,7 +33,7 @@ export default async function ContentPage() {
     <main className="relative isolate overflow-hidden bg-[#030304]">
       <PageReadySignal route="/content" delayMs={32} />
 
-      <section className="relative isolate overflow-hidden border-b border-white/10">
+      <section className="rad-dot-surface relative isolate overflow-hidden border-b border-white/10">
         <Image
           src={assets.bgRed}
           alt=""
@@ -78,7 +81,7 @@ export default async function ContentPage() {
 
               <div className="mt-7 flex flex-wrap gap-3">
                 <span className="rounded-full border border-[color:var(--color-rad)]/40 bg-[color:var(--color-rad)]/12 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
-                  {fallbackContent.length + posts.length} media pieces
+                  {managedContent.length + posts.length} media pieces
                 </span>
                 <span className="rounded-full border border-white/12 bg-white/[0.055] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/72">
                   {contentCreators.length} creators tracked
@@ -115,12 +118,17 @@ export default async function ContentPage() {
                   className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),transparent_28%,rgba(220,20,60,0.1)_100%)]"
                 />
                 <div className="relative">
-                  <YouTubeFeatured />
+                  <YouTubeFeatured featuredItem={featuredDrop} preferManaged={usingDashboardItems} />
                 </div>
               </div>
 
               {featuredDrop ? (
-                <div className="relative mt-4 grid min-w-0 gap-3 overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.045] p-4 backdrop-blur-xl sm:grid-cols-[92px_1fr]">
+                <a
+                  href={featuredDrop.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative mt-4 grid min-w-0 gap-3 overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.045] p-4 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[color:var(--color-rad)]/42 hover:bg-white/[0.06] sm:grid-cols-[92px_1fr]"
+                >
                   <div className="relative min-h-24 overflow-hidden rounded-[1rem] bg-white/5">
                     <Image
                       src={featuredDrop.thumbnail}
@@ -141,14 +149,14 @@ export default async function ContentPage() {
                       {featuredDrop.description}
                     </p>
                   </div>
-                </div>
+                </a>
               ) : null}
             </div>
           </div>
         </Container>
       </section>
 
-      <section className="relative overflow-hidden border-b border-white/10 py-12 sm:py-16">
+      <section className="rad-dot-surface relative overflow-hidden border-b border-white/10 py-12 sm:py-16">
         <div
           aria-hidden
           className="absolute left-[-12rem] top-[-14rem] h-[28rem] w-[28rem] rounded-full bg-[color:var(--color-rad)]/10 blur-3xl"
@@ -172,7 +180,7 @@ export default async function ContentPage() {
         </Container>
       </section>
 
-      <section id="latest-videos" className="relative overflow-hidden border-b border-white/10 py-12 sm:py-16">
+      <section id="latest-videos" className="rad-dot-surface relative overflow-hidden border-b border-white/10 py-12 sm:py-16">
         <Image
           src={assets.bgWhite}
           alt=""
@@ -199,11 +207,11 @@ export default async function ContentPage() {
             </Button>
           </div>
 
-          <YouTubeLibrary />
+          <YouTubeLibrary fallbackItems={managedContent} preferManaged={usingDashboardItems} />
         </Container>
       </section>
 
-      <section className="relative overflow-hidden py-12 sm:py-16">
+      <section className="rad-dot-surface relative overflow-hidden py-12 sm:py-16">
         <Container size="xl">
           <div className="mb-8 grid gap-4 lg:grid-cols-[0.78fr_1fr] lg:items-end">
             <div>

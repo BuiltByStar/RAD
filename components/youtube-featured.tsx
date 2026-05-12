@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import type { ContentItem } from "@/lib/content-data";
 import { fallbackContent } from "@/lib/content-data";
 
 type Video = {
@@ -12,11 +13,23 @@ type Video = {
   url?: string;
 };
 
-export function YouTubeFeatured() {
+export function YouTubeFeatured({
+  featuredItem,
+  preferManaged = false
+}: {
+  featuredItem?: ContentItem;
+  preferManaged?: boolean;
+}) {
   const [video, setVideo] = useState<Video | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (preferManaged) {
+      setVideo(null);
+      setLoading(false);
+      return;
+    }
+
     let mounted = true;
 
     fetch("/api/youtube/latest")
@@ -34,7 +47,7 @@ export function YouTubeFeatured() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [preferManaged]);
 
   if (loading) {
     return (
@@ -51,7 +64,7 @@ export function YouTubeFeatured() {
   }
 
   if (!video) {
-    const fallback = fallbackContent.find((item) => item.featured) ?? fallbackContent[0];
+    const fallback = featuredItem ?? fallbackContent.find((item) => item.featured) ?? fallbackContent[0];
 
     if (!fallback) return null;
 

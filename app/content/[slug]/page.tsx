@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { Container, Section } from "@/components/ui";
 import { getPostBySlug, getPostMeta, getPostSlugs } from "@/lib/posts";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = await getPostSlugs();
   return slugs.map((slug) => ({ slug }));

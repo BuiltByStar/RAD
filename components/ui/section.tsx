@@ -33,7 +33,7 @@ export function Section({
 }: SectionProps) {
   return (
     <section
-      className={cn("relative", tones[tone], paddings[padding], className)}
+      className={cn("rad-dot-surface relative", tones[tone], paddings[padding], className)}
       {...rest}
     >
       {children}

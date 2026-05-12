@@ -6,18 +6,22 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, Container } from "@/components/ui";
 import { assets } from "@/lib/assets";
-import { fallbackContent } from "@/lib/content-data";
+import type { ContentItem } from "@/lib/content-data";
 import { contactChannels, discordInviteUrl } from "@/lib/site-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-export function HomeEsportsFeed() {
+export function HomeEsportsFeed({ items }: { items: ContentItem[] }) {
   const reduced = useReducedMotion();
-  const featured = fallbackContent[0];
-  const secondary = fallbackContent.slice(1, 4);
+  const featured = items.find((item) => item.featured) ?? items[0];
+  const secondary = items.filter((item) => item.id !== featured?.id).slice(0, 3);
+
+  if (!featured) {
+    return null;
+  }
 
   return (
-    <section className="relative overflow-hidden border-y border-white/10 bg-[#08080a] py-10 sm:py-14">
+    <section className="rad-dot-surface relative overflow-hidden border-y border-white/10 bg-[#08080a] py-10 sm:py-14">
       <Image
         src={assets.bgRed}
         alt=""

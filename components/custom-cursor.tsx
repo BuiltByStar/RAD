@@ -4,57 +4,49 @@ import { useEffect, useRef } from "react";
 
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const glitchTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
+
     let mx = -200,
-      my = -200,
-      rx = -200,
-      ry = -200;
-    let rafId: number;
-    let isHoveringLink = false;
+      my = -200;
 
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
-    };
-
-    const onOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      isHoveringLink = !!(target.closest("a") || target.closest("button"));
-      if (ringRef.current) {
-        ringRef.current.classList.toggle("cursor-ring--expanded", isHoveringLink);
-      }
-    };
-
-    const tick = () => {
-      rx += (mx - rx) * 0.13;
-      ry += (my - ry) * 0.13;
-
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${mx}px, ${my}px)`;
+        dotRef.current.style.left = `${mx}px`;
+        dotRef.current.style.top = `${my}px`;
       }
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate(${rx}px, ${ry}px)`;
+    };
+
+    const onDown = () => {
+      dotRef.current?.classList.remove("cursor-dot--glitch");
+      if (glitchTimeoutRef.current) {
+        window.clearTimeout(glitchTimeoutRef.current);
       }
-      rafId = requestAnimationFrame(tick);
+      window.requestAnimationFrame(() => {
+        dotRef.current?.classList.add("cursor-dot--glitch");
+      });
+      glitchTimeoutRef.current = window.setTimeout(() => {
+        dotRef.current?.classList.remove("cursor-dot--glitch");
+      }, 280);
     };
 
     window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseover", onOver);
-    rafId = requestAnimationFrame(tick);
+    window.addEventListener("mousedown", onDown);
 
     return () => {
       window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseover", onOver);
-      cancelAnimationFrame(rafId);
+      window.removeEventListener("mousedown", onDown);
+      if (glitchTimeoutRef.current) {
+        window.clearTimeout(glitchTimeoutRef.current);
+      }
     };
   }, []);
 
-  return (
-    <>
-      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
-      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
-    </>
-  );
+  return <div ref={dotRef} className="cursor-dot" aria-hidden="true" />;
 }

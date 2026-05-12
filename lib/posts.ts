@@ -7,6 +7,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 
 import { hasSupabaseBrowserEnv } from "@/lib/env";
+import { readLocalDashboardData } from "@/lib/local-admin-store";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type PostMeta = {
@@ -50,13 +51,26 @@ const getLocalPostSlugs = cache(async function getLocalPostSlugs() {
     .map((file) => file.replace(/\.mdx$/, ""));
 });
 
+async function getLocalDashboardPosts() {
+  if (process.env.LOCAL_ADMIN_BYPASS !== "1") return [];
+
+  const data = await readLocalDashboardData();
+  return [...data.news_posts]
+    .filter((post) => post.published)
+    .sort((a, b) => {
+      if (a.display_order !== b.display_order) return a.display_order - b.display_order;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+}
+
 export async function getPostSlugs() {
   const localSlugs = await getLocalPostSlugs();
+  const dashboardSlugs = (await getLocalDashboardPosts()).map((post) => post.slug);
 
   const remotePosts = await getSupabasePostMeta();
   const remoteSlugs = remotePosts?.map((post) => post.slug) ?? [];
 
-  return Array.from(new Set([...localSlugs, ...remoteSlugs]));
+  return Array.from(new Set([...dashboardSlugs, ...localSlugs, ...remoteSlugs]));
 }
 
 const getLocalPostMeta = cache(async function getLocalPostMeta() {
@@ -140,6 +154,11 @@ async function getSupabasePostMeta() {
 }
 
 export async function getPostMeta() {
+  const localDashboardPosts = await getLocalDashboardPosts();
+  if (localDashboardPosts.length > 0) {
+    return localDashboardPosts.map(mapNewsPost);
+  }
+
   const remotePosts = await getSupabasePostMeta();
   if (remotePosts?.length) return remotePosts;
 
@@ -152,6 +171,26 @@ export async function getFeaturedPost() {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post> {
+  const localDashboardPosts = await getLocalDashboardPosts();
+  const localDashboardPost = localDashboardPosts.find((row) => row.slug === slug);
+
+  if (localDashboardPost) {
+    const compiled = await compileMDX({
+      source: localDashboardPost.body,
+      options: {
+        mdxOptions: {
+          remarkPlugins: [remarkGfm]
+        },
+        parseFrontmatter: false
+      }
+    });
+
+    return {
+      ...mapNewsPost(localDashboardPost),
+      content: compiled.content
+    };
+  }
+
   const rows = await getSupabasePostRows();
   const remotePost = rows?.find((row) => row.slug === slug);
 

@@ -9,7 +9,7 @@ const features = [
 
 export function HomePillars() {
   return (
-    <section className="bg-[var(--bg-alt)] py-12 sm:py-16">
+    <section className="rad-dot-surface bg-[var(--bg-alt)] py-12 sm:py-16">
       <Container size="xl">
         <div className="mb-7 max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-rad-hi)]">Pillars</p>
