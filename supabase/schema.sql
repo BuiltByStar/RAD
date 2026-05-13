@@ -145,6 +145,8 @@ begin
     execute 'drop policy if exists "profiles_staff_select" on public.profiles';
     execute 'drop policy if exists "profiles_self_update_safe_fields" on public.profiles';
     execute 'drop policy if exists "profiles_owner_update_roles" on public.profiles';
+    execute 'drop policy if exists "profiles_select" on public.profiles';
+    execute 'drop policy if exists "profiles_update" on public.profiles';
   end if;
 
   if to_regclass('public.contact_inquiries') is not null then
@@ -193,6 +195,7 @@ begin
     execute 'drop policy if exists "news_posts_staff_insert" on public.news_posts';
     execute 'drop policy if exists "news_posts_staff_update" on public.news_posts';
     execute 'drop policy if exists "news_posts_staff_delete" on public.news_posts';
+    execute 'drop policy if exists "news_posts_authenticated_select" on public.news_posts';
   end if;
 
   if to_regclass('public.content_items') is not null then
@@ -226,6 +229,13 @@ drop function if exists private.is_staff(uuid);
 drop function if exists private.is_staff();
 drop function if exists private.is_owner(uuid);
 drop function if exists private.is_owner();
+
+do $$
+begin
+  if to_regprocedure('public.rls_auto_enable()') is not null then
+    execute 'revoke execute on function public.rls_auto_enable() from anon, authenticated, public';
+  end if;
+end $$;
 
 create or replace function private.touch_updated_at()
 returns trigger
@@ -385,27 +395,19 @@ grant all on public.partner_entries to service_role;
 grant all on public.content_items to service_role;
 grant all on public.site_settings to service_role;
 
-create policy "profiles_self_select"
+create policy "profiles_select"
   on public.profiles for select
   to authenticated
-  using (id = auth.uid());
+  using (id = (select auth.uid()) or private.is_staff());
 
-create policy "profiles_staff_select"
-  on public.profiles for select
-  to authenticated
-  using (private.is_staff());
-
-create policy "profiles_self_update_safe_fields"
+create policy "profiles_update"
   on public.profiles for update
   to authenticated
-  using (id = auth.uid())
-  with check (id = auth.uid() and role = private.current_user_role());
-
-create policy "profiles_owner_update_roles"
-  on public.profiles for update
-  to authenticated
-  using (private.is_owner())
-  with check (private.is_owner());
+  using (id = (select auth.uid()) or private.is_owner())
+  with check (
+    (id = (select auth.uid()) and role = private.current_user_role())
+    or private.is_owner()
+  );
 
 create policy "contact_inquiries_staff_select"
   on public.contact_inquiries for select
@@ -488,13 +490,13 @@ create policy "partner_entries_staff_delete"
 
 create policy "news_posts_public_select"
   on public.news_posts for select
-  to anon, authenticated
+  to anon
   using (published = true);
 
-create policy "news_posts_staff_select"
+create policy "news_posts_authenticated_select"
   on public.news_posts for select
   to authenticated
-  using (private.is_staff());
+  using (published = true or private.is_staff());
 
 create policy "news_posts_staff_insert"
   on public.news_posts for insert
