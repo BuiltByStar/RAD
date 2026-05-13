@@ -339,6 +339,7 @@ export async function deletePartnerEntry(formData: FormData) {
 }
 
 export async function upsertContentItem(formData: FormData) {
+  const supabase = await getAdminSupabase();
   const id = readText(formData, "id");
   const payload = {
     title: readText(formData, "title"),
@@ -354,26 +355,39 @@ export async function upsertContentItem(formData: FormData) {
     display_order: readNumber(formData, "display_order")
   };
 
-  if (process.env.LOCAL_ADMIN_BYPASS !== "1") {
-    throw new Error("Content cards are currently configured for local admin mode only.");
+  if (!supabase) {
+    const data = await readLocalDashboardData();
+    data.content_items = id
+      ? data.content_items.map((entry) => (entry.id === id ? { ...entry, ...payload } : entry))
+      : [{ id: createLocalId(), ...payload }, ...data.content_items];
+    await writeLocalDashboardData(data);
+    revalidatePublic(["/content"]);
+    return;
   }
 
-  const data = await readLocalDashboardData();
-  data.content_items = id
-    ? data.content_items.map((entry) => (entry.id === id ? { ...entry, ...payload } : entry))
-    : [{ id: createLocalId(), ...payload }, ...data.content_items];
-  await writeLocalDashboardData(data);
+  const query = id
+    ? supabase.from("content_items").update(payload).eq("id", id)
+    : supabase.from("content_items").insert(payload);
+  const { error } = await query;
+
+  if (error) throw new Error(error.message);
   revalidatePublic(["/content"]);
 }
 
 export async function deleteContentItem(formData: FormData) {
-  if (process.env.LOCAL_ADMIN_BYPASS !== "1") {
-    throw new Error("Content cards are currently configured for local admin mode only.");
+  const supabase = await getAdminSupabase();
+
+  if (!supabase) {
+    const data = await readLocalDashboardData();
+    data.content_items = data.content_items.filter((entry) => entry.id !== readText(formData, "id"));
+    await writeLocalDashboardData(data);
+    revalidatePublic(["/content"]);
+    return;
   }
 
-  const data = await readLocalDashboardData();
-  data.content_items = data.content_items.filter((entry) => entry.id !== readText(formData, "id"));
-  await writeLocalDashboardData(data);
+  const { error } = await supabase.from("content_items").delete().eq("id", readText(formData, "id"));
+
+  if (error) throw new Error(error.message);
   revalidatePublic(["/content"]);
 }
 

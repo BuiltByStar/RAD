@@ -334,7 +334,12 @@ export default async function DashboardPage() {
             .select("*")
             .order("display_order", { ascending: true })
         ),
-        Promise.resolve({ rows: [] as ContentItemRow[], error: "Latest content cards are managed in local mode." }),
+        readTable<ContentItemRow>(
+          realAccess!.supabase
+            .from("content_items")
+            .select("*")
+            .order("display_order", { ascending: true })
+        ),
         readTable<InquiryRow>(
           realAccess!.supabase
             .from("contact_inquiries")
