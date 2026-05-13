@@ -262,7 +262,9 @@ begin
       new.raw_user_meta_data->>'global_name',
       new.raw_user_meta_data->>'full_name',
       new.raw_user_meta_data->>'name',
-      new.raw_user_meta_data->>'preferred_username'
+      new.raw_user_meta_data->>'preferred_username',
+      new.raw_user_meta_data->>'user_name',
+      split_part(new.email, '@', 1)
     ),
     new.raw_user_meta_data->>'avatar_url'
   )
@@ -357,6 +359,41 @@ create trigger content_items_touch_updated_at
 create trigger site_settings_touch_updated_at
   before update on public.site_settings
   for each row execute function private.touch_updated_at();
+
+with missing_auth_users as (
+  select
+    auth_users.id,
+    coalesce(
+      auth_users.raw_user_meta_data->>'global_name',
+      auth_users.raw_user_meta_data->>'full_name',
+      auth_users.raw_user_meta_data->>'name',
+      auth_users.raw_user_meta_data->>'preferred_username',
+      auth_users.raw_user_meta_data->>'user_name',
+      split_part(auth_users.email, '@', 1)
+    ) as username,
+    auth_users.raw_user_meta_data->>'avatar_url' as avatar_url,
+    row_number() over (order by auth_users.created_at, auth_users.id) as backfill_rank
+  from auth.users as auth_users
+  left join public.profiles as profiles on profiles.id = auth_users.id
+  where profiles.id is null
+)
+insert into public.profiles (id, username, avatar_url, role)
+select
+  id,
+  username,
+  avatar_url,
+  case
+    when backfill_rank = 1
+      and not exists (
+        select 1
+        from public.profiles
+        where role = 'owner'::public.user_role
+      )
+    then 'owner'::public.user_role
+    else 'member'::public.user_role
+  end
+from missing_auth_users
+on conflict (id) do nothing;
 
 alter table public.profiles enable row level security;
 alter table public.contact_inquiries enable row level security;
