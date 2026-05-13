@@ -72,10 +72,6 @@ export function PageShellHero({
       <div aria-hidden className="absolute inset-0 z-[-1] bg-[radial-gradient(70%_48%_at_20%_10%,rgba(220,20,60,0.18),transparent_60%)]" />
       <div
         aria-hidden
-        className="absolute inset-0 z-[-1] opacity-[0.12] [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.86)_0.7px,transparent_0.8px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_82%)]"
-      />
-      <div
-        aria-hidden
         className="absolute right-[-14rem] top-[-12rem] z-[-1] h-[32rem] w-[32rem] rounded-full bg-[#dc143c]/14 blur-3xl"
       />
       <motion.div

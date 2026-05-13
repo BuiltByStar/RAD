@@ -6,7 +6,7 @@ import { contactChannels, navLinks } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-0 overflow-hidden border-t border-white/10 bg-[#040404]">
+    <footer className="rad-dot-surface relative mt-0 overflow-hidden border-t border-white/10 bg-[#040404]">
       <Image
         src={assets.bgRed}
         alt=""

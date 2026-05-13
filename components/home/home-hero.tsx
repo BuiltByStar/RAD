@@ -32,14 +32,6 @@ export function HomeHero() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 z-[-1] opacity-[0.14] [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.88)_0.7px,transparent_0.82px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_22%,transparent_84%)]"
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 z-[-1] opacity-[0.08] [background-image:radial-gradient(circle_at_center,rgba(220,20,60,0.95)_0.55px,transparent_0.72px)] [background-size:30px_30px] [mask-image:radial-gradient(ellipse_at_center,black_18%,transparent_78%)]"
-      />
-      <div
-        aria-hidden
         className="absolute inset-0 z-[-1] opacity-[0.05] [background-image:linear-gradient(115deg,transparent_0%,transparent_44%,rgba(255,255,255,0.72)_49%,transparent_54%,transparent_100%)] [background-size:100%_100%] [mask-image:radial-gradient(ellipse_at_center,black_18%,transparent_76%)]"
       />
       <motion.div
