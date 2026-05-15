@@ -96,18 +96,18 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
           <div className="shop-hero__copy">
             <p className="shop-kicker">{merchCollection.title}</p>
             <h1 id="shop-heading" className="shop-hero__title">
-              Gear for the wild.
+              RAD shop.
             </h1>
             <p className="shop-hero__text">
-              A sharper merch lane for RAD supporters, players, and future drops. Built around bold match-day energy, clean black layers, and the red identity system.
+              Future RAD supporter gear and player-kit concepts. Final photos, prices, sizes, and checkout links can land later.
             </p>
 
             <div className="shop-hero__actions">
-              <Button href={featuredItem?.externalUrl ?? discordInviteUrl}>
-                Get drop alerts
-              </Button>
-              <Button href="#shop-drop" variant="outline">
+              <Button href="#shop-drop">
                 View collection
+              </Button>
+              <Button href={featuredItem?.externalUrl ?? discordInviteUrl} variant="outline">
+                Get drop alerts
               </Button>
             </div>
 
@@ -129,29 +129,40 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
 
           {featuredItem ? (
             <div className="shop-feature-stage" aria-label="Featured shop item">
-              <button
-                type="button"
-                className="shop-feature-card"
-                onClick={() => setSelectedItem(featuredItem)}
-              >
-                <span className="shop-feature-card__signal" aria-hidden="true" />
-                <ProductImage item={featuredItem} priority variant="hero" />
-                <span className="shop-feature-card__content">
-                  <span className="shop-feature-card__meta">Featured drop</span>
-                  <span className="shop-feature-card__name">{featuredItem.name}</span>
-                  <span className="shop-feature-card__description">{featuredItem.accent}</span>
-                  <span className="shop-feature-card__footer">
-                    <span>{featuredItem.status}</span>
-                    <span>Open preview</span>
+              <div className="shop-feature-frame">
+                <button
+                  type="button"
+                  className="shop-feature-card"
+                  onClick={() => setSelectedItem(featuredItem)}
+                >
+                  <span className="shop-feature-card__signal" aria-hidden="true" />
+                  <ProductImage item={featuredItem} priority variant="hero" />
+                  <span className="shop-feature-card__content">
+                    <span className="shop-feature-card__meta">Featured preview</span>
+                    <span className="shop-feature-card__name">{featuredItem.name}</span>
+                    <span className="shop-feature-card__description">{featuredItem.accent}</span>
+                    <span className="shop-feature-card__footer">
+                      <span>{featuredItem.status}</span>
+                      <span>Open preview</span>
+                    </span>
                   </span>
-                </span>
-              </button>
+                </button>
 
-              <div className="shop-floating-chip shop-floating-chip--top" aria-hidden="true">
-                RAD.GG / #GOWILD
-              </div>
-              <div className="shop-floating-chip shop-floating-chip--bottom" aria-hidden="true">
-                Player focused / drop ready
+                {supportingItems.length > 0 ? (
+                  <div className="shop-mini-rack" aria-label="More shop previews">
+                    {supportingItems.slice(0, 2).map((item) => (
+                      <button
+                        key={item.name}
+                        type="button"
+                        className="shop-mini-rack__item"
+                        onClick={() => setSelectedItem(item)}
+                      >
+                        <ProductImage item={item} />
+                        <span>{item.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           ) : null}
@@ -161,11 +172,29 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
           <div className="shop-marquee__track">
             {Array.from({ length: 2 }).map((_, groupIndex) => (
               <span key={groupIndex}>
-                Go Wild / Pressure Kit / RAD.GG / Player Essentials / Coming Soon / Matchday Graphics /
+                RAD Shop / Drop alerts / Player essentials / Checkout links coming soon / Supporter gear /
               </span>
             ))}
           </div>
         </div>
+
+        <section className="shop-service-strip" aria-label="Shop launch notes">
+          <div>
+            <span>01</span>
+            <strong>Drop first</strong>
+            <p>Built for small, focused launches instead of one oversized hero product.</p>
+          </div>
+          <div>
+            <span>02</span>
+            <strong>Photo ready</strong>
+            <p>Final product photography can replace the current concept assets cleanly.</p>
+          </div>
+          <div>
+            <span>03</span>
+            <strong>Store flexible</strong>
+            <p>Each item can route to Discord now or external checkout later.</p>
+          </div>
+        </section>
 
         <section id="shop-drop" className="shop-drop-section" aria-labelledby="shop-drop-heading">
           <div className="shop-section-head">
@@ -227,29 +256,11 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
           ) : null}
         </section>
 
-        <section className="shop-systems-strip" aria-label="Shop launch readiness">
-          <div>
-            <span>01</span>
-            <strong>Product photos</strong>
-            <p>Ready for final front, back, and detail shots.</p>
-          </div>
-          <div>
-            <span>02</span>
-            <strong>Checkout links</strong>
-            <p>External store URLs can drop into each product.</p>
-          </div>
-          <div>
-            <span>03</span>
-            <strong>Drop alerts</strong>
-            <p>Discord is the current notification path.</p>
-          </div>
-        </section>
-
         {supportingItems.length > 0 ? (
           <section className="shop-lookbook" aria-labelledby="shop-lookbook-heading">
             <div>
               <p className="shop-kicker">Lookbook</p>
-              <h2 id="shop-lookbook-heading">Built around players, not filler.</h2>
+              <h2 id="shop-lookbook-heading">Drop looks.</h2>
             </div>
             <div className="shop-lookbook__rail">
               {supportingItems.map((item) => (
