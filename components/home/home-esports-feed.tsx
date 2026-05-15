@@ -31,13 +31,13 @@ export function HomeEsportsFeed({ items }: { items: ContentItem[] }) {
       />
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_60%_at_82%_18%,rgba(220,20,60,0.13),transparent_58%)]" />
       <Container size="xl">
-        <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
           <motion.article
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: EASE }}
-            className="relative min-h-[390px] overflow-hidden rounded-[2rem] border border-white/12 bg-black shadow-[0_28px_90px_-54px_rgba(0,0,0,0.95)]"
+            className="relative min-h-[320px] overflow-hidden rounded-[1.65rem] border border-white/12 bg-black shadow-[0_28px_90px_-54px_rgba(0,0,0,0.95)]"
           >
             <Image
               src={featured.thumbnail}
@@ -47,11 +47,11 @@ export function HomeEsportsFeed({ items }: { items: ContentItem[] }) {
               className="object-cover opacity-78"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.58)_52%,#050505_100%)]" />
-            <div className="relative z-10 flex min-h-[390px] flex-col justify-end p-5 sm:p-7">
+            <div className="relative z-10 flex min-h-[320px] flex-col justify-end p-5 sm:p-6">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
-                Lead drop
+                Latest feature
               </p>
-              <h2 className="mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.4rem,5.4vw,4.8rem)] font-extrabold uppercase leading-[0.86] tracking-[-0.02em] text-white">
+              <h2 className="mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.15rem,4.3vw,3.8rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.02em] text-white">
                 {featured.title}
               </h2>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/66 sm:text-base">
@@ -72,10 +72,10 @@ export function HomeEsportsFeed({ items }: { items: ContentItem[] }) {
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.65, ease: EASE, delay: 0.05 }}
-              className="rounded-[1.65rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6"
-            >
+            className="rounded-[1.65rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6"
+          >
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
-                More media
+                More updates
               </p>
               <div className="mt-5 grid gap-3">
                 {secondary.map((item) => (

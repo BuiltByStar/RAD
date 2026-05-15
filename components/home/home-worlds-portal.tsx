@@ -15,16 +15,16 @@ const lanes = [
     stat: "07"
   },
   {
+    label: "Shop",
+    meta: "A lighter merch preview path for future drops without turning the homepage into a store.",
+    href: "/shop",
+    stat: "Drop"
+  },
+  {
     label: "Content",
     meta: "Announcements, videos, and the public story around the org.",
     href: "/content",
     stat: "Media"
-  },
-  {
-    label: "Community",
-    meta: "The clean channel for fan connection and community direction.",
-    href: "/contact",
-    stat: "RADGG"
   },
   {
     label: "Partners",
@@ -50,7 +50,7 @@ export function HomeWorldsPortal() {
       />
       <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_54%_at_84%_18%,rgba(220,20,60,0.16),transparent_60%)]" />
       <Container size="xl">
-        <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-12">
+        <div className="grid gap-8 lg:grid-cols-[0.68fr_1.32fr] lg:items-center lg:gap-12">
           <motion.div
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -58,12 +58,12 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.65, ease: EASE }}
             className="relative max-w-xl"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">Site system</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">Navigation</p>
             <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(2.7rem,5vw,5.3rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.02em] text-white">
-              Simple. Fast. Useful.
+              Pick a lane.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/66 sm:text-lg">
-              The site should get people to the roster, content, community, and partner path without burying them in heavy chrome.
+              Roster, shop, content, and activation paths stay easy to reach without turning the homepage into a bulky dashboard.
             </p>
             <div className="mt-7 overflow-hidden rounded-[2rem] border border-white/10 bg-black/32 p-5 shadow-[0_24px_70px_-52px_rgba(220,20,60,0.45)] backdrop-blur-xl">
               <Image
