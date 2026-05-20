@@ -31,7 +31,7 @@ const heroMetaMap: Record<Variant, { mark: string; code: string; line: string; t
     mark: "RAD // WILD",
     code: "RAD 00",
     line: "home",
-    tags: ["World champions", "Content", "Merch"]
+    tags: ["Team", "Shop", "World champions"]
   },
   about: {
     mark: "RAD // ABOUT",
@@ -40,10 +40,10 @@ const heroMetaMap: Record<Variant, { mark: string; code: string; line: string; t
     tags: ["History", "Titles", "Growth"]
   },
   roster: {
-    mark: "RAD // ROSTER",
+    mark: "RAD // TEAM",
     code: "RAD 02",
-    line: "roster",
-    tags: ["Players", "Roles", "Results"]
+    line: "team",
+    tags: ["World champions", "EMEA tested", "Player-first"]
   },
   staff: {
     mark: "RAD // STAFF",

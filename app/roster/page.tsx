@@ -12,8 +12,8 @@ import {
 import { players, teams } from "@/lib/site-data";
 
 export const metadata: Metadata = {
-  title: "Roster",
-  description: "RAD player lineup, role architecture, and competitive structure."
+  title: "Team",
+  description: "RAD competitive lineup, player profiles, and championship roster."
 };
 
 export default function RosterPage() {
@@ -23,9 +23,9 @@ export default function RosterPage() {
   return (
     <PageShell
       variant="roster"
-      eyebrow="Roster"
-      title="Roster"
-      description="Current player lineup, roles, socials, and roster focus."
+      eyebrow="Team"
+      title="The lineup."
+      description="World and EMEA champions. Player cards, roles, socials, and the competitive core behind RAD."
       heroImage="/assets/rad-bg-red.png"
       status={team.status}
     >

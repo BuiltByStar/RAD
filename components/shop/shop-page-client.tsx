@@ -96,10 +96,10 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
           <div className="shop-hero__copy">
             <p className="shop-kicker">{merchCollection.title}</p>
             <h1 id="shop-heading" className="shop-hero__title">
-              RAD shop.
+              Wear the wild.
             </h1>
             <p className="shop-hero__text">
-              Future RAD supporter gear and player-kit concepts. Final photos, prices, sizes, and checkout links can land later.
+              RAD supporter gear and player-kit concepts built around the red, black, and white identity. Final photos, sizes, and checkout links land when the drop opens.
             </p>
 
             <div className="shop-hero__actions">

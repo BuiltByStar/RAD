@@ -3,14 +3,14 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 const ITEMS = [
-  "RAD",
+  "RAD Shop",
   "#GoWild",
-  "Built around players",
-  "Remembered through history",
-  "Pressure-built",
+  "World Champions",
+  "EMEA Champions",
+  "Team RAD",
+  "Pressure Kit Drop 01",
   "teamrad.gg",
-  "Competition",
-  "Activations"
+  "Discord.gg/RADGG"
 ];
 
 export function MarqueeStrip() {

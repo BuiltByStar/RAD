@@ -48,10 +48,10 @@ export function HomeChampionsStrip() {
               Short, readable milestones tell the client what matters without bloating the page.
             </p>
             <Link
-              href="/content"
+              href="/roster"
               className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.055] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-white/24 hover:bg-white/[0.08] hover:text-white"
             >
-              View content →
+              View team →
             </Link>
           </motion.div>
 
