@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, Container } from "@/components/ui";
-import { merchCollection, merchItems, radShopUrl } from "@/lib/site-data";
+import { merchItems, radShopUrl } from "@/lib/site-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -25,13 +25,13 @@ export function HomeMerchSpotlight() {
       <Container size="xl" className="relative z-10">
         <div className="mb-10 grid gap-6 lg:grid-cols-[0.72fr_0.58fr] lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">{merchCollection.eyebrow}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">Supporter gear</p>
             <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.01em] text-white">
-              Built to buy.
+              Wear the org.
             </h2>
           </div>
           <p className="max-w-xl text-base leading-relaxed text-white/64">
-            The homepage now treats merch like a core RAD lane, not a small footer link. Fans can inspect the proof set here, then move into the full shop rack for checkout.
+            Gear stays embedded in the RAD story instead of sitting off to the side. Fans can inspect the proof set here, then move into the full shop rack for checkout.
           </p>
         </div>
 

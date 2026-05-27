@@ -95,7 +95,7 @@ export function PageShell({
   children
 }: PageShellProps) {
   return (
-    <main className="relative isolate">
+    <main className="relative isolate overflow-x-hidden">
       <PageReadySignal route={variant === "default" ? "/" : `/${variant}`} delayMs={32} />
       <PageShellHero
         title={title}

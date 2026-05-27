@@ -124,7 +124,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
 
   return (
     <div
-      className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-black/36 px-3 py-5 shadow-[0_34px_120px_-72px_rgba(220,20,60,0.62)] backdrop-blur-xl sm:px-5 sm:py-7"
+      className="relative overflow-hidden rounded-[1.8rem] border border-[#dc143c]/28 bg-[linear-gradient(180deg,rgba(10,0,3,0.72),rgba(0,0,0,0.52))] px-3 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_34px_120px_-72px_rgba(220,20,60,0.72)] backdrop-blur-xl sm:px-5 sm:py-7"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -137,7 +137,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         sizes="100vw"
         className="object-cover opacity-[0.08]"
       />
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(68%_60%_at_50%_18%,rgba(220,20,60,0.24),transparent_62%),linear-gradient(90deg,rgba(52,1,6,0.44),transparent_24%,transparent_76%,rgba(220,20,60,0.11))]" />
+      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(68%_60%_at_50%_18%,rgba(220,20,60,0.3),transparent_62%),linear-gradient(90deg,rgba(77,3,13,0.5),transparent_24%,transparent_76%,rgba(220,20,60,0.16))]" />
       <div aria-hidden className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(to_right,rgba(255,255,255,0.75)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.75)_1px,transparent_1px)] [background-size:56px_56px]" />
       <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#dc143c] to-transparent" />
       <span aria-hidden className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -208,24 +208,24 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
             <motion.article
               key={player.slug}
               className={cn(
-                "absolute left-1/2 top-2 h-[480px] w-[min(78vw,330px)] origin-center overflow-hidden rounded-[1.85rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] sm:w-[360px] lg:h-[560px] lg:w-[390px]",
-                offset === 0 ? "z-30 border-[#dc143c]/42" : "z-10 border-white/10"
+                "absolute left-[calc(50%-min(32vw,195px))] top-2 h-[480px] w-[min(64vw,390px)] origin-center overflow-hidden rounded-[1.45rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] lg:h-[560px]",
+                offset === 0 ? "z-30 border-[#dc143c]/58" : "z-10 border-[#dc143c]/16"
               )}
               animate={{
                 x:
                   offset === 0
-                    ? "calc(-50% + 0%)"
+                    ? 0
                     : offset === -1
-                      ? "calc(-50% - 46%)"
+                      ? -180
                       : offset === 1
-                        ? "calc(-50% + 46%)"
+                        ? 180
                         : offset === -2
-                          ? "calc(-50% - 82%)"
+                          ? -320
                           : offset === 2
-                            ? "calc(-50% + 82%)"
+                            ? 320
                             : offset < 0
-                              ? "calc(-50% - 118%)"
-                              : "calc(-50% + 118%)",
+                              ? -440
+                              : 440,
                 y:
                   offset === 0
                     ? 0

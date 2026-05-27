@@ -9,28 +9,28 @@ import { assets } from "@/lib/assets";
 
 const lanes = [
   {
-    label: "Shop",
-    meta: "Jersey, hoodies, sweatshirts, and pro tees now lead the public experience.",
-    href: "/shop",
-    stat: "11"
-  },
-  {
     label: "Roster",
-    meta: "Player-first cards with room for real PFPs and social links.",
+    meta: "The competitive core, roles, and player profiles behind RAD.",
     href: "/roster",
     stat: "07"
   },
   {
     label: "Content",
-    meta: "Announcements, videos, and the public story around the org.",
+    meta: "Announcements, videos, match stories, and the public voice of the org.",
     href: "/content",
     stat: "Media"
   },
   {
     label: "Partners",
-    meta: "Open sponsor lanes, activations, and brand conversations.",
+    meta: "Sponsor lanes, activations, and brand conversations around the team.",
     href: "/partners",
     stat: "Open"
+  },
+  {
+    label: "Shop",
+    meta: "Supporter gear remains one click away without taking over the org path.",
+    href: "/shop",
+    stat: "Drop"
   }
 ] as const;
 
@@ -58,12 +58,12 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.65, ease: EASE }}
             className="relative max-w-xl"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">Shop-first navigation</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">RAD ecosystem</p>
             <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(2.7rem,5vw,5.3rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.02em] text-white">
-              Start with gear.
+              Built around the org.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/66 sm:text-lg">
-              The homepage now sends fans through the shop lane first, then keeps roster, content, and partner pages one move away.
+              After the shop-led opening, the site moves back into the full RAD identity: competitive roster, media, partner lanes, and the supporter shop all tied together.
             </p>
             <div className="mt-7 overflow-hidden rounded-[2rem] border border-white/10 bg-black/32 p-5 shadow-[0_24px_70px_-52px_rgba(220,20,60,0.45)] backdrop-blur-xl">
               <Image
@@ -110,7 +110,7 @@ export function HomeWorldsPortal() {
                   </h3>
                   <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/58">{system.meta}</p>
                   <span className="mt-5 inline-flex rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#ff6f88] transition group-hover:translate-x-1 group-hover:border-white/20 group-hover:text-white">
-                    Open page →
+                    Enter lane →
                   </span>
                 </Link>
               ))}

@@ -92,7 +92,7 @@ export function PageShellHero({
               : "grid gap-8 pb-10 pt-22 sm:pb-12 sm:pt-26 lg:grid-cols-[1fr_0.42fr] lg:items-end lg:pb-14 lg:pt-28"
           }
         >
-          <div className="max-w-4xl">
+          <div className="min-w-0 max-w-4xl">
             <motion.div
               initial={false}
               animate={reduced ? undefined : { opacity: 1 }}
@@ -110,7 +110,7 @@ export function PageShellHero({
               transition={{ duration: 0.75, ease: EASE_EMPHASIS, delay: 0.08 }}
               className={
                 compact
-                  ? "mt-4 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(2.8rem,5.6vw,5rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.01em] text-white"
+                  ? "mt-4 max-w-[calc(100vw-3rem)] font-[family-name:var(--font-display)] text-[clamp(2.8rem,5.6vw,5rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.01em] text-white sm:max-w-4xl"
                   : "mt-4 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(3rem,6.5vw,5.9rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.01em] text-white"
               }
             >
@@ -123,7 +123,7 @@ export function PageShellHero({
               transition={{ duration: 0.65, ease: EASE_EMPHASIS, delay: 0.16 }}
               className={
                 compact
-                  ? "mt-4 max-w-2xl text-sm leading-relaxed text-white/68 sm:text-base"
+                  ? "mt-4 w-full max-w-[calc(100vw-3rem)] break-words text-sm leading-relaxed text-white/68 sm:max-w-2xl sm:text-base"
                   : "mt-5 max-w-3xl text-sm leading-relaxed text-white/68 sm:text-lg"
               }
             >

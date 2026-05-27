@@ -18,10 +18,10 @@ export default async function HomePage() {
       <HomeIntro />
       <HomeHero />
       <MarqueeStrip />
-      <HomeMerchSpotlight />
       <HomeWorldsPortal />
       <HomeTeamShowcase />
       <HomeChampionsStrip />
+      <HomeMerchSpotlight />
       <HomeEsportsFeed items={contentItems} />
     </main>
   );
