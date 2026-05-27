@@ -9,16 +9,16 @@ import { assets } from "@/lib/assets";
 
 const lanes = [
   {
+    label: "Shop",
+    meta: "Jersey, hoodies, sweatshirts, and pro tees now lead the public experience.",
+    href: "/shop",
+    stat: "11"
+  },
+  {
     label: "Roster",
     meta: "Player-first cards with room for real PFPs and social links.",
     href: "/roster",
     stat: "07"
-  },
-  {
-    label: "Shop",
-    meta: "A lighter merch preview path for future drops without turning the homepage into a store.",
-    href: "/shop",
-    stat: "Drop"
   },
   {
     label: "Content",
@@ -58,12 +58,12 @@ export function HomeWorldsPortal() {
             transition={{ duration: 0.65, ease: EASE }}
             className="relative max-w-xl"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">Navigation</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff6f88]">Shop-first navigation</p>
             <h2 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(2.7rem,5vw,5.3rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.02em] text-white">
-              Pick a lane.
+              Start with gear.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/66 sm:text-lg">
-              Roster, shop, content, and activation paths stay easy to reach without turning the homepage into a bulky dashboard.
+              The homepage now sends fans through the shop lane first, then keeps roster, content, and partner pages one move away.
             </p>
             <div className="mt-7 overflow-hidden rounded-[2rem] border border-white/10 bg-black/32 p-5 shadow-[0_24px_70px_-52px_rgba(220,20,60,0.45)] backdrop-blur-xl">
               <Image

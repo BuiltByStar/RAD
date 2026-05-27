@@ -6,7 +6,7 @@ import { merchItems } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Shop",
-  description: "RAD merchandise storefront, featured drops, and future product lanes."
+  description: "RAD Esports merch storefront with jersey, hoodie, sweatshirt, and tee previews linking to external checkout."
 };
 
 export default function ShopPage() {

@@ -7,51 +7,107 @@ import { Button } from "@/components/ui";
 import type { MerchItem } from "@/lib/site-data";
 import { discordInviteUrl, merchCollection } from "@/lib/site-data";
 
-type ShopCategory = "All" | "Jerseys" | "Apparel" | "Accessories" | "Mousepads";
+type ShopCategory = "All" | "Jerseys" | "Light Gear" | "Dark Gear" | "Women";
 
 type ShopPageClientProps = {
   items: MerchItem[];
 };
 
-const categories: ShopCategory[] = ["All", "Jerseys", "Apparel", "Accessories", "Mousepads"];
+const categories: ShopCategory[] = ["All", "Jerseys", "Light Gear", "Dark Gear", "Women"];
 
 function categoryForItem(item: MerchItem): Exclude<ShopCategory, "All"> {
-  const value = `${item.category} ${item.name}`.toLowerCase();
-  if (value.includes("jersey")) return "Jerseys";
-  if (value.includes("apparel") || value.includes("essentials")) return "Apparel";
-  if (value.includes("mousepad") || value.includes("desk mat")) return "Mousepads";
-  return "Accessories";
+  if (item.category === "Jerseys") return "Jerseys";
+  if (item.category === "Women") return "Women";
+  if (item.category === "Dark Gear") return "Dark Gear";
+  return "Light Gear";
+}
+
+function shopHrefForItem(item?: MerchItem | null) {
+  return item?.externalUrl ?? merchCollection.shopUrl;
+}
+
+function ExternalIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 16 16" className="shop-icon">
+      <path d="M5 3.25H3.5A1.5 1.5 0 0 0 2 4.75v7.75A1.5 1.5 0 0 0 3.5 14h7.75a1.5 1.5 0 0 0 1.5-1.5V11h-1.5v1.5H3.5V4.75H5v-1.5Z" />
+      <path d="M8 2v1.5h3.44L6.72 8.22l1.06 1.06 4.72-4.72V8H14V2H8Z" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 16 16" className="shop-icon">
+      <path d="m3.53 2.47 10 10-1.06 1.06-10-10 1.06-1.06Z" />
+      <path d="m12.47 2.47 1.06 1.06-10 10-1.06-1.06 10-10Z" />
+    </svg>
+  );
+}
+
+function ShopAction({
+  item,
+  className = "",
+  children = "Shop external"
+}: {
+  item?: MerchItem | null;
+  className?: string;
+  children?: string;
+}) {
+  const href = shopHrefForItem(item);
+
+  if (!href) {
+    return (
+      <button
+        type="button"
+        disabled
+        className={`shop-external-link shop-external-link--disabled ${className}`}
+        title="Set NEXT_PUBLIC_RAD_SHOP_URL to enable this external shop link."
+      >
+        <span>Shop link pending</span>
+      </button>
+    );
+  }
+
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className={`shop-external-link ${className}`}>
+      <span>{children}</span>
+      <ExternalIcon />
+    </a>
+  );
 }
 
 function ProductImage({
   item,
   priority = false,
-  variant = "card"
+  variant = "card",
+  image = item.frontImage
 }: {
   item: MerchItem;
   priority?: boolean;
-  variant?: "hero" | "card" | "modal";
+  variant?: "hero" | "card" | "mini" | "modal";
+  image?: string;
 }) {
-  const image = item.frontImage ?? item.backImage;
-
   return (
     <div className={`shop-product-media shop-product-media--${variant}`}>
       {image ? (
         <Image
           src={image}
-          alt=""
+          alt={item.name}
           fill
           priority={priority}
           sizes={
             variant === "hero"
-              ? "(max-width: 1024px) 92vw, 560px"
-              : "(max-width: 768px) 92vw, 33vw"
+              ? "(max-width: 1024px) 62vw, 520px"
+              : variant === "modal"
+                ? "(max-width: 768px) 92vw, 520px"
+                : "(max-width: 768px) 86vw, 24vw"
           }
           className="shop-product-media__image"
         />
-      ) : null}
+      ) : (
+        <span className="shop-product-media__fallback">RAD</span>
+      )}
       <div className="shop-product-media__wash" aria-hidden="true" />
-      <div className="shop-product-media__mark" aria-hidden="true">RAD</div>
     </div>
   );
 }
@@ -65,8 +121,8 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
     [items]
   );
 
-  const supportingItems = useMemo(
-    () => items.filter((item) => item.name !== featuredItem?.name).slice(0, 3),
+  const heroRackItems = useMemo(
+    () => items.filter((item) => item.name !== featuredItem?.name).slice(0, 4),
     [featuredItem?.name, items]
   );
 
@@ -89,80 +145,69 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
   return (
     <>
       <div className="shop-shell">
-        <div className="shop-shell__ambient shop-shell__ambient--left" aria-hidden="true" />
-        <div className="shop-shell__ambient shop-shell__ambient--right" aria-hidden="true" />
-
         <section className="shop-hero" aria-labelledby="shop-heading">
           <div className="shop-hero__copy">
-            <p className="shop-kicker">{merchCollection.title}</p>
             <h1 id="shop-heading" className="shop-hero__title">
-              Wear the wild.
+              RAD Shop
             </h1>
             <p className="shop-hero__text">
-              RAD supporter gear and player-kit concepts built around the red, black, and white identity. Final photos, sizes, and checkout links land when the drop opens.
+              Official RAD Esports gear and player-kit concepts built for competition, content, and the wild.
             </p>
 
             <div className="shop-hero__actions">
-              <Button href="#shop-drop">
+              <Button href="#shop-drop" size="lg">
                 View collection
               </Button>
-              <Button href={featuredItem?.externalUrl ?? discordInviteUrl} variant="outline">
-                Get drop alerts
-              </Button>
+              <ShopAction item={featuredItem} className="shop-external-link--hero" />
             </div>
 
-            <div className="shop-proof-grid" aria-label="Shop status">
+            <div className="shop-proof-grid" aria-label="Shop highlights">
               <div>
-                <span>Drop</span>
-                <strong>01</strong>
+                <span>Proofs</span>
+                <strong>11 Items</strong>
+              </div>
+              <div>
+                <span>Kit</span>
+                <strong>Front + Back</strong>
               </div>
               <div>
                 <span>Status</span>
                 <strong>{merchCollection.status}</strong>
               </div>
-              <div>
-                <span>Style</span>
-                <strong>Player kit</strong>
-              </div>
             </div>
           </div>
 
           {featuredItem ? (
-            <div className="shop-feature-stage" aria-label="Featured shop item">
-              <div className="shop-feature-frame">
-                <button
-                  type="button"
-                  className="shop-feature-card"
-                  onClick={() => setSelectedItem(featuredItem)}
-                >
-                  <span className="shop-feature-card__signal" aria-hidden="true" />
+            <div className="shop-feature-stage" aria-label="Featured RAD kit">
+              <button
+                type="button"
+                className="shop-jersey-stack"
+                onClick={() => setSelectedItem(featuredItem)}
+              >
+                <span className="shop-jersey-stack__back">
+                  <ProductImage item={featuredItem} image={featuredItem.backImage} priority variant="hero" />
+                </span>
+                <span className="shop-jersey-stack__front">
                   <ProductImage item={featuredItem} priority variant="hero" />
-                  <span className="shop-feature-card__content">
-                    <span className="shop-feature-card__meta">Featured preview</span>
-                    <span className="shop-feature-card__name">{featuredItem.name}</span>
-                    <span className="shop-feature-card__description">{featuredItem.accent}</span>
-                    <span className="shop-feature-card__footer">
-                      <span>{featuredItem.status}</span>
-                      <span>Open preview</span>
-                    </span>
-                  </span>
-                </button>
+                </span>
+                <span className="shop-jersey-stack__caption">
+                  <span>{featuredItem.name}</span>
+                  <strong>Open preview</strong>
+                </span>
+              </button>
 
-                {supportingItems.length > 0 ? (
-                  <div className="shop-mini-rack" aria-label="More shop previews">
-                    {supportingItems.slice(0, 2).map((item) => (
-                      <button
-                        key={item.name}
-                        type="button"
-                        className="shop-mini-rack__item"
-                        onClick={() => setSelectedItem(item)}
-                      >
-                        <ProductImage item={item} />
-                        <span>{item.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
+              <div className="shop-hero-rack" aria-label="Featured gear previews">
+                {heroRackItems.map((item) => (
+                  <button
+                    key={item.name}
+                    type="button"
+                    className="shop-hero-rack__item"
+                    onClick={() => setSelectedItem(item)}
+                  >
+                    <ProductImage item={item} variant="mini" />
+                    <span>{item.name}</span>
+                  </button>
+                ))}
               </div>
             </div>
           ) : null}
@@ -172,38 +217,20 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
           <div className="shop-marquee__track">
             {Array.from({ length: 2 }).map((_, groupIndex) => (
               <span key={groupIndex}>
-                RAD Shop / Drop alerts / Player essentials / Checkout links coming soon / Supporter gear /
+                RAD Shop / Jersey / Hoodies / Sweatshirts / Pro tees / External checkout /
               </span>
             ))}
           </div>
         </div>
 
-        <section className="shop-service-strip" aria-label="Shop launch notes">
-          <div>
-            <span>01</span>
-            <strong>Drop first</strong>
-            <p>Built for small, focused launches instead of one oversized hero product.</p>
-          </div>
-          <div>
-            <span>02</span>
-            <strong>Photo ready</strong>
-            <p>Final product photography can replace the current concept assets cleanly.</p>
-          </div>
-          <div>
-            <span>03</span>
-            <strong>Store flexible</strong>
-            <p>Each item can route to Discord now or external checkout later.</p>
-          </div>
-        </section>
-
         <section id="shop-drop" className="shop-drop-section" aria-labelledby="shop-drop-heading">
           <div className="shop-section-head">
             <div>
               <p className="shop-kicker">Collection</p>
-              <h2 id="shop-drop-heading">Drop rack.</h2>
+              <h2 id="shop-drop-heading">Gear rack.</h2>
             </div>
             <p>
-              Concept-ready product slots now, clean enough to replace with final photos, prices, sizes, and checkout links later.
+              Product previews are embedded directly into the RAD site. Add the external shop URL once the storefront is live and every item routes out for purchase.
             </p>
           </div>
 
@@ -228,49 +255,68 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
               <article
                 key={item.name}
                 className="shop-product-card"
-                style={{ animationDelay: `${index * 70}ms` } as CSSProperties}
+                style={{ animationDelay: `${index * 45}ms` } as CSSProperties}
               >
-                <div className="shop-product-card__topline">
-                  <span>{categoryForItem(item)}</span>
-                  <span>{item.status}</span>
-                </div>
-                <ProductImage item={item} />
+                <button
+                  type="button"
+                  className="shop-product-card__preview"
+                  onClick={() => setSelectedItem(item)}
+                >
+                  <div className="shop-product-card__topline">
+                    <span>{categoryForItem(item)}</span>
+                    <span>{item.accent}</span>
+                  </div>
+                  <ProductImage item={item} />
+                  {item.backImage ? (
+                    <span className="shop-product-card__back-tag">Back view included</span>
+                  ) : null}
+                </button>
                 <div className="shop-product-card__body">
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                   <div className="shop-product-card__footer">
-                    <span>{item.accent}</span>
-                    <button type="button" onClick={() => setSelectedItem(item)}>
-                      Preview
-                    </button>
+                    <span>{item.status}</span>
+                    <ShopAction item={item} />
                   </div>
                 </div>
               </article>
             ))}
           </div>
-
-          {filteredItems.length === 0 ? (
-            <div className="shop-empty-state">
-              No items in this category yet.
-            </div>
-          ) : null}
         </section>
 
-        {supportingItems.length > 0 ? (
+        <section className="shop-service-strip" aria-label="Shop launch notes">
+          <div>
+            <span>01</span>
+            <strong>Embedded proofs</strong>
+            <p>Actual merch assets sit inside the RAD page instead of sending people away before they browse.</p>
+          </div>
+          <div>
+            <span>02</span>
+            <strong>External checkout</strong>
+            <p>Every card is prepared to leave for the purchase page through one public shop URL.</p>
+          </div>
+          <div>
+            <span>03</span>
+            <strong>Mobile ready</strong>
+            <p>The rack collapses into large product tiles so the gear stays inspectable on phones.</p>
+          </div>
+        </section>
+
+        {heroRackItems.length > 0 ? (
           <section className="shop-lookbook" aria-labelledby="shop-lookbook-heading">
             <div>
               <p className="shop-kicker">Lookbook</p>
-              <h2 id="shop-lookbook-heading">Drop looks.</h2>
+              <h2 id="shop-lookbook-heading">Light / dark.</h2>
             </div>
             <div className="shop-lookbook__rail">
-              {supportingItems.map((item) => (
+              {heroRackItems.slice(0, 4).map((item) => (
                 <button
                   key={item.name}
                   type="button"
                   className="shop-lookbook__item"
                   onClick={() => setSelectedItem(item)}
                 >
-                  <ProductImage item={item} variant="card" />
+                  <ProductImage item={item} variant="mini" />
                   <span>{item.name}</span>
                 </button>
               ))}
@@ -289,8 +335,11 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
         >
           <style>{".keep-scrolling-global{display:none}"}</style>
           <div className="shop-modal__card" onClick={(event) => event.stopPropagation()}>
-            <div className="shop-modal__media">
+            <div className={`shop-modal__media ${selectedItem.backImage ? "shop-modal__media--split" : ""}`}>
               <ProductImage item={selectedItem} variant="modal" />
+              {selectedItem.backImage ? (
+                <ProductImage item={selectedItem} image={selectedItem.backImage} variant="modal" />
+              ) : null}
             </div>
             <div className="shop-modal__content">
               <button
@@ -299,7 +348,7 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
                 className="shop-modal__close"
                 aria-label="Close preview"
               >
-                x
+                <CloseIcon />
               </button>
               <p className="shop-kicker">{categoryForItem(selectedItem)} / {selectedItem.accent}</p>
               <h2>{selectedItem.name}</h2>
@@ -309,8 +358,10 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
                 <strong>{selectedItem.status}</strong>
               </div>
               <div className="shop-modal__actions">
-                <Button href={selectedItem.externalUrl ?? discordInviteUrl}>Get notified</Button>
-                <Button href="/contact" variant="outline">Contact RAD</Button>
+                <ShopAction item={selectedItem} />
+                <Button href={discordInviteUrl} variant="outline">
+                  Drop alerts
+                </Button>
               </div>
             </div>
           </div>

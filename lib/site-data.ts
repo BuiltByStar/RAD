@@ -77,6 +77,8 @@ export const aboutSummary =
 export const discordInviteUrl = "https://discord.com/invite/radgg";
 export const discordServerId = "1363584103479513198";
 export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId}&theme=dark`;
+export const radShopUrl = process.env.NEXT_PUBLIC_RAD_SHOP_URL || undefined;
+const merchItemStatus = radShopUrl ? "External checkout" : "Shop link pending";
 
 export const primaryNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
@@ -308,58 +310,129 @@ export const partners: Partner[] = [
 ];
 
 export const merchCollection = {
-  title: "Pressure Kit // Drop 01",
+  title: "RAD Shop",
   eyebrow: "Merch",
-  description: "A future RAD merch lane built around the current brand system and ready for final product assets.",
-  status: "Coming soon",
-  conceptImage: assets.brandBoard,
-  frontImage: assets.bgRed,
-  backImage: assets.bgWhite,
-  spotlight: "Brand direction",
-  shopUrl: undefined as string | undefined
+  description: "Official RAD Esports gear and player-kit concepts built around the red, black, and white identity.",
+  status: radShopUrl ? "External shop live" : "Shop link pending",
+  conceptImage: assets.shop.jerseyFront,
+  frontImage: assets.shop.jerseyFront,
+  backImage: assets.shop.jerseyBack,
+  spotlight: "Player kit",
+  shopUrl: radShopUrl
 };
 
 export const merchItems: MerchItem[] = [
   {
-    name: "GO WILD Jersey",
+    name: "RAD Player Jersey",
     category: "Jerseys",
-    description: "A match-day jersey concept anchored by the RAD wordmark, GO WILD lockup, and red texture system.",
-    accent: "Brand-led release",
-    status: "Coming soon",
-    frontImage: assets.goWild,
-    backImage: assets.wordmark,
+    description: "Black and red match jersey with front RAD wordmark, wolf-mark patterning, and custom gamer-tag back.",
+    accent: "Front + back proof",
+    status: merchItemStatus,
+    frontImage: assets.shop.jerseyFront,
+    backImage: assets.shop.jerseyBack,
     featured: true,
-    externalUrl: undefined,
-    ctaLabel: "Shop the drop"
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
   },
   {
-    name: "Player Essentials",
-    category: "Apparel",
-    description: "Minimal black-and-red apparel designed to support players first instead of overloading the brand.",
-    accent: "Player focused",
-    status: "Coming soon",
-    frontImage: assets.logoMark,
-    backImage: assets.bgRed,
-    externalUrl: undefined,
-    ctaLabel: "Shop the layer"
+    name: "Light Pro SS Tee",
+    category: "Light Gear",
+    description: "White short-sleeve performance tee with a centered red RAD mark.",
+    accent: "Short sleeve",
+    status: merchItemStatus,
+    frontImage: assets.shop.lightSsTshirt,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
   },
   {
-    name: "RAD Desk Mat",
-    category: "Mousepads",
-    description: "A clean desk mat direction using the RAD red texture system for future player setups.",
-    accent: "Setup focused",
-    status: "Coming soon",
-    frontImage: assets.brandBoard,
-    backImage: assets.bgWhite,
-    externalUrl: undefined,
-    ctaLabel: "Shop the detail"
+    name: "Dark Pro SS Tee",
+    category: "Dark Gear",
+    description: "Black short-sleeve performance tee with a centered red RAD mark.",
+    accent: "Short sleeve",
+    status: merchItemStatus,
+    frontImage: assets.shop.darkSsTshirt,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
   },
   {
-    name: "Matchday Graphics",
-    category: "Accessories",
-    description: "Smaller drop concepts for stickers, lanyards, and social-ready supporter pieces.",
-    accent: "Creative system",
-    status: "Coming soon"
+    name: "Light Pro LS Tee",
+    category: "Light Gear",
+    description: "White long-sleeve performance tee for a cleaner supporter-kit look.",
+    accent: "Long sleeve",
+    status: merchItemStatus,
+    frontImage: assets.shop.lightLsTshirt,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
+  },
+  {
+    name: "Dark Pro LS Tee",
+    category: "Dark Gear",
+    description: "Black long-sleeve performance tee with the red RAD mark on the chest.",
+    accent: "Long sleeve",
+    status: merchItemStatus,
+    frontImage: assets.shop.darkLsTshirt,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
+  },
+  {
+    name: "Light Pro Sweatshirt",
+    category: "Light Gear",
+    description: "White crewneck sweatshirt with the red RAD mark and a clean arena-ready profile.",
+    accent: "Crewneck",
+    status: merchItemStatus,
+    frontImage: assets.shop.lightSweatshirt,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
+  },
+  {
+    name: "Dark Pro Sweatshirt",
+    category: "Dark Gear",
+    description: "Black crewneck sweatshirt with a red RAD mark and heavyweight visual presence.",
+    accent: "Crewneck",
+    status: merchItemStatus,
+    frontImage: assets.shop.darkSweatshirt,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
+  },
+  {
+    name: "Light Pro Hoodie",
+    category: "Light Gear",
+    description: "White hoodie with front pouch, tonal drawcords, and the red RAD mark.",
+    accent: "Hoodie",
+    status: merchItemStatus,
+    frontImage: assets.shop.lightHoodie,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
+  },
+  {
+    name: "Dark Pro Hoodie",
+    category: "Dark Gear",
+    description: "Black hoodie with tonal drawcords and a red RAD mark built for colder match days.",
+    accent: "Hoodie",
+    status: merchItemStatus,
+    frontImage: assets.shop.darkHoodie,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
+  },
+  {
+    name: "Light Women's SS Tee",
+    category: "Women",
+    description: "White women's triblend short-sleeve tee with the red RAD mark.",
+    accent: "Women's fit",
+    status: merchItemStatus,
+    frontImage: assets.shop.lightWomensSsTriblend,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
+  },
+  {
+    name: "Dark Women's SS Tee",
+    category: "Women",
+    description: "Black women's triblend short-sleeve tee with the red RAD mark.",
+    accent: "Women's fit",
+    status: merchItemStatus,
+    frontImage: assets.shop.darkWomensSsTriblend,
+    externalUrl: radShopUrl,
+    ctaLabel: "Shop external"
   }
 ];
 
