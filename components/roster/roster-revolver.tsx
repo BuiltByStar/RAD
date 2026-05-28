@@ -124,23 +124,12 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
 
   return (
     <div
-      className="relative overflow-hidden rounded-[1.8rem] border border-[#dc143c]/28 bg-[linear-gradient(180deg,rgba(10,0,3,0.72),rgba(0,0,0,0.52))] px-3 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_34px_120px_-72px_rgba(220,20,60,0.72)] backdrop-blur-xl sm:px-5 sm:py-7"
+      className="relative overflow-hidden px-0 py-5 sm:py-7"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <Image
-        src={assets.bgRed}
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover opacity-[0.08]"
-      />
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(68%_60%_at_50%_18%,rgba(220,20,60,0.3),transparent_62%),linear-gradient(90deg,rgba(77,3,13,0.5),transparent_24%,transparent_76%,rgba(220,20,60,0.16))]" />
-      <div aria-hidden className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(to_right,rgba(255,255,255,0.75)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.75)_1px,transparent_1px)] [background-size:56px_56px]" />
-      <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#dc143c] to-transparent" />
-      <span aria-hidden className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       <span
         aria-hidden
         className="absolute left-1/2 top-[55%] h-px w-[78%] bg-gradient-to-r from-transparent via-[#dc143c]/32 to-transparent transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -208,8 +197,10 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
             <motion.article
               key={player.slug}
               className={cn(
-                "absolute left-[calc(50%-min(32vw,195px))] top-2 h-[480px] w-[min(64vw,390px)] origin-center overflow-hidden rounded-[1.45rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] lg:h-[560px]",
-                offset === 0 ? "z-30 border-[#dc143c]/58" : "z-10 border-[#dc143c]/16"
+                "roster-revolver-card absolute top-2 h-[480px] origin-center overflow-hidden rounded-[1.45rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] lg:h-[560px]",
+                offset === 0
+                  ? "roster-revolver-card--active z-30 border-[#dc143c]/62"
+                  : "z-10 border-[#dc143c]/16"
               )}
               animate={{
                 x:
@@ -275,6 +266,8 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                     }
               }
               style={{
+                left: "calc((100% - min(calc(100% - 3rem), clamp(260px, 54vw, 370px))) / 2)",
+                width: "min(calc(100% - 3rem), clamp(260px, 54vw, 370px))",
                 zIndex:
                   offset === 0
                     ? 40

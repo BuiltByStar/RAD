@@ -29,63 +29,58 @@ export default function RosterPage() {
       heroImage="/assets/rad-bg-red.png"
       status={team.status}
     >
-      <Section
-        padding="sm"
-        className="overflow-hidden border-y border-[#dc143c]/18 bg-[#050102]"
-      >
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_58%_at_50%_0%,rgba(220,20,60,0.24),transparent_62%),linear-gradient(180deg,rgba(67,4,12,0.32),rgba(5,1,2,0.92)_48%,rgba(5,1,2,1))]" />
+      <Section padding="sm" className="overflow-hidden bg-[#050102]">
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(70%_56%_at_50%_6%,rgba(220,20,60,0.22),transparent_64%),linear-gradient(180deg,rgba(67,4,12,0.18),rgba(5,1,2,0.92)_48%,rgba(5,1,2,1))]" />
+        <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#dc143c]/45 to-transparent" />
         <Container className="relative z-10">
-          <div className="rounded-[2.4rem] border border-[#dc143c]/28 bg-[linear-gradient(145deg,rgba(220,20,60,0.14),rgba(0,0,0,0.5)_34%,rgba(13,0,3,0.9))] p-3 shadow-[0_36px_140px_-82px_rgba(220,20,60,0.82)] sm:p-5">
-            <SectionHeading
-              eyebrow={team.name}
-              title="Player Cards"
-              description="Swipe, drag, or use the arrows to move through the competitive core."
-              compact
-              className="px-2 pt-2 sm:px-3"
-            />
-            <RosterRevolver players={teamRoster} />
-          </div>
+          <SectionHeading
+            eyebrow={team.name}
+            title="Player Cards"
+            description="Swipe, drag, or use the arrows to move through the competitive core."
+            compact
+            className="max-w-3xl"
+          />
+          <RosterRevolver players={teamRoster} />
         </Container>
       </Section>
 
       <Section padding="sm" className="overflow-hidden bg-[#050102] pt-0">
-        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(220,20,60,0.08),transparent_36%),radial-gradient(58%_46%_at_50%_0%,rgba(220,20,60,0.16),transparent_70%)]" />
+        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(220,20,60,0.06),transparent_36%),radial-gradient(58%_46%_at_50%_0%,rgba(220,20,60,0.13),transparent_70%)]" />
         <Container className="relative z-10">
-          <div className="rounded-[2rem] border border-[#dc143c]/18 bg-black/40 p-4 shadow-[0_24px_100px_-80px_rgba(220,20,60,0.65)] backdrop-blur-xl sm:p-5">
-            <SectionHeading
-              eyebrow="Quick Select"
-              title="Lineup Index"
-              description="Jump points for the same roster stage above."
-              compact
-            />
+          <SectionHeading
+            eyebrow="Quick Select"
+            title="Lineup Index"
+            description="Jump points for the same roster stage above."
+            compact
+            className="max-w-3xl"
+          />
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {teamRoster.map((player, index) => (
-                <article
-                  key={player.slug}
-                  id={player.slug}
-                  className="group relative overflow-hidden rounded-[1.15rem] border border-[#dc143c]/18 bg-[linear-gradient(145deg,rgba(220,20,60,0.12),rgba(255,255,255,0.035)_34%,rgba(0,0,0,0.5))] p-4 shadow-[0_18px_70px_-58px_rgba(220,20,60,0.55)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#dc143c]/42 hover:bg-white/[0.06]"
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {teamRoster.map((player, index) => (
+              <article
+                key={player.slug}
+                id={player.slug}
+                className="group roster-index-card relative min-h-[168px] overflow-hidden rounded-[1.15rem] border border-[#dc143c]/14 bg-[linear-gradient(145deg,rgba(220,20,60,0.08),rgba(255,255,255,0.03)_34%,rgba(0,0,0,0.48))] p-4 shadow-[0_18px_70px_-62px_rgba(220,20,60,0.52)] backdrop-blur-xl transition duration-500 hover:-translate-y-1.5 hover:border-[#ff3057]/55 hover:bg-white/[0.06] hover:shadow-[0_0_0_1px_rgba(255,48,87,0.18),0_26px_90px_-42px_rgba(220,20,60,0.86)]"
+              >
+                <span
+                  aria-hidden
+                  className="absolute right-3 top-3 font-[family-name:var(--font-display)] text-4xl font-extrabold leading-none text-white/[0.05] transition duration-500 group-hover:text-[#dc143c]/22"
                 >
-                  <span
-                    aria-hidden
-                    className="absolute right-3 top-3 font-[family-name:var(--font-display)] text-4xl font-extrabold leading-none text-white/[0.05] transition group-hover:text-[#dc143c]/20"
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="relative max-w-[8ch] font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white">
-                    {player.name}
-                  </p>
-                  <p className="relative mt-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#ff6f88]">
-                    {player.role}
-                  </p>
-                  <ChipRow>
-                    {(player.specialties ?? []).slice(0, 2).map((specialty) => (
-                      <Chip key={specialty}>{specialty}</Chip>
-                    ))}
-                  </ChipRow>
-                </article>
-              ))}
-            </div>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <p className="relative max-w-[8ch] font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white">
+                  {player.name}
+                </p>
+                <p className="relative mt-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#ff6f88]">
+                  {player.role}
+                </p>
+                <ChipRow>
+                  {(player.specialties ?? []).slice(0, 2).map((specialty) => (
+                    <Chip key={specialty}>{specialty}</Chip>
+                  ))}
+                </ChipRow>
+              </article>
+            ))}
           </div>
         </Container>
       </Section>

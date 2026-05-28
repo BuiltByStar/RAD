@@ -1766,6 +1766,97 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
   to { transform: translateX(-50%); }
 }
 
+@keyframes roster-card-aura {
+  0%, 100% {
+    box-shadow:
+      0 28px 90px -58px rgba(220, 20, 60, 0.5),
+      0 0 0 1px rgba(220, 20, 60, 0.08);
+    filter: saturate(1);
+  }
+  50% {
+    box-shadow:
+      0 34px 110px -46px rgba(255, 48, 87, 0.88),
+      0 0 0 1px rgba(255, 48, 87, 0.26);
+    filter: saturate(1.12);
+  }
+}
+
+@keyframes roster-card-scan {
+  from { transform: translateX(-145%) rotate(-10deg); }
+  to { transform: translateX(145%) rotate(-10deg); }
+}
+
+.roster-index-card,
+.roster-revolver-card {
+  isolation: isolate;
+}
+
+.roster-index-card::before,
+.roster-revolver-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(255, 48, 87, 0.28), transparent 38%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 30%, rgba(220, 20, 60, 0.16));
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out-expo);
+}
+
+.roster-index-card::after,
+.roster-revolver-card::after {
+  content: "";
+  position: absolute;
+  left: -22%;
+  top: 14%;
+  z-index: 4;
+  width: 64%;
+  height: 22%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), rgba(255, 48, 87, 0.2), transparent);
+  opacity: 0;
+  transform: translateX(-145%) rotate(-10deg);
+}
+
+.roster-index-card:hover::before,
+.roster-index-card:focus-within::before,
+.roster-revolver-card:hover::before,
+.roster-revolver-card:focus-within::before,
+.roster-revolver-card--active::before {
+  opacity: 1;
+}
+
+.roster-index-card:hover::after,
+.roster-index-card:focus-within::after,
+.roster-revolver-card:hover::after,
+.roster-revolver-card:focus-within::after {
+  opacity: 1;
+  animation: roster-card-scan 950ms var(--ease-out-expo);
+}
+
+.roster-revolver-card--active {
+  animation: roster-card-aura 3.2s ease-in-out infinite;
+}
+
+.roster-index-card:hover,
+.roster-index-card:focus-within {
+  animation: roster-card-aura 1.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roster-revolver-card--active,
+  .roster-index-card:hover,
+  .roster-index-card:focus-within,
+  .roster-index-card:hover::after,
+  .roster-index-card:focus-within::after,
+  .roster-revolver-card:hover::after,
+  .roster-revolver-card:focus-within::after {
+    animation: none;
+  }
+}
+
 .shop-shell {
   position: relative;
   isolation: isolate;
