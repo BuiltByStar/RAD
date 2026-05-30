@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 import { AuthWidget } from "@/components/auth-widget";
 import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
+import { cn } from "@/components/ui/cn";
 import { assets } from "@/lib/assets";
 import { primaryNavLinks } from "@/lib/site-data";
 
@@ -247,24 +248,29 @@ export function SiteHeader() {
         exiting={navTransition?.phase === "exit"}
         label={navTransition?.label}
       />
-      <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-colors duration-200 ease-[var(--ease-emphasis)]">
-      <div
-        className={`mx-auto max-w-[1440px] border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] rounded-[var(--radius-sm)] ${
-          scrolled
-            ? "border-[#dc143c]/26 bg-black/92"
-            : "border-white/[0.11] bg-black/72"
-        }`}
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md transition-colors duration-200 ease-[var(--ease-emphasis)]",
+          scrolled ? "border-[#dc143c]/28 bg-black/84" : "border-white/10 bg-black/60"
+        )}
       >
-        <div className="grid h-14 min-w-0 grid-cols-[auto_1fr_auto] items-center gap-2 sm:h-16 sm:gap-4">
-          <Link href="/" aria-label="RAD Esports home" className="group relative block shrink-0">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+        <div className="grid h-14 min-w-0 grid-cols-[auto_1fr_auto] items-center gap-3 sm:h-16 sm:gap-6">
+          <Link href="/" aria-label="RAD Esports home" className="group flex shrink-0 items-center gap-3">
             <Image
-              src={assets.wordmark}
-              alt="RAD Esports"
-              width={176}
-              height={45}
-              className="relative h-auto w-[92px] transition-opacity duration-200 group-hover:opacity-90 sm:w-[112px]"
+              src={assets.logoMark}
+              alt=""
+              width={40}
+              height={40}
+              className="h-9 w-9 object-contain transition-opacity duration-200 group-hover:opacity-90 sm:h-10 sm:w-10"
               priority
             />
+            <span className="hidden flex-col sm:flex">
+              <span className="font-[family-name:var(--font-display)] text-sm font-extrabold uppercase leading-none tracking-[0.08em] text-white">
+                RAD
+              </span>
+              <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-white/42">Esports Org</span>
+            </span>
           </Link>
 
           <nav
@@ -299,7 +305,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors duration-200 hover:border-white/20 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] md:hidden"
+              className="inline-flex h-9 items-center justify-center rounded-none border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors duration-200 hover:border-white/20 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] md:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-rad-nav"
               aria-label={menuOpen ? "Close menu" : "Open menu"}

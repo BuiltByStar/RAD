@@ -62,7 +62,7 @@ export function Card({
     <motion.article
       {...motionProps}
       className={cn(
-        "group relative overflow-hidden rounded-[var(--radius)] border border-white/[0.1] bg-white/[0.025]",
+        "group relative overflow-hidden rounded-none border border-white/[0.1] bg-white/[0.025]",
         "transition-[border-color,background-color] duration-[220ms]",
         hover ? "hover:border-white/18 hover:bg-white/[0.04]" : "",
         tones[tone],

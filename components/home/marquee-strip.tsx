@@ -3,14 +3,13 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 const ITEMS = [
-  "RAD Shop",
+  "RAD Esports",
   "#GoWild",
   "World Champions",
   "EMEA Champions",
-  "Team RAD",
-  "Pressure Kit Drop 01",
-  "teamrad.gg",
-  "Discord.gg/RADGG"
+  "Marvel Rivals",
+  "View Roster",
+  "discord.gg/radgg"
 ];
 
 export function MarqueeStrip() {
@@ -29,10 +28,7 @@ export function MarqueeStrip() {
             <span className="font-[family-name:var(--font-display)] text-lg font-bold uppercase tracking-[0.12em] text-white sm:text-xl">
               {label}
             </span>
-            <span
-              aria-hidden
-              className="inline-block h-px w-8 shrink-0 bg-black/45"
-            />
+            <span aria-hidden className="inline-block h-px w-8 shrink-0 bg-black/45" />
           </div>
         ))}
       </motion.div>

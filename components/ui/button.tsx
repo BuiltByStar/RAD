@@ -7,17 +7,17 @@ type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-[var(--radius-sm)] border font-semibold uppercase tracking-[0.14em] transition-[background,border-color,color] duration-[220ms] ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-none border font-semibold uppercase tracking-[0.14em] transition-[background,border-color,color] duration-[220ms] ease-[var(--ease-emphasis)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-rad)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
   primary:
-    "border-[color:var(--color-rad)] bg-[color:var(--color-rad)] text-white hover:bg-[#c41236] hover:border-[#c41236]",
+    "border-white bg-white text-black hover:bg-white/92 hover:border-white/92",
   secondary:
     "border-white/14 bg-white/[0.06] text-white hover:border-white/24 hover:bg-white/[0.1]",
   ghost:
     "border-transparent bg-transparent text-white/74 hover:border-white/14 hover:bg-white/[0.05] hover:text-white",
   outline:
-    "border-white/18 bg-transparent text-white hover:border-white/32 hover:bg-white/[0.04]"
+    "border-white/24 bg-transparent text-white hover:border-white/40 hover:bg-white/[0.04]"
 };
 
 const sizes: Record<Size, string> = {

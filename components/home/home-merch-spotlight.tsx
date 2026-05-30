@@ -37,7 +37,7 @@ export function HomeMerchSpotlight() {
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.52, ease: EASE }}
-            className="group relative overflow-hidden bg-[#030304]"
+            className="group relative overflow-hidden bg-[#030304] rad-cut"
           >
             <Link href="/shop" className="block">
               <div className="relative min-h-[34rem]">
