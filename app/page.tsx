@@ -4,7 +4,6 @@ import { HomeHero } from "@/components/home/home-hero";
 import { HomeIntro } from "@/components/home/home-intro";
 import { HomeMerchSpotlight } from "@/components/home/home-merch-spotlight";
 import { HomeTeamShowcase } from "@/components/home/home-team-showcase";
-import { HomeWorldsPortal } from "@/components/home/home-worlds-portal";
 import { MarqueeStrip } from "@/components/home/marquee-strip";
 import { PageReadySignal } from "@/components/page-ready-signal";
 import { getManagedContentItems } from "@/lib/content-data.server";
@@ -18,7 +17,6 @@ export default async function HomePage() {
       <HomeIntro />
       <HomeHero />
       <MarqueeStrip />
-      <HomeWorldsPortal />
       <HomeTeamShowcase />
       <HomeChampionsStrip />
       <HomeMerchSpotlight />

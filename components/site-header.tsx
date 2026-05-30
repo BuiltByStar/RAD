@@ -249,33 +249,27 @@ export function SiteHeader() {
       />
       <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-colors duration-200 ease-[var(--ease-emphasis)]">
       <div
-        className={`mx-auto max-w-[1440px] border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] ${
-          menuOpen ? "rounded-[1.75rem]" : "rounded-full"
-        } ${
+        className={`mx-auto max-w-[1440px] border px-4 sm:px-5 lg:px-6 will-change-[background-color,border-color] rounded-[var(--radius-sm)] ${
           scrolled
-            ? "border-[#dc143c]/26 bg-black/88 shadow-[0_16px_44px_rgba(52,1,6,0.45)]"
-            : "border-white/[0.11] bg-black/64"
+            ? "border-[#dc143c]/26 bg-black/92"
+            : "border-white/[0.11] bg-black/72"
         }`}
       >
         <div className="grid h-14 min-w-0 grid-cols-[auto_1fr_auto] items-center gap-2 sm:h-16 sm:gap-4">
           <Link href="/" aria-label="RAD Esports home" className="group relative block shrink-0">
-            <span
-              aria-hidden
-              className="absolute -inset-2 rounded-full bg-[#dc143c]/0 transition-colors duration-300 group-hover:bg-[#dc143c]/10"
-            />
             <Image
               src={assets.wordmark}
               alt="RAD Esports"
               width={176}
               height={45}
-              className="relative h-auto w-[92px] transition-transform duration-300 group-hover:-translate-y-0.5 sm:w-[112px]"
+              className="relative h-auto w-[92px] transition-opacity duration-200 group-hover:opacity-90 sm:w-[112px]"
               priority
             />
           </Link>
 
           <nav
             aria-label="Primary navigation"
-            className="hidden w-fit items-center justify-center gap-1 justify-self-center md:flex"
+            className="hidden w-fit items-center justify-center gap-0 justify-self-center md:flex"
           >
             {primaryNavLinks.map((link) => {
               const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
@@ -284,21 +278,15 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={(event) => handlePrimaryNavClick(event, link, active)}
-                  className={`group relative rounded-full px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+                  className={`group relative px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
                     active ? "text-white" : "text-white/52 hover:text-white"
                   }`}
                   aria-current={active ? "page" : undefined}
                 >
-                  <span
-                    aria-hidden
-                    className={`absolute inset-0 rounded-full bg-[#dc143c]/0 transition duration-300 ${
-                      active ? "bg-[#dc143c]/12" : "group-hover:bg-white/[0.045]"
-                    }`}
-                  />
                   <span className="relative z-10">{link.label}</span>
                   <span
-                    className={`pointer-events-none absolute inset-x-3 bottom-0 h-px origin-center scale-x-0 bg-[#dc143c] transition-transform duration-300 ${
-                      active ? "scale-x-100" : "group-hover:scale-x-100"
+                    className={`pointer-events-none absolute inset-x-2 bottom-0 h-px origin-left bg-[#dc143c] transition-transform duration-200 ${
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                     }`}
                     aria-hidden
                   />
@@ -311,7 +299,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] md:hidden"
+              className="inline-flex h-9 items-center justify-center rounded-[var(--radius-sm)] border border-white/10 bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/64 transition-colors duration-200 hover:border-white/20 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c] md:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-rad-nav"
               aria-label={menuOpen ? "Close menu" : "Open menu"}

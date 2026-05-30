@@ -31,7 +31,7 @@ export function MarqueeStrip() {
             </span>
             <span
               aria-hidden
-              className="inline-block h-1.5 w-8 shrink-0 rounded-full bg-black/45"
+              className="inline-block h-px w-8 shrink-0 bg-black/45"
             />
           </div>
         ))}

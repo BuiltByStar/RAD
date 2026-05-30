@@ -35,7 +35,7 @@ export function SectionHeading({
         initial: false,
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, margin: "-80px" },
-        transition: { duration: 0.6, ease: EASE_EMPHASIS }
+        transition: { duration: 0.52, ease: EASE_EMPHASIS }
       };
 
   return (
@@ -48,18 +48,7 @@ export function SectionHeading({
       )}
     >
       <div>
-        {eyebrow ? (
-          <motion.p
-            className="relative inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-rad-hi)]/90"
-            initial={false}
-            whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, ease: EASE_EMPHASIS }}
-          >
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_18px_rgba(220,20,60,0.55)]" />
-            {eyebrow}
-          </motion.p>
-        ) : null}
+        {eyebrow ? <p className="rad-kicker">{eyebrow}</p> : null}
         <h2 className="relative mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3.35rem)] uppercase leading-[0.98] tracking-normal text-white [text-wrap:balance]">
           {title}
         </h2>
@@ -73,30 +62,17 @@ export function SectionHeading({
             </div>
           ) : null}
           {actionHref && actionLabel ? (
-            <Link
-              href={actionHref}
-              className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.055] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/78 backdrop-blur-xl transition-[border-color,color,background,transform] hover:-translate-y-0.5 hover:border-white/24 hover:bg-white/[0.09] hover:text-white"
-            >
+            <Link href={actionHref} className="rad-link">
               {actionLabel}
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-0.5"
-              >
-                →
-              </span>
+              <span aria-hidden>→</span>
             </Link>
           ) : null}
         </div>
       ) : null}
 
-      <motion.span
+      <span
         aria-hidden
-        initial={false}
-        whileInView={reduced ? undefined : { scaleX: 1 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.9, ease: EASE_EMPHASIS, delay: 0.15 }}
-        style={{ originX: 0 }}
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[var(--border)]"
       />
     </motion.header>
   );

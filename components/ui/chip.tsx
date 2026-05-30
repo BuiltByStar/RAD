@@ -8,16 +8,15 @@ import { EASE_EMPHASIS } from "./motion-tokens";
 
 const rowVariants: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } }
+  visible: { transition: { staggerChildren: 0.04, delayChildren: 0.06 } }
 };
 
 const chipVariants: Variants = {
-  hidden: { opacity: 0, y: 6, scale: 0.96 },
+  hidden: { opacity: 0, y: 4 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.35, ease: EASE_EMPHASIS }
+    transition: { duration: 0.32, ease: EASE_EMPHASIS }
   }
 };
 
@@ -44,11 +43,7 @@ export function Chip({ className, children, ...rest }: ChipProps) {
   return (
     <motion.span
       variants={reduced ? undefined : chipVariants}
-      whileHover={reduced ? undefined : { y: -2, borderColor: "rgba(255,255,255,0.35)" }}
-      className={cn(
-        "inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70",
-        className
-      )}
+      className={cn("rad-tag", className)}
       {...rest}
     >
       {children}

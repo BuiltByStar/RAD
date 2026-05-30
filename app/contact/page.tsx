@@ -46,7 +46,7 @@ export default function ContactPage() {
                 <ContactGrid channels={contactChannels} />
               </div>
 
-              <Card spotlight>
+              <Card>
                 <CardEyebrow>Tips</CardEyebrow>
                 <CardTitle size="sm">What to include</CardTitle>
                 <CardBody>

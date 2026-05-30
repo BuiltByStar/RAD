@@ -3,14 +3,12 @@
 import {
   motion,
   useInView,
-  useMotionTemplate,
-  useMotionValue,
   useReducedMotion,
   type HTMLMotionProps,
   type Variants
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
 import { cn } from "./cn";
 import { EASE_EMPHASIS } from "./motion-tokens";
@@ -22,7 +20,6 @@ type CardProps = Omit<HTMLMotionProps<"article">, "children"> & {
   accent?: boolean;
   children: ReactNode;
   hover?: boolean;
-  spotlight?: boolean;
 };
 
 const tones: Record<Tone, string> = {
@@ -34,11 +31,11 @@ const tones: Record<Tone, string> = {
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: EASE_EMPHASIS }
+    transition: { duration: 0.48, ease: EASE_EMPHASIS }
   }
 };
 
@@ -46,31 +43,11 @@ export function Card({
   tone = "default",
   accent = true,
   hover = true,
-  spotlight = false,
   className,
   children,
-  onMouseMove,
-  onMouseLeave,
   ...rest
 }: CardProps) {
   const reduced = useReducedMotion();
-
-  const mouseX = useMotionValue(-200);
-  const mouseY = useMotionValue(-200);
-  const spotlightBg = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, rgba(241,58,93,0.16), transparent 70%)`;
-
-  const handleMove = (event: MouseEvent<HTMLElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    mouseX.set(event.clientX - rect.left);
-    mouseY.set(event.clientY - rect.top);
-    onMouseMove?.(event);
-  };
-
-  const handleLeave = (event: MouseEvent<HTMLElement>) => {
-    mouseX.set(-200);
-    mouseY.set(-200);
-    onMouseLeave?.(event);
-  };
 
   const motionProps = reduced
     ? {}
@@ -78,66 +55,36 @@ export function Card({
         variants: cardVariants,
         initial: false,
         whileInView: "visible" as const,
-        viewport: { once: true, margin: "-60px" },
-        whileHover: hover ? { y: -2 } : undefined
+        viewport: { once: true, margin: "-60px" }
       };
 
   return (
     <motion.article
       {...motionProps}
-      onMouseMove={spotlight ? handleMove : onMouseMove}
-      onMouseLeave={spotlight ? handleLeave : onMouseLeave}
       className={cn(
-        "group relative overflow-hidden rounded-[1.65rem] border border-white/[0.085]",
-        "bg-[linear-gradient(145deg,rgba(255,255,255,0.065),rgba(255,255,255,0.025)_44%,rgba(220,20,60,0.045))] backdrop-blur-xl",
-        "shadow-[0_24px_70px_-52px_rgba(0,0,0,0.95)]",
-        "transition-[border-color,background,box-shadow] duration-300",
-        "hover:border-white/18 hover:bg-white/[0.07] hover:shadow-[0_30px_90px_-58px_rgba(220,20,60,0.55)]",
+        "group relative overflow-hidden rounded-[var(--radius)] border border-white/[0.1] bg-white/[0.025]",
+        "transition-[border-color,background-color] duration-[220ms]",
+        hover ? "hover:border-white/18 hover:bg-white/[0.04]" : "",
         tones[tone],
         className
       )}
       {...rest}
     >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent"
-      />
-
-      {spotlight && !reduced ? (
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ background: spotlightBg } as Record<string, unknown>}
-        />
-      ) : null}
-
       {accent ? (
-        <motion.span
+        <span
           aria-hidden
-          className="pointer-events-none absolute left-5 top-5 h-1.5 w-10 origin-left rounded-full bg-[color:var(--color-rad)]/80 shadow-[0_0_22px_rgba(220,20,60,0.3)]"
-          initial={false}
-          whileInView={reduced ? undefined : { scaleX: 1 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.8, ease: EASE_EMPHASIS, delay: 0.1 }}
+          className="pointer-events-none absolute left-0 top-0 h-px w-full bg-[color:var(--color-rad)]/70"
         />
       ) : null}
 
-      <div className={cn("relative z-10", accent ? "pt-4" : null)}>{children}</div>
+      <div className="relative z-10">{children}</div>
     </motion.article>
   );
 }
 
 type CardEyebrowProps = HTMLAttributes<HTMLParagraphElement>;
 export function CardEyebrow({ className, ...rest }: CardEyebrowProps) {
-  return (
-    <p
-      className={cn(
-        "text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]",
-        className
-      )}
-      {...rest}
-    />
-  );
+  return <p className={cn("rad-kicker", className)} {...rest} />;
 }
 
 type CardTitleProps = HTMLAttributes<HTMLHeadingElement> & {

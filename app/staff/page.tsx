@@ -39,7 +39,7 @@ export default function StaffPage() {
 
           <CardGrid cols={3}>
             {brandStaff.map((member) => (
-              <Card key={member.slug} spotlight className="min-h-[260px]">
+              <Card key={member.slug} className="min-h-[260px]">
                 <CardEyebrow>{member.group}</CardEyebrow>
                 <CardTitle size="sm">{member.name}</CardTitle>
                 <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)]/90">
@@ -65,7 +65,7 @@ export default function StaffPage() {
 
           <CardGrid cols={3}>
             {operationsStaff.map((member) => (
-              <Card key={member.slug} spotlight className="min-h-[260px]">
+              <Card key={member.slug} className="min-h-[260px]">
                 <CardEyebrow>{member.group}</CardEyebrow>
                 <CardTitle size="sm">{member.name}</CardTitle>
                 <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)]/90">

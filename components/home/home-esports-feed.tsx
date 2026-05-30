@@ -21,40 +21,31 @@ export function HomeEsportsFeed({ items }: { items: ContentItem[] }) {
   }
 
   return (
-    <section className="rad-dot-surface relative overflow-hidden border-y border-white/10 bg-[#08080a] py-10 sm:py-14">
-      <Image
-        src={assets.bgRed}
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover opacity-[0.06]"
-      />
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(72%_60%_at_82%_18%,rgba(220,20,60,0.13),transparent_58%)]" />
-      <Container size="xl">
-        <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+    <section className="rad-section rad-dot-surface relative overflow-hidden bg-[#08080a] py-10 sm:py-14">
+      <Image src={assets.bgRed} alt="" fill sizes="100vw" className="object-cover opacity-[0.05]" />
+      <Container size="xl" className="relative z-10">
+        <div className="grid gap-px border border-white/10 bg-white/10 lg:grid-cols-[0.92fr_1.08fr]">
           <motion.article
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="relative min-h-[320px] overflow-hidden rounded-[1.65rem] border border-white/12 bg-black shadow-[0_28px_90px_-54px_rgba(0,0,0,0.95)]"
+            transition={{ duration: 0.52, ease: EASE }}
+            className="relative min-h-[320px] overflow-hidden bg-[#030304]"
           >
             <Image
               src={featured.thumbnail}
               alt=""
               fill
               sizes="(max-width: 1024px) 100vw, 58vw"
-              className="object-cover opacity-78"
+              className="object-cover opacity-75"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.58)_52%,#050505_100%)]" />
             <div className="relative z-10 flex min-h-[320px] flex-col justify-end p-5 sm:p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#ff4040]">
-                Latest feature
-              </p>
+              <p className="rad-kicker">Latest feature</p>
               <h2 className="mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.15rem,4.3vw,3.8rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.02em] text-white">
                 {featured.title}
               </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/66 sm:text-base">
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/62 sm:text-base">
                 {featured.description}
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -66,27 +57,25 @@ export function HomeEsportsFeed({ items }: { items: ContentItem[] }) {
             </div>
           </motion.article>
 
-          <div className="grid gap-5">
+          <div className="grid gap-px bg-white/10">
             <motion.div
               initial={false}
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.65, ease: EASE, delay: 0.05 }}
-            className="rounded-[1.65rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6"
-          >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">
-                More updates
-              </p>
-              <div className="mt-5 grid gap-3">
+              transition={{ duration: 0.48, ease: EASE, delay: 0.04 }}
+              className="bg-[#030304] p-5 sm:p-6"
+            >
+              <p className="rad-kicker">More updates</p>
+              <div className="mt-5 rad-divide-y border border-white/10">
                 {secondary.map((item) => (
                   <Link
                     key={item.id}
                     href={item.url}
-                    className="group grid grid-cols-[88px_1fr] gap-3 rounded-[1.15rem] border border-white/10 bg-black/24 p-2 transition hover:-translate-y-0.5 hover:border-white/22 hover:bg-white/[0.055]"
+                    className="rad-panel-interactive grid grid-cols-[88px_1fr] gap-3 border-0 border-b border-white/10 bg-transparent p-2 transition-colors last:border-b-0"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <div className="relative h-20 overflow-hidden rounded-[0.9rem] bg-white/5">
+                    <div className="relative h-20 overflow-hidden bg-white/5">
                       <Image src={item.thumbnail} alt="" fill sizes="88px" className="object-cover" />
                     </div>
                     <div className="py-1">
@@ -106,24 +95,24 @@ export function HomeEsportsFeed({ items }: { items: ContentItem[] }) {
               initial={false}
               whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.65, ease: EASE, delay: 0.12 }}
-              className="relative overflow-hidden rounded-[1.65rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_70px_-58px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6"
+              transition={{ duration: 0.48, ease: EASE, delay: 0.08 }}
+              className="bg-[#030304] p-5 sm:p-6"
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff6b6b]">
-                Socials
-              </p>
-              <h3 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.9] text-white">
+              <p className="rad-kicker">Socials</p>
+              <h3 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-[0.9] text-white">
                 RAD channels.
               </h3>
               <div className="mt-5 flex flex-wrap gap-2">
-                <Button href={discordInviteUrl} size="sm">Discord</Button>
+                <Button href={discordInviteUrl} size="sm">
+                  Discord
+                </Button>
                 {contactChannels.slice(1, 4).map((channel) => (
                   <Link
                     key={channel.label}
                     href={channel.href}
                     target={channel.href.startsWith("http") ? "_blank" : undefined}
                     rel={channel.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="rounded-full border border-white/10 bg-black/30 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/62 transition hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+                    className="rad-tag transition-colors hover:border-white/24 hover:text-white"
                   >
                     {channel.label}
                   </Link>

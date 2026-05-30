@@ -105,21 +105,21 @@ export default function AboutPage() {
           <SectionHeading eyebrow="Overview" title="Who We Are" />
 
           <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
-            <Card tone="lead" spotlight>
+            <Card tone="lead">
               <CardBody className="mt-0 text-base leading-relaxed text-white/75 sm:text-lg">
                 RAD has been turning heads since 2023. The org became the inaugural Marvel Rivals Ignite: Mid-Season World Champions and later secured the Season 6 EMEA PC title. The goal now is simple: keep winning, keep building, and keep the identity unmistakably RAD.
               </CardBody>
             </Card>
 
             <div className="grid gap-4 sm:gap-5">
-              <Card spotlight>
+              <Card>
                 <CardEyebrow>Proof</CardEyebrow>
                 <CardTitle size="sm">Results matter.</CardTitle>
                 <CardBody>
                   The site does not need to oversell the org. The results already give the identity weight.
                 </CardBody>
               </Card>
-              <Card spotlight>
+              <Card>
                 <CardEyebrow>Direction</CardEyebrow>
                 <CardTitle size="sm">Built to grow.</CardTitle>
                 <CardBody>
@@ -137,7 +137,7 @@ export default function AboutPage() {
 
           <CardGrid cols={4}>
             {standards.map((value) => (
-              <Card key={value.title} spotlight>
+              <Card key={value.title}>
                 <CardTitle size="sm">{value.title}</CardTitle>
                 <CardBody>{value.description}</CardBody>
               </Card>
