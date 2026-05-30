@@ -63,7 +63,7 @@ export function HomeWorldsPortal() {
               Built around the org.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-white/66 sm:text-lg">
-              After the shop-led opening, the site moves back into the full RAD identity: competitive roster, media, partner lanes, and the supporter shop all tied together.
+              From the opening, the site moves through the full RAD identity: competitive roster, media, partner lanes, and the supporter shop all tied together.
             </p>
             <div className="mt-7 overflow-hidden rounded-[2rem] border border-white/10 bg-black/32 p-5 shadow-[0_24px_70px_-52px_rgba(220,20,60,0.45)] backdrop-blur-xl">
               <Image

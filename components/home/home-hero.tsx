@@ -5,14 +5,13 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, Container } from "@/components/ui";
 import { assets } from "@/lib/assets";
-import { merchCollection, merchItems, radShopUrl, stats } from "@/lib/site-data";
+import { teams } from "@/lib/site-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function HomeHero() {
   const reduced = useReducedMotion();
-  const featured = merchItems.find((item) => item.featured) ?? merchItems[0];
-  const railItems = merchItems.filter((item) => item.name !== featured?.name).slice(0, 4);
+  const team = teams[0];
 
   return (
     <section className="rad-dot-surface relative isolate overflow-hidden border-b border-white/10 bg-[#030304] pt-20 sm:pt-24">
@@ -43,128 +42,116 @@ export function HomeHero() {
             transition={{ duration: 0.8, ease: EASE }}
             className="min-w-0 max-w-3xl"
           >
+            <motion.div
+              initial={false}
+              animate={
+                reduced
+                  ? undefined
+                  : {
+                      y: [0, -8, 0],
+                      rotate: [-1.5, 1.5, -1.5],
+                      scale: [1, 1.035, 1]
+                    }
+              }
+              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative mb-6 grid h-24 w-24 place-items-center rounded-[1.45rem] border border-[#dc143c]/35 bg-[#dc143c]/12 shadow-[0_24px_70px_-34px_rgba(220,20,60,0.92)] backdrop-blur-xl sm:h-28 sm:w-28"
+            >
+              <motion.span
+                aria-hidden
+                className="absolute inset-[-0.35rem] rounded-[1.75rem] border border-[#dc143c]/18"
+                animate={reduced ? undefined : { opacity: [0.2, 0.72, 0.2], scale: [0.94, 1.08, 0.94] }}
+                transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <Image
+                src={assets.logoMark}
+                alt="RAD logo"
+                width={120}
+                height={140}
+                priority
+                className="relative h-16 w-auto object-contain drop-shadow-[0_0_28px_rgba(220,20,60,0.55)] sm:h-20"
+              />
+            </motion.div>
+
             <h1 className="max-w-[7ch] font-[family-name:var(--font-display)] text-[clamp(4.4rem,10vw,10.5rem)] font-extrabold uppercase leading-[0.78] tracking-[-0.01em] text-white">
               RAD
-              <span className="block text-[#dc143c]">Shop</span>
+              <span className="block text-[#dc143c]">Esports</span>
             </h1>
 
             <p className="mt-5 max-w-[30rem] text-base leading-relaxed text-white/72 sm:text-lg">
-              The official RAD gear lane is now built into the site: jersey proof, pro tees, hoodies, sweatshirts, and direct external checkout routing when the store URL is live.
+              World and EMEA champions built around players, pressure, content, and the community behind the wild.
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Button href="/shop" size="lg" className="min-w-[190px]">
-                View collection
+              <Button href="/roster" size="lg" className="min-w-[190px]">
+                Meet the team
               </Button>
               <Button
-                href={radShopUrl ?? "/shop#shop-drop"}
+                href="/shop"
                 variant="outline"
                 size="lg"
                 className="min-w-[190px]"
               >
-                {radShopUrl ? "Shop external" : "Shop link pending"}
+                Shop gear
               </Button>
             </div>
 
-            <dl className="mt-8 grid max-w-2xl gap-3 border-t border-white/10 pt-6 sm:grid-cols-3">
-              <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.035] px-4 py-3 backdrop-blur-xl">
-                <dt className="font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl">
-                  {merchItems.length}
-                </dt>
-                <dd className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/52">
-                  Gear proofs
-                </dd>
-              </div>
-              <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.035] px-4 py-3 backdrop-blur-xl">
-                <dt className="font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl">
-                  Kit
-                </dt>
-                <dd className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/52">
-                  Front + back
-                </dd>
-              </div>
-              <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.035] px-4 py-3 backdrop-blur-xl">
-                <dt className="font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl">
-                  {stats[0]?.value}
-                </dt>
-                <dd className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/52">
-                  Since launch
-                </dd>
-              </div>
-            </dl>
           </motion.div>
 
-          {featured ? (
+          <motion.div
+            initial={false}
+            animate={reduced ? undefined : { opacity: 1, x: 0 }}
+            transition={{ duration: 0.85, ease: EASE, delay: 0.1 }}
+            className="relative min-h-[30rem] overflow-hidden rounded-[1.35rem] border border-white/12 bg-black/54 shadow-[0_34px_110px_-58px_rgba(220,20,60,0.72)] sm:min-h-[38rem]"
+          >
+            <Image
+              src={assets.bgRed}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 54vw"
+              className="object-cover opacity-40"
+            />
+            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,1,2,0.88)_0%,rgba(5,1,2,0.44)_48%,rgba(5,1,2,0.72)_100%),radial-gradient(circle_at_50%_32%,rgba(220,20,60,0.36),transparent_54%)]" />
             <motion.div
-              initial={false}
-              animate={reduced ? undefined : { opacity: 1, x: 0 }}
-              transition={{ duration: 0.85, ease: EASE, delay: 0.1 }}
-              className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(9rem,0.28fr)]"
-            >
-              <a
-                href="/shop"
-                className="group relative min-h-[30rem] overflow-hidden rounded-[1.35rem] border border-white/12 bg-black/54 shadow-[0_34px_110px_-58px_rgba(220,20,60,0.72)] sm:min-h-[38rem]"
-              >
-                {featured.backImage ? (
-                  <Image
-                    src={featured.backImage}
-                    alt=""
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 72vw, 34vw"
-                    className="absolute !left-auto !right-0 !top-0 !h-[88%] !w-[46%] object-cover object-center opacity-70 transition duration-700 group-hover:scale-[1.02]"
-                  />
-                ) : null}
-                <Image
-                  src={featured.frontImage ?? assets.shop.jerseyFront}
-                  alt={featured.name}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 82vw, 42vw"
-                  className="!left-0 !top-[6%] !h-[90%] !w-[70%] object-cover object-center transition duration-700 group-hover:scale-[1.03]"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_48%,rgba(0,0,0,0.82)_100%),radial-gradient(circle_at_28%_42%,transparent_0_42%,rgba(0,0,0,0.42)_78%)]" />
-                <div className="absolute left-5 top-5 rounded-full border border-[#dc143c]/35 bg-[#dc143c]/14 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white">
-                  {merchCollection.status}
-                </div>
-                <div className="absolute inset-x-5 bottom-5">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#ff6f88]">{featured.accent}</p>
-                  <h2 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.4rem,5vw,4.7rem)] font-extrabold uppercase leading-[0.82] text-white">
-                    {featured.name}
-                  </h2>
-                  <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/68">{featured.description}</p>
-                </div>
-              </a>
+              aria-hidden
+              className="absolute left-1/2 top-[42%] h-[22rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dc143c]/16 blur-3xl"
+              animate={reduced ? undefined : { scale: [0.92, 1.08, 0.92], opacity: [0.35, 0.7, 0.35] }}
+              transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <Image
+              src={assets.logoMark}
+              alt=""
+              width={520}
+              height={620}
+              priority
+              className="absolute left-1/2 top-[42%] h-[18rem] w-auto -translate-x-1/2 -translate-y-1/2 object-contain opacity-95 drop-shadow-[0_34px_90px_rgba(220,20,60,0.38)] sm:h-[24rem]"
+            />
+            <Image
+              src={assets.goWild}
+              alt="Go Wild"
+              width={860}
+              height={260}
+              className="absolute bottom-8 left-6 right-6 h-auto w-[calc(100%-3rem)] object-contain opacity-28"
+            />
+            <div aria-hidden className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/90 via-black/38 to-transparent" />
 
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                {railItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href="/shop"
-                    className="group grid grid-cols-[6.5rem_1fr] items-center gap-3 overflow-hidden rounded-[1rem] border border-white/10 bg-white/[0.045] p-2 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-[#dc143c]/38 hover:bg-white/[0.07] lg:grid-cols-1"
-                  >
-                    <div className="relative aspect-square overflow-hidden rounded-[0.75rem] bg-black">
-                      {item.frontImage ? (
-                        <Image
-                          src={item.frontImage}
-                          alt=""
-                          fill
-                          sizes="140px"
-                          className="object-contain p-1 transition duration-500 group-hover:scale-[1.04]"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#ff6f88]">{item.category}</p>
-                      <h3 className="mt-1 font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-none text-white">
-                        {item.name}
-                      </h3>
-                    </div>
-                  </a>
-                ))}
+            <div className="absolute left-5 top-5 rounded-full border border-[#dc143c]/35 bg-[#dc143c]/14 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white">
+              {team.game}
+            </div>
+
+            <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#ff6f88]">Competitive identity</p>
+                <h2 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.4rem,5vw,4.7rem)] font-extrabold uppercase leading-[0.82] text-white">
+                  Welcome to the wild.
+                </h2>
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/68">{team.description}</p>
               </div>
-            </motion.div>
-          ) : null}
+              <span className="w-fit rounded-full border border-white/12 bg-white/[0.055] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/74 backdrop-blur-xl">
+                {team.status}
+              </span>
+            </div>
+          </motion.div>
         </div>
       </Container>
     </section>

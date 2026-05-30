@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, Container } from "@/components/ui";
@@ -31,7 +30,7 @@ export function HomeTeamShowcase() {
           </p>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="grid gap-5">
           <motion.article
             initial={false}
             whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -68,44 +67,6 @@ export function HomeTeamShowcase() {
               </div>
             </div>
           </motion.article>
-
-          <motion.div
-            initial={false}
-            whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.65, ease: EASE, delay: 0.08 }}
-            className="grid content-start gap-3"
-          >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/42">Active lineup</p>
-            {roster.map((player, index) => (
-              <Link
-                key={player.slug}
-                href={`/roster#${player.slug}`}
-                className="group grid grid-cols-[56px_1fr_auto] items-center gap-3 rounded-[1.2rem] border border-white/10 bg-white/[0.035] px-3 py-3 transition hover:border-[#dc143c]/35 hover:bg-white/[0.055]"
-              >
-                <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[#dc143c]/10">
-                  {player.image ? (
-                    <Image src={player.image} alt="" fill sizes="56px" className="object-cover" />
-                  ) : (
-                    <span className="font-[family-name:var(--font-display)] text-lg font-extrabold uppercase text-white/80">
-                      {player.name.slice(0, 2)}
-                    </span>
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <p className="truncate font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-none text-white">
-                    {player.name}
-                  </p>
-                  <p className="mt-1 truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-white/48">
-                    {player.role}
-                  </p>
-                </div>
-                <span className="pr-1 font-[family-name:var(--font-display)] text-2xl font-extrabold tabular-nums leading-none text-white/16 transition group-hover:text-[#dc143c]/55">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </Link>
-            ))}
-          </motion.div>
         </div>
       </Container>
     </section>
