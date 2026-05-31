@@ -1,25 +1,27 @@
 import type { Metadata, Viewport } from "next";
-import type { CSSProperties } from "react";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 
-import { AmbientBackground } from "@/components/ambient-background";
-import { CustomCursor } from "@/components/custom-cursor";
-import { KeepScrolling } from "@/components/keep-scrolling";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { assets } from "@/lib/assets";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
-import "./cinematic.css";
 
-const localFontVars: CSSProperties = {
-  "--font-body": "\"Segoe UI\", Inter, Arial, sans-serif",
-  "--font-display":
-    "\"Arial Narrow\", \"Franklin Gothic Medium Cond\", Bahnschrift, Impact, Haettenschweiler, sans-serif"
-} as CSSProperties;
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-body"
+});
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["600", "700", "800", "900"],
+  variable: "--font-display"
+});
 
 export const viewport: Viewport = {
-  themeColor: "#340106",
+  themeColor: "#000000",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -29,15 +31,14 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
   title: {
-    default: "RAD Esports - Competitive Esports",
+    default: "RAD Esports",
     template: "%s | RAD Esports"
   },
   description:
-    "RAD Esports is built around players, remembered through history, and ready for the next stage of competition.",
+    "The home of champions — RAD Esports competes in Marvel Rivals with world and EMEA titles.",
   openGraph: {
     title: "RAD Esports",
-    description:
-      "Built around players. Remembered through history. Welcome to the wild.",
+    description: "Built around players. Remembered through history. Welcome to the wild.",
     images: [assets.bgRed],
     type: "website"
   },
@@ -54,20 +55,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body
-        className="bg-black text-white selection:bg-[color:var(--color-rad)]/30 antialiased"
-        style={localFontVars}
-      >
-        <AmbientBackground />
-        <CustomCursor />
+    <html lang="en" data-scroll-behavior="smooth" className={`${barlow.variable} ${barlowCondensed.variable}`}>
+      <body className="bg-black font-[family-name:var(--font-body)] text-white antialiased">
         <SiteHeader />
-        <KeepScrolling />
-
-        <div className="subpage-wrapper relative min-h-screen pt-16 sm:pt-[4.5rem] lg:pt-20">
-          <div className="relative z-10">{children}</div>
-        </div>
-
+        <div className="relative min-h-screen pt-[4.5rem] lg:pt-[7.25rem]">{children}</div>
         <SiteFooter />
       </body>
     </html>

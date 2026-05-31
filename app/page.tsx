@@ -1,12 +1,8 @@
-import { HomeChampionsStrip } from "@/components/home/home-champions-strip";
-import { HomeEsportsFeed } from "@/components/home/home-esports-feed";
-import { HomeFollowStrip } from "@/components/home/home-follow-strip";
-import { HomeHero } from "@/components/home/home-hero";
-import { HomeIntro } from "@/components/home/home-intro";
-import { HomeMerchSpotlight } from "@/components/home/home-merch-spotlight";
-import { HomeWhoWeAre } from "@/components/home/home-who-we-are";
-import { HomeWhereWeCompete } from "@/components/home/home-where-we-compete";
-import { MarqueeStrip } from "@/components/home/marquee-strip";
+import { HomeCommunityBanner } from "@/components/home/home-community-banner";
+import { HomeNewsSection } from "@/components/home/home-news-section";
+import { HomeProductCarousel } from "@/components/home/home-product-carousel";
+import { HomeTeamsBanner } from "@/components/home/home-teams-banner";
+import { HomeVideosSection } from "@/components/home/home-videos-section";
 import { PageReadySignal } from "@/components/page-ready-signal";
 import { getManagedContentItems } from "@/lib/content-data.server";
 
@@ -14,17 +10,13 @@ export default async function HomePage() {
   const contentItems = await getManagedContentItems();
 
   return (
-    <main className="relative isolate">
+    <main className="overflow-hidden bg-black text-white">
       <PageReadySignal route="/" delayMs={40} />
-      <HomeIntro />
-      <HomeHero />
-      <MarqueeStrip />
-      <HomeWhoWeAre />
-      <HomeWhereWeCompete />
-      <HomeChampionsStrip />
-      <HomeMerchSpotlight />
-      <HomeFollowStrip />
-      <HomeEsportsFeed items={contentItems} />
+      <HomeProductCarousel />
+      <HomeCommunityBanner />
+      <HomeVideosSection items={contentItems} />
+      <HomeTeamsBanner />
+      <HomeNewsSection items={contentItems} />
     </main>
   );
 }

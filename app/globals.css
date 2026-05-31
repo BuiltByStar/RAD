@@ -16,11 +16,12 @@
   --color-muted:      #b9b5b5;
   --color-dim:        #727070;
 
-  --color-rad:        #dc143c;
-  --color-rad-hi:     #f13a5d;
+  --color-rad:        #e5062f;
+  --color-rad-hi:     #ff4d63;
   --color-rad-deep:   #7a0714;
   --color-rad-ember:  #340106;
   --color-rad-soft:   #ff6f88;
+  --color-blood:      #e5062f;
 
   --color-discord:    #dc143c;
 
@@ -65,8 +66,9 @@
   --muted:         #b9b5b5;
   --dim:           #727070;
 
-  --red:           #dc143c;
-  --red-hi:        #f13a5d;
+  --red:           #e5062f;
+  --red-hi:        #ff4d63;
+  --blood:         #e5062f;
   --red-deep:      #7a0714;
   --red-ember:     #340106;
   --green:         var(--red);
@@ -102,9 +104,7 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 18% -10%, rgba(255, 0, 0, 0.13), transparent 30rem),
-    linear-gradient(180deg, #030304 0%, #070707 46%, #030304 100%);
+  background: #000000;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -284,6 +284,14 @@ p { margin: 0; }
 
   .rad-divide-y > * + * {
     border-top: 1px solid var(--border);
+  }
+
+  .clip-top {
+    clip-path: polygon(101% -1%, -1% -1%, -1% 101%);
+  }
+
+  .clip-bottom {
+    clip-path: polygon(101% 101%, -1% 101%, 101% -1%);
   }
 }
 

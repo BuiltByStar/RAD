@@ -1,85 +1,112 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { FluidContainer } from "@/components/ui/fluid-container";
 import { assets } from "@/lib/assets";
-import { contactChannels, navLinks } from "@/lib/site-data";
+import { contactChannels, discordInviteUrl } from "@/lib/site-data";
+
+type FooterLinkProps = { href: string; label: string; external?: boolean };
+
+function FooterLink({ href, label, external }: FooterLinkProps) {
+  const className =
+    "group flex items-center gap-2 text-neutral-500 transition-colors hover:text-white";
+
+  const inner = (
+    <>
+      <span>{label}</span>
+      <span
+        aria-hidden
+        className="-translate-x-2 text-[var(--color-blood)] opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+      >
+        →
+      </span>
+    </>
+  );
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={className}>
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className}>
+      {inner}
+    </Link>
+  );
+}
+
+const socials = contactChannels.filter((c) => c.href.startsWith("http"));
 
 export function SiteFooter() {
   return (
-    <footer className="rad-dot-surface relative mt-0 overflow-hidden border-t border-white/10 bg-[#040404]">
-      <Image
-        src={assets.bgRed}
-        alt=""
-        fill
-        sizes="100vw"
-        className="z-0 object-cover opacity-[0.08]"
-      />
-      <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-8 pt-12 sm:px-8 lg:px-12 lg:pt-14">
-        <div className="relative overflow-hidden border border-white/10 bg-black/55 px-6 py-7 sm:px-8 sm:py-9 rad-cut-lg">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.75fr_0.75fr]">
-            <div className="relative z-10 max-w-xl">
-              <Image
-                src={assets.wordmark}
-                alt="RAD Esports"
-                width={505}
-                height={129}
-                className="h-auto w-[180px] sm:w-[220px]"
-              />
-              <p className="mt-5 max-w-lg text-sm leading-relaxed text-white/66 sm:text-base">
-                Built around players. Remembered through history. Welcome to the wild.
-              </p>
+    <footer className="bg-black">
+      <FluidContainer>
+        <div className="grid h-auto min-h-[300px] grid-cols-12 gap-6 border-x border-t border-neutral-900 px-4 py-8 md:px-6 md:py-14">
+          <div className="order-2 col-span-12 flex flex-col gap-4 md:order-1 md:col-span-4">
+            <Link href="/">
+              <Image src={assets.logoMark} alt="RAD Esports" width={48} height={48} className="h-10 w-10" />
+            </Link>
+            <p className="text-sm text-neutral-500">© {new Date().getFullYear()} RAD Esports. All rights reserved.</p>
+            <div className="flex flex-wrap items-center gap-3">
+              {socials.map((channel) => (
+                <a
+                  key={channel.label}
+                  href={channel.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm font-semibold uppercase tracking-wider text-[var(--color-blood)] transition-colors hover:text-[#ff4d63]"
+                >
+                  {channel.label}
+                </a>
+              ))}
+              <a
+                href={discordInviteUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-semibold uppercase tracking-wider text-[var(--color-blood)] transition-colors hover:text-[#ff4d63]"
+              >
+                Discord
+              </a>
             </div>
+          </div>
 
-            <div className="relative z-10">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/42">Navigate</p>
-              <div className="mt-4 flex flex-col gap-2.5">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="inline-flex w-fit items-center gap-2 text-sm font-medium uppercase tracking-[0.1em] text-white/70 transition-colors hover:text-white"
-                  >
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-rad)]/75" />
-                    {link.label}
-                  </Link>
-                ))}
+          <div className="order-1 col-span-12 grid grid-cols-2 gap-y-8 md:order-2 md:col-span-8 md:flex md:justify-between">
+            <div className="flex flex-col gap-5 text-xs lg:text-sm">
+              <span className="uppercase tracking-widest">About</span>
+              <div className="flex flex-col gap-2">
+                <FooterLink href="/about" label="Who we are" />
+                <FooterLink href="/roster" label="Championships" />
+                <FooterLink href="/partners" label="Partners" />
+                <FooterLink href="/staff" label="Management team" />
               </div>
             </div>
 
-            <div className="relative z-10">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/42">Connect</p>
-              <div className="mt-4 flex flex-col gap-2.5">
-                {contactChannels.map((channel) => (
-                  <a
-                    key={channel.label}
-                    href={channel.href}
-                    target={channel.href.startsWith("http") ? "_blank" : undefined}
-                    rel={channel.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="inline-flex w-fit items-center gap-2 text-sm font-medium uppercase tracking-[0.1em] text-white/70 transition-colors hover:text-white"
-                  >
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/24" />
-                    {channel.value}
-                  </a>
-                ))}
+            <div className="flex flex-col gap-5 text-xs lg:text-sm">
+              <span className="uppercase tracking-widest">Company</span>
+              <div className="flex flex-col gap-2">
+                <FooterLink href="/roster" label="Teams" />
+                <FooterLink href="/content" label="Creators" />
+                <FooterLink href="/contact" label="Community" />
+                <FooterLink href="/about" label="History" />
+                <FooterLink href="/content" label="News" />
+              </div>
+            </div>
+
+            <div className="col-span-2 flex flex-col gap-5 text-xs lg:col-span-1 lg:text-sm">
+              <span className="uppercase tracking-widest">Terms & policies</span>
+              <div className="flex flex-col gap-2">
+                <FooterLink href="/privacy" label="Privacy" />
+                <FooterLink href="/terms" label="Terms & conditions" />
+                <FooterLink href="/shop" label="Shop" />
+                <FooterLink href="/contact" label="Contact" />
               </div>
             </div>
           </div>
         </div>
-
-        <div className="mt-5 flex flex-col gap-4 border-t border-white/8 pt-5 text-[11px] font-medium uppercase tracking-[0.16em] text-white/45 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-            <p>(c) {new Date().getFullYear()} RAD Esports</p>
-            <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:inline-block" />
-            <span>Competition, content, and partner work.</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4 text-white/52">
-            <Link href="/terms">Terms</Link>
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/cookies">Cookies</Link>
-          </div>
-        </div>
-      </div>
+      </FluidContainer>
     </footer>
   );
 }

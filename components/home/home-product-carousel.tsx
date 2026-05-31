@@ -1,0 +1,118 @@
+"use client";
+
+import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
+
+import { FluidContainer } from "@/components/ui/fluid-container";
+import { SenButton } from "@/components/ui/sen-button";
+import { merchItems } from "@/lib/site-data";
+
+const slides = merchItems.filter((item) => item.frontImage);
+
+export function HomeProductCarousel() {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = slides.length;
+  const active = slides[index] ?? slides[0];
+
+  const go = useCallback(
+    (next: number) => {
+      if (!total) return;
+      setIndex((next + total) % total);
+    },
+    [total]
+  );
+
+  useEffect(() => {
+    if (paused || total <= 1) return;
+    const timer = window.setInterval(() => go(index + 1), 7000);
+    return () => window.clearInterval(timer);
+  }, [go, index, paused, total]);
+
+  if (!active) return null;
+
+  const productHref = active.externalUrl ?? "/shop";
+
+  return (
+    <section
+      className="pb-4 pt-14 lg:pb-0 lg:pt-28"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <FluidContainer>
+        <div className="relative isolate border-x border-neutral-900">
+          <div className="absolute left-4 top-4 z-20 grid grid-cols-2 gap-2 px-4 lg:left-14 lg:top-14 lg:px-0">
+            <button
+              type="button"
+              onClick={() => go(index - 1)}
+              className="flex items-center justify-center bg-[var(--color-blood)] p-3 text-black transition-opacity hover:opacity-90 disabled:opacity-40"
+              disabled={total <= 1}
+              aria-label="Previous product"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => go(index + 1)}
+              className="flex items-center justify-center bg-[var(--color-blood)] p-3 text-black transition-opacity hover:opacity-90 disabled:opacity-40"
+              disabled={total <= 1}
+              aria-label="Next product"
+            >
+              →
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-2">
+            <div className="relative isolate flex flex-col justify-center gap-8 p-4 md:gap-16 md:p-10 lg:p-14">
+              <div aria-hidden className="absolute left-4 top-4 hidden h-3 w-3 bg-[var(--color-blood)] md:block" />
+              <div className="flex flex-col items-start gap-2 lg:gap-10">
+                <div className="flex flex-col gap-2 lg:gap-4">
+                  <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">
+                    {active.category}
+                  </p>
+                  <h1 className="text-3xl font-black uppercase md:text-4xl lg:text-6xl 2xl:text-7xl">
+                    {active.name}
+                  </h1>
+                  <p className="text-lg text-[var(--color-blood)] md:text-xl lg:text-2xl">{active.accent}</p>
+                </div>
+                <SenButton href={productHref}>{active.ctaLabel ?? "View product"}</SenButton>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center p-4 md:p-10 lg:p-14">
+              <div className="relative isolate aspect-square w-full">
+                {active.frontImage ? (
+                  <Image
+                    src={active.frontImage}
+                    alt={active.name}
+                    fill
+                    priority={index === 0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          {total > 1 ? (
+            <div className="flex flex-wrap gap-1 border-t border-neutral-900 p-4 md:px-6">
+              {slides.map((slide, i) => (
+                <button
+                  key={slide.name}
+                  type="button"
+                  onClick={() => setIndex(i)}
+                  className={`h-1.5 w-12 transition-colors duration-300 sm:w-20 ${
+                    i === index ? "bg-[var(--color-blood)]" : "bg-neutral-900"
+                  }`}
+                  aria-label={`Show ${slide.name}`}
+                  aria-current={i === index}
+                />
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </FluidContainer>
+    </section>
+  );
+}

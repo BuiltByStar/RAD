@@ -7,6 +7,8 @@ export { cn } from "./cn";
 export { ContactGrid } from "./contact-grid";
 export { Container } from "./container";
 export { Eyebrow } from "./eyebrow";
+export { FluidContainer } from "./fluid-container";
+export { SenButton } from "./sen-button";
 export { LegalCard } from "./legal-card";
 export { MatchCard, type MatchStatus } from "./match-card";
 export { NoteStack } from "./note-stack";

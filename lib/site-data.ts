@@ -80,12 +80,21 @@ export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId
 export const radShopUrl = process.env.NEXT_PUBLIC_RAD_SHOP_URL || undefined;
 const merchItemStatus = radShopUrl ? "External checkout" : "Shop link pending";
 
+export const secondaryNavLinks: NavLink[] = [
+  { href: "/about", label: "About" },
+  { href: "/content", label: "History" },
+  { href: "/roster", label: "Championships" },
+  { href: "/partners", label: "Partners" }
+];
+
 export const primaryNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/roster", label: "Team" },
-  { href: "/shop", label: "Shop" },
+  { href: "/partners", label: "Partners" },
+  { href: "/roster", label: "Teams" },
   { href: "/content", label: "Content" },
-  { href: "/about", label: "About" }
+  { href: "/contact", label: "Community" },
+  { href: "/content", label: "News" },
+  { href: "/shop", label: "Shop" }
 ];
 
 export const navLinks: NavLink[] = [
