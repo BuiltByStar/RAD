@@ -3864,7 +3864,7 @@ body:has(.shop-modal) main {
   }
 }
 
-/* ─── Site intro — lion mouth zoom ─────────────────────────────────────────── */
+/* ─── Site intro — lion mouth zoom (single CSS timeline) ───────────────────── */
 html.site-intro-active {
   overflow: hidden;
 }
@@ -3882,140 +3882,102 @@ html.site-intro-active body {
   overflow: hidden;
   background: #000;
   pointer-events: auto;
-  will-change: opacity;
+  backface-visibility: hidden;
 }
 
-.site-intro__backdrop {
+.site-intro__glow {
   position: absolute;
-  inset: -8%;
-  background:
-    radial-gradient(ellipse 55% 42% at 50% 46%, rgba(229, 6, 47, 0.32) 0%, transparent 62%),
-    radial-gradient(ellipse 100% 90% at 50% 50%, transparent 36%, #000 78%),
-    #000;
-  transform-origin: center center;
-  will-change: transform, opacity;
-}
-
-.site-intro--bite .site-intro__backdrop {
-  background:
-    radial-gradient(ellipse 40% 28% at 50% 54%, rgba(229, 6, 47, 0.45) 0%, transparent 55%),
-    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 8%, #000 72%),
-    #000;
-}
-
-/* Expanding void behind the logo — starts inside the real mouth opening */
-.site-intro__swallow {
-  position: fixed;
   inset: 0;
-  z-index: 1;
-  background: #000;
+  background:
+    radial-gradient(ellipse 62% 48% at 50% 46%, rgba(229, 6, 47, 0.22) 0%, transparent 68%),
+    radial-gradient(ellipse 95% 80% at 50% 50%, transparent 42%, #000 88%);
   pointer-events: none;
-  will-change: clip-path;
-}
-
-.site-intro__ripple {
-  position: fixed;
-  left: 50%;
-  top: 57%;
-  z-index: 2;
-  width: min(28vw, 7rem);
-  height: min(20vw, 5rem);
-  transform: translate(-50%, -50%);
-  border-radius: 48% 48% 52% 52%;
-  border: 2px solid rgba(229, 6, 47, 0.65);
-  box-shadow: 0 0 28px rgba(229, 6, 47, 0.35);
-  pointer-events: none;
-}
-
-.site-intro__ripple--two {
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
-}
-
-.site-intro__flash {
-  position: fixed;
-  left: 50%;
-  top: 57%;
-  z-index: 2;
-  width: min(36vw, 9rem);
-  height: min(24vw, 6rem);
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(229, 6, 47, 0.55) 0%,
-    rgba(229, 6, 47, 0.15) 42%,
-    transparent 72%
-  );
-  pointer-events: none;
-  mix-blend-mode: screen;
 }
 
 .site-intro__stage {
   position: relative;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  width: min(78vw, 22rem);
-  transform-origin: 50% 64%;
-  will-change: transform, opacity;
+  z-index: 1;
+  width: min(72vw, 19rem);
+  transform-origin: 50% 63%;
+  backface-visibility: hidden;
+  animation: site-intro-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .site-intro__lion {
-  position: relative;
-  width: 100%;
-  line-height: 0;
-}
-
-.site-intro__lion-img {
   display: block;
   width: 100%;
   height: auto;
-  transform-origin: 50% 64%;
-  filter: drop-shadow(0 0 40px rgba(229, 6, 47, 0.4));
-  animation: site-intro-breathe 2.6s ease-in-out infinite;
+  transform-origin: 50% 63%;
+  filter: drop-shadow(0 0 36px rgba(229, 6, 47, 0.38));
 }
 
-.site-intro--bite .site-intro__lion-img {
-  animation: site-intro-bite-pulse 0.5s ease-out forwards;
+.site-intro--zoom .site-intro__stage {
+  animation-name: site-intro-mouth-zoom;
+  animation-timing-function: cubic-bezier(0.65, 0.02, 0.2, 1);
+  animation-fill-mode: forwards;
 }
 
-@keyframes site-intro-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 36px rgba(229, 6, 47, 0.32));
+.site-intro--zoom {
+  animation-name: site-intro-fade;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes site-intro-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateZ(0);
   }
 
-  50% {
-    transform: scale(1.035);
-    filter: drop-shadow(0 0 56px rgba(229, 6, 47, 0.5));
+  to {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
   }
 }
 
-@keyframes site-intro-bite-pulse {
+@keyframes site-intro-mouth-zoom {
   0% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 48px rgba(229, 6, 47, 0.55));
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+    filter: blur(0);
   }
 
-  35% {
-    transform: scale(1.06);
-    filter: drop-shadow(0 0 72px rgba(229, 6, 47, 0.75));
+  55% {
+    opacity: 1;
+    transform: scale(4.5) translateZ(0);
+    filter: blur(0);
   }
 
   100% {
-    transform: scale(1.02);
-    filter: drop-shadow(0 0 32px rgba(229, 6, 47, 0.35));
+    opacity: 0.92;
+    transform: scale(8.5) translateZ(0);
+    filter: blur(1.5px);
+  }
+}
+
+@keyframes site-intro-fade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-intro__stage,
-  .site-intro__swallow,
-  .site-intro__lion-img {
+  .site-intro__stage {
+    animation: site-intro-enter 0.25s ease-out both !important;
+  }
+
+  .site-intro--zoom .site-intro__stage {
     animation: none !important;
-    will-change: auto;
+  }
+
+  .site-intro--zoom {
+    animation: site-intro-fade 0.35s ease-out forwards !important;
+    animation-delay: 0s !important;
   }
 }
 
