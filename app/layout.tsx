@@ -62,7 +62,7 @@ export default function RootLayout({
         <RadShellAmbient />
         <CustomCursor />
         <SiteHeader />
-        <div className="relative min-h-screen pt-[4.5rem] lg:pt-[7.25rem]">{children}</div>
+        <div className="relative min-h-screen pt-14 sm:pt-16">{children}</div>
         <SiteFooter />
       </body>
     </html>

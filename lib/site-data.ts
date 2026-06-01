@@ -5,6 +5,11 @@ export type NavLink = {
   label: string;
 };
 
+/** Desktop center cluster — competition + org pages */
+export type HeaderNavLink = NavLink & {
+  zone?: "compete" | "org";
+};
+
 export type Team = {
   name: string;
   slug: string;
@@ -80,21 +85,28 @@ export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId
 export const radShopUrl = process.env.NEXT_PUBLIC_RAD_SHOP_URL || undefined;
 const merchItemStatus = radShopUrl ? "External checkout" : "Shop link pending";
 
-export const secondaryNavLinks: NavLink[] = [
-  { href: "/about", label: "About" },
-  { href: "/content", label: "History" },
-  { href: "/roster", label: "Championships" },
-  { href: "/partners", label: "Partners" }
+export const headerCompeteLinks: HeaderNavLink[] = [
+  { href: "/roster", label: "Team", zone: "compete" },
+  { href: "/shop", label: "Shop", zone: "compete" },
+  { href: "/content", label: "Content", zone: "compete" }
 ];
 
+export const headerOrgLinks: HeaderNavLink[] = [
+  { href: "/about", label: "About", zone: "org" },
+  { href: "/partners", label: "Partners", zone: "org" },
+  { href: "/contact", label: "Contact", zone: "org" }
+];
+
+export const headerNavLinks: HeaderNavLink[] = [...headerCompeteLinks, ...headerOrgLinks];
+
+/** @deprecated Use headerNavLinks — kept for any legacy imports */
+export const secondaryNavLinks: NavLink[] = headerOrgLinks;
+
+/** @deprecated Use headerCompeteLinks — kept for any legacy imports */
 export const primaryNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/partners", label: "Partners" },
-  { href: "/roster", label: "Teams" },
-  { href: "/content", label: "Content" },
-  { href: "/contact", label: "Community" },
-  { href: "/content", label: "News" },
-  { href: "/shop", label: "Shop" }
+  ...headerCompeteLinks,
+  { href: "/contact", label: "Community" }
 ];
 
 export const navLinks: NavLink[] = [

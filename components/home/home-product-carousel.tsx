@@ -36,7 +36,7 @@ export function HomeProductCarousel() {
 
   return (
     <section
-      className="pb-4 pt-14 lg:pb-0 lg:pt-28"
+      className="pb-4 pt-14 sm:pb-0 sm:pt-16"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

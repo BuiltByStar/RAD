@@ -9,15 +9,19 @@ import { AuthWidget } from "@/components/auth-widget";
 import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { cn } from "@/components/ui/cn";
 import { assets } from "@/lib/assets";
-import { primaryNavLinks, secondaryNavLinks } from "@/lib/site-data";
+import {
+  discordInviteUrl,
+  headerCompeteLinks,
+  headerNavLinks,
+  headerOrgLinks,
+  type HeaderNavLink
+} from "@/lib/site-data";
 
-const SCROLL_THRESHOLD = 8;
 const NAV_PUSH_DELAY_MS = 90;
 const NAV_GLITCH_OUTRO_MS = 320;
 const NAV_READY_FALLBACK_MS = 950;
 const NAV_HARD_FALLBACK_MS = 5000;
 
-type NavLinkItem = { href: string; label: string };
 type NavTransition = {
   href: string;
   label: string;
@@ -26,7 +30,8 @@ type NavTransition = {
 };
 
 function isActive(pathname: string, href: string) {
-  return pathname === href || (href !== "/" && pathname.startsWith(href));
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export function SiteHeader() {
@@ -74,7 +79,9 @@ export function SiteHeader() {
 
   useEffect(() => {
     const prefetchRoutes = () => {
-      [...primaryNavLinks, ...secondaryNavLinks].forEach((link) => router.prefetch(link.href));
+      headerNavLinks.forEach((link) => router.prefetch(link.href));
+      router.prefetch("/");
+      router.prefetch("/shop");
     };
     const timeoutId = globalThis.setTimeout(prefetchRoutes, 250);
     return () => globalThis.clearTimeout(timeoutId);
@@ -131,7 +138,7 @@ export function SiteHeader() {
     );
   }
 
-  function handleNavClick(event: MouseEvent<HTMLAnchorElement>, link: NavLinkItem, active: boolean) {
+  function handleNavClick(event: MouseEvent<HTMLAnchorElement>, link: HeaderNavLink, active: boolean) {
     if (!shouldHandleNavClick(event)) return;
     event.preventDefault();
     setMenuOpen(false);
@@ -154,52 +161,28 @@ export function SiteHeader() {
     hardFallbackTimerRef.current = window.setTimeout(beginNavExit, NAV_HARD_FALLBACK_MS);
   }
 
-  function renderPrimaryLink(link: NavLinkItem) {
+  function renderNavLink(link: HeaderNavLink, variant: "bar" | "mobile") {
     const active = isActive(pathname, link.href);
     return (
       <Link
-        key={`${link.label}-${link.href}`}
+        key={`${variant}-${link.label}-${link.href}`}
         href={link.href}
         onClick={(event) => handleNavClick(event, link, active)}
         className={cn(
-          "relative isolate px-3 transition-colors duration-300 hover:text-white/70",
-          active ? "text-white" : "text-white/90"
-        )}
-        aria-current={active ? "page" : undefined}
-      >
-        <div className="px-1 py-3">
-          <span className="text-xs font-bold uppercase">{link.label}</span>
-        </div>
-        <span
-          aria-hidden
-          className={cn(
-            "absolute bottom-0 left-1/2 h-0.5 w-2 -translate-x-1/2 bg-[var(--color-blood)] transition-opacity duration-300",
-            active ? "opacity-100" : "opacity-0"
-          )}
-        />
-      </Link>
-    );
-  }
-
-  function renderSecondaryLink(link: NavLinkItem) {
-    const active = isActive(pathname, link.href);
-    return (
-      <Link
-        key={`${link.label}-${link.href}`}
-        href={link.href}
-        onClick={(event) => handleNavClick(event, link, active)}
-        className={cn(
-          "px-3 py-4 text-xs font-medium transition-colors duration-300 hover:text-neutral-400",
-          active ? "text-neutral-300" : "text-neutral-500"
+          variant === "bar" ? "rad-nav-link" : "flex items-center justify-between px-4 py-3.5 text-xs font-bold uppercase tracking-[0.16em]",
+          variant === "bar" && link.zone === "compete" && "rad-nav-link--compete",
+          active && (variant === "bar" ? "rad-nav-link--active" : "bg-[var(--color-blood)]/10 text-white"),
+          !active && variant === "mobile" && "text-neutral-400"
         )}
         aria-current={active ? "page" : undefined}
       >
         {link.label}
+        {variant === "mobile" ? <span aria-hidden className="text-neutral-600">→</span> : null}
       </Link>
     );
   }
 
-  const mobileLinks = [...secondaryNavLinks, ...primaryNavLinks];
+  const homeActive = pathname === "/";
 
   return (
     <>
@@ -209,90 +192,121 @@ export function SiteHeader() {
         exiting={navTransition?.phase === "exit"}
         label={navTransition?.label}
       />
-      <header className="fixed left-0 top-0 z-50 w-full border-b border-neutral-900 bg-black">
-        <div className="relative z-20 flex items-stretch bg-black">
-          <Link href="/" aria-label="RAD Esports home" className="shrink-0">
-            <div className="flex h-full flex-col items-start justify-center gap-1 border-neutral-900 py-4 pl-4 md:px-8 lg:border-r lg:py-10">
-              <Image
-                src={assets.wordmark}
-                alt="RAD Esports"
-                width={176}
-                height={45}
-                className="h-6 w-auto lg:h-8"
-                priority
-              />
-              <span className="hidden text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--color-blood)] lg:inline">
+      <header className="rad-header fixed inset-x-0 top-0 z-50">
+        <div className="mx-auto flex h-14 max-w-[2400px] items-center justify-between gap-3 px-4 sm:h-16 sm:px-6 lg:px-8">
+          <Link
+            href="/"
+            aria-label="RAD Esports home"
+            onClick={(event) => handleNavClick(event, { href: "/", label: "Home" }, homeActive)}
+            className={cn(
+              "group flex shrink-0 items-center gap-3 transition-opacity hover:opacity-90",
+              homeActive && "opacity-100"
+            )}
+          >
+            <Image
+              src={assets.logoMark}
+              alt=""
+              width={36}
+              height={36}
+              className="h-9 w-9 object-contain"
+              priority
+            />
+            <span className="hidden flex-col sm:flex">
+              <span className="font-[family-name:var(--font-display)] text-sm font-extrabold uppercase leading-none tracking-[0.06em] text-white">
+                RAD
+              </span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.26em] text-[var(--color-blood)]">
                 #GoWild
               </span>
-            </div>
+            </span>
           </Link>
 
-          <div className="hidden grow flex-col lg:flex">
-            <div className="flex items-center border-b border-neutral-900 px-3 text-xs font-medium text-neutral-500">
-              {secondaryNavLinks.map(renderSecondaryLink)}
+          <nav
+            aria-label="Primary"
+            className="rad-nav-cluster absolute left-1/2 hidden -translate-x-1/2 lg:flex"
+          >
+            <div className="rad-nav-cluster__zone" aria-label="Compete">
+              {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
             </div>
-            <div className="flex h-full items-center px-3 font-bold uppercase">
-              {primaryNavLinks.map(renderPrimaryLink)}
+            <div className="rad-nav-cluster__zone" aria-label="Organization">
+              {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
             </div>
-          </div>
+          </nav>
 
-          <div className="flex grow flex-col items-end justify-end lg:grow-0 lg:justify-start">
-            <div className="flex h-full items-center border-l border-neutral-900 px-1 md:px-3">
-              <div className="hidden lg:block">
-                <AuthWidget />
-              </div>
-              <Link
-                href="/shop"
-                className="p-3 transition-opacity hover:opacity-70"
-                aria-label="Shop"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path
-                    d="M6 7h15l-1.5 9h-12L6 7Z"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinejoin="round"
-                  />
-                  <path d="M9 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" strokeWidth="1.6" />
-                </svg>
-              </Link>
-              <button
-                type="button"
-                onClick={() => setMenuOpen((open) => !open)}
-                className="block p-3 lg:hidden"
-                aria-expanded={menuOpen}
-                aria-controls="mobile-rad-nav"
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-              >
-                <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
-                  <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                </svg>
-              </button>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Link
+              href={discordInviteUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors hover:text-white md:inline-flex"
+            >
+              Discord
+            </Link>
+            <Link
+              href="/shop"
+              onClick={(event) =>
+                handleNavClick(event, { href: "/shop", label: "Shop" }, isActive(pathname, "/shop"))
+              }
+              className="hidden bg-[var(--color-blood)] px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-90 sm:inline-flex"
+            >
+              Shop
+            </Link>
+            <div className="hidden sm:block">
+              <AuthWidget />
             </div>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="inline-flex h-10 w-10 items-center justify-center border border-neutral-800 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white lg:hidden"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-rad-nav"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
+                <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </button>
           </div>
         </div>
 
         {menuOpen ? (
-          <div id="mobile-rad-nav" className="border-t border-neutral-900 bg-black lg:hidden">
-            <nav aria-label="Mobile navigation" className="grid gap-0 px-2 py-2">
-              {mobileLinks.map((link) => {
-                const active = isActive(pathname, link.href);
-                return (
-                  <Link
-                    key={`mobile-${link.label}-${link.href}`}
-                    href={link.href}
-                    onClick={(event) => handleNavClick(event, link, active)}
-                    className={cn(
-                      "flex items-center justify-between px-3 py-3 text-xs font-bold uppercase tracking-wider",
-                      active ? "text-[var(--color-blood)]" : "text-neutral-400"
-                    )}
-                  >
-                    {link.label}
-                    <span aria-hidden>→</span>
-                  </Link>
-                );
-              })}
-              <div className="border-t border-neutral-900 px-3 py-3">
+          <div
+            id="mobile-rad-nav"
+            className="border-t border-neutral-900 bg-black lg:hidden"
+          >
+            <nav aria-label="Mobile navigation" className="mx-auto max-w-[2400px] px-4 py-4">
+              <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-blood)]">
+                Compete
+              </p>
+              <div className="mb-4 grid border border-neutral-900">
+                {headerCompeteLinks.map((link) => renderNavLink(link, "mobile"))}
+              </div>
+              <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
+                Organization
+              </p>
+              <div className="grid border border-neutral-900">
+                {headerOrgLinks.map((link) => renderNavLink(link, "mobile"))}
+              </div>
+              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                <Link
+                  href={discordInviteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="border border-neutral-800 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] text-white"
+                >
+                  Discord
+                </Link>
+                <Link
+                  href="/shop"
+                  onClick={(event) =>
+                    handleNavClick(event, { href: "/shop", label: "Shop" }, isActive(pathname, "/shop"))
+                  }
+                  className="bg-[var(--color-blood)] py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] text-black"
+                >
+                  Shop
+                </Link>
+              </div>
+              <div className="mt-4 border-t border-neutral-900 pt-4">
                 <AuthWidget />
               </div>
             </nav>
