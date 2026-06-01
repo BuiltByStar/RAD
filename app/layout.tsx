@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 
+import { CustomCursor } from "@/components/custom-cursor";
+import { RadShellAmbient } from "@/components/rad-shell-ambient";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { assets } from "@/lib/assets";
@@ -56,7 +58,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${barlow.variable} ${barlowCondensed.variable}`}>
-      <body className="bg-black font-[family-name:var(--font-body)] text-white antialiased">
+      <body className="bg-black font-[family-name:var(--font-body)] text-white antialiased selection:bg-[color:var(--color-blood)]/35">
+        <RadShellAmbient />
+        <CustomCursor />
         <SiteHeader />
         <div className="relative min-h-screen pt-[4.5rem] lg:pt-[7.25rem]">{children}</div>
         <SiteFooter />

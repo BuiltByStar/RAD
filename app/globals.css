@@ -1843,16 +1843,14 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
     top: 0;
     pointer-events: none;
     z-index: 500;
-    will-change: left, top, transform, opacity;
-  }
-
-  .cursor-dot {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 999px;
-    background: #ff1744;
-    transform: translate(-50%, -50%);
-    transition: background-color 120ms ease, opacity 120ms ease;
+    background: var(--color-blood);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.55),
+      0 0 16px rgba(229, 6, 47, 0.75);
+    will-change: transform;
   }
 
   .cursor-dot::before,

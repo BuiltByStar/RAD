@@ -212,7 +212,7 @@ export function SiteHeader() {
       <header className="fixed left-0 top-0 z-50 w-full border-b border-neutral-900 bg-black">
         <div className="relative z-20 flex items-stretch bg-black">
           <Link href="/" aria-label="RAD Esports home" className="shrink-0">
-            <div className="flex h-full items-center justify-center border-neutral-900 py-4 pl-4 md:px-8 lg:border-r lg:py-10">
+            <div className="flex h-full flex-col items-start justify-center gap-1 border-neutral-900 py-4 pl-4 md:px-8 lg:border-r lg:py-10">
               <Image
                 src={assets.wordmark}
                 alt="RAD Esports"
@@ -221,6 +221,9 @@ export function SiteHeader() {
                 className="h-6 w-auto lg:h-8"
                 priority
               />
+              <span className="hidden text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--color-blood)] lg:inline">
+                #GoWild
+              </span>
             </div>
           </Link>
 

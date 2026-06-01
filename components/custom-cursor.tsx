@@ -11,16 +11,9 @@ export function CustomCursor() {
       return;
     }
 
-    let mx = -200,
-      my = -200;
-
     const onMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.left = `${mx}px`;
-        dotRef.current.style.top = `${my}px`;
-      }
+      if (!dotRef.current) return;
+      dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
     };
 
     const onDown = () => {
@@ -36,7 +29,7 @@ export function CustomCursor() {
       }, 280);
     };
 
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mousedown", onDown);
 
     return () => {

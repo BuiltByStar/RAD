@@ -17,7 +17,7 @@ export function SenButton({ href, children, className, ...rest }: SenButtonProps
       <div className="relative isolate w-5 shrink-0 bg-[var(--color-blood)] transition-colors duration-300 group-disabled:bg-neutral-900">
         <div className="clip-top absolute left-0 top-0 h-3 w-3 bg-black transition-all duration-300 group-hover:h-5 group-hover:w-5" />
       </div>
-      <div className="flex flex-1 items-center justify-center gap-2 py-2.5 text-sm font-bold uppercase tracking-wide">
+      <div className="flex flex-1 items-center justify-center gap-2 border-y border-neutral-900 bg-neutral-950 py-2.5 text-sm font-bold uppercase tracking-wide">
         {children}
         <span aria-hidden className="text-xs">
           ↗
