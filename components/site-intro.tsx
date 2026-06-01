@@ -11,10 +11,10 @@ import {
 } from "@/lib/brand-intro";
 import { assets } from "@/lib/assets";
 
-const HOLD_MS = 720;
-const ZOOM_MS = 1050;
-const FADE_MS = 420;
-const FADE_DELAY_MS = 580;
+const HOLD_MS = 420;
+const PULL_ZOOM_MS = 580;
+const PULL_FADE_MS = 280;
+const PULL_FADE_DELAY_MS = 340;
 
 export function SiteIntro() {
   const reducedMotion = useRef(
@@ -23,7 +23,7 @@ export function SiteIntro() {
   );
   const introRef = useRef<HTMLDivElement>(null);
   const finishedRef = useRef(false);
-  const [phase, setPhase] = useState<"hold" | "zoom" | "done">(() => {
+  const [phase, setPhase] = useState<"hold" | "pull" | "done">(() => {
     if (typeof window === "undefined") return "done";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "done";
     return hasSeenBrandIntro() ? "done" : "hold";
@@ -52,24 +52,24 @@ export function SiteIntro() {
 
     if (phase !== "hold") return;
 
-    const zoomTimer = window.setTimeout(() => {
+    const pullTimer = window.setTimeout(() => {
       finishedRef.current = false;
-      setPhase("zoom");
+      setPhase("pull");
     }, HOLD_MS);
 
-    return () => window.clearTimeout(zoomTimer);
+    return () => window.clearTimeout(pullTimer);
   }, [phase]);
 
   useEffect(() => {
-    if (phase !== "zoom") return;
+    if (phase !== "pull") return;
 
-    const fallback = window.setTimeout(finishIntro, FADE_DELAY_MS + FADE_MS + 120);
+    const fallback = window.setTimeout(finishIntro, PULL_FADE_DELAY_MS + PULL_FADE_MS + 100);
     return () => window.clearTimeout(fallback);
   }, [phase]);
 
   useEffect(() => {
     const node = introRef.current;
-    if (!node || phase !== "zoom") return;
+    if (!node || phase !== "pull") return;
 
     const onEnd = (event: AnimationEvent) => {
       if (event.target !== node || event.animationName !== "site-intro-fade") return;
@@ -82,17 +82,19 @@ export function SiteIntro() {
 
   if (phase === "done") return null;
 
+  const pulling = phase === "pull";
+
   return (
     <div
       ref={introRef}
       role="presentation"
       aria-hidden
-      className={cn("site-intro", phase === "zoom" && "site-intro--zoom")}
+      className={cn("site-intro", pulling && "site-intro--pull")}
       style={
-        phase === "zoom"
+        pulling
           ? {
-              animationDuration: `${FADE_MS}ms`,
-              animationDelay: `${FADE_DELAY_MS}ms`
+              animationDuration: `${PULL_FADE_MS}ms`,
+              animationDelay: `${PULL_FADE_DELAY_MS}ms`
             }
           : undefined
       }
@@ -100,16 +102,25 @@ export function SiteIntro() {
       <div className="site-intro__glow" aria-hidden />
       <div
         className="site-intro__stage"
-        style={phase === "zoom" ? { animationDuration: `${ZOOM_MS}ms` } : undefined}
+        style={pulling ? { animationDuration: `${PULL_ZOOM_MS}ms` } : undefined}
       >
-        <Image
-          src={assets.logoMark}
-          alt=""
-          width={320}
-          height={320}
-          priority
-          className="site-intro__lion"
-        />
+        <div className="site-intro__lion-wrap">
+          <span className="site-intro__eye site-intro__eye--left" aria-hidden />
+          <span className="site-intro__eye site-intro__eye--right" aria-hidden />
+          <Image
+            src={assets.logoMark}
+            alt=""
+            width={320}
+            height={320}
+            priority
+            className="site-intro__lion"
+          />
+          <div className="site-intro__maw" aria-hidden>
+            <span className="site-intro__tunnel" />
+            <span className="site-intro__jaw site-intro__jaw--top" />
+            <span className="site-intro__jaw site-intro__jaw--bottom" />
+          </div>
+        </div>
       </div>
     </div>
   );
