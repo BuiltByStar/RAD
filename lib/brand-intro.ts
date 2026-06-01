@@ -1,6 +1,29 @@
 export const BRAND_INTRO_SESSION_KEY = "rad-home-brand-intro-v1";
 
+export const BRAND_INTRO_FLY_EVENT = "rad:brand-intro-fly";
+
+export const BRAND_INTRO_LANDED_EVENT = "rad:brand-intro-landed";
+
 export const BRAND_INTRO_COMPLETE_EVENT = "rad:brand-intro-complete";
+
+export const BRAND_LOCKUP_LAYOUT_ID = "rad-brand-lockup";
+
+export const brandLockupLayoutTransition = {
+  type: "spring" as const,
+  stiffness: 420,
+  damping: 34,
+  mass: 0.75
+};
+
+export function dispatchBrandIntroFly() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(BRAND_INTRO_FLY_EVENT));
+}
+
+export function dispatchBrandIntroLanded() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(BRAND_INTRO_LANDED_EVENT));
+}
 
 export function dispatchBrandIntroComplete() {
   if (typeof window === "undefined") return;

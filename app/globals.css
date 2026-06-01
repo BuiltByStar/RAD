@@ -3899,3 +3899,242 @@ body:has(.shop-modal) main {
   transform: scaleX(1);
   opacity: 0.35;
 }
+
+/* Carousel slide change — jersey + copy glitch in sync */
+.home-carousel-glitch-target {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-carousel-glitch-target--animate {
+  animation: home-carousel-slide-glitch 360ms steps(4, end) both;
+}
+
+.home-carousel-glitch-target--jersey.home-carousel-glitch-target--animate {
+  animation-name: home-carousel-jersey-glitch;
+}
+
+.home-carousel-glitch-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.home-carousel-glitch-fx__scan {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  height: 28%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(229, 6, 47, 0.45) 42%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  animation: home-carousel-glitch-scan 360ms steps(3, end) both;
+}
+
+.home-carousel-glitch-fx__slice {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.home-carousel-glitch-fx__slice--a {
+  background: rgba(229, 6, 47, 0.55);
+  clip-path: polygon(0 8%, 100% 4%, 100% 38%, 0 42%);
+  animation: home-carousel-glitch-slice-a 360ms steps(3, end) both;
+}
+
+.home-carousel-glitch-fx__slice--b {
+  background: rgba(255, 255, 255, 0.35);
+  clip-path: polygon(0 52%, 100% 48%, 100% 78%, 0 82%);
+  animation: home-carousel-glitch-slice-b 360ms steps(3, end) both;
+}
+
+.home-carousel-glitch-target--text .home-carousel-glitch-body {
+  display: inline-block;
+  width: 100%;
+}
+
+.home-carousel-glitch-target--text.home-carousel-glitch-target--animate .home-carousel-glitch-body {
+  animation: home-carousel-text-glitch 360ms steps(4, end) both;
+}
+
+@keyframes home-carousel-slide-glitch {
+  0%,
+  100% {
+    opacity: 1;
+    filter: none;
+  }
+
+  18% {
+    opacity: 0.55;
+    filter: drop-shadow(3px 0 rgba(229, 6, 47, 0.85));
+  }
+
+  36% {
+    opacity: 0.2;
+    filter: drop-shadow(-4px 0 rgba(255, 255, 255, 0.5));
+  }
+
+  54% {
+    opacity: 0.85;
+    filter: drop-shadow(2px 1px rgba(229, 6, 47, 0.6));
+  }
+
+  72% {
+    opacity: 0.4;
+    filter: none;
+  }
+}
+
+@keyframes home-carousel-jersey-glitch {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: none;
+  }
+
+  16% {
+    opacity: 0.45;
+    transform: translate3d(-7px, 2px, 0) scale(0.98);
+    filter: drop-shadow(4px 0 rgba(229, 6, 47, 0.9));
+  }
+
+  32% {
+    opacity: 0.15;
+    transform: translate3d(6px, -3px, 0) scale(1.02);
+    filter: drop-shadow(-5px 0 rgba(255, 255, 255, 0.45));
+  }
+
+  48% {
+    opacity: 0.75;
+    transform: translate3d(-3px, 1px, 0) scale(0.99);
+    filter: drop-shadow(2px 0 rgba(229, 6, 47, 0.7));
+  }
+
+  64% {
+    opacity: 0.35;
+    transform: translate3d(4px, 0, 0) scale(1.01);
+  }
+
+  80% {
+    opacity: 0.9;
+    transform: translate3d(-1px, 0, 0) scale(1);
+  }
+}
+
+@keyframes home-carousel-text-glitch {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+    clip-path: inset(0 0 0 0);
+  }
+
+  14% {
+    transform: translate3d(-8px, 0, 0) skewX(-3deg);
+    clip-path: inset(0 0 62% 0);
+  }
+
+  28% {
+    transform: translate3d(7px, 2px, 0) skewX(2deg);
+    clip-path: inset(38% 0 28% 0);
+  }
+
+  42% {
+    transform: translate3d(-5px, -1px, 0) skewX(-1deg);
+    clip-path: inset(58% 0 8% 0);
+  }
+
+  56% {
+    transform: translate3d(4px, 0, 0) skewX(1deg);
+    clip-path: inset(12% 0 48% 0);
+  }
+
+  70% {
+    transform: translate3d(-2px, 1px, 0) skewX(0deg);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes home-carousel-glitch-scan {
+  0% {
+    top: -35%;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.9;
+  }
+
+  55% {
+    top: 42%;
+    opacity: 0.75;
+  }
+
+  100% {
+    top: 108%;
+    opacity: 0;
+  }
+}
+
+@keyframes home-carousel-glitch-slice-a {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  22% {
+    opacity: 0.85;
+    transform: translateX(-6px);
+  }
+
+  44% {
+    opacity: 0.5;
+    transform: translateX(5px);
+  }
+
+  66% {
+    opacity: 0.25;
+    transform: translateX(-3px);
+  }
+}
+
+@keyframes home-carousel-glitch-slice-b {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  30% {
+    opacity: 0.7;
+    transform: translateX(5px);
+  }
+
+  52% {
+    opacity: 0.4;
+    transform: translateX(-4px);
+  }
+
+  74% {
+    opacity: 0.15;
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-carousel-glitch-target--animate,
+  .home-carousel-glitch-target--text.home-carousel-glitch-target--animate .home-carousel-glitch-body,
+  .home-carousel-glitch-fx__scan,
+  .home-carousel-glitch-fx__slice {
+    animation: none !important;
+  }
+}

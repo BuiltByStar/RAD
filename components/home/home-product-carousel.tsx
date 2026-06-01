@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
+import { cn } from "@/components/ui/cn";
 import { FluidContainer } from "@/components/ui/fluid-container";
 import { SenButton } from "@/components/ui/sen-button";
 import { merchItems } from "@/lib/site-data";
@@ -47,6 +48,43 @@ function CarouselChevron({ direction }: { direction: "prev" | "next" }) {
 
 const arrowButtonClass =
   "absolute top-1/2 z-20 flex -translate-y-1/2 items-center justify-center border border-neutral-800 bg-black/70 p-2.5 text-neutral-400 transition-colors hover:border-[var(--color-blood)] hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)] disabled:pointer-events-none disabled:opacity-30 sm:p-3";
+
+function CarouselGlitchPanel({
+  slideKey,
+  variant,
+  reducedMotion,
+  className,
+  children
+}: {
+  slideKey: string;
+  variant: "text" | "jersey";
+  reducedMotion: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  const animate = !reducedMotion;
+
+  return (
+    <div
+      key={slideKey}
+      className={cn(
+        "home-carousel-glitch-target",
+        variant === "text" ? "home-carousel-glitch-target--text" : "home-carousel-glitch-target--jersey",
+        animate && "home-carousel-glitch-target--animate",
+        className
+      )}
+    >
+      {animate ? (
+        <span className="home-carousel-glitch-fx" aria-hidden>
+          <span className="home-carousel-glitch-fx__scan" />
+          <span className="home-carousel-glitch-fx__slice home-carousel-glitch-fx__slice--a" />
+          <span className="home-carousel-glitch-fx__slice home-carousel-glitch-fx__slice--b" />
+        </span>
+      ) : null}
+      <div className={cn("relative z-[1]", variant === "text" && "home-carousel-glitch-body")}>{children}</div>
+    </div>
+  );
+}
 
 export function HomeProductCarousel() {
   const [index, setIndex] = useState(0);
@@ -100,6 +138,7 @@ export function HomeProductCarousel() {
 
   const productHref = active.externalUrl ?? "/shop";
   const slideLabel = `${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+  const slideKey = `slide-${index}-${active.name}`;
 
   return (
     <section
@@ -135,14 +174,21 @@ export function HomeProductCarousel() {
           <div className="grid md:grid-cols-[1fr_minmax(240px,36%)_1fr]">
             <div className="relative isolate flex flex-col justify-center gap-6 border-b border-neutral-900 p-4 md:gap-10 md:border-b-0 md:border-r md:p-8 md:text-right lg:p-12">
               <div aria-hidden className="absolute left-4 top-4 hidden h-3 w-3 bg-[var(--color-blood)] md:left-auto md:right-4" />
-              <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-neutral-500">{slideLabel}</p>
-              <div className="flex flex-col gap-2 md:items-end lg:gap-4">
-                <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">
-                  <span className="text-neutral-500">#GoWild · </span>
-                  {active.category}
-                </p>
-                <h1 className="text-3xl font-black uppercase md:text-3xl lg:text-5xl 2xl:text-6xl">{active.name}</h1>
-              </div>
+              <CarouselGlitchPanel
+                slideKey={slideKey}
+                variant="text"
+                reducedMotion={reducedMotion}
+                className="flex flex-col gap-6 md:gap-10"
+              >
+                <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-neutral-500">{slideLabel}</p>
+                <div className="flex flex-col gap-2 md:items-end lg:gap-4">
+                  <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">
+                    <span className="text-neutral-500">#GoWild · </span>
+                    {active.category}
+                  </p>
+                  <h1 className="text-3xl font-black uppercase md:text-3xl lg:text-5xl 2xl:text-6xl">{active.name}</h1>
+                </div>
+              </CarouselGlitchPanel>
             </div>
 
             <div className="relative flex items-center justify-center border-b border-neutral-900 p-4 md:border-b-0 md:border-r md:px-6 md:py-10 lg:px-10 lg:py-14">
@@ -150,7 +196,12 @@ export function HomeProductCarousel() {
                 aria-hidden
                 className="pointer-events-none absolute inset-4 bg-[linear-gradient(118deg,transparent_49.5%,rgba(229,6,47,0.12)_50%,transparent_50.5%)]"
               />
-              <div className="relative isolate aspect-square w-full max-w-md overflow-hidden border border-neutral-900 bg-neutral-950">
+              <CarouselGlitchPanel
+                slideKey={slideKey}
+                variant="jersey"
+                reducedMotion={reducedMotion}
+                className="relative isolate aspect-square w-full max-w-md overflow-hidden border border-neutral-900 bg-neutral-950"
+              >
                 {active.frontImage ? (
                   <Image
                     src={active.frontImage}
@@ -170,19 +221,26 @@ export function HomeProductCarousel() {
                     className="object-contain p-2 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   />
                 ) : null}
-              </div>
+              </CarouselGlitchPanel>
             </div>
 
             <div className="flex flex-col justify-center gap-6 p-4 md:gap-10 md:p-8 lg:p-12">
-              <div className="flex flex-col gap-2 lg:gap-4">
-                <p className="max-w-md text-sm leading-relaxed text-neutral-400 md:text-base">{active.description}</p>
-                <p className="text-lg font-bold uppercase tracking-wide text-[var(--color-blood)] md:text-xl">
-                  {active.accent}
-                </p>
-              </div>
-              <SenButton href={productHref} className="max-w-md">
-                {active.ctaLabel ?? "View product"}
-              </SenButton>
+              <CarouselGlitchPanel
+                slideKey={slideKey}
+                variant="text"
+                reducedMotion={reducedMotion}
+                className="flex flex-col gap-6 md:gap-10"
+              >
+                <div className="flex flex-col gap-2 lg:gap-4">
+                  <p className="max-w-md text-sm leading-relaxed text-neutral-400 md:text-base">{active.description}</p>
+                  <p className="text-lg font-bold uppercase tracking-wide text-[var(--color-blood)] md:text-xl">
+                    {active.accent}
+                  </p>
+                </div>
+                <SenButton href={productHref} className="max-w-md">
+                  {active.ctaLabel ?? "View product"}
+                </SenButton>
+              </CarouselGlitchPanel>
             </div>
           </div>
 

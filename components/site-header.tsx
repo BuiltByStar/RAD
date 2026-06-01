@@ -1,15 +1,22 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 import { AuthWidget } from "@/components/auth-widget";
+import { BrandLockup } from "@/components/brand-lockup";
 import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { cn } from "@/components/ui/cn";
-import { assets } from "@/lib/assets";
-import { BRAND_INTRO_COMPLETE_EVENT, hasSeenBrandIntro } from "@/lib/brand-intro";
+import {
+  BRAND_INTRO_COMPLETE_EVENT,
+  BRAND_INTRO_FLY_EVENT,
+  BRAND_LOCKUP_LAYOUT_ID,
+  brandLockupLayoutTransition,
+  dispatchBrandIntroLanded,
+  hasSeenBrandIntro
+} from "@/lib/brand-intro";
 import {
   discordInviteUrl,
   headerCompeteLinks,
@@ -40,12 +47,15 @@ export function SiteHeader() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [brandIntroAwaiting, setBrandIntroAwaiting] = useState<boolean | null>(null);
+  const [brandIntroFlying, setBrandIntroFlying] = useState(false);
+  const [brandFlyTarget, setBrandFlyTarget] = useState<"mobile" | "desktop">("desktop");
   const [navTransition, setNavTransition] = useState<NavTransition | null>(null);
   const pushTimerRef = useRef<number | null>(null);
   const clearTimerRef = useRef<number | null>(null);
   const readyTimerRef = useRef<number | null>(null);
   const hardFallbackTimerRef = useRef<number | null>(null);
   const readyRouteRef = useRef<string | null>(null);
+  const brandLandedRef = useRef(false);
 
   function clearNavTimers() {
     [pushTimerRef, clearTimerRef, readyTimerRef, hardFallbackTimerRef].forEach((ref) => {
@@ -82,15 +92,36 @@ export function SiteHeader() {
   useEffect(() => {
     if (pathname !== "/") {
       setBrandIntroAwaiting(false);
+      setBrandIntroFlying(false);
       return;
     }
 
     setBrandIntroAwaiting(!hasSeenBrandIntro());
 
-    const onIntroComplete = () => setBrandIntroAwaiting(false);
+    const onFly = () => {
+      brandLandedRef.current = false;
+      setBrandIntroFlying(true);
+    };
+    const onIntroComplete = () => {
+      setBrandIntroAwaiting(false);
+      setBrandIntroFlying(false);
+    };
+
+    window.addEventListener(BRAND_INTRO_FLY_EVENT, onFly);
     window.addEventListener(BRAND_INTRO_COMPLETE_EVENT, onIntroComplete);
-    return () => window.removeEventListener(BRAND_INTRO_COMPLETE_EVENT, onIntroComplete);
+    return () => {
+      window.removeEventListener(BRAND_INTRO_FLY_EVENT, onFly);
+      window.removeEventListener(BRAND_INTRO_COMPLETE_EVENT, onIntroComplete);
+    };
   }, [pathname]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const sync = () => setBrandFlyTarget(mq.matches ? "desktop" : "mobile");
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const prefetchRoutes = () => {
@@ -206,9 +237,34 @@ export function SiteHeader() {
 
   const homeActive = pathname === "/";
 
-  const brandIntroHidden = pathname === "/" && brandIntroAwaiting !== false;
+  const brandIntroHidden =
+    pathname === "/" && brandIntroAwaiting !== false && !brandIntroFlying;
 
-  function renderBrandLink() {
+  function handleBrandLanded() {
+    if (!brandIntroFlying || brandLandedRef.current) return;
+    brandLandedRef.current = true;
+    dispatchBrandIntroLanded();
+    setBrandIntroFlying(false);
+  }
+
+  function renderFlyingBrand() {
+    return (
+      <motion.div
+        layoutId={BRAND_LOCKUP_LAYOUT_ID}
+        transition={brandLockupLayoutTransition}
+        onLayoutAnimationComplete={handleBrandLanded}
+        className="rad-header-logo flex shrink-0 items-center gap-2.5 sm:gap-3"
+      >
+        <BrandLockup size="nav" />
+      </motion.div>
+    );
+  }
+
+  function renderBrandLink(slot: "mobile" | "desktop") {
+    if (brandIntroFlying && brandFlyTarget === slot) {
+      return renderFlyingBrand();
+    }
+
     return (
       <Link
         href="/"
@@ -219,22 +275,7 @@ export function SiteHeader() {
           brandIntroHidden && "rad-header-brand--await-intro"
         )}
       >
-        <Image
-          src={assets.logoMark}
-          alt=""
-          width={36}
-          height={36}
-          className="h-9 w-9 object-contain"
-          priority
-        />
-        <span className="rad-header-brand__stack flex flex-col leading-none">
-          <span className="rad-header-brand__title font-[family-name:var(--font-display)] text-sm font-extrabold uppercase tracking-[0.06em]">
-            RAD
-          </span>
-          <span className="rad-header-brand__tagline text-[9px] font-bold uppercase tracking-[0.26em]">
-            #GoWild
-          </span>
-        </span>
+        <BrandLockup size="nav" />
       </Link>
     );
   }
@@ -269,7 +310,7 @@ export function SiteHeader() {
                 !brandIntroHidden && pathname === "/" && "rad-header-brand--intro-ready"
               )}
             >
-              {renderBrandLink()}
+              {renderBrandLink("mobile")}
             </div>
           </div>
 
@@ -288,7 +329,7 @@ export function SiteHeader() {
                   !brandIntroHidden && pathname === "/" && "rad-header-brand--intro-ready"
                 )}
               >
-                {renderBrandLink()}
+                {renderBrandLink("desktop")}
               </div>
             </div>
 
