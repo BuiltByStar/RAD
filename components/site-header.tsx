@@ -184,28 +184,33 @@ export function SiteHeader() {
 
   const homeActive = pathname === "/";
 
-  function renderLogoLink(compact?: boolean) {
+  function renderBrandLink() {
     return (
       <Link
         href="/"
         aria-label="RAD Esports home"
         onClick={(event) => handleNavClick(event, { href: "/", label: "Home" }, homeActive)}
         className={cn(
-          "rad-header-logo group shrink-0 transition-opacity hover:opacity-90",
+          "rad-header-logo group flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-90 sm:gap-3",
           homeActive && "rad-header-logo--active"
         )}
       >
         <Image
-          src={compact ? assets.logoMark : assets.wordmark}
+          src={assets.logoMark}
           alt=""
-          width={compact ? 40 : 140}
-          height={compact ? 40 : 36}
-          className={cn(
-            "object-contain",
-            compact ? "h-10 w-10" : "h-7 w-auto sm:h-8"
-          )}
+          width={36}
+          height={36}
+          className="h-9 w-9 object-contain"
           priority
         />
+        <span className="rad-header-brand__stack flex flex-col leading-none">
+          <span className="rad-header-brand__title font-[family-name:var(--font-display)] text-sm font-extrabold uppercase tracking-[0.06em]">
+            RAD
+          </span>
+          <span className="rad-header-brand__tagline text-[9px] font-bold uppercase tracking-[0.26em]">
+            #GoWild
+          </span>
+        </span>
       </Link>
     );
   }
@@ -220,51 +225,42 @@ export function SiteHeader() {
       />
       <header className="rad-header fixed inset-x-0 top-0 z-50 border-b border-neutral-900 bg-black/95 backdrop-blur-md">
         <div className="mx-auto h-14 max-w-[2400px] px-4 sm:h-16 sm:px-6 md:px-8">
-          {/* Mobile: centered logo, menu on the right */}
-          <div className="grid h-full grid-cols-3 items-center md:hidden">
-            <div aria-hidden className="h-10 w-10" />
-            <div className="flex justify-center">{renderLogoLink(true)}</div>
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={() => setMenuOpen((open) => !open)}
-                className="inline-flex h-10 w-10 items-center justify-center border border-neutral-800 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white"
-                aria-expanded={menuOpen}
-                aria-controls="mobile-rad-nav"
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-              >
-                <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
-                  <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                </svg>
-              </button>
-            </div>
+          {/* Mobile: menu left, brand top-right */}
+          <div className="flex h-full items-center justify-between gap-3 md:hidden">
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center border border-neutral-800 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-rad-nav"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
+                <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </button>
+            <div className="rad-header-brand rad-header-brand--mobile">{renderBrandLink()}</div>
           </div>
 
-          {/* Desktop: nav — logo — nav */}
-          <div className="hidden h-full items-center md:flex">
-            <div className="flex min-w-0 flex-1 justify-end pr-3">
-              <nav aria-label="Compete" className="rad-nav-cluster">
-                {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
-              </nav>
-            </div>
-
-            <div className="rad-header-crest shrink-0 px-3">{renderLogoLink()}</div>
-
-            <div className="flex min-w-0 flex-1 items-center gap-3 pl-3">
-              <nav aria-label="Organization" className="rad-nav-cluster">
-                {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
-              </nav>
-              <div className="ml-auto flex shrink-0 items-center gap-2">
-                <Link
-                  href={discordInviteUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors hover:text-white"
-                >
-                  Discord
-                </Link>
-                <AuthWidget />
-              </div>
+          {/* Desktop: compete + org left/mid, brand + utilities top-right */}
+          <div className="hidden h-full items-center gap-3 md:flex">
+            <nav aria-label="Compete" className="rad-nav-cluster shrink-0">
+              {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
+            </nav>
+            <nav aria-label="Organization" className="rad-nav-cluster shrink-0">
+              {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
+            </nav>
+            <div className="ml-auto flex items-center gap-2 pl-3">
+              <Link
+                href={discordInviteUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors hover:text-white"
+              >
+                Discord
+              </Link>
+              <AuthWidget />
+              <div className="rad-header-brand">{renderBrandLink()}</div>
             </div>
           </div>
         </div>

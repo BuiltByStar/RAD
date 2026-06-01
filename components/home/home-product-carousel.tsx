@@ -1,19 +1,61 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { FluidContainer } from "@/components/ui/fluid-container";
 import { SenButton } from "@/components/ui/sen-button";
 import { merchItems } from "@/lib/site-data";
 
+const SLIDE_DURATION_MS = 7000;
+const SLIDE_DURATION_REDUCED_MS = 14000;
+
 const slides = merchItems.filter((item) => item.frontImage);
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
+  return reduced;
+}
+
+function CarouselChevron({ direction }: { direction: "prev" | "next" }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      className="h-5 w-5"
+    >
+      {direction === "prev" ? (
+        <path d="M15 6l-6 6 6 6" strokeLinecap="square" />
+      ) : (
+        <path d="M9 6l6 6-6 6" strokeLinecap="square" />
+      )}
+    </svg>
+  );
+}
+
+const arrowButtonClass =
+  "absolute top-1/2 z-20 flex -translate-y-1/2 items-center justify-center border border-neutral-800 bg-black/70 p-2.5 text-neutral-400 transition-colors hover:border-[var(--color-blood)] hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)] disabled:pointer-events-none disabled:opacity-30 sm:p-3";
 
 export function HomeProductCarousel() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
   const total = slides.length;
   const active = slides[index] ?? slides[0];
+  const slideDuration = reducedMotion ? SLIDE_DURATION_REDUCED_MS : SLIDE_DURATION_MS;
 
   const go = useCallback(
     (next: number) => {
@@ -25,9 +67,27 @@ export function HomeProductCarousel() {
 
   useEffect(() => {
     if (paused || total <= 1) return;
-    const timer = window.setInterval(() => go(index + 1), 7000);
+    const timer = window.setInterval(() => go(index + 1), slideDuration);
     return () => window.clearInterval(timer);
-  }, [go, index, paused, total]);
+  }, [go, index, paused, slideDuration, total]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || total <= 1) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        go(index - 1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        go(index + 1);
+      }
+    };
+
+    section.addEventListener("keydown", onKeyDown);
+    return () => section.removeEventListener("keydown", onKeyDown);
+  }, [go, index, total]);
 
   if (!active) return null;
 
@@ -36,32 +96,42 @@ export function HomeProductCarousel() {
 
   return (
     <section
+      ref={sectionRef}
       className="pb-4 pt-14 sm:pb-0 sm:pt-16"
+      aria-roledescription="carousel"
+      aria-label="Featured products"
+      tabIndex={0}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setPaused(false);
+        }
+      }}
     >
       <FluidContainer>
         <div className="relative isolate border-x border-neutral-900">
-          <div className="absolute left-4 top-4 z-20 grid grid-cols-2 gap-2 px-4 lg:left-14 lg:top-14 lg:px-0">
-            <button
-              type="button"
-              onClick={() => go(index - 1)}
-              className="flex items-center justify-center bg-[var(--color-blood)] p-3 text-black transition-opacity hover:opacity-90 disabled:opacity-40"
-              disabled={total <= 1}
-              aria-label="Previous product"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              onClick={() => go(index + 1)}
-              className="flex items-center justify-center bg-[var(--color-blood)] p-3 text-black transition-opacity hover:opacity-90 disabled:opacity-40"
-              disabled={total <= 1}
-              aria-label="Next product"
-            >
-              →
-            </button>
-          </div>
+          {total > 1 ? (
+            <>
+              <button
+                type="button"
+                onClick={() => go(index - 1)}
+                className={`${arrowButtonClass} left-0 -translate-x-px`}
+                aria-label="Previous product"
+              >
+                <CarouselChevron direction="prev" />
+              </button>
+              <button
+                type="button"
+                onClick={() => go(index + 1)}
+                className={`${arrowButtonClass} right-0 translate-x-px`}
+                aria-label="Next product"
+              >
+                <CarouselChevron direction="next" />
+              </button>
+            </>
+          ) : null}
 
           <div className="grid md:grid-cols-2">
             <div className="relative isolate flex flex-col justify-center gap-8 border-b border-neutral-900 p-4 md:gap-16 md:border-b-0 md:border-r md:p-10 lg:p-14">
@@ -113,23 +183,40 @@ export function HomeProductCarousel() {
           </div>
 
           {total > 1 ? (
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-900 p-4 md:px-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-neutral-500">RAD shop rack</p>
-              <div className="flex flex-wrap gap-1">
-                {slides.map((slide, i) => (
-                  <button
-                    key={slide.name}
-                    type="button"
-                    onClick={() => setIndex(i)}
-                    className={`h-1.5 w-12 transition-colors duration-300 sm:w-20 ${
-                      i === index ? "bg-[var(--color-blood)]" : "bg-neutral-900"
-                    }`}
-                    aria-label={`Show ${slide.name}`}
-                    aria-current={i === index}
-                  />
-                ))}
+            <>
+              <div
+                className="h-px w-full bg-neutral-900"
+                role="progressbar"
+                aria-label="Time until next product"
+                aria-busy={!paused && !reducedMotion}
+              >
+                <div
+                  key={`${index}-${slideDuration}`}
+                  className={`home-carousel-progress-fill h-full bg-[var(--color-blood)] ${
+                    paused ? "home-carousel-progress-fill--paused" : ""
+                  } ${reducedMotion ? "home-carousel-progress-fill--static" : ""}`}
+                  style={{ animationDuration: `${slideDuration}ms` }}
+                />
               </div>
-            </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-900 p-4 md:px-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-neutral-500">RAD shop rack</p>
+                <div className="flex flex-wrap gap-1">
+                  {slides.map((slide, i) => (
+                    <button
+                      key={slide.name}
+                      type="button"
+                      onClick={() => setIndex(i)}
+                      className={`h-1.5 w-12 transition-colors duration-300 sm:w-20 ${
+                        i === index ? "bg-[var(--color-blood)]" : "bg-neutral-900"
+                      }`}
+                      aria-label={`Show ${slide.name}`}
+                      aria-current={i === index}
+                    />
+                  ))}
+                </div>
+              </div>
+            </>
           ) : null}
         </div>
       </FluidContainer>
