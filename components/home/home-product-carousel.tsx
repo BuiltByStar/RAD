@@ -7,8 +7,8 @@ import { FluidContainer } from "@/components/ui/fluid-container";
 import { SenButton } from "@/components/ui/sen-button";
 import { merchItems } from "@/lib/site-data";
 
-const SLIDE_DURATION_MS = 7000;
-const SLIDE_DURATION_REDUCED_MS = 14000;
+const SLIDE_DURATION_MS = 5000;
+const SLIDE_DURATION_REDUCED_MS = 10000;
 
 const slides = merchItems.filter((item) => item.frontImage);
 
@@ -65,11 +65,19 @@ export function HomeProductCarousel() {
     [total]
   );
 
+  /* Reduced motion: no animated bar — advance on a fixed timer instead */
   useEffect(() => {
-    if (paused || total <= 1) return;
-    const timer = window.setInterval(() => go(index + 1), slideDuration);
-    return () => window.clearInterval(timer);
-  }, [go, index, paused, slideDuration, total]);
+    if (paused || total <= 1 || !reducedMotion) return;
+    const timer = window.setTimeout(() => go(index + 1), slideDuration);
+    return () => window.clearTimeout(timer);
+  }, [go, index, paused, reducedMotion, slideDuration, total]);
+
+  function handleProgressComplete(event: React.AnimationEvent<HTMLDivElement>) {
+    if (event.animationName !== "home-carousel-progress" || paused || reducedMotion || total <= 1) {
+      return;
+    }
+    go(index + 1);
+  }
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -188,14 +196,20 @@ export function HomeProductCarousel() {
                 className="h-px w-full bg-neutral-900"
                 role="progressbar"
                 aria-label="Time until next product"
+                aria-valuetext={
+                  paused
+                    ? "Paused"
+                    : `Next jersey in ${slideDuration / 1000} seconds`
+                }
                 aria-busy={!paused && !reducedMotion}
               >
                 <div
-                  key={`${index}-${slideDuration}`}
+                  key={index}
                   className={`home-carousel-progress-fill h-full bg-[var(--color-blood)] ${
                     paused ? "home-carousel-progress-fill--paused" : ""
                   } ${reducedMotion ? "home-carousel-progress-fill--static" : ""}`}
                   style={{ animationDuration: `${slideDuration}ms` }}
+                  onAnimationEnd={handleProgressComplete}
                 />
               </div>
 

@@ -170,13 +170,22 @@ export function SiteHeader() {
         onClick={(event) => handleNavClick(event, link, active)}
         className={cn(
           variant === "bar" ? "rad-nav-link" : "flex items-center justify-between px-4 py-3.5 text-xs font-bold uppercase tracking-[0.16em]",
-          variant === "bar" && link.zone === "compete" && "rad-nav-link--compete",
           active && (variant === "bar" ? "rad-nav-link--active" : "bg-[var(--color-blood)]/10 text-white"),
           !active && variant === "mobile" && "text-neutral-400"
         )}
         aria-current={active ? "page" : undefined}
       >
-        {link.label}
+        <span
+          className={cn(
+            "rad-nav-link__label",
+            variant === "bar" && link.zone === "compete" && "rad-nav-link__label--compete",
+            variant === "bar" && active && "rad-nav-link__label--active",
+            variant === "mobile" && "rad-nav-link__label--mobile",
+            variant === "mobile" && active && "rad-nav-link__label--active"
+          )}
+        >
+          {link.label}
+        </span>
         {variant === "mobile" ? <span aria-hidden className="text-neutral-600">→</span> : null}
       </Link>
     );
@@ -255,9 +264,9 @@ export function SiteHeader() {
                 href={discordInviteUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors hover:text-white"
+                className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] transition-colors"
               >
-                Discord
+                <span className="rad-discord-text">Discord</span>
               </Link>
               <AuthWidget />
               <div className="rad-header-brand">{renderBrandLink()}</div>
@@ -288,9 +297,9 @@ export function SiteHeader() {
                   href={discordInviteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="border border-neutral-800 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] text-white"
+                  className="flex items-center justify-center border border-neutral-800 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em]"
                 >
-                  Discord
+                  <span className="rad-discord-text">Discord</span>
                 </Link>
                 <Link
                   href="/shop"

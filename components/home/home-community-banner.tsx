@@ -20,7 +20,7 @@ export function HomeCommunityBanner() {
               </p>
             </div>
             <SenButton href={discordInviteUrl} className="max-w-sm">
-              Join Discord
+              <span className="rad-discord-text rad-discord-text--cta">Join Discord</span>
             </SenButton>
           </div>
         </div>
