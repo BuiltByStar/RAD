@@ -11,10 +11,14 @@ import {
 } from "@/lib/brand-intro";
 import { assets } from "@/lib/assets";
 
-const BITE_EASE = [0.72, 0, 0.9, 0.08] as const;
-const HOLD_MS = 650;
-const BITE_S = 0.58;
-const FADE_S = 0.42;
+const HOLD_MS = 820;
+const BITE_SPRING = { type: "spring" as const, stiffness: 95, damping: 16, mass: 1.05 };
+const FADE_EASE = [0.33, 0, 0.2, 1] as const;
+
+/** Viewport-fixed swallow origin — tuned to the lion “A” mouth when logo is centered */
+const SWALLOW_AT = "50% 57%";
+const SWALLOW_START = `circle(1.8% at ${SWALLOW_AT})`;
+const SWALLOW_END = `circle(165% at ${SWALLOW_AT})`;
 
 export function SiteIntro() {
   const reducedMotion = useReducedMotion();
@@ -24,6 +28,8 @@ export function SiteIntro() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "done";
     return hasSeenBrandIntro() ? "done" : "hold";
   });
+
+  const biting = phase === "bite";
 
   useEffect(() => {
     if (phase === "done") {
@@ -53,7 +59,7 @@ export function SiteIntro() {
   useEffect(() => {
     if (phase !== "bite") return;
 
-    const fallback = window.setTimeout(finishIntro, (BITE_S + FADE_S) * 1000 + 80);
+    const fallback = window.setTimeout(finishIntro, 1400);
     return () => window.clearTimeout(fallback);
   }, [phase]);
 
@@ -71,34 +77,93 @@ export function SiteIntro() {
           key="site-intro"
           role="presentation"
           aria-hidden
-          className="site-intro"
+          className={`site-intro ${biting ? "site-intro--bite" : ""}`}
           initial={{ opacity: 1 }}
-          animate={{ opacity: phase === "bite" ? 0 : 1 }}
+          animate={{ opacity: biting ? 0 : 1 }}
           transition={{
-            duration: FADE_S,
-            delay: phase === "bite" ? BITE_S * 0.38 : 0,
-            ease: BITE_EASE
+            duration: 0.55,
+            delay: biting ? 0.52 : 0,
+            ease: FADE_EASE
           }}
           onAnimationComplete={() => {
-            if (phase === "bite") finishIntro();
+            if (biting) finishIntro();
           }}
         >
-          <div className="site-intro__backdrop" />
+          <motion.div
+            className="site-intro__backdrop"
+            animate={
+              biting
+                ? { opacity: 1, scale: 1.12 }
+                : { opacity: 1, scale: 1 }
+            }
+            transition={{ duration: 0.95, ease: FADE_EASE }}
+          />
+
+          <motion.div
+            aria-hidden
+            className="site-intro__swallow"
+            initial={{ clipPath: SWALLOW_START }}
+            animate={{ clipPath: biting ? SWALLOW_END : SWALLOW_START }}
+            transition={BITE_SPRING}
+          />
+
+          {biting ? (
+            <>
+              <motion.span
+                aria-hidden
+                className="site-intro__ripple site-intro__ripple--one"
+                initial={{ scale: 0.4, opacity: 0.7 }}
+                animate={{ scale: 2.8, opacity: 0 }}
+                transition={{ duration: 0.75, ease: FADE_EASE }}
+              />
+              <motion.span
+                aria-hidden
+                className="site-intro__ripple site-intro__ripple--two"
+                initial={{ scale: 0.35, opacity: 0.5 }}
+                animate={{ scale: 3.4, opacity: 0 }}
+                transition={{ duration: 0.95, ease: FADE_EASE, delay: 0.08 }}
+              />
+              <motion.span
+                aria-hidden
+                className="site-intro__flash"
+                initial={{ opacity: 0.85, scale: 0.6 }}
+                animate={{ opacity: 0, scale: 2.2 }}
+                transition={{ duration: 0.45, ease: FADE_EASE }}
+              />
+            </>
+          ) : null}
 
           <motion.div
             className="site-intro__stage"
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={
-              phase === "bite"
-                ? { opacity: 1, scale: 16 }
-                : { opacity: 1, scale: 1 }
+              biting
+                ? { opacity: 1, scale: 22, y: 0, rotate: 0 }
+                : { opacity: 1, scale: 1, y: 0, rotate: 0 }
             }
-            transition={{
-              opacity: { duration: 0.28, ease: BITE_EASE },
-              scale: { duration: BITE_S, ease: BITE_EASE }
-            }}
+            transition={
+              biting
+                ? {
+                    scale: BITE_SPRING,
+                    y: { duration: 0.35, ease: FADE_EASE },
+                    opacity: { duration: 0.2 }
+                  }
+                : { duration: 0.5, ease: FADE_EASE }
+            }
           >
-            <div className="site-intro__lion">
+            <motion.div
+              className="site-intro__lion"
+              animate={
+                biting
+                  ? { x: [0, -5, 4, -2, 0], filter: "blur(0px)" }
+                  : { x: 0, filter: "blur(0px)" }
+              }
+              transition={
+                biting
+                  ? { x: { duration: 0.28, ease: "easeOut" }, filter: { duration: 0.15 } }
+                  : { duration: 0.4 }
+              }
+            >
               <Image
                 src={assets.logoMark}
                 alt=""
@@ -107,18 +172,7 @@ export function SiteIntro() {
                 priority
                 className="site-intro__lion-img"
               />
-              <motion.div
-                aria-hidden
-                className="site-intro__mouth"
-                initial={{ scale: 0.85, opacity: 0.9 }}
-                animate={
-                  phase === "bite"
-                    ? { scale: 28, opacity: 1 }
-                    : { scale: 1, opacity: 1 }
-                }
-                transition={{ duration: BITE_S, ease: BITE_EASE }}
-              />
-            </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       ) : null}
