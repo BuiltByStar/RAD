@@ -3864,7 +3864,7 @@ body:has(.shop-modal) main {
   }
 }
 
-/* ─── Site intro (first visit splash) ─────────────────────────────────────── */
+/* ─── Site intro — lion mouth zoom ─────────────────────────────────────────── */
 html.site-intro-active {
   overflow: hidden;
 }
@@ -3882,167 +3882,62 @@ html.site-intro-active body {
   overflow: hidden;
   background: #000;
   pointer-events: auto;
+  will-change: opacity;
 }
 
-.site-intro__veil {
+.site-intro__backdrop {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 55% at 50% 42%, rgba(229, 6, 47, 0.28) 0%, transparent 68%),
-    linear-gradient(180deg, #000 0%, #050505 48%, #000 100%);
+    radial-gradient(ellipse 70% 50% at 50% 44%, rgba(229, 6, 47, 0.2) 0%, transparent 70%),
+    #000;
 }
 
-.site-intro__grid {
-  position: absolute;
-  inset: -20%;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 20%, transparent 78%);
-  animation: site-intro-grid-pan 14s linear infinite;
+.site-intro__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: min(78vw, 22rem);
+  transform-origin: 50% 64%;
+  will-change: transform, opacity;
 }
 
-.site-intro__scan {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(229, 6, 47, 0.9), transparent);
-  opacity: 0.7;
-  pointer-events: none;
+.site-intro__lion {
+  position: relative;
+  width: 100%;
+  line-height: 0;
 }
 
-.site-intro__scan--one {
-  animation: site-intro-scan 2.8s linear infinite;
+.site-intro__lion-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 48px rgba(229, 6, 47, 0.35));
 }
 
-.site-intro__scan--two {
-  animation: site-intro-scan 3.6s linear infinite reverse;
-  opacity: 0.35;
-}
-
-.site-intro__glow {
+/* Black void aligned to the “A” mouth in the lion mark */
+.site-intro__mouth {
   position: absolute;
   left: 50%;
-  top: 46%;
-  width: min(92vw, 36rem);
-  height: min(52vh, 22rem);
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse at center, rgba(229, 6, 47, 0.35) 0%, transparent 72%);
-  filter: blur(18px);
-  animation: site-intro-glow-pulse 2.4s ease-in-out infinite;
-}
-
-.site-intro__content {
-  position: relative;
+  top: 64%;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-  padding: 1.5rem;
-  text-align: center;
-}
-
-.site-intro__lockup {
-  position: relative;
-  isolation: isolate;
-}
-
-.site-intro__lockup--glitch {
-  animation: site-intro-lockup-glitch 2.2s steps(4, end) infinite;
-}
-
-.site-intro__tag {
-  max-width: 20rem;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.site-intro__wipe {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  background: linear-gradient(180deg, transparent 0%, #000 38%, #000 100%);
+  width: 11%;
+  height: 16%;
+  transform: translate(-50%, -50%);
+  border-radius: 46% 46% 52% 52%;
+  background: #000;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    0 0 24px 8px rgba(0, 0, 0, 0.85);
   pointer-events: none;
-}
-
-@keyframes site-intro-grid-pan {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(-48px, -48px, 0);
-  }
-}
-
-@keyframes site-intro-scan {
-  0% {
-    top: -4%;
-  }
-
-  100% {
-    top: 104%;
-  }
-}
-
-@keyframes site-intro-glow-pulse {
-  0%,
-  100% {
-    opacity: 0.65;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.06);
-  }
-}
-
-@keyframes site-intro-lockup-glitch {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-    filter: none;
-  }
-
-  12% {
-    transform: translate3d(-4px, 0, 0);
-    filter: drop-shadow(3px 0 rgba(229, 6, 47, 0.85));
-  }
-
-  24% {
-    transform: translate3d(4px, -1px, 0);
-    filter: drop-shadow(-3px 0 rgba(255, 255, 255, 0.45));
-  }
-
-  36% {
-    transform: translate3d(-2px, 1px, 0);
-    clip-path: inset(0 0 58% 0);
-  }
-
-  48% {
-    transform: translate3d(3px, 0, 0);
-    clip-path: inset(42% 0 0 0);
-  }
-
-  60% {
-    transform: translate3d(-1px, 0, 0);
-    clip-path: inset(0 0 0 0);
-  }
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-intro__grid,
-  .site-intro__scan,
-  .site-intro__glow,
-  .site-intro__lockup--glitch {
-    animation: none !important;
+  .site-intro__stage,
+  .site-intro__mouth {
+    will-change: auto;
   }
 }
 

@@ -1,27 +1,28 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { BrandLockup } from "@/components/brand-lockup";
 import {
   dispatchBrandIntroComplete,
   hasSeenBrandIntro,
   markBrandIntroSeen
 } from "@/lib/brand-intro";
+import { assets } from "@/lib/assets";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-const HOLD_MS = 2200;
-const ENTER_S = 0.9;
-const EXIT_S = 0.75;
+const BITE_EASE = [0.72, 0, 0.9, 0.08] as const;
+const HOLD_MS = 650;
+const BITE_S = 0.58;
+const FADE_S = 0.42;
 
 export function SiteIntro() {
   const reducedMotion = useReducedMotion();
   const exitDoneRef = useRef(false);
-  const [phase, setPhase] = useState<"splash" | "exit" | "done">(() => {
+  const [phase, setPhase] = useState<"hold" | "bite" | "done">(() => {
     if (typeof window === "undefined") return "done";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "done";
-    return hasSeenBrandIntro() ? "done" : "splash";
+    return hasSeenBrandIntro() ? "done" : "hold";
   });
 
   useEffect(() => {
@@ -39,30 +40,25 @@ export function SiteIntro() {
       return;
     }
 
-    if (phase !== "splash") return;
+    if (phase !== "hold") return;
 
-    const exitTimer = window.setTimeout(() => {
+    const biteTimer = window.setTimeout(() => {
       exitDoneRef.current = false;
-      setPhase("exit");
+      setPhase("bite");
     }, HOLD_MS);
-    return () => window.clearTimeout(exitTimer);
+
+    return () => window.clearTimeout(biteTimer);
   }, [phase, reducedMotion]);
 
   useEffect(() => {
-    if (phase !== "exit") return;
+    if (phase !== "bite") return;
 
-    const fallback = window.setTimeout(() => {
-      if (exitDoneRef.current) return;
-      exitDoneRef.current = true;
-      markBrandIntroSeen();
-      setPhase("done");
-    }, EXIT_S * 1000 + 120);
-
+    const fallback = window.setTimeout(finishIntro, (BITE_S + FADE_S) * 1000 + 80);
     return () => window.clearTimeout(fallback);
   }, [phase]);
 
-  function handleExitComplete() {
-    if (phase !== "exit" || exitDoneRef.current) return;
+  function finishIntro() {
+    if (exitDoneRef.current) return;
     exitDoneRef.current = true;
     markBrandIntroSeen();
     setPhase("done");
@@ -75,46 +71,55 @@ export function SiteIntro() {
           key="site-intro"
           role="presentation"
           aria-hidden
-          initial={{ opacity: 1 }}
-          animate={{ opacity: phase === "exit" ? 0 : 1 }}
-          transition={{ duration: EXIT_S, ease: EASE }}
-          onAnimationComplete={() => {
-            if (phase === "exit") handleExitComplete();
-          }}
           className="site-intro"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: phase === "bite" ? 0 : 1 }}
+          transition={{
+            duration: FADE_S,
+            delay: phase === "bite" ? BITE_S * 0.38 : 0,
+            ease: BITE_EASE
+          }}
+          onAnimationComplete={() => {
+            if (phase === "bite") finishIntro();
+          }}
         >
-          <div className="site-intro__veil" />
-          <div className="site-intro__grid" aria-hidden />
-          <div className="site-intro__scan site-intro__scan--one" aria-hidden />
-          <div className="site-intro__scan site-intro__scan--two" aria-hidden />
-          <div className="site-intro__glow" aria-hidden />
+          <div className="site-intro__backdrop" />
 
           <motion.div
-            className="site-intro__content"
-            initial={{ opacity: 0, scale: 0.88, filter: "blur(14px)" }}
+            className="site-intro__stage"
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={
-              phase === "exit"
-                ? { opacity: 0, scale: 1.04, filter: "blur(10px)", y: -18 }
-                : { opacity: 1, scale: 1, filter: "blur(0px)", y: 0 }
+              phase === "bite"
+                ? { opacity: 1, scale: 16 }
+                : { opacity: 1, scale: 1 }
             }
             transition={{
-              duration: phase === "exit" ? EXIT_S : ENTER_S,
-              ease: EASE
+              opacity: { duration: 0.28, ease: BITE_EASE },
+              scale: { duration: BITE_S, ease: BITE_EASE }
             }}
           >
-            <div className="site-intro__lockup site-intro__lockup--glitch">
-              <BrandLockup size="hero" />
+            <div className="site-intro__lion">
+              <Image
+                src={assets.logoMark}
+                alt=""
+                width={320}
+                height={320}
+                priority
+                className="site-intro__lion-img"
+              />
+              <motion.div
+                aria-hidden
+                className="site-intro__mouth"
+                initial={{ scale: 0.85, opacity: 0.9 }}
+                animate={
+                  phase === "bite"
+                    ? { scale: 28, opacity: 1 }
+                    : { scale: 1, opacity: 1 }
+                }
+                transition={{ duration: BITE_S, ease: BITE_EASE }}
+              />
             </div>
-            <p className="site-intro__tag">Built around players · Welcome to the wild</p>
           </motion.div>
-
-          <motion.div
-            aria-hidden
-            className="site-intro__wipe origin-top"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: phase === "exit" ? 1 : 0 }}
-            transition={{ duration: EXIT_S, ease: EASE }}
-          />
         </motion.div>
       ) : null}
     </AnimatePresence>
