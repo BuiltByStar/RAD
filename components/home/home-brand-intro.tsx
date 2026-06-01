@@ -7,26 +7,27 @@ import { useEffect, useState } from "react";
 import { FluidContainer } from "@/components/ui/fluid-container";
 import { assets } from "@/lib/assets";
 import {
-  BRAND_INTRO_COMPLETE_EVENT,
   dispatchBrandIntroComplete,
   hasSeenBrandIntro,
   markBrandIntroSeen
 } from "@/lib/brand-intro";
 
-const HOLD_MS = 1400;
-const EXIT_MS = 520;
+const EASE = [0.22, 1, 0.36, 1] as const;
+const HOLD_MS = 2200;
+const ENTER_S = 0.95;
+const EXIT_S = 1.05;
 
 export function HomeBrandIntro() {
   const reducedMotion = useReducedMotion();
-  const [phase, setPhase] = useState<"idle" | "show" | "exit" | "done">(() => {
+  const [phase, setPhase] = useState<"show" | "exit" | "done">(() => {
     if (typeof window === "undefined") return "done";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "done";
     return hasSeenBrandIntro() ? "done" : "show";
   });
 
   useEffect(() => {
-    if (phase !== "show") {
-      if (phase === "done") dispatchBrandIntroComplete();
+    if (phase === "done") {
+      dispatchBrandIntroComplete();
       return;
     }
 
@@ -35,40 +36,58 @@ export function HomeBrandIntro() {
       setPhase("done");
       return;
     }
-    const exitTimer = window.setTimeout(() => setPhase("exit"), HOLD_MS);
-    const doneTimer = window.setTimeout(() => {
-      markBrandIntroSeen();
+
+    if (phase !== "show") return;
+
+    const exitTimer = window.setTimeout(() => {
       dispatchBrandIntroComplete();
-      setPhase("done");
-    }, HOLD_MS + EXIT_MS);
+      setPhase("exit");
+    }, HOLD_MS);
 
-    return () => {
-      window.clearTimeout(exitTimer);
-      window.clearTimeout(doneTimer);
-    };
-  }, [reducedMotion]);
+    return () => window.clearTimeout(exitTimer);
+  }, [phase, reducedMotion]);
 
-  if (phase === "done") return null;
+  function handleExitComplete() {
+    markBrandIntroSeen();
+    setPhase("done");
+  }
 
   return (
-    <section aria-hidden={phase === "exit"} className="border-b border-neutral-900 bg-black">
-      <FluidContainer>
-        <div className="relative border-x border-neutral-900 px-4 py-10 md:py-14 lg:py-16">
-          <AnimatePresence mode="wait">
-            {phase === "show" || phase === "exit" ? (
+    <AnimatePresence mode="wait">
+      {phase !== "done" ? (
+        <motion.section
+          key="home-brand-intro"
+          aria-hidden={phase === "exit"}
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="home-brand-intro overflow-hidden border-b border-neutral-900 bg-black"
+        >
+          <FluidContainer>
+            <motion.div
+              layout
+              className="home-brand-intro__stage relative border-x border-neutral-900 px-4 py-12 md:py-16 lg:py-[4.25rem]"
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 h-48 w-[min(100%,28rem)] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(229,6,47,0.22)_0%,transparent_72%)] opacity-80"
+              />
               <motion.div
-                key="home-brand-intro"
-                initial={{ opacity: 0, y: 16, scale: 0.9 }}
+                initial={{ opacity: 0, y: 28, scale: 0.9, filter: "blur(14px)" }}
                 animate={
                   phase === "exit"
-                    ? { opacity: 0, y: -28, scale: 0.72 }
-                    : { opacity: 1, y: 0, scale: 1 }
+                    ? { opacity: 0, y: -6, scale: 0.94, filter: "blur(12px)" }
+                    : { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
                 }
                 transition={{
-                  duration: phase === "exit" ? EXIT_MS / 1000 : 0.55,
-                  ease: [0.16, 1, 0.3, 1]
+                  duration: phase === "exit" ? EXIT_S : ENTER_S,
+                  ease: EASE
                 }}
-                className="home-brand-intro__lockup mx-auto flex w-fit flex-col items-center gap-4 sm:flex-row sm:gap-6"
+                onAnimationComplete={() => {
+                  if (phase === "exit") handleExitComplete();
+                }}
+                className="home-brand-intro__lockup relative z-[1] mx-auto flex w-fit flex-col items-center gap-4 sm:flex-row sm:gap-6"
               >
                 <Image
                   src={assets.logoMark}
@@ -87,10 +106,10 @@ export function HomeBrandIntro() {
                   </span>
                 </span>
               </motion.div>
-            ) : null}
-          </AnimatePresence>
-        </div>
-      </FluidContainer>
-    </section>
+            </motion.div>
+          </FluidContainer>
+        </motion.section>
+      ) : null}
+    </AnimatePresence>
   );
 }

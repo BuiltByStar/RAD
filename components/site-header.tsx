@@ -216,7 +216,6 @@ export function SiteHeader() {
         onClick={(event) => handleNavClick(event, { href: "/", label: "Home" }, homeActive)}
         className={cn(
           "rad-header-logo group flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-90 sm:gap-3",
-          homeActive && "rad-header-logo--active",
           brandIntroHidden && "rad-header-brand--await-intro"
         )}
       >
@@ -282,7 +281,7 @@ export function SiteHeader() {
               </nav>
             </div>
 
-            <div className="rad-header-crest rad-border-trace shrink-0">
+            <div className="rad-header-crest rad-border-trace rad-border-trace--vertical shrink-0">
               <div
                 className={cn(
                   "rad-header-brand rad-header-brand--center",
