@@ -9,6 +9,7 @@ import { AuthWidget } from "@/components/auth-widget";
 import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { cn } from "@/components/ui/cn";
 import { assets } from "@/lib/assets";
+import { BRAND_INTRO_COMPLETE_EVENT, hasSeenBrandIntro } from "@/lib/brand-intro";
 import {
   discordInviteUrl,
   headerCompeteLinks,
@@ -38,6 +39,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [brandIntroAwaiting, setBrandIntroAwaiting] = useState<boolean | null>(null);
   const [navTransition, setNavTransition] = useState<NavTransition | null>(null);
   const pushTimerRef = useRef<number | null>(null);
   const clearTimerRef = useRef<number | null>(null);
@@ -76,6 +78,19 @@ export function SiteHeader() {
 
   useEffect(() => clearNavTimers, []);
   useEffect(() => setMenuOpen(false), [pathname]);
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setBrandIntroAwaiting(false);
+      return;
+    }
+
+    setBrandIntroAwaiting(!hasSeenBrandIntro());
+
+    const onIntroComplete = () => setBrandIntroAwaiting(false);
+    window.addEventListener(BRAND_INTRO_COMPLETE_EVENT, onIntroComplete);
+    return () => window.removeEventListener(BRAND_INTRO_COMPLETE_EVENT, onIntroComplete);
+  }, [pathname]);
 
   useEffect(() => {
     const prefetchRoutes = () => {
@@ -191,6 +206,8 @@ export function SiteHeader() {
 
   const homeActive = pathname === "/";
 
+  const brandIntroHidden = pathname === "/" && brandIntroAwaiting !== false;
+
   function renderBrandLink() {
     return (
       <Link
@@ -199,7 +216,8 @@ export function SiteHeader() {
         onClick={(event) => handleNavClick(event, { href: "/", label: "Home" }, homeActive)}
         className={cn(
           "rad-header-logo group flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-90 sm:gap-3",
-          homeActive && "rad-header-logo--active"
+          homeActive && "rad-header-logo--active",
+          brandIntroHidden && "rad-header-brand--await-intro"
         )}
       >
         <Image
@@ -246,23 +264,37 @@ export function SiteHeader() {
                 <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
             </button>
-            <div className="rad-header-brand rad-header-brand--mobile">{renderBrandLink()}</div>
+            <div
+              className={cn(
+                "rad-header-brand rad-header-brand--mobile",
+                !brandIntroHidden && pathname === "/" && "rad-header-brand--intro-ready"
+              )}
+            >
+              {renderBrandLink()}
+            </div>
           </div>
 
           {/* Desktop: compete — brand — org + utilities */}
           <div className="hidden h-full items-center md:flex">
             <div className="flex min-w-0 flex-1 justify-end pr-3">
-              <nav aria-label="Compete" className="rad-nav-cluster shrink-0">
+              <nav aria-label="Compete" className="rad-nav-cluster rad-border-trace shrink-0">
                 {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
               </nav>
             </div>
 
-            <div className="rad-header-crest shrink-0">
-              <div className="rad-header-brand rad-header-brand--center">{renderBrandLink()}</div>
+            <div className="rad-header-crest rad-border-trace shrink-0">
+              <div
+                className={cn(
+                  "rad-header-brand rad-header-brand--center",
+                  !brandIntroHidden && pathname === "/" && "rad-header-brand--intro-ready"
+                )}
+              >
+                {renderBrandLink()}
+              </div>
             </div>
 
             <div className="flex min-w-0 flex-1 items-center gap-3 pl-3">
-              <nav aria-label="Organization" className="rad-nav-cluster shrink-0">
+              <nav aria-label="Organization" className="rad-nav-cluster rad-border-trace rad-border-trace--offset shrink-0">
                 {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
               </nav>
               <div className="ml-auto flex shrink-0 items-center gap-2">
@@ -289,13 +321,13 @@ export function SiteHeader() {
               <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-blood)]">
                 Compete
               </p>
-              <div className="mb-4 grid border border-neutral-900">
+              <div className="rad-border-trace grid border border-neutral-900">
                 {headerCompeteLinks.map((link) => renderNavLink(link, "mobile"))}
               </div>
               <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
                 Organization
               </p>
-              <div className="grid border border-neutral-900">
+              <div className="rad-border-trace rad-border-trace--offset grid border border-neutral-900">
                 {headerOrgLinks.map((link) => renderNavLink(link, "mobile"))}
               </div>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">

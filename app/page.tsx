@@ -1,3 +1,4 @@
+import { HomeBrandIntro } from "@/components/home/home-brand-intro";
 import { HomeCommunityBanner } from "@/components/home/home-community-banner";
 import { HomeNewsSection } from "@/components/home/home-news-section";
 import { HomeProductCarousel } from "@/components/home/home-product-carousel";
@@ -12,6 +13,7 @@ export default async function HomePage() {
   return (
     <main className="overflow-hidden bg-black text-white">
       <PageReadySignal route="/" delayMs={40} />
+      <HomeBrandIntro />
       <HomeProductCarousel />
       <HomeCommunityBanner />
       <HomeTeamsBanner />

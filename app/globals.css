@@ -320,9 +320,62 @@ p { margin: 0; }
     display: flex;
     align-items: center;
     justify-content: center;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding-inline: 1rem;
+  }
+
+  .rad-border-trace {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .rad-border-trace::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--rad-border-trace-angle),
+      transparent 0deg 285deg,
+      rgba(229, 6, 47, 0.2) 300deg,
+      var(--color-blood) 320deg,
+      #ff6f88 340deg,
+      var(--color-blood) 360deg,
+      rgba(229, 6, 47, 0.2) 20deg,
+      transparent 40deg 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+    animation: rad-border-trace-spin 3.8s linear infinite;
+  }
+
+  .rad-border-trace > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .rad-border-trace--offset::before {
+    animation-delay: -1.9s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rad-border-trace::before {
+      animation: none;
+      background: none;
+      border: 1px solid rgba(229, 6, 47, 0.35);
+      padding: 0;
+      inset: 0;
+      -webkit-mask: none;
+      mask: none;
+    }
   }
 
   .rad-header-brand {
@@ -336,6 +389,25 @@ p { margin: 0; }
   .rad-header-brand--mobile {
     border-left: none;
     padding-left: 0;
+  }
+
+  .rad-header-brand--await-intro {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+  }
+
+  .rad-header-brand--intro-ready {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 480ms var(--ease-emphasis),
+      transform 480ms var(--ease-emphasis);
+  }
+
+  .home-brand-intro__lockup .rad-header-brand__title,
+  .home-brand-intro__lockup .rad-header-brand__tagline {
+    animation-duration: 5.5s, 5.5s;
   }
 
   .rad-header-brand__stack {
@@ -562,6 +634,18 @@ p { margin: 0; }
     text-shadow:
       0 0 14px rgba(255, 255, 255, 0.14),
       0 0 18px rgba(229, 6, 47, 0.5);
+  }
+}
+
+@property --rad-border-trace-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rad-border-trace-spin {
+  to {
+    --rad-border-trace-angle: 360deg;
   }
 }
 

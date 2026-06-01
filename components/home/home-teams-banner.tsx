@@ -15,7 +15,7 @@ export function HomeTeamsBanner() {
           <div className="relative min-h-[320px] md:min-h-[420px]">
             <Image src={assets.goWild} alt="" fill sizes="100vw" className="object-cover opacity-35" />
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/40" />
-            <div className="relative flex min-h-[320px] flex-col justify-end p-6 md:min-h-[420px] md:p-14">
+            <div className="rad-border-trace relative m-4 flex min-h-[280px] flex-col justify-end border border-neutral-900 p-6 md:m-6 md:min-h-[360px] md:p-14">
               <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">
                 #GoWild · Where we compete
               </p>

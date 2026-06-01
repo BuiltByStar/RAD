@@ -7,8 +7,8 @@ import { FluidContainer } from "@/components/ui/fluid-container";
 import { SenButton } from "@/components/ui/sen-button";
 import { merchItems } from "@/lib/site-data";
 
-const SLIDE_DURATION_MS = 5000;
-const SLIDE_DURATION_REDUCED_MS = 10000;
+const SLIDE_DURATION_MS = 10000;
+const SLIDE_DURATION_REDUCED_MS = 20000;
 
 const slides = merchItems.filter((item) => item.frontImage);
 
