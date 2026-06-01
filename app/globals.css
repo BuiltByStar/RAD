@@ -3910,8 +3910,19 @@ body:has(.shop-modal) main {
   animation: home-carousel-slide-glitch 360ms steps(4, end) both;
 }
 
-.home-carousel-glitch-target--jersey.home-carousel-glitch-target--animate {
-  animation-name: home-carousel-jersey-glitch;
+.home-carousel-jersey-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-carousel-jersey-media {
+  position: relative;
+  z-index: 1;
+}
+
+.home-carousel-jersey-glitch-overlay {
+  z-index: 3;
+  animation: home-carousel-jersey-overlay-glitch 360ms steps(4, end) both;
 }
 
 .home-carousel-glitch-fx {
@@ -3993,40 +4004,31 @@ body:has(.shop-modal) main {
   }
 }
 
-@keyframes home-carousel-jersey-glitch {
+@keyframes home-carousel-jersey-overlay-glitch {
   0%,
   100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: none;
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
   }
 
-  16% {
-    opacity: 0.45;
-    transform: translate3d(-7px, 2px, 0) scale(0.98);
-    filter: drop-shadow(4px 0 rgba(229, 6, 47, 0.9));
+  18% {
+    opacity: 0.95;
+    transform: translate3d(-6px, 2px, 0);
   }
 
-  32% {
-    opacity: 0.15;
-    transform: translate3d(6px, -3px, 0) scale(1.02);
-    filter: drop-shadow(-5px 0 rgba(255, 255, 255, 0.45));
+  36% {
+    opacity: 0.85;
+    transform: translate3d(5px, -2px, 0);
   }
 
-  48% {
-    opacity: 0.75;
-    transform: translate3d(-3px, 1px, 0) scale(0.99);
-    filter: drop-shadow(2px 0 rgba(229, 6, 47, 0.7));
+  54% {
+    opacity: 0.7;
+    transform: translate3d(-3px, 1px, 0);
   }
 
-  64% {
-    opacity: 0.35;
-    transform: translate3d(4px, 0, 0) scale(1.01);
-  }
-
-  80% {
-    opacity: 0.9;
-    transform: translate3d(-1px, 0, 0) scale(1);
+  72% {
+    opacity: 0.4;
+    transform: translate3d(2px, 0, 0);
   }
 }
 
@@ -4133,6 +4135,7 @@ body:has(.shop-modal) main {
 @media (prefers-reduced-motion: reduce) {
   .home-carousel-glitch-target--animate,
   .home-carousel-glitch-target--text.home-carousel-glitch-target--animate .home-carousel-glitch-body,
+  .home-carousel-jersey-glitch-overlay,
   .home-carousel-glitch-fx__scan,
   .home-carousel-glitch-fx__slice {
     animation: none !important;

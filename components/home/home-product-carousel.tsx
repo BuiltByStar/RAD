@@ -49,15 +49,28 @@ function CarouselChevron({ direction }: { direction: "prev" | "next" }) {
 const arrowButtonClass =
   "absolute top-1/2 z-20 flex -translate-y-1/2 items-center justify-center border border-neutral-800 bg-black/70 p-2.5 text-neutral-400 transition-colors hover:border-[var(--color-blood)] hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)] disabled:pointer-events-none disabled:opacity-30 sm:p-3";
 
+function CarouselGlitchFx({ active, overlay = false }: { active: boolean; overlay?: boolean }) {
+  if (!active) return null;
+
+  return (
+    <span
+      className={cn("home-carousel-glitch-fx", overlay && "home-carousel-jersey-glitch-overlay")}
+      aria-hidden
+    >
+      <span className="home-carousel-glitch-fx__scan" />
+      <span className="home-carousel-glitch-fx__slice home-carousel-glitch-fx__slice--a" />
+      <span className="home-carousel-glitch-fx__slice home-carousel-glitch-fx__slice--b" />
+    </span>
+  );
+}
+
 function CarouselGlitchPanel({
   slideKey,
-  variant,
   reducedMotion,
   className,
   children
 }: {
   slideKey: string;
-  variant: "text" | "jersey";
   reducedMotion: boolean;
   className?: string;
   children: ReactNode;
@@ -68,28 +81,44 @@ function CarouselGlitchPanel({
     <div
       key={slideKey}
       className={cn(
-        "home-carousel-glitch-target",
-        variant === "text" ? "home-carousel-glitch-target--text" : "home-carousel-glitch-target--jersey",
+        "home-carousel-glitch-target home-carousel-glitch-target--text",
         animate && "home-carousel-glitch-target--animate",
         className
       )}
     >
       {animate ? (
-        <span className="home-carousel-glitch-fx" aria-hidden>
-          <span className="home-carousel-glitch-fx__scan" />
-          <span className="home-carousel-glitch-fx__slice home-carousel-glitch-fx__slice--a" />
-          <span className="home-carousel-glitch-fx__slice home-carousel-glitch-fx__slice--b" />
+        <span key={`${slideKey}-fx`} className="contents">
+          <CarouselGlitchFx active />
         </span>
       ) : null}
-      <div
-        className={cn(
-          "relative z-[1]",
-          variant === "jersey" && "absolute inset-0",
-          variant === "text" && "home-carousel-glitch-body"
-        )}
-      >
+      <div className="home-carousel-glitch-body relative z-[1]">{children}</div>
+    </div>
+  );
+}
+
+function CarouselJerseyPanel({
+  slideKey,
+  reducedMotion,
+  className,
+  children
+}: {
+  slideKey: string;
+  reducedMotion: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  const animate = !reducedMotion;
+
+  return (
+    <div className={cn("home-carousel-jersey-frame", className)}>
+      <div key={slideKey} className="home-carousel-jersey-media relative h-full w-full">
         {children}
       </div>
+      {animate ? (
+        <span key={`${slideKey}-fx`} className="contents">
+          <CarouselGlitchFx active overlay />
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -184,7 +213,6 @@ export function HomeProductCarousel() {
               <div aria-hidden className="absolute left-4 top-4 hidden h-3 w-3 bg-[var(--color-blood)] md:left-auto md:right-4" />
               <CarouselGlitchPanel
                 slideKey={slideKey}
-                variant="text"
                 reducedMotion={reducedMotion}
                 className="flex flex-col gap-6 md:gap-10"
               >
@@ -204,9 +232,8 @@ export function HomeProductCarousel() {
                 aria-hidden
                 className="pointer-events-none absolute inset-4 bg-[linear-gradient(118deg,transparent_49.5%,rgba(229,6,47,0.12)_50%,transparent_50.5%)]"
               />
-              <CarouselGlitchPanel
+              <CarouselJerseyPanel
                 slideKey={slideKey}
-                variant="jersey"
                 reducedMotion={reducedMotion}
                 className="relative isolate aspect-square w-full max-w-md overflow-hidden border border-neutral-900 bg-neutral-950"
               >
@@ -229,13 +256,12 @@ export function HomeProductCarousel() {
                     className="object-contain p-2 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   />
                 ) : null}
-              </CarouselGlitchPanel>
+              </CarouselJerseyPanel>
             </div>
 
             <div className="flex flex-col justify-center gap-6 p-4 md:gap-10 md:p-8 lg:p-12">
               <CarouselGlitchPanel
                 slideKey={slideKey}
-                variant="text"
                 reducedMotion={reducedMotion}
                 className="flex flex-col gap-6 md:gap-10"
               >
