@@ -81,7 +81,15 @@ function CarouselGlitchPanel({
           <span className="home-carousel-glitch-fx__slice home-carousel-glitch-fx__slice--b" />
         </span>
       ) : null}
-      <div className={cn("relative z-[1]", variant === "text" && "home-carousel-glitch-body")}>{children}</div>
+      <div
+        className={cn(
+          "relative z-[1]",
+          variant === "jersey" && "absolute inset-0",
+          variant === "text" && "home-carousel-glitch-body"
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }
