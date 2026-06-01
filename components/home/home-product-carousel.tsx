@@ -132,39 +132,32 @@ export function HomeProductCarousel() {
             </>
           ) : null}
 
-          <div className="grid md:grid-cols-2">
-            <div className="relative isolate flex flex-col justify-center gap-8 border-b border-neutral-900 p-4 md:gap-16 md:border-b-0 md:border-r md:p-10 lg:p-14">
-              <div aria-hidden className="absolute left-4 top-4 hidden h-3 w-3 bg-[var(--color-blood)] md:block" />
+          <div className="grid md:grid-cols-[1fr_minmax(240px,36%)_1fr]">
+            <div className="relative isolate flex flex-col justify-center gap-6 border-b border-neutral-900 p-4 md:gap-10 md:border-b-0 md:border-r md:p-8 md:text-right lg:p-12">
+              <div aria-hidden className="absolute left-4 top-4 hidden h-3 w-3 bg-[var(--color-blood)] md:left-auto md:right-4" />
               <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-neutral-500">{slideLabel}</p>
-              <div className="flex flex-col items-start gap-2 lg:gap-10">
-                <div className="flex flex-col gap-2 lg:gap-4">
-                  <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">
-                    <span className="text-neutral-500">#GoWild · </span>
-                    {active.category}
-                  </p>
-                  <h1 className="text-3xl font-black uppercase md:text-4xl lg:text-6xl 2xl:text-7xl">{active.name}</h1>
-                  <p className="max-w-lg text-sm leading-relaxed text-neutral-400 md:text-base">{active.description}</p>
-                  <p className="text-lg font-bold uppercase tracking-wide text-[var(--color-blood)] md:text-xl">
-                    {active.accent}
-                  </p>
-                </div>
-                <SenButton href={productHref}>{active.ctaLabel ?? "View product"}</SenButton>
+              <div className="flex flex-col gap-2 md:items-end lg:gap-4">
+                <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">
+                  <span className="text-neutral-500">#GoWild · </span>
+                  {active.category}
+                </p>
+                <h1 className="text-3xl font-black uppercase md:text-3xl lg:text-5xl 2xl:text-6xl">{active.name}</h1>
               </div>
             </div>
 
-            <div className="relative flex items-center justify-center p-4 md:p-10 lg:p-14">
+            <div className="relative flex items-center justify-center border-b border-neutral-900 p-4 md:border-b-0 md:border-r md:px-6 md:py-10 lg:px-10 lg:py-14">
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-y-8 right-0 w-[38%] bg-[linear-gradient(118deg,transparent_49.5%,rgba(229,6,47,0.14)_50%,transparent_50.5%)]"
+                className="pointer-events-none absolute inset-4 bg-[linear-gradient(118deg,transparent_49.5%,rgba(229,6,47,0.12)_50%,transparent_50.5%)]"
               />
-              <div className="relative isolate aspect-square w-full overflow-hidden border border-neutral-900 bg-neutral-950">
+              <div className="relative isolate aspect-square w-full max-w-md overflow-hidden border border-neutral-900 bg-neutral-950">
                 {active.frontImage ? (
                   <Image
                     src={active.frontImage}
                     alt={active.name}
                     fill
                     priority={index === 0}
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 768px) 100vw, 36vw"
                     className="object-contain p-2"
                   />
                 ) : null}
@@ -173,11 +166,23 @@ export function HomeProductCarousel() {
                     src={active.backImage}
                     alt=""
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 768px) 100vw, 36vw"
                     className="object-contain p-2 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   />
                 ) : null}
               </div>
+            </div>
+
+            <div className="flex flex-col justify-center gap-6 p-4 md:gap-10 md:p-8 lg:p-12">
+              <div className="flex flex-col gap-2 lg:gap-4">
+                <p className="max-w-md text-sm leading-relaxed text-neutral-400 md:text-base">{active.description}</p>
+                <p className="text-lg font-bold uppercase tracking-wide text-[var(--color-blood)] md:text-xl">
+                  {active.accent}
+                </p>
+              </div>
+              <SenButton href={productHref} className="max-w-md">
+                {active.ctaLabel ?? "View product"}
+              </SenButton>
             </div>
           </div>
 
