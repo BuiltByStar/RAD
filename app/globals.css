@@ -479,14 +479,6 @@ p { margin: 0; }
       filter 900ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .home-brand-intro__stage {
-    isolation: isolate;
-  }
-
-  .home-brand-intro__lockup .rad-header-brand__title,
-  .home-brand-intro__lockup .rad-header-brand__tagline {
-    animation-duration: 6.5s, 6.5s;
-  }
 
   .rad-header-brand__stack {
     position: relative;
@@ -3869,6 +3861,188 @@ body:has(.shop-modal) main {
 
   .shop-product-card__preview .shop-product-media {
     min-height: 22rem;
+  }
+}
+
+/* ─── Site intro (first visit splash) ─────────────────────────────────────── */
+html.site-intro-active {
+  overflow: hidden;
+}
+
+html.site-intro-active body {
+  overflow: hidden;
+}
+
+.site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #000;
+  pointer-events: auto;
+}
+
+.site-intro__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 42%, rgba(229, 6, 47, 0.28) 0%, transparent 68%),
+    linear-gradient(180deg, #000 0%, #050505 48%, #000 100%);
+}
+
+.site-intro__grid {
+  position: absolute;
+  inset: -20%;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 20%, transparent 78%);
+  animation: site-intro-grid-pan 14s linear infinite;
+}
+
+.site-intro__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(229, 6, 47, 0.9), transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.site-intro__scan--one {
+  animation: site-intro-scan 2.8s linear infinite;
+}
+
+.site-intro__scan--two {
+  animation: site-intro-scan 3.6s linear infinite reverse;
+  opacity: 0.35;
+}
+
+.site-intro__glow {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(92vw, 36rem);
+  height: min(52vh, 22rem);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(229, 6, 47, 0.35) 0%, transparent 72%);
+  filter: blur(18px);
+  animation: site-intro-glow-pulse 2.4s ease-in-out infinite;
+}
+
+.site-intro__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.site-intro__lockup {
+  position: relative;
+  isolation: isolate;
+}
+
+.site-intro__lockup--glitch {
+  animation: site-intro-lockup-glitch 2.2s steps(4, end) infinite;
+}
+
+.site-intro__tag {
+  max-width: 20rem;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.site-intro__wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: linear-gradient(180deg, transparent 0%, #000 38%, #000 100%);
+  pointer-events: none;
+}
+
+@keyframes site-intro-grid-pan {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-48px, -48px, 0);
+  }
+}
+
+@keyframes site-intro-scan {
+  0% {
+    top: -4%;
+  }
+
+  100% {
+    top: 104%;
+  }
+}
+
+@keyframes site-intro-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+@keyframes site-intro-lockup-glitch {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    filter: none;
+  }
+
+  12% {
+    transform: translate3d(-4px, 0, 0);
+    filter: drop-shadow(3px 0 rgba(229, 6, 47, 0.85));
+  }
+
+  24% {
+    transform: translate3d(4px, -1px, 0);
+    filter: drop-shadow(-3px 0 rgba(255, 255, 255, 0.45));
+  }
+
+  36% {
+    transform: translate3d(-2px, 1px, 0);
+    clip-path: inset(0 0 58% 0);
+  }
+
+  48% {
+    transform: translate3d(3px, 0, 0);
+    clip-path: inset(42% 0 0 0);
+  }
+
+  60% {
+    transform: translate3d(-1px, 0, 0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-intro__grid,
+  .site-intro__scan,
+  .site-intro__glow,
+  .site-intro__lockup--glitch {
+    animation: none !important;
   }
 }
 

@@ -2,10 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 
 import { CustomCursor } from "@/components/custom-cursor";
-import { LayoutShell } from "@/components/layout-shell";
 import { RadShellAmbient } from "@/components/rad-shell-ambient";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SiteIntro } from "@/components/site-intro";
 import { assets } from "@/lib/assets";
 import { getPublicSiteUrl } from "@/lib/env";
 
@@ -62,11 +62,10 @@ export default function RootLayout({
       <body className="bg-black font-[family-name:var(--font-body)] text-white antialiased selection:bg-[color:var(--color-blood)]/35">
         <RadShellAmbient />
         <CustomCursor />
-        <LayoutShell>
-          <SiteHeader />
-          <div className="relative min-h-screen pt-14 sm:pt-16">{children}</div>
-          <SiteFooter />
-        </LayoutShell>
+        <SiteIntro />
+        <SiteHeader />
+        <div className="relative min-h-screen pt-14 sm:pt-16">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );
