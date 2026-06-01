@@ -177,11 +177,9 @@ export function SiteHeader() {
       >
         <span
           className={cn(
-            "rad-nav-link__label",
+            variant === "bar" ? "rad-nav-link__label" : active ? "text-white" : "text-neutral-400",
             variant === "bar" && link.zone === "compete" && "rad-nav-link__label--compete",
-            variant === "bar" && active && "rad-nav-link__label--active",
-            variant === "mobile" && "rad-nav-link__label--mobile",
-            variant === "mobile" && active && "rad-nav-link__label--active"
+            variant === "bar" && active && "rad-nav-link__label--active"
           )}
         >
           {link.label}
@@ -251,25 +249,33 @@ export function SiteHeader() {
             <div className="rad-header-brand rad-header-brand--mobile">{renderBrandLink()}</div>
           </div>
 
-          {/* Desktop: compete + org left/mid, brand + utilities top-right */}
-          <div className="hidden h-full items-center gap-3 md:flex">
-            <nav aria-label="Compete" className="rad-nav-cluster shrink-0">
-              {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
-            </nav>
-            <nav aria-label="Organization" className="rad-nav-cluster shrink-0">
-              {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
-            </nav>
-            <div className="ml-auto flex items-center gap-2 pl-3">
-              <Link
-                href={discordInviteUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] transition-colors"
-              >
-                <span className="rad-discord-text">Discord</span>
-              </Link>
-              <AuthWidget />
-              <div className="rad-header-brand">{renderBrandLink()}</div>
+          {/* Desktop: compete — brand — org + utilities */}
+          <div className="hidden h-full items-center md:flex">
+            <div className="flex min-w-0 flex-1 justify-end pr-3">
+              <nav aria-label="Compete" className="rad-nav-cluster shrink-0">
+                {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
+              </nav>
+            </div>
+
+            <div className="rad-header-crest shrink-0">
+              <div className="rad-header-brand rad-header-brand--center">{renderBrandLink()}</div>
+            </div>
+
+            <div className="flex min-w-0 flex-1 items-center gap-3 pl-3">
+              <nav aria-label="Organization" className="rad-nav-cluster shrink-0">
+                {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
+              </nav>
+              <div className="ml-auto flex shrink-0 items-center gap-2">
+                <Link
+                  href={discordInviteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rad-discord-link px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em]"
+                >
+                  Discord
+                </Link>
+                <AuthWidget />
+              </div>
             </div>
           </div>
         </div>
@@ -297,9 +303,9 @@ export function SiteHeader() {
                   href={discordInviteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center border border-neutral-800 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em]"
+                  className="rad-discord-link flex items-center justify-center border border-[#5865f2]/25 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em]"
                 >
-                  <span className="rad-discord-text">Discord</span>
+                  Discord
                 </Link>
                 <Link
                   href="/shop"

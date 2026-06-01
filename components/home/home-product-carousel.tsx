@@ -50,7 +50,6 @@ const arrowButtonClass =
 
 export function HomeProductCarousel() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const total = slides.length;
@@ -67,13 +66,13 @@ export function HomeProductCarousel() {
 
   /* Reduced motion: no animated bar — advance on a fixed timer instead */
   useEffect(() => {
-    if (paused || total <= 1 || !reducedMotion) return;
+    if (total <= 1 || !reducedMotion) return;
     const timer = window.setTimeout(() => go(index + 1), slideDuration);
     return () => window.clearTimeout(timer);
-  }, [go, index, paused, reducedMotion, slideDuration, total]);
+  }, [go, index, reducedMotion, slideDuration, total]);
 
   function handleProgressComplete(event: React.AnimationEvent<HTMLDivElement>) {
-    if (event.animationName !== "home-carousel-progress" || paused || reducedMotion || total <= 1) {
+    if (event.animationName !== "home-carousel-progress" || reducedMotion || total <= 1) {
       return;
     }
     go(index + 1);
@@ -109,14 +108,6 @@ export function HomeProductCarousel() {
       aria-roledescription="carousel"
       aria-label="Featured products"
       tabIndex={0}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          setPaused(false);
-        }
-      }}
     >
       <FluidContainer>
         <div className="relative isolate border-x border-neutral-900">
@@ -196,18 +187,14 @@ export function HomeProductCarousel() {
                 className="h-px w-full bg-neutral-900"
                 role="progressbar"
                 aria-label="Time until next product"
-                aria-valuetext={
-                  paused
-                    ? "Paused"
-                    : `Next jersey in ${slideDuration / 1000} seconds`
-                }
-                aria-busy={!paused && !reducedMotion}
+                aria-valuetext={`Next jersey in ${slideDuration / 1000} seconds`}
+                aria-busy={!reducedMotion}
               >
                 <div
                   key={index}
                   className={`home-carousel-progress-fill h-full bg-[var(--color-blood)] ${
-                    paused ? "home-carousel-progress-fill--paused" : ""
-                  } ${reducedMotion ? "home-carousel-progress-fill--static" : ""}`}
+                    reducedMotion ? "home-carousel-progress-fill--static" : ""
+                  }`}
                   style={{ animationDuration: `${slideDuration}ms` }}
                   onAnimationEnd={handleProgressComplete}
                 />
