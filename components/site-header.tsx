@@ -184,6 +184,32 @@ export function SiteHeader() {
 
   const homeActive = pathname === "/";
 
+  function renderLogoLink(compact?: boolean) {
+    return (
+      <Link
+        href="/"
+        aria-label="RAD Esports home"
+        onClick={(event) => handleNavClick(event, { href: "/", label: "Home" }, homeActive)}
+        className={cn(
+          "rad-header-logo group shrink-0 transition-opacity hover:opacity-90",
+          homeActive && "rad-header-logo--active"
+        )}
+      >
+        <Image
+          src={compact ? assets.logoMark : assets.wordmark}
+          alt=""
+          width={compact ? 40 : 140}
+          height={compact ? 40 : 36}
+          className={cn(
+            "object-contain",
+            compact ? "h-10 w-10" : "h-7 w-auto sm:h-8"
+          )}
+          priority
+        />
+      </Link>
+    );
+  }
+
   return (
     <>
       <NavGlitchOverlay
@@ -192,87 +218,61 @@ export function SiteHeader() {
         exiting={navTransition?.phase === "exit"}
         label={navTransition?.label}
       />
-      <header className="rad-header fixed inset-x-0 top-0 z-50">
-        <div className="mx-auto flex h-14 max-w-[2400px] items-center justify-between gap-3 px-4 sm:h-16 sm:px-6 lg:px-8">
-          <Link
-            href="/"
-            aria-label="RAD Esports home"
-            onClick={(event) => handleNavClick(event, { href: "/", label: "Home" }, homeActive)}
-            className={cn(
-              "group flex shrink-0 items-center gap-3 transition-opacity hover:opacity-90",
-              homeActive && "opacity-100"
-            )}
-          >
-            <Image
-              src={assets.logoMark}
-              alt=""
-              width={36}
-              height={36}
-              className="h-9 w-9 object-contain"
-              priority
-            />
-            <span className="hidden flex-col sm:flex">
-              <span className="font-[family-name:var(--font-display)] text-sm font-extrabold uppercase leading-none tracking-[0.06em] text-white">
-                RAD
-              </span>
-              <span className="text-[9px] font-bold uppercase tracking-[0.26em] text-[var(--color-blood)]">
-                #GoWild
-              </span>
-            </span>
-          </Link>
+      <header className="rad-header fixed inset-x-0 top-0 z-50 border-b border-neutral-900 bg-black/95 backdrop-blur-md">
+        <div className="mx-auto h-14 max-w-[2400px] px-4 sm:h-16 sm:px-6 md:px-8">
+          {/* Mobile: centered logo, menu on the right */}
+          <div className="grid h-full grid-cols-3 items-center md:hidden">
+            <div aria-hidden className="h-10 w-10" />
+            <div className="flex justify-center">{renderLogoLink(true)}</div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setMenuOpen((open) => !open)}
+                className="inline-flex h-10 w-10 items-center justify-center border border-neutral-800 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white"
+                aria-expanded={menuOpen}
+                aria-controls="mobile-rad-nav"
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+              >
+                <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
+                  <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
 
-          <nav
-            aria-label="Primary"
-            className="rad-nav-cluster absolute left-1/2 hidden -translate-x-1/2 lg:flex"
-          >
-            <div className="rad-nav-cluster__zone" aria-label="Compete">
-              {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
+          {/* Desktop: nav — logo — nav */}
+          <div className="hidden h-full items-center md:flex">
+            <div className="flex min-w-0 flex-1 justify-end pr-3">
+              <nav aria-label="Compete" className="rad-nav-cluster">
+                {headerCompeteLinks.map((link) => renderNavLink(link, "bar"))}
+              </nav>
             </div>
-            <div className="rad-nav-cluster__zone" aria-label="Organization">
-              {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
-            </div>
-          </nav>
 
-          <div className="flex items-center gap-1 sm:gap-2">
-            <Link
-              href={discordInviteUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="hidden px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors hover:text-white md:inline-flex"
-            >
-              Discord
-            </Link>
-            <Link
-              href="/shop"
-              onClick={(event) =>
-                handleNavClick(event, { href: "/shop", label: "Shop" }, isActive(pathname, "/shop"))
-              }
-              className="hidden bg-[var(--color-blood)] px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] text-black transition-opacity hover:opacity-90 sm:inline-flex"
-            >
-              Shop
-            </Link>
-            <div className="hidden sm:block">
-              <AuthWidget />
+            <div className="rad-header-crest shrink-0 px-3">{renderLogoLink()}</div>
+
+            <div className="flex min-w-0 flex-1 items-center gap-3 pl-3">
+              <nav aria-label="Organization" className="rad-nav-cluster">
+                {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
+              </nav>
+              <div className="ml-auto flex shrink-0 items-center gap-2">
+                <Link
+                  href={discordInviteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors hover:text-white"
+                >
+                  Discord
+                </Link>
+                <AuthWidget />
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-10 w-10 items-center justify-center border border-neutral-800 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white lg:hidden"
-              aria-expanded={menuOpen}
-              aria-controls="mobile-rad-nav"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-            >
-              <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
-                <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-            </button>
           </div>
         </div>
 
         {menuOpen ? (
           <div
             id="mobile-rad-nav"
-            className="border-t border-neutral-900 bg-black lg:hidden"
+            className="border-t border-neutral-900 bg-black md:hidden"
           >
             <nav aria-label="Mobile navigation" className="mx-auto max-w-[2400px] px-4 py-4">
               <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-blood)]">

@@ -128,7 +128,7 @@ h1, h2, h3, h4 {
 
 p { margin: 0; }
 
-@layer components {
+/* RAD component styles — outside @layer so Turbopack dev always ships them */
   .rad-kicker {
     display: inline-flex;
     align-items: center;
@@ -295,6 +295,7 @@ p { margin: 0; }
   }
 
   .rad-header {
+    position: relative;
     border-bottom: 1px solid var(--border);
     background: rgba(0, 0, 0, 0.92);
     backdrop-filter: blur(10px);
@@ -315,13 +316,31 @@ p { margin: 0; }
     background: rgba(255, 255, 255, 0.02);
   }
 
-  .rad-nav-cluster__zone {
+  .rad-header-crest {
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .rad-nav-cluster__zone + .rad-nav-cluster__zone {
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  .rad-header-logo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .rad-header-logo--active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 1.5rem;
+    height: 2px;
+    transform: translateX(-50%);
+    background: var(--color-blood);
   }
 
   .rad-nav-link {
@@ -362,7 +381,6 @@ p { margin: 0; }
   .rad-nav-link--compete {
     color: rgba(255, 255, 255, 0.78);
   }
-}
 
 @keyframes rad-enter {
   from {
@@ -425,14 +443,6 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
     display: block !important;
   }
 
-  button[aria-controls="mobile-rad-nav"] {
-    position: fixed;
-    right: 1.5rem;
-    top: 1.45rem;
-    z-index: 60;
-    width: 38px;
-    padding-inline: 0;
-  }
 }
 
 .mobile-menu-icon {
