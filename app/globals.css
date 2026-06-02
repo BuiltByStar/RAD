@@ -3821,13 +3821,18 @@ html.site-intro-active body {
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #000;
+  background: transparent;
   pointer-events: auto;
-  transform: translateZ(0);
-  will-change: opacity, transform;
 }
 
 .site-intro--exiting {
+  pointer-events: none;
+}
+
+.site-intro__backdrop {
+  position: absolute;
+  inset: 0;
+  background: #000;
   pointer-events: none;
 }
 
@@ -3889,8 +3894,8 @@ html.site-intro-active body {
   animation: site-intro-strokes-out 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.site-intro-logo-draw--filled .site-intro-logo-draw__fills path {
-  animation: site-intro-fill-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.site-intro-logo-draw--filled .site-intro-logo-draw__fills {
+  animation: site-intro-fills-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes site-intro-stroke-draw {
@@ -3905,7 +3910,11 @@ html.site-intro-active body {
   }
 }
 
-@keyframes site-intro-fill-in {
+@keyframes site-intro-fills-in {
+  from {
+    opacity: 0;
+  }
+
   to {
     opacity: 1;
   }
