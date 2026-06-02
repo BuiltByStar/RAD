@@ -8,8 +8,8 @@ import {
   CardEyebrow,
   CardGrid,
   CardTitle,
-  Container,
-  Section,
+  PageRail,
+  PageRailSection,
   SectionHeading
 } from "@/components/ui";
 import { partners } from "@/lib/site-data";
@@ -50,35 +50,37 @@ export default function PartnersPage() {
       heroImage="/assets/rad-bg-white.png"
       status="Open to partners"
     >
-      <Section padding="sm">
-        <Container>
-          <SectionHeading eyebrow="Process" title="How We Work" description="Clear partner work from brief to launch." actionHref="/contact" actionLabel="Contact RAD" />
-
+      <PageRail className="pb-14 sm:pb-16">
+        <PageRailSection>
+          <SectionHeading
+            eyebrow="Process"
+            title="How We Work"
+            description="Clear partner work from brief to launch."
+            actionHref="/contact"
+            actionLabel="Contact RAD"
+          />
           <CardGrid cols={3}>
             {processSteps.map((step) => (
-              <Card key={step.title} className="min-h-[230px]">
+              <Card key={step.title} accent={false} className="min-h-[220px]">
                 <CardEyebrow>{step.label}</CardEyebrow>
                 <CardTitle size="sm">{step.title}</CardTitle>
                 <CardBody>{step.description}</CardBody>
               </Card>
             ))}
           </CardGrid>
-        </Container>
-      </Section>
+        </PageRailSection>
 
-      <Section padding="sm" className="bg-white/[.015]">
-        <Container>
+        <PageRailSection borderTop>
           <SectionHeading eyebrow="Partner Lanes" title="Opportunities" />
-
           <CardGrid cols={3}>
             {partners.map((partner) => (
-              <Card key={partner.name} tone="tall" className="flex flex-col">
+              <Card key={partner.name} tone="tall" accent={false} className="flex flex-col">
                 <CardEyebrow>{partner.tier}</CardEyebrow>
                 <CardTitle size="sm">{partner.name}</CardTitle>
                 <CardBody>{partner.description}</CardBody>
                 <Link
                   href={partner.href}
-                  className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--color-rad-hi)] transition-colors hover:text-white"
+                  className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)] transition-opacity hover:opacity-70"
                 >
                   Start the conversation
                   <span aria-hidden>→</span>
@@ -86,8 +88,8 @@ export default function PartnersPage() {
               </Card>
             ))}
           </CardGrid>
-        </Container>
-      </Section>
+        </PageRailSection>
+      </PageRail>
     </PageShell>
   );
 }

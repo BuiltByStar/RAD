@@ -23,6 +23,8 @@ type PageShellProps = {
   status?: string;
   note?: ReactNode;
   variant?: Variant;
+  route?: string;
+  hideHero?: boolean;
   children: ReactNode;
 };
 
@@ -92,22 +94,29 @@ export function PageShell({
   status,
   note,
   variant = "default",
+  route,
+  hideHero = false,
   children
 }: PageShellProps) {
+  const readyRoute =
+    route ?? (variant === "default" ? "/" : variant === "merch" ? "/shop" : `/${variant}`);
+
   return (
-    <main className="relative isolate overflow-x-hidden">
-      <PageReadySignal route={variant === "default" ? "/" : `/${variant}`} delayMs={32} />
-      <PageShellHero
-        title={title}
-        eyebrow={eyebrow}
-        description={description}
-        heroImage={heroImage}
-        heroVideo={heroVideo}
-        status={status}
-        note={note}
-        meta={heroMetaMap[variant]}
-        variant={variant}
-      />
+    <main className="relative isolate overflow-x-hidden bg-black text-white">
+      <PageReadySignal route={readyRoute} delayMs={32} />
+      {!hideHero ? (
+        <PageShellHero
+          title={title}
+          eyebrow={eyebrow}
+          description={description}
+          heroImage={heroImage}
+          heroVideo={heroVideo}
+          status={status}
+          note={note}
+          meta={heroMetaMap[variant]}
+          variant={variant}
+        />
+      ) : null}
       <div>{children}</div>
     </main>
   );

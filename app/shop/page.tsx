@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
-import { PageReadySignal } from "@/components/page-ready-signal";
+import { PageShell } from "@/components/page-shell";
 import { ShopPageClient } from "@/components/shop/shop-page-client";
-import { merchItems } from "@/lib/site-data";
+import { PageRail } from "@/components/ui";
+import { merchCollection, merchItems } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -11,9 +12,18 @@ export const metadata: Metadata = {
 
 export default function ShopPage() {
   return (
-    <main className="relative isolate overflow-hidden bg-[#030304]">
-      <PageReadySignal route="/shop" delayMs={32} />
-      <ShopPageClient items={merchItems} />
-    </main>
+    <PageShell
+      variant="merch"
+      eyebrow="Merch"
+      title="Shop"
+      description="Official RAD Esports gear and player-kit concepts built for competition, content, and the wild."
+      heroImage="/assets/rad-bg-red.png"
+      status={merchCollection.status}
+      route="/shop"
+    >
+      <PageRail className="pb-14 sm:pb-16">
+        <ShopPageClient items={merchItems} compact />
+      </PageRail>
+    </PageShell>
   );
 }

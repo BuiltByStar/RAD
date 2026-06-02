@@ -52,14 +52,13 @@ export function TwitchCreators() {
 
   if (loading) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-px border border-neutral-900 bg-neutral-900 md:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="overflow-hidden rounded-[1.55rem] border border-white/10 bg-white/[0.035] p-4">
-            <div className="aspect-[16/8.8] animate-pulse rounded-[1.15rem] bg-white/[0.07]" />
+          <div key={i} className="overflow-hidden bg-black p-4">
+            <div className="aspect-[16/8.8] animate-pulse bg-neutral-900" />
             <div className="mt-5 space-y-3">
-              <div className="h-3 w-20 animate-pulse rounded bg-white/10" />
-              <div className="h-7 w-3/4 animate-pulse rounded bg-white/10" />
-              <div className="h-4 w-1/2 animate-pulse rounded bg-white/10" />
+              <div className="h-3 w-20 animate-pulse bg-neutral-900" />
+              <div className="h-7 w-3/4 animate-pulse bg-neutral-900" />
             </div>
           </div>
         ))}
@@ -69,38 +68,38 @@ export function TwitchCreators() {
 
   if (creators.length === 0) {
     return (
-      <div className="rounded-[1.55rem] border border-white/10 bg-white/[0.04] p-8 text-center">
-        <p className="text-sm text-white/58">No Twitch creators are configured yet.</p>
+      <div className="border border-neutral-900 bg-black p-8 text-center">
+        <p className="text-sm text-neutral-500">No Twitch creators are configured yet.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-px border border-neutral-900 bg-neutral-900 md:grid-cols-2 xl:grid-cols-3">
       {creators.map((creator) => (
         <a
           key={creator.id}
           href={`https://www.twitch.tv/${creator.twitchLogin}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative mx-auto w-full min-w-0 max-w-[342px] overflow-hidden rounded-[1.55rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_22px_70px_-60px_rgba(0,0,0,0.95)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[color:var(--color-rad)]/42 hover:bg-white/[0.065] sm:max-w-none"
+          className="group relative w-full overflow-hidden bg-black p-4 transition duration-300 hover:bg-neutral-950"
         >
-          <div className="relative aspect-[16/8.8] overflow-hidden rounded-[1.15rem] border border-white/10 bg-[radial-gradient(circle_at_50%_40%,rgba(220,20,60,0.24),rgba(255,255,255,0.04)_58%,rgba(0,0,0,0.72)_100%)]">
+          <div className="relative aspect-[16/8.8] overflow-hidden border border-neutral-900 bg-black">
             {creator.isLive && creator.thumbnail ? (
               <img
                 src={creator.thumbnail}
                 alt={creator.streamTitle || `${creator.name} Twitch stream`}
-                className="h-full w-full object-cover opacity-86 transition duration-700 group-hover:scale-[1.04]"
+                className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.03]"
               />
             ) : (
-              <div className="grid h-full place-items-center">
+              <div className="grid h-full place-items-center bg-neutral-950">
                 <svg
                   aria-hidden
                   width="58"
                   height="58"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className="text-white/20"
+                  className="text-neutral-700"
                 >
                   <path
                     d="M5 4h15v9.6l-4 4h-4.2l-2.8 2.8v-2.8H5V4Z"
@@ -116,50 +115,52 @@ export function TwitchCreators() {
             <span
               className={
                 creator.isLive
-                  ? "absolute left-4 top-4 rounded-full border border-[color:var(--color-rad)]/42 bg-[color:var(--color-rad)] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white shadow-[0_14px_36px_rgba(220,20,60,0.34)]"
-                  : "absolute left-4 top-4 rounded-full border border-white/12 bg-black/58 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/58 backdrop-blur-xl"
+                  ? "absolute left-4 top-4 border border-[var(--color-blood)] bg-[var(--color-blood)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white"
+                  : "absolute left-4 top-4 border border-neutral-900 bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500"
               }
             >
               {creator.isLive ? "Live" : "Offline"}
             </span>
             {creator.isLive && creator.viewerCount ? (
-              <span className="absolute right-4 top-4 rounded-full border border-white/12 bg-black/58 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/78 backdrop-blur-xl">
+              <span className="absolute right-4 top-4 border border-neutral-900 bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">
                 {creator.viewerCount.toLocaleString()} watching
               </span>
             ) : null}
           </div>
 
-          <div className="min-w-0 p-1 pt-5">
+          <div className="min-w-0 pt-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="break-words font-[family-name:var(--font-display)] text-3xl uppercase leading-[0.9] text-white">
+                <h3 className="break-words font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-[0.9] text-white group-hover:text-[var(--color-blood)]">
                   {creator.name}
                 </h3>
-                <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-rad-hi)]">
+                <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--color-blood)]">
                   @{creator.twitchLogin}
                 </p>
               </div>
-              <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[color:var(--color-rad)] shadow-[0_0_18px_rgba(220,20,60,0.7)]" />
+              {creator.isLive ? (
+                <span className="mt-1 h-2.5 w-2.5 bg-[var(--color-blood)]" aria-hidden />
+              ) : null}
             </div>
 
             {creator.role ? (
-              <p className="mt-4 text-sm font-semibold text-white/78">{creator.role}</p>
+              <p className="mt-4 text-sm font-semibold text-neutral-400">{creator.role}</p>
             ) : null}
             {creator.isLive && creator.streamTitle ? (
-                <p className="mt-2 line-clamp-2 break-words text-sm leading-relaxed text-white/58">
+              <p className="mt-2 line-clamp-2 break-words text-sm leading-relaxed text-neutral-500">
                 {creator.streamTitle}
               </p>
             ) : (
-              <p className="mt-2 text-sm leading-relaxed text-white/48">
+              <p className="mt-2 text-sm leading-relaxed text-neutral-600">
                 Channel is ready and will surface here when the stream goes live.
               </p>
             )}
             {creator.isLive && creator.game ? (
-              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/38">
+              <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">
                 {creator.game}
               </p>
             ) : null}
-            <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/48 transition group-hover:text-white">
+            <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500 transition group-hover:text-white">
               Watch on Twitch
               <span aria-hidden className="transition group-hover:translate-x-1">→</span>
             </span>

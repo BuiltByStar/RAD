@@ -11,6 +11,7 @@ type ShopCategory = "All" | "Jerseys" | "Light Gear" | "Dark Gear" | "Women";
 
 type ShopPageClientProps = {
   items: MerchItem[];
+  compact?: boolean;
 };
 
 const categories: ShopCategory[] = ["All", "Jerseys", "Light Gear", "Dark Gear", "Women"];
@@ -112,7 +113,7 @@ function ProductImage({
   );
 }
 
-export function ShopPageClient({ items }: ShopPageClientProps) {
+export function ShopPageClient({ items, compact = false }: ShopPageClientProps) {
   const [activeCategory, setActiveCategory] = useState<ShopCategory>("All");
   const [selectedItem, setSelectedItem] = useState<MerchItem | null>(null);
 
@@ -144,74 +145,117 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
 
   return (
     <>
-      <div className="shop-shell">
-        <section className="shop-hero" aria-labelledby="shop-heading">
-          <div className="shop-hero__copy">
-            <h1 id="shop-heading" className="shop-hero__title">
-              RAD Shop
-            </h1>
-            <p className="shop-hero__text">
-              Official RAD Esports gear and player-kit concepts built for competition, content, and the wild.
-            </p>
+      <div className={`shop-shell${compact ? " shop-shell--compact" : ""}`}>
+        {!compact ? (
+          <section className="shop-hero" aria-labelledby="shop-heading">
+            <div className="shop-hero__copy">
+              <h1 id="shop-heading" className="shop-hero__title">
+                RAD Shop
+              </h1>
+              <p className="shop-hero__text">
+                Official RAD Esports gear and player-kit concepts built for competition, content, and the wild.
+              </p>
 
-            <div className="shop-hero__actions">
-              <Button href="#shop-drop" size="lg">
-                View collection
-              </Button>
-              <ShopAction item={featuredItem} className="shop-external-link--hero" />
-            </div>
-
-            <div className="shop-proof-grid" aria-label="Shop highlights">
-              <div>
-                <span>Proofs</span>
-                <strong>11 Items</strong>
+              <div className="shop-hero__actions">
+                <Button href="#shop-drop" size="lg">
+                  View collection
+                </Button>
+                <ShopAction item={featuredItem} className="shop-external-link--hero" />
               </div>
-              <div>
-                <span>Kit</span>
-                <strong>Front + Back</strong>
-              </div>
-              <div>
-                <span>Status</span>
-                <strong>{merchCollection.status}</strong>
-              </div>
-            </div>
-          </div>
 
-          {featuredItem ? (
-            <div className="shop-feature-stage" aria-label="Featured RAD kit">
-              <button
-                type="button"
-                className="shop-jersey-stack"
-                onClick={() => setSelectedItem(featuredItem)}
-              >
-                <span className="shop-jersey-stack__back">
-                  <ProductImage item={featuredItem} image={featuredItem.backImage} priority variant="hero" />
-                </span>
-                <span className="shop-jersey-stack__front">
-                  <ProductImage item={featuredItem} priority variant="hero" />
-                </span>
-                <span className="shop-jersey-stack__caption">
-                  <span>{featuredItem.name}</span>
-                  <strong>Open preview</strong>
-                </span>
-              </button>
-
-              <div className="shop-hero-rack" aria-label="Featured gear previews">
-                {heroRackItems.map((item) => (
-                  <button
-                    key={item.name}
-                    type="button"
-                    className="shop-hero-rack__item"
-                    onClick={() => setSelectedItem(item)}
-                  >
-                    <ProductImage item={item} variant="mini" />
-                    <span>{item.name}</span>
-                  </button>
-                ))}
+              <div className="shop-proof-grid" aria-label="Shop highlights">
+                <div>
+                  <span>Proofs</span>
+                  <strong>11 Items</strong>
+                </div>
+                <div>
+                  <span>Kit</span>
+                  <strong>Front + Back</strong>
+                </div>
+                <div>
+                  <span>Status</span>
+                  <strong>{merchCollection.status}</strong>
+                </div>
               </div>
             </div>
-          ) : null}
-        </section>
+
+            {featuredItem ? (
+              <div className="shop-feature-stage" aria-label="Featured RAD kit">
+                <button
+                  type="button"
+                  className="shop-jersey-stack"
+                  onClick={() => setSelectedItem(featuredItem)}
+                >
+                  <span className="shop-jersey-stack__back">
+                    <ProductImage item={featuredItem} image={featuredItem.backImage} priority variant="hero" />
+                  </span>
+                  <span className="shop-jersey-stack__front">
+                    <ProductImage item={featuredItem} priority variant="hero" />
+                  </span>
+                  <span className="shop-jersey-stack__caption">
+                    <span>{featuredItem.name}</span>
+                    <strong>Open preview</strong>
+                  </span>
+                </button>
+
+                <div className="shop-hero-rack" aria-label="Featured gear previews">
+                  {heroRackItems.map((item) => (
+                    <button
+                      key={item.name}
+                      type="button"
+                      className="shop-hero-rack__item"
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      <ProductImage item={item} variant="mini" />
+                      <span>{item.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </section>
+        ) : featuredItem ? (
+          <section className="shop-feature-band" aria-label="Featured RAD kit">
+            <button
+              type="button"
+              className="shop-jersey-stack shop-jersey-stack--compact"
+              onClick={() => setSelectedItem(featuredItem)}
+            >
+              <span className="shop-jersey-stack__back">
+                <ProductImage item={featuredItem} image={featuredItem.backImage} priority variant="hero" />
+              </span>
+              <span className="shop-jersey-stack__front">
+                <ProductImage item={featuredItem} priority variant="hero" />
+              </span>
+              <span className="shop-jersey-stack__caption">
+                <span>{featuredItem.name}</span>
+                <strong>Open preview</strong>
+              </span>
+            </button>
+            <div className="shop-feature-band__meta">
+              <div className="shop-proof-grid shop-proof-grid--compact" aria-label="Shop highlights">
+                <div>
+                  <span>Proofs</span>
+                  <strong>{items.length} Items</strong>
+                </div>
+                <div>
+                  <span>Kit</span>
+                  <strong>Front + Back</strong>
+                </div>
+                <div>
+                  <span>Status</span>
+                  <strong>{merchCollection.status}</strong>
+                </div>
+              </div>
+              <div className="shop-feature-band__actions">
+                <Button href="#shop-drop" size="sm">
+                  View collection
+                </Button>
+                <ShopAction item={featuredItem} className="shop-external-link--hero" />
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         <div className="shop-marquee" aria-hidden="true">
           <div className="shop-marquee__track">

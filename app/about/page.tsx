@@ -8,9 +8,9 @@ import {
   CardEyebrow,
   CardGrid,
   CardTitle,
-  Container,
   NoteStack,
-  Section,
+  PageRail,
+  PageRailSection,
   SectionHeading
 } from "@/components/ui";
 import { igniteSchedule } from "@/lib/site-data";
@@ -100,26 +100,24 @@ export default function AboutPage() {
         />
       }
     >
-      <Section padding="sm">
-        <Container>
+      <PageRail className="pb-14 sm:pb-16">
+        <PageRailSection>
           <SectionHeading eyebrow="Overview" title="Who We Are" />
-
-          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
-            <Card tone="lead">
-              <CardBody className="mt-0 text-base leading-relaxed text-white/75 sm:text-lg">
+          <div className="grid gap-px border border-neutral-900 bg-neutral-900 lg:grid-cols-2">
+            <Card tone="lead" accent={false} className="border-0 bg-black">
+              <CardBody className="mt-0 text-base leading-relaxed text-neutral-400 sm:text-lg">
                 RAD has been turning heads since 2023. The org became the inaugural Marvel Rivals Ignite: Mid-Season World Champions and later secured the Season 6 EMEA PC title. The goal now is simple: keep winning, keep building, and keep the identity unmistakably RAD.
               </CardBody>
             </Card>
-
-            <div className="grid gap-4 sm:gap-5">
-              <Card>
+            <div className="grid gap-px bg-neutral-900 sm:grid-cols-2 lg:grid-cols-1">
+              <Card accent={false} className="border-0 bg-black">
                 <CardEyebrow>Proof</CardEyebrow>
                 <CardTitle size="sm">Results matter.</CardTitle>
                 <CardBody>
                   The site does not need to oversell the org. The results already give the identity weight.
                 </CardBody>
               </Card>
-              <Card>
+              <Card accent={false} className="border-0 bg-black">
                 <CardEyebrow>Direction</CardEyebrow>
                 <CardTitle size="sm">Built to grow.</CardTitle>
                 <CardBody>
@@ -128,31 +126,25 @@ export default function AboutPage() {
               </Card>
             </div>
           </div>
-        </Container>
-      </Section>
+        </PageRailSection>
 
-      <Section padding="sm" className="bg-white/[.015]">
-        <Container>
+        <PageRailSection borderTop>
           <SectionHeading eyebrow="Standards" title="Standards" />
-
           <CardGrid cols={4}>
             {standards.map((value) => (
-              <Card key={value.title}>
+              <Card key={value.title} accent={false}>
                 <CardTitle size="sm">{value.title}</CardTitle>
                 <CardBody>{value.description}</CardBody>
               </Card>
             ))}
           </CardGrid>
-        </Container>
-      </Section>
+        </PageRailSection>
 
-      <Section padding="sm">
-        <Container>
+        <PageRailSection borderTop>
           <SectionHeading eyebrow="Timeline" title="Milestones" />
-
           <MilestoneWheel items={milestoneWheelItems} />
-        </Container>
-      </Section>
+        </PageRailSection>
+      </PageRail>
     </PageShell>
   );
 }

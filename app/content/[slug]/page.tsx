@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Container, Section } from "@/components/ui";
+import { PageShell } from "@/components/page-shell";
+import { PageRail, PageRailSection } from "@/components/ui";
 import { getPostBySlug, getPostMeta, getPostSlugs } from "@/lib/posts";
 
 export const dynamic = "force-dynamic";
@@ -43,46 +44,48 @@ export default async function PostPage({
     const post = await getPostBySlug(slug);
 
     return (
-      <main className="relative isolate">
-        <section className="relative overflow-hidden pb-10 pt-6 sm:pb-16 sm:pt-10">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1100px_520px_at_80%_-10%,rgb(255_43_69_/_0.18),transparent_60%),radial-gradient(900px_400px_at_0%_120%,rgb(255_43_69_/_0.10),transparent_60%)]"
-          />
-          <Container size="xl">
-            <div className="relative grid gap-6 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] p-5 shadow-[0_24px_80px_-54px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:p-10">
-              <div className="relative z-10 flex flex-col justify-between gap-8">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[color:var(--color-rad-hi)]">
+      <PageShell
+        variant="content"
+        eyebrow={post.category}
+        title={post.title}
+        description={post.summary}
+        heroImage={post.cover}
+        status={post.date}
+        route={`/content/${slug}`}
+        hideHero
+      >
+        <PageRail className="pb-14 sm:pb-16">
+          <PageRailSection className="border-b border-neutral-900 pt-10">
+            <Link
+              href="/content"
+              className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)] transition-colors hover:text-white"
+            >
+              <span aria-hidden>←</span> Back to content
+            </Link>
+
+            <div className="mt-8 grid gap-px border border-neutral-900 bg-neutral-900 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="bg-black p-5 sm:p-8 lg:p-10">
+                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-[var(--color-blood)]">
                   {post.category}
                 </p>
-                <div>
-                  <h1 className="font-[family-name:var(--font-display)] text-[clamp(2.2rem,5.5vw,4.6rem)] uppercase leading-[0.95] tracking-normal text-white [text-wrap:balance]">
-                    {post.title}
-                  </h1>
-                  <p className="mt-5 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
-                    {post.summary}
-                  </p>
-                </div>
-                <div className="flex flex-wrap items-center gap-4 pt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                    {post.date}
-                  </span>
-                  <Link
-                    href="/content"
-                    className="inline-flex items-center gap-1.5 text-[color:var(--color-rad-hi)] transition-colors hover:text-white"
-                  >
-                    <span aria-hidden>←</span> Back to content
-                  </Link>
-                </div>
+                <h1 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2rem,4.5vw,3.4rem)] font-extrabold uppercase leading-[0.95] text-white [text-wrap:balance]">
+                  {post.title}
+                </h1>
+                <p className="mt-5 max-w-xl text-base leading-relaxed text-neutral-500 sm:text-lg">
+                  {post.summary}
+                </p>
+                <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500">
+                  {post.date}
+                </p>
               </div>
 
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.55rem] border border-white/10 bg-black sm:aspect-[5/6] lg:aspect-[4/5]">
+              <div className="relative min-h-[320px] bg-black sm:min-h-[380px] lg:min-h-full">
                 <Image
                   src={post.cover}
                   alt={post.title}
                   fill
                   priority
-                  sizes="(max-width: 900px) 100vw, 44vw"
+                  sizes="(max-width: 1024px) 100vw, 44vw"
                   className="object-cover"
                 />
                 <div
@@ -91,15 +94,13 @@ export default async function PostPage({
                 />
               </div>
             </div>
-          </Container>
-        </section>
+          </PageRailSection>
 
-        <Section padding="sm">
-          <Container size="md">
-            <article className="mdx-body text-white/80">{post.content}</article>
-          </Container>
-        </Section>
-      </main>
+          <PageRailSection>
+            <article className="mdx-body mx-auto max-w-3xl text-neutral-400">{post.content}</article>
+          </PageRailSection>
+        </PageRail>
+      </PageShell>
     );
   } catch {
     notFound();

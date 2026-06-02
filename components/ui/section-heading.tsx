@@ -48,8 +48,10 @@ export function SectionHeading({
       )}
     >
       <div>
-        {eyebrow ? <p className="rad-kicker">{eyebrow}</p> : null}
-        <h2 className="relative mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3.35rem)] uppercase leading-[0.98] tracking-normal text-white [text-wrap:balance]">
+        {eyebrow ? (
+          <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">{eyebrow}</p>
+        ) : null}
+        <h2 className="relative mt-3 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white [text-wrap:balance]">
           {title}
         </h2>
       </div>
@@ -57,14 +59,16 @@ export function SectionHeading({
       {hasMeta ? (
         <div className="flex flex-col items-start gap-4 lg:pb-1">
           {description ? (
-            <div className="max-w-xl text-sm leading-relaxed text-white/60 sm:text-base">
+            <div className="max-w-xl text-sm leading-relaxed text-neutral-500 sm:text-base">
               {description}
             </div>
           ) : null}
           {actionHref && actionLabel ? (
-            <Link href={actionHref} className="rad-link">
-              {actionLabel}
-              <span aria-hidden>→</span>
+            <Link
+              href={actionHref}
+              className="text-xs font-bold uppercase tracking-widest text-[var(--color-blood)] transition-opacity hover:opacity-70"
+            >
+              {actionLabel} →
             </Link>
           ) : null}
         </div>
@@ -72,7 +76,7 @@ export function SectionHeading({
 
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[var(--border)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-neutral-900"
       />
     </motion.header>
   );

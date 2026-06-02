@@ -8,7 +8,7 @@ type LegalCardProps = {
 
 export function LegalCard({ label, title, copy }: LegalCardProps) {
   return (
-    <Card tone="default" accent>
+    <Card tone="default" accent={false}>
       <CardEyebrow>{label}</CardEyebrow>
       <CardTitle size="sm">{title}</CardTitle>
       <CardBody>{copy}</CardBody>

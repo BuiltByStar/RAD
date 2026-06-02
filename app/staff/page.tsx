@@ -9,8 +9,8 @@ import {
   CardTitle,
   Chip,
   ChipRow,
-  Container,
-  Section,
+  PageRail,
+  PageRailSection,
   SectionHeading
 } from "@/components/ui";
 import { staff } from "@/lib/site-data";
@@ -33,16 +33,15 @@ export default function StaffPage() {
       heroImage="/assets/rad-brand-board.png"
       status="Support team"
     >
-      <Section padding="sm">
-        <Container>
+      <PageRail className="pb-14 sm:pb-16">
+        <PageRailSection>
           <SectionHeading eyebrow="Brand & Media" title="Brand Team" />
-
           <CardGrid cols={3}>
             {brandStaff.map((member) => (
-              <Card key={member.slug} className="min-h-[260px]">
+              <Card key={member.slug} accent={false} className="min-h-[240px]">
                 <CardEyebrow>{member.group}</CardEyebrow>
                 <CardTitle size="sm">{member.name}</CardTitle>
-                <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)]/90">
+                <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-blood)]">
                   {member.role}
                 </p>
                 <CardBody>{member.bio ?? member.descriptor}</CardBody>
@@ -56,19 +55,20 @@ export default function StaffPage() {
               </Card>
             ))}
           </CardGrid>
-        </Container>
-      </Section>
+        </PageRailSection>
 
-      <Section padding="sm" className="bg-white/[.015]">
-        <Container>
-          <SectionHeading eyebrow="Operations & Performance" title="Performance Team" description="Management, analytics, and coaching support." />
-
+        <PageRailSection borderTop>
+          <SectionHeading
+            eyebrow="Operations & Performance"
+            title="Performance Team"
+            description="Management, analytics, and coaching support."
+          />
           <CardGrid cols={3}>
             {operationsStaff.map((member) => (
-              <Card key={member.slug} className="min-h-[260px]">
+              <Card key={member.slug} accent={false} className="min-h-[240px]">
                 <CardEyebrow>{member.group}</CardEyebrow>
                 <CardTitle size="sm">{member.name}</CardTitle>
-                <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-[color:var(--color-rad-hi)]/90">
+                <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-blood)]">
                   {member.role}
                 </p>
                 <CardBody>{member.bio ?? member.descriptor}</CardBody>
@@ -82,8 +82,8 @@ export default function StaffPage() {
               </Card>
             ))}
           </CardGrid>
-        </Container>
-      </Section>
+        </PageRailSection>
+      </PageRail>
     </PageShell>
   );
 }

@@ -8,8 +8,8 @@ import {
   CardEyebrow,
   CardTitle,
   ContactGrid,
-  Container,
-  Section,
+  PageRail,
+  PageRailSection,
   SectionHeading
 } from "@/components/ui";
 import { hasSupabaseServiceEnv } from "@/lib/env";
@@ -30,23 +30,20 @@ export default function ContactPage() {
       heroImage="/assets/rad-bg-red.png"
       status="Inquiries open"
     >
-      <Section padding="sm">
-        <Container>
-          <div className="grid gap-5 lg:grid-cols-2">
-            <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_22px_70px_-56px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6">
-              <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent" />
+      <PageRail className="pb-14 sm:pb-16">
+        <PageRailSection>
+          <div className="grid gap-px border border-neutral-900 bg-neutral-900 lg:grid-cols-2">
+            <div className="bg-black p-5 sm:p-6 md:p-8">
               <SectionHeading eyebrow="Inquiry Form" title="Inquiry Form" compact className="mb-6" />
               <ContactForm enabled={hasSupabaseServiceEnv()} />
             </div>
 
-            <div className="flex flex-col gap-5">
-              <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_22px_70px_-56px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-6">
-                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/24 to-transparent" />
-                <SectionHeading eyebrow="Direct Contact" title="Direct Contact" compact className="mb-0" />
+            <div className="grid gap-px bg-neutral-900">
+              <div className="bg-black p-5 sm:p-6 md:p-8">
+                <SectionHeading eyebrow="Direct Contact" title="Direct Contact" compact className="mb-4" />
                 <ContactGrid channels={contactChannels} />
               </div>
-
-              <Card>
+              <Card accent={false} className="border-0 bg-black">
                 <CardEyebrow>Tips</CardEyebrow>
                 <CardTitle size="sm">What to include</CardTitle>
                 <CardBody>
@@ -55,8 +52,8 @@ export default function ContactPage() {
               </Card>
             </div>
           </div>
-        </Container>
-      </Section>
+        </PageRailSection>
+      </PageRail>
     </PageShell>
   );
 }

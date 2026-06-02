@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/page-shell";
-import { Container, LegalCard, Section } from "@/components/ui";
+import { CardGrid, LegalCard, PageRail, PageRailSection } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -39,15 +39,15 @@ export default function TermsPage() {
       heroImage="/assets/rad-bg-red.png"
       status="Active"
     >
-      <Section padding="sm">
-        <Container size="md">
-          <div className="grid gap-4 sm:gap-5">
+      <PageRail className="pb-14 sm:pb-16">
+        <PageRailSection>
+          <CardGrid cols={1} className="max-w-3xl">
             {termsBlocks.map((block) => (
               <LegalCard key={block.title} label={block.label} title={block.title} copy={block.copy} />
             ))}
-          </div>
-        </Container>
-      </Section>
+          </CardGrid>
+        </PageRailSection>
+      </PageRail>
     </PageShell>
   );
 }

@@ -62,9 +62,9 @@ export function Card({
     <motion.article
       {...motionProps}
       className={cn(
-        "group relative overflow-hidden rounded-none border border-white/[0.1] bg-white/[0.025]",
+        "group relative overflow-hidden border border-neutral-900 bg-black",
         "transition-[border-color,background-color] duration-[220ms]",
-        hover ? "hover:border-white/18 hover:bg-white/[0.04]" : "",
+        hover ? "hover:border-[var(--color-blood)]/40 hover:bg-neutral-950" : "",
         tones[tone],
         className
       )}
@@ -111,7 +111,7 @@ export function CardTitle({ className, size = "md", ...rest }: CardTitleProps) {
 type CardBodyProps = HTMLAttributes<HTMLParagraphElement>;
 export function CardBody({ className, ...rest }: CardBodyProps) {
   return (
-    <p className={cn("mt-3 text-sm leading-relaxed text-white/65 sm:text-[0.95rem]", className)} {...rest} />
+    <p className={cn("mt-3 text-sm leading-relaxed text-neutral-500 sm:text-[0.95rem]", className)} {...rest} />
   );
 }
 

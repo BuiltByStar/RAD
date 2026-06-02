@@ -9,12 +9,12 @@ export function NoteStack({ items }: NoteStackProps) {
       {items.map((item) => (
         <div
           key={item.label}
-          className="flex flex-col gap-1 rounded-[1rem] border border-white/10 bg-white/[0.05] px-4 py-3 backdrop-blur-xl"
+          className="flex flex-col gap-1 border border-neutral-900 bg-black px-4 py-3"
         >
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/42">
+          <dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">
             {item.label}
           </dt>
-          <dd className="font-[family-name:var(--font-display)] text-sm uppercase tracking-normal text-white">
+          <dd className="font-[family-name:var(--font-display)] text-sm font-extrabold uppercase tracking-normal text-white">
             {item.value}
           </dd>
         </div>

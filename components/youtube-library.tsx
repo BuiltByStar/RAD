@@ -62,14 +62,13 @@ export function YouTubeLibrary({
 
   if (loading) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-px border border-neutral-900 bg-neutral-900 md:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="overflow-hidden rounded-[1.55rem] border border-white/10 bg-white/[0.035]">
-            <div className="aspect-video animate-pulse bg-white/[0.07]" />
-            <div className="space-y-3 p-5">
-              <div className="h-3 w-24 animate-pulse rounded bg-white/10" />
-              <div className="h-6 w-5/6 animate-pulse rounded bg-white/10" />
-              <div className="h-4 w-full animate-pulse rounded bg-white/10" />
+          <div key={i} className="overflow-hidden bg-black">
+            <div className="aspect-video animate-pulse bg-neutral-900" />
+            <div className="space-y-3 border-t border-neutral-900 p-5">
+              <div className="h-3 w-24 animate-pulse bg-neutral-900" />
+              <div className="h-6 w-5/6 animate-pulse bg-neutral-900" />
             </div>
           </div>
         ))}
@@ -91,14 +90,14 @@ export function YouTubeLibrary({
 
   if (displayItems.length === 0) {
     return (
-      <div className="rounded-[1.55rem] border border-white/10 bg-white/[0.04] p-8 text-center">
-        <p className="text-sm text-white/58">No videos are available yet.</p>
+      <div className="border border-neutral-900 bg-black p-8 text-center">
+        <p className="text-sm text-neutral-500">No videos are available yet.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-px border border-neutral-900 bg-neutral-900 md:grid-cols-2 xl:grid-cols-3">
       {displayItems.map((video) => {
         const isYouTubeVideo = !video.videoId.startsWith("vid-");
         const href = isYouTubeVideo
@@ -111,35 +110,35 @@ export function YouTubeLibrary({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative mx-auto w-full min-w-0 max-w-[342px] overflow-hidden rounded-[1.55rem] border border-white/10 bg-white/[0.04] shadow-[0_22px_70px_-60px_rgba(0,0,0,0.95)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[color:var(--color-rad)]/42 hover:bg-white/[0.065] sm:max-w-none"
+            className="group relative w-full overflow-hidden bg-black transition duration-300 hover:bg-neutral-950"
           >
             <div className="relative aspect-video overflow-hidden bg-black">
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className="h-full w-full object-cover opacity-82 transition duration-700 group-hover:scale-[1.06]"
+                className="h-full w-full object-cover opacity-85 transition duration-700 group-hover:scale-[1.04]"
               />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.52))]" />
-              <span className="absolute left-4 top-4 rounded-full border border-white/12 bg-black/58 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/76 backdrop-blur-xl">
+              <span className="absolute left-4 top-4 border border-neutral-900 bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
                 YouTube
               </span>
-              <span className="absolute bottom-4 right-4 grid h-11 w-11 place-items-center rounded-full border border-white/14 bg-white/10 text-white backdrop-blur-xl transition group-hover:bg-[color:var(--color-rad)]">
-                <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <span className="absolute bottom-4 right-4 grid h-10 w-10 place-items-center border border-neutral-900 bg-black text-white transition group-hover:bg-[var(--color-blood)]">
+                <svg aria-hidden width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </span>
             </div>
 
-            <div className="min-w-0 p-5">
-              <h3 className="break-words font-[family-name:var(--font-display)] text-2xl uppercase leading-[0.95] text-white">
+            <div className="min-w-0 border-t border-neutral-900 p-5">
+              <h3 className="break-words font-[family-name:var(--font-display)] text-2xl font-extrabold uppercase leading-[0.95] text-white group-hover:text-[var(--color-blood)]">
                 {video.title}
               </h3>
               {video.description ? (
-                <p className="mt-3 line-clamp-3 break-words text-sm leading-relaxed text-white/56">
+                <p className="mt-3 line-clamp-3 break-words text-sm leading-relaxed text-neutral-500">
                   {video.description}
                 </p>
               ) : null}
-              <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/48 transition group-hover:text-white">
+              <span className="mt-5 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500 transition group-hover:text-white">
                 Watch
                 <span aria-hidden className="transition group-hover:translate-x-1">→</span>
               </span>
