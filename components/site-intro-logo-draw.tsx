@@ -6,7 +6,8 @@ type SiteIntroLogoDrawProps = {
   filled: boolean;
 };
 
-const STROKE_STAGGER_S = 0.11;
+const STROKE_STAGGER_S = 0.13;
+const STROKE_DRAW_S = 0.64;
 
 export function SiteIntroLogoDraw({ drawing, filled }: SiteIntroLogoDrawProps) {
   return (
@@ -31,7 +32,10 @@ export function SiteIntroLogoDraw({ drawing, filled }: SiteIntroLogoDrawProps) {
                 key={`stroke-${i}`}
                 pathLength={1}
                 d={d}
-                style={{ animationDelay: `${i * STROKE_STAGGER_S}s` }}
+                style={{
+                  animationDelay: `${i * STROKE_STAGGER_S}s`,
+                  animationDuration: `${STROKE_DRAW_S}s`
+                }}
               />
             ))}
           </g>

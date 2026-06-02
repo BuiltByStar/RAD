@@ -3826,18 +3826,11 @@ html.site-intro-active body {
 }
 
 .site-intro--exit {
-  animation-name: site-intro-exit;
-  animation-timing-function: cubic-bezier(0.33, 0, 0.2, 1);
-  animation-fill-mode: forwards;
+  pointer-events: none;
 }
 
-.site-intro__glow {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 58% 44% at 50% 42%, rgba(229, 6, 47, 0.22) 0%, transparent 70%),
-    radial-gradient(ellipse 90% 75% at 50% 50%, transparent 40%, #000 90%);
-  pointer-events: none;
+.site-intro--exit .site-intro__glow {
+  animation: site-intro-glow-out 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .site-intro__brand {
@@ -3848,10 +3841,12 @@ html.site-intro-active body {
   align-items: center;
   gap: 1.35rem;
   padding: 1.5rem;
+  will-change: transform, opacity;
 }
 
 .site-intro__brand--ready .site-intro__copy {
-  animation: site-intro-copy-in 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .site-intro__copy {
@@ -3860,8 +3855,19 @@ html.site-intro-active body {
   align-items: center;
   gap: 0.45rem;
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(6px);
   text-align: center;
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+.site-intro__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 58% 44% at 50% 42%, rgba(229, 6, 47, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 75% at 50% 50%, transparent 40%, #000 90%);
+  pointer-events: none;
 }
 
 .site-intro__name {
@@ -3910,7 +3916,7 @@ html.site-intro-active body {
 }
 
 .site-intro-logo-draw--drawing .site-intro-logo-draw__strokes path {
-  animation: site-intro-stroke-draw 0.48s cubic-bezier(0.45, 0.05, 0.18, 1) forwards;
+  animation: site-intro-stroke-draw 0.64s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .site-intro-logo-draw__fills {
@@ -3923,11 +3929,11 @@ html.site-intro-active body {
 }
 
 .site-intro-logo-draw--filled .site-intro-logo-draw__strokes {
-  animation: site-intro-strokes-out 0.22s ease-out forwards;
+  animation: site-intro-strokes-out 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .site-intro-logo-draw--filled .site-intro-logo-draw__fills path {
-  animation: site-intro-fill-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
+  animation: site-intro-fill-in 0.48s cubic-bezier(0.22, 1, 0.36, 1) 0.06s forwards;
 }
 
 @keyframes site-intro-stroke-draw {
@@ -3948,33 +3954,39 @@ html.site-intro-active body {
   }
 }
 
-@keyframes site-intro-copy-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes site-intro-exit {
-  from {
+@keyframes site-intro-glow-out {
+  0% {
     opacity: 1;
   }
 
-  to {
+  55% {
+    opacity: 1;
+  }
+
+  100% {
     opacity: 0;
-    visibility: hidden;
   }
 }
 
-.site-intro--exit .site-intro__brand {
-  animation: site-intro-brand-exit 0.52s cubic-bezier(0.45, 0.05, 0.2, 1) forwards;
+.site-intro__brand--exit {
+  animation-name: site-intro-brand-exit;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+.site-intro__brand--exit .site-intro__copy {
+  transition: none;
 }
 
 @keyframes site-intro-brand-exit {
-  to {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  100% {
     opacity: 0;
-    transform: scale(1.04) translateY(-10px);
-    filter: blur(3px);
+    transform: scale(0.94) translateY(-14px);
   }
 }
 
@@ -3997,10 +4009,11 @@ html.site-intro-active body {
   .site-intro__copy {
     opacity: 1;
     transform: none;
+    transition: none;
   }
 
-  .site-intro--exit {
-    animation: site-intro-exit 0.28s ease-out forwards !important;
+  .site-intro__brand--exit {
+    animation: site-intro-brand-exit 0.28s ease-out forwards !important;
   }
 }
 

@@ -10,9 +10,9 @@ import {
   markBrandIntroSeen
 } from "@/lib/brand-intro";
 
-const DRAW_MS = 1200;
-const HOLD_MS = 720;
-const EXIT_MS = 520;
+const DRAW_MS = 1650;
+const HOLD_MS = 3720;
+const EXIT_MS = 1000;
 
 export function SiteIntro() {
   const reducedMotion = useRef(
@@ -20,6 +20,7 @@ export function SiteIntro() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
   const introRef = useRef<HTMLDivElement>(null);
+  const brandRef = useRef<HTMLDivElement>(null);
   const finishedRef = useRef(false);
   const [phase, setPhase] = useState<"draw" | "hold" | "exit" | "done">(() => {
     if (typeof window === "undefined") return "done";
@@ -72,11 +73,11 @@ export function SiteIntro() {
   }, [phase]);
 
   useEffect(() => {
-    const node = introRef.current;
+    const node = brandRef.current;
     if (!node || phase !== "exit") return;
 
     const onEnd = (event: AnimationEvent) => {
-      if (event.target !== node || event.animationName !== "site-intro-exit") return;
+      if (event.target !== node || event.animationName !== "site-intro-brand-exit") return;
       finishIntro();
     };
 
@@ -92,15 +93,17 @@ export function SiteIntro() {
   const exiting = phase === "exit";
 
   return (
-    <div
-      ref={introRef}
-      role="presentation"
-      aria-hidden
-      className={cn("site-intro", exiting && "site-intro--exit")}
-      style={exiting ? { animationDuration: `${EXIT_MS}ms` } : undefined}
-    >
+    <div ref={introRef} role="presentation" aria-hidden className={cn("site-intro", exiting && "site-intro--exit")}>
       <div className="site-intro__glow" aria-hidden />
-      <div className={cn("site-intro__brand", showCopy && "site-intro__brand--ready")}>
+      <div
+        ref={brandRef}
+        className={cn(
+          "site-intro__brand",
+          showCopy && "site-intro__brand--ready",
+          exiting && "site-intro__brand--exit"
+        )}
+        style={exiting ? { animationDuration: `${EXIT_MS}ms` } : undefined}
+      >
         <SiteIntroLogoDraw drawing={drawing} filled={filled} />
         <div className="site-intro__copy">
           <p className="site-intro__name">
