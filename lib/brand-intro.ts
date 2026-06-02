@@ -1,4 +1,4 @@
-export const BRAND_INTRO_SESSION_KEY = "rad-site-intro-v1";
+export const BRAND_INTRO_SESSION_KEY = "rad-site-intro-v2";
 
 export const BRAND_INTRO_COMPLETE_EVENT = "rad:brand-intro-complete";
 

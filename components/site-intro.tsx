@@ -10,9 +10,9 @@ import {
   markBrandIntroSeen
 } from "@/lib/brand-intro";
 
-const DRAW_MS = 1650;
-const HOLD_MS = 3720;
-const EXIT_MS = 1000;
+const DRAW_MS = 1700;
+const HOLD_MS = 600;
+const FLASH_MS = 780;
 
 export function SiteIntro() {
   const reducedMotion = useRef(
@@ -20,9 +20,8 @@ export function SiteIntro() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
   const introRef = useRef<HTMLDivElement>(null);
-  const brandRef = useRef<HTMLDivElement>(null);
   const finishedRef = useRef(false);
-  const [phase, setPhase] = useState<"draw" | "hold" | "exit" | "done">(() => {
+  const [phase, setPhase] = useState<"draw" | "hold" | "flash" | "done">(() => {
     if (typeof window === "undefined") return "done";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "done";
     return hasSeenBrandIntro() ? "done" : "draw";
@@ -55,29 +54,29 @@ export function SiteIntro() {
     }
 
     if (phase === "hold") {
-      const exitTimer = window.setTimeout(() => {
+      const flashTimer = window.setTimeout(() => {
         finishedRef.current = false;
-        setPhase("exit");
+        setPhase("flash");
       }, HOLD_MS);
-      return () => window.clearTimeout(exitTimer);
+      return () => window.clearTimeout(flashTimer);
     }
 
     return undefined;
   }, [phase]);
 
   useEffect(() => {
-    if (phase !== "exit") return;
+    if (phase !== "flash") return;
 
-    const fallback = window.setTimeout(finishIntro, EXIT_MS + 80);
+    const fallback = window.setTimeout(finishIntro, FLASH_MS + 80);
     return () => window.clearTimeout(fallback);
   }, [phase]);
 
   useEffect(() => {
-    const node = brandRef.current;
-    if (!node || phase !== "exit") return;
+    const node = introRef.current;
+    if (!node || phase !== "flash") return;
 
     const onEnd = (event: AnimationEvent) => {
-      if (event.target !== node || event.animationName !== "site-intro-brand-exit") return;
+      if (event.target !== node || event.animationName !== "site-intro-shell-flash") return;
       finishIntro();
     };
 
@@ -88,30 +87,22 @@ export function SiteIntro() {
   if (phase === "done") return null;
 
   const drawing = phase === "draw";
-  const filled = phase === "hold" || phase === "exit";
-  const showCopy = phase === "hold" || phase === "exit";
-  const exiting = phase === "exit";
+  const filled = phase === "hold" || phase === "flash";
+  const flashing = phase === "flash";
 
   return (
-    <div ref={introRef} role="presentation" aria-hidden className={cn("site-intro", exiting && "site-intro--exit")}>
+    <div
+      ref={introRef}
+      role="presentation"
+      aria-hidden
+      className={cn("site-intro", flashing && "site-intro--flash")}
+      style={flashing ? { animationDuration: `${FLASH_MS}ms` } : undefined}
+    >
       <div className="site-intro__glow" aria-hidden />
-      <div
-        ref={brandRef}
-        className={cn(
-          "site-intro__brand",
-          showCopy && "site-intro__brand--ready",
-          exiting && "site-intro__brand--exit"
-        )}
-        style={exiting ? { animationDuration: `${EXIT_MS}ms` } : undefined}
-      >
+      <div className={cn("site-intro__logo-wrap", filled && "site-intro__logo-wrap--filled")}>
         <SiteIntroLogoDraw drawing={drawing} filled={filled} />
-        <div className="site-intro__copy">
-          <p className="site-intro__name">
-            <span className="site-intro__name-rad">RAD</span> Esports
-          </p>
-          <p className="site-intro__tag">#GoWild</p>
-        </div>
       </div>
+      <div className="site-intro__flash" aria-hidden />
     </div>
   );
 }

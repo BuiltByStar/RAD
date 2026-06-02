@@ -3805,7 +3805,7 @@ body:has(.shop-modal) main {
   }
 }
 
-/* ─── Site intro — logo line draw + brand copy ─────────────────────────────── */
+/* ─── Site intro — logo draw + flash reveal ────────────────────────────────── */
 html.site-intro-active {
   overflow: hidden;
 }
@@ -3825,42 +3825,13 @@ html.site-intro-active body {
   pointer-events: auto;
 }
 
-.site-intro--exit {
+.site-intro--flash {
   pointer-events: none;
+  animation-name: site-intro-shell-flash;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
 }
 
-.site-intro--exit .site-intro__glow {
-  animation: site-intro-glow-out 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.site-intro__brand {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.35rem;
-  padding: 1.5rem;
-  will-change: transform, opacity;
-}
-
-.site-intro__brand--ready .site-intro__copy {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.site-intro__copy {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.45rem;
-  opacity: 0;
-  transform: translateY(6px);
-  text-align: center;
-  transition:
-    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
-}
 .site-intro__glow {
   position: absolute;
   inset: 0;
@@ -3870,26 +3841,50 @@ html.site-intro-active body {
   pointer-events: none;
 }
 
-.site-intro__name {
-  font-family: var(--font-display), sans-serif;
-  font-size: clamp(1.65rem, 5vw, 2.35rem);
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
-  line-height: 1;
+.site-intro__logo-wrap {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem;
+  will-change: transform, opacity, filter;
 }
 
-.site-intro__name-rad {
-  color: var(--color-blood);
+.site-intro__logo-wrap--filled {
+  filter: drop-shadow(0 0 28px rgba(229, 6, 47, 0.35));
 }
 
-.site-intro__tag {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.42);
+.site-intro--flash .site-intro__logo-wrap {
+  animation: site-intro-logo-flash 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.site-intro__flash {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  z-index: 2;
+  width: 120vmax;
+  height: 120vmax;
+  margin-left: -60vmax;
+  margin-top: -60vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    rgba(255, 255, 255, 0.94) 14%,
+    rgba(229, 6, 47, 0.72) 36%,
+    rgba(229, 6, 47, 0.18) 52%,
+    transparent 68%
+  );
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.site-intro--flash .site-intro__flash {
+  animation: site-intro-flash-burst 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.site-intro--flash .site-intro__glow {
+  animation: site-intro-glow-flash 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .site-intro-logo-draw {
@@ -3954,47 +3949,98 @@ html.site-intro-active body {
   }
 }
 
-@keyframes site-intro-glow-out {
+@keyframes site-intro-shell-flash {
   0% {
+    background: #000;
     opacity: 1;
   }
 
-  55% {
+  30% {
+    background: #fff;
+    opacity: 1;
+  }
+
+  58% {
+    background: #fff;
     opacity: 1;
   }
 
   100% {
+    background: #fff;
     opacity: 0;
+    visibility: hidden;
   }
 }
 
-.site-intro__brand--exit {
-  animation-name: site-intro-brand-exit;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  animation-fill-mode: forwards;
-}
-
-.site-intro__brand--exit .site-intro__copy {
-  transition: none;
-}
-
-@keyframes site-intro-brand-exit {
+@keyframes site-intro-flash-burst {
   0% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  32% {
+    opacity: 0.98;
+    transform: scale(1.75);
+  }
+
+  52% {
+    opacity: 0.55;
+    transform: scale(2.35);
   }
 
   100% {
     opacity: 0;
-    transform: scale(0.94) translateY(-14px);
+    transform: scale(3.1);
+  }
+}
+
+@keyframes site-intro-logo-flash {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 0 28px rgba(229, 6, 47, 0.35));
+  }
+
+  26% {
+    opacity: 1;
+    transform: scale(1.07);
+    filter: brightness(3) drop-shadow(0 0 48px rgba(255, 255, 255, 0.95));
+  }
+
+  48% {
+    opacity: 0.4;
+    transform: scale(1.12);
+    filter: brightness(5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.16);
+    filter: brightness(6);
+  }
+}
+
+@keyframes site-intro-glow-flash {
+  0% {
+    opacity: 1;
+  }
+
+  35% {
+    opacity: 1;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255, 255, 255, 0.95) 0%, transparent 62%),
+      radial-gradient(ellipse 90% 75% at 50% 50%, transparent 40%, #fff 90%);
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-intro-logo-draw__strokes path,
   .site-intro-logo-draw__fills,
-  .site-intro__copy,
-  .site-intro__brand {
+  .site-intro__logo-wrap {
     animation: none !important;
   }
 
@@ -4006,14 +4052,8 @@ html.site-intro-active body {
     opacity: 1;
   }
 
-  .site-intro__copy {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .site-intro__brand--exit {
-    animation: site-intro-brand-exit 0.28s ease-out forwards !important;
+  .site-intro--flash {
+    animation: site-intro-shell-flash 0.28s ease-out forwards !important;
   }
 }
 
