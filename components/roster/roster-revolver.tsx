@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 import { Chip, ChipRow, cn } from "@/components/ui";
+import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
 import { assets } from "@/lib/assets";
 import type { Person } from "@/lib/site-data";
 
@@ -46,7 +47,9 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const releaseTimerRef = useRef<number | null>(null);
+  const hashHandledRef = useRef(false);
 
   const activePlayer = players[active];
   const stagedPlayers = useMemo(() => {
@@ -77,11 +80,33 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         setTransitioning(false);
       }
     },
-    [active, players.length, reduced, transitioning]
+    [players.length, reduced, transitioning]
   );
 
   const goNext = useCallback(() => goTo(active + 1), [active, goTo]);
   const goPrev = useCallback(() => goTo(active - 1), [active, goTo]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || hashHandledRef.current || !players.length) return;
+
+    const slug = window.location.hash.replace(/^#/, "");
+    if (!slug) return;
+
+    const index = players.findIndex((player) => player.slug === slug);
+    if (index >= 0) {
+      hashHandledRef.current = true;
+      setActive(index);
+    }
+  }, [mounted, players]);
+
+  useEffect(() => {
+    if (!mounted || !activePlayer) return;
+    window.history.replaceState(null, "", `#${activePlayer.slug}`);
+  }, [activePlayer, mounted]);
 
   useEffect(() => {
     if (reduced || paused || transitioning || players.length < 2) return;
@@ -102,6 +127,22 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
   }, [paused, players.length, reduced, transitioning]);
 
   useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goNext();
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goPrev();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [goNext, goPrev]);
+
+  useEffect(() => {
     return () => {
       if (releaseTimerRef.current) {
         window.clearTimeout(releaseTimerRef.current);
@@ -111,50 +152,93 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
 
   if (!players.length || !activePlayer) return null;
 
+  const showProgress = !reduced && !paused && !transitioning && players.length > 1;
+
   return (
-    <div
+    <motion.div
+      initial={reduced ? false : { opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.65, ease: EASE_OUT_EXPO, delay: 0.08 }}
       className="relative"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <div className="mb-6 flex items-end justify-between gap-4 border-b border-neutral-900 pb-4">
-        <div className="min-w-0">
-          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-neutral-500">
-            {String(active + 1).padStart(2, "0")} / {String(players.length).padStart(2, "0")}
-          </p>
-          <p className="mt-1 truncate font-[family-name:var(--font-display)] text-xl font-extrabold uppercase text-white sm:text-2xl">
-            {activePlayer.name}
-          </p>
-          <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)]">
-            {activePlayer.role}
-          </p>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-6 top-16 bottom-24 -z-10 overflow-hidden"
+      >
+        <motion.div
+          animate={reduced ? undefined : { opacity: [0.35, 0.55, 0.35], scale: [0.98, 1.02, 0.98] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-1/2 top-1/2 h-[min(520px,70vw)] w-[min(520px,70vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(229,6,47,0.14),transparent_68%)]"
+        />
+      </div>
+
+      <div className="mb-6 border-b border-neutral-900 pb-4">
+        <div className="mb-4 flex items-end justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activePlayer.slug}
+                initial={reduced ? false : { opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={reduced ? undefined : { opacity: 0, x: 12 }}
+                transition={{ duration: 0.32, ease: EASE_OUT_EXPO }}
+              >
+                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-neutral-500">
+                  {String(active + 1).padStart(2, "0")} / {String(players.length).padStart(2, "0")}
+                </p>
+                <p className="mt-1 truncate font-[family-name:var(--font-display)] text-xl font-extrabold uppercase text-white sm:text-2xl">
+                  {activePlayer.name}
+                </p>
+                <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)]">
+                  {activePlayer.role}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={goPrev}
+              disabled={transitioning}
+              className={controlButtonClass}
+              aria-label="Previous player"
+            >
+              <span aria-hidden className="text-lg leading-none">
+                &larr;
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              disabled={transitioning}
+              className={controlButtonClass}
+              aria-label="Next player"
+            >
+              <span aria-hidden className="text-lg leading-none">
+                &rarr;
+              </span>
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={goPrev}
-            disabled={transitioning}
-            className={controlButtonClass}
-            aria-label="Previous player"
-          >
-            <span aria-hidden className="text-lg leading-none">
-              &larr;
-            </span>
-          </button>
-          <button
-            type="button"
-            onClick={goNext}
-            disabled={transitioning}
-            className={controlButtonClass}
-            aria-label="Next player"
-          >
-            <span aria-hidden className="text-lg leading-none">
-              &rarr;
-            </span>
-          </button>
+        <div className="relative h-px overflow-hidden bg-neutral-900">
+          <AnimatePresence mode="wait">
+            {showProgress ? (
+              <motion.div
+                key={`progress-${active}`}
+                className="absolute inset-y-0 left-0 bg-[var(--color-blood)]"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: AUTO_DELAY_MS / 1000, ease: "linear" }}
+              />
+            ) : null}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -181,6 +265,15 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                   ? "z-30 border-[var(--color-blood)]"
                   : "z-10 border-neutral-800"
               )}
+              initial={
+                reduced
+                  ? false
+                  : {
+                      opacity: 0,
+                      y: 28,
+                      scale: 0.92
+                    }
+              }
               animate={{
                 x:
                   offset === 0
@@ -259,37 +352,66 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                 } as CSSProperties
               }
             >
+              {offset === 0 ? (
+                <motion.span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-[linear-gradient(90deg,transparent,rgba(229,6,47,0.9),transparent)]"
+                  animate={reduced ? undefined : { opacity: [0.4, 1, 0.4], x: ["-100%", "100%"] }}
+                  transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                />
+              ) : null}
+
               <div className="relative h-[66%] overflow-hidden border-b border-neutral-900 bg-black">
-                {player.image ? (
-                  <Image
-                    src={player.image}
-                    alt={`${player.name} profile image`}
-                    fill
-                    sizes="(max-width: 768px) 78vw, 390px"
-                    className="object-cover"
-                  />
-                ) : (
-                  <>
+                <motion.div
+                  className="absolute inset-0"
+                  animate={
+                    offset === 0 && !reduced
+                      ? { scale: [1, 1.06] }
+                      : { scale: 1 }
+                  }
+                  transition={
+                    offset === 0 && !reduced
+                      ? { duration: 8, ease: "linear", repeat: Infinity, repeatType: "mirror" }
+                      : { duration: 0.4 }
+                  }
+                >
+                  {player.image ? (
                     <Image
-                      src={assets.pfpRed}
-                      alt=""
+                      src={player.image}
+                      alt={`${player.name} profile image`}
                       fill
                       sizes="(max-width: 768px) 78vw, 390px"
-                      className="object-cover opacity-20 grayscale"
+                      className="object-cover"
+                      priority={offset === 0}
                     />
-                    <div className="absolute inset-0 grid place-items-center">
-                      <span className="font-[family-name:var(--font-display)] text-[6rem] font-black uppercase leading-none text-white/80 sm:text-[7rem]">
-                        {getInitials(player.name)}
-                      </span>
-                    </div>
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <Image
+                        src={assets.pfpRed}
+                        alt=""
+                        fill
+                        sizes="(max-width: 768px) 78vw, 390px"
+                        className="object-cover opacity-20 grayscale"
+                      />
+                      <div className="absolute inset-0 grid place-items-center">
+                        <span className="font-[family-name:var(--font-display)] text-[6rem] font-black uppercase leading-none text-white/80 sm:text-[7rem]">
+                          {getInitials(player.name)}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#070709] via-transparent to-transparent" />
 
-                <div className="absolute left-4 right-4 top-4">
+                <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-2">
                   <span className="inline-block border border-neutral-800 bg-black/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-300">
                     {player.role}
                   </span>
+                  {player.number ? (
+                    <span className="font-[family-name:var(--font-display)] text-2xl font-extrabold tabular-nums leading-none text-white/20">
+                      {String(player.number).padStart(2, "0")}
+                    </span>
+                  ) : null}
                 </div>
               </div>
 
@@ -300,6 +422,11 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                 <h4 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl">
                   {player.name}
                 </h4>
+                {player.rank ? (
+                  <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-blood)]">
+                    {player.rank}
+                  </p>
+                ) : null}
                 {player.bio ? (
                   <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-neutral-500 sm:text-sm">
                     {player.bio}
@@ -333,22 +460,75 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         </div>
       </motion.div>
 
-      <div className="mt-5 flex flex-wrap justify-center gap-1.5">
-        {players.map((player, index) => (
-          <button
-            key={player.slug}
-            type="button"
-            onClick={() => goTo(index)}
-            disabled={transitioning}
-            className={cn(
-              "h-1 transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)]",
-              index === active ? "w-8 bg-[var(--color-blood)]" : "w-4 bg-neutral-800 hover:bg-neutral-600"
-            )}
-            aria-label={`Show ${player.name}`}
-            aria-current={index === active ? "true" : undefined}
-          />
-        ))}
+      <div className="mt-6 overflow-x-auto pb-1">
+        <div className="flex min-w-min gap-px border border-neutral-900 bg-neutral-900">
+          {players.map((player, index) => {
+            const isActive = index === active;
+
+            return (
+              <button
+                key={player.slug}
+                type="button"
+                onClick={() => goTo(index)}
+                disabled={transitioning}
+                className={cn(
+                  "group relative flex w-[4.75rem] shrink-0 flex-col items-center gap-2 px-2 py-3 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)] sm:w-20",
+                  isActive ? "bg-neutral-950" : "bg-black hover:bg-neutral-950/80"
+                )}
+                aria-label={`Show ${player.name}`}
+                aria-current={isActive ? "true" : undefined}
+              >
+                {isActive ? (
+                  <motion.span
+                    layoutId="roster-player-indicator"
+                    className="absolute inset-x-0 top-0 h-0.5 bg-[var(--color-blood)]"
+                    transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
+                  />
+                ) : null}
+
+                <div
+                  className={cn(
+                    "relative h-10 w-10 overflow-hidden border bg-black transition-colors sm:h-11 sm:w-11",
+                    isActive
+                      ? "border-[var(--color-blood)]"
+                      : "border-neutral-800 group-hover:border-neutral-600"
+                  )}
+                >
+                  {player.image ? (
+                    <Image
+                      src={player.image}
+                      alt=""
+                      fill
+                      sizes="44px"
+                      className={cn(
+                        "object-cover transition duration-300",
+                        isActive ? "opacity-100" : "opacity-70 group-hover:opacity-90"
+                      )}
+                    />
+                  ) : (
+                    <span className="grid h-full place-items-center font-[family-name:var(--font-display)] text-xs font-extrabold uppercase text-white/70">
+                      {getInitials(player.name)}
+                    </span>
+                  )}
+                </div>
+
+                <span
+                  className={cn(
+                    "max-w-full truncate text-[9px] font-bold uppercase tracking-[0.12em]",
+                    isActive ? "text-white" : "text-neutral-600 group-hover:text-neutral-400"
+                  )}
+                >
+                  {player.name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+
+      <p className="mt-4 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-700">
+        Drag, arrow keys, or tap a player
+      </p>
+    </motion.div>
   );
 }

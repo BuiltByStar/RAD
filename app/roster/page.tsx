@@ -20,6 +20,17 @@ export default function RosterPage() {
       compact
       eyebrow="Team"
       title={team.game}
+      description={team.status}
+      headerMeta={
+        <>
+          <span className="inline-flex border border-neutral-800 bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-300">
+            {teamRoster.length} players
+          </span>
+          <span className="inline-flex border border-[var(--color-blood)]/40 bg-[var(--color-blood)]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-blood)]">
+            Active roster
+          </span>
+        </>
+      }
     >
       <PageRail className="pb-14 sm:pb-16">
         <PageRailSection className="py-8 md:py-10">

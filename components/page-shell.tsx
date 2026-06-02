@@ -23,6 +23,7 @@ type PageShellProps = {
   heroVideo?: string;
   status?: string;
   note?: ReactNode;
+  headerMeta?: ReactNode;
   variant?: Variant;
   route?: string;
   hideHero?: boolean;
@@ -96,6 +97,7 @@ export function PageShell({
   heroVideo,
   status,
   note,
+  headerMeta,
   variant = "default",
   route,
   hideHero = false,
@@ -109,7 +111,12 @@ export function PageShell({
     <main className="relative isolate overflow-x-hidden bg-black text-white">
       <PageReadySignal route={readyRoute} delayMs={32} />
       {!hideHero && compact ? (
-        <PageHeader title={title} eyebrow={eyebrow} description={description} />
+        <PageHeader
+          title={title}
+          eyebrow={eyebrow}
+          description={description}
+          meta={headerMeta}
+        />
       ) : null}
       {!hideHero && !compact ? (
         <PageShellHero
