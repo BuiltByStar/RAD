@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SiteIntro } from "@/components/site-intro";
 import { assets } from "@/lib/assets";
+import { BRAND_INTRO_BLOCKING_SCRIPT } from "@/lib/brand-intro";
 import { getPublicSiteUrl } from "@/lib/env";
 
 import "./globals.css";
@@ -59,13 +60,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${barlow.variable} ${barlowCondensed.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: BRAND_INTRO_BLOCKING_SCRIPT }} />
+      </head>
       <body className="bg-black font-[family-name:var(--font-body)] text-white antialiased selection:bg-[color:var(--color-blood)]/35">
-        <RadShellAmbient />
-        <CustomCursor />
         <SiteIntro />
-        <SiteHeader />
-        <div className="relative min-h-screen pt-14 sm:pt-16">{children}</div>
-        <SiteFooter />
+        <div className="rad-site-chrome">
+          <RadShellAmbient />
+          <CustomCursor />
+          <SiteHeader />
+          <div className="relative min-h-screen pt-14 sm:pt-16">{children}</div>
+          <SiteFooter />
+        </div>
       </body>
     </html>
   );

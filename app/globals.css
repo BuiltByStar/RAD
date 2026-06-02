@@ -3806,12 +3806,23 @@ body:has(.shop-modal) main {
 }
 
 /* ─── Site intro — logo draw + smooth reveal ───────────────────────────────── */
+html.site-intro-pending,
 html.site-intro-active {
   overflow: hidden;
 }
 
+html.site-intro-pending,
+html.site-intro-pending body,
 html.site-intro-active body {
   overflow: hidden;
+}
+
+html.site-intro-pending body {
+  background: #000;
+}
+
+html.site-intro-pending .rad-site-chrome {
+  visibility: hidden;
 }
 
 .site-intro {

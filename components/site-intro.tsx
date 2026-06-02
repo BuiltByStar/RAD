@@ -1,10 +1,11 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { SiteIntroLogoDraw } from "@/components/site-intro-logo-draw";
 import {
+  BRAND_INTRO_PENDING_CLASS,
   dispatchBrandIntroComplete,
   hasSeenBrandIntro,
   markBrandIntroSeen
@@ -23,22 +24,40 @@ const LOGO_EXIT_MS = 280;
 const EXIT_EASE = [0.33, 1, 0.68, 1] as const;
 const IMPACT_EASE = [0.22, 1, 0.36, 1] as const;
 
+function clearIntroShellClasses() {
+  document.documentElement.classList.remove("site-intro-active", BRAND_INTRO_PENDING_CLASS);
+}
+
 export function SiteIntro() {
   const reduced = useReducedMotion();
   const finishedRef = useRef(false);
-  const [show, setShow] = useState(() => {
-    if (typeof window === "undefined") return false;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-    return !hasSeenBrandIntro();
-  });
+  const [show, setShow] = useState(false);
   const [phase, setPhase] = useState<"draw" | "exit">("draw");
   const [filled, setFilled] = useState(false);
+
+  useLayoutEffect(() => {
+    const shouldShow = !reduced && !hasSeenBrandIntro();
+
+    if (!shouldShow) {
+      clearIntroShellClasses();
+      if (!hasSeenBrandIntro() && reduced) {
+        markBrandIntroSeen();
+      }
+      dispatchBrandIntroComplete();
+      setShow(false);
+      return;
+    }
+
+    document.documentElement.classList.remove(BRAND_INTRO_PENDING_CLASS);
+    document.documentElement.classList.add("site-intro-active");
+    setShow(true);
+  }, [reduced]);
 
   function complete() {
     if (finishedRef.current) return;
     finishedRef.current = true;
     markBrandIntroSeen();
-    document.documentElement.classList.remove("site-intro-active");
+    clearIntroShellClasses();
     setShow(false);
   }
 
@@ -50,19 +69,7 @@ export function SiteIntro() {
   }, [show, reduced]);
 
   useEffect(() => {
-    if (!show) {
-      document.documentElement.classList.remove("site-intro-active");
-      return;
-    }
-
-    if (reduced) {
-      markBrandIntroSeen();
-      dispatchBrandIntroComplete();
-      setShow(false);
-      return;
-    }
-
-    document.documentElement.classList.add("site-intro-active");
+    if (!show || reduced) return;
 
     if (phase === "draw") {
       const exitTimer = window.setTimeout(() => setPhase("exit"), DRAW_MS);
