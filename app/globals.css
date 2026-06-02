@@ -3823,6 +3823,8 @@ html.site-intro-active body {
   overflow: hidden;
   background: #000;
   pointer-events: auto;
+  transform: translateZ(0);
+  will-change: opacity, transform;
 }
 
 .site-intro--exiting {
@@ -3842,7 +3844,8 @@ html.site-intro-active body {
   position: relative;
   z-index: 1;
   padding: 1.5rem;
-  will-change: transform, filter;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .site-intro-logo-draw {
@@ -3883,11 +3886,11 @@ html.site-intro-active body {
 }
 
 .site-intro-logo-draw--filled .site-intro-logo-draw__strokes {
-  animation: site-intro-strokes-out 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: site-intro-strokes-out 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .site-intro-logo-draw--filled .site-intro-logo-draw__fills path {
-  animation: site-intro-fill-in 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.04s forwards;
+  animation: site-intro-fill-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes site-intro-stroke-draw {

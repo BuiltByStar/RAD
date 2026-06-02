@@ -9,14 +9,19 @@ import {
   hasSeenBrandIntro,
   markBrandIntroSeen
 } from "@/lib/brand-intro";
+import { RAD_LOGO_DRAW_PATHS } from "@/lib/rad-logo-draw-path";
+
+const STROKE_STAGGER_S = 0.14;
+const STROKE_DRAW_S = 0.72;
+const STROKE_COMPLETE_MS =
+  Math.ceil(((RAD_LOGO_DRAW_PATHS.length - 1) * STROKE_STAGGER_S + STROKE_DRAW_S) * 1000) + 60;
 
 const DRAW_MS = 1900;
-const HOLD_MS = 380;
-const EXIT_MS = 520;
-const IMPACT_S = 0.36;
+const REST_MS = 140;
+const EXIT_MS = 280;
 
-const EXIT_EASE = [0.76, 0, 0.24, 1] as const;
-const IMPACT_EASE = [0.16, 1, 0.3, 1] as const;
+const EXIT_EASE = [0.33, 1, 0.68, 1] as const;
+const IMPACT_EASE = [0.22, 1, 0.36, 1] as const;
 
 export function SiteIntro() {
   const reduced = useReducedMotion();
@@ -27,6 +32,7 @@ export function SiteIntro() {
     return !hasSeenBrandIntro();
   });
   const [phase, setPhase] = useState<"draw" | "hold" | "exit">("draw");
+  const [filled, setFilled] = useState(false);
 
   function complete() {
     if (finishedRef.current) return;
@@ -35,6 +41,13 @@ export function SiteIntro() {
     document.documentElement.classList.remove("site-intro-active");
     setShow(false);
   }
+
+  useEffect(() => {
+    if (!show || reduced) return;
+
+    const fillTimer = window.setTimeout(() => setFilled(true), STROKE_COMPLETE_MS);
+    return () => window.clearTimeout(fillTimer);
+  }, [show, reduced]);
 
   useEffect(() => {
     if (!show) {
@@ -52,13 +65,13 @@ export function SiteIntro() {
     document.documentElement.classList.add("site-intro-active");
 
     if (phase === "draw") {
-      const timer = window.setTimeout(() => setPhase("hold"), DRAW_MS);
-      return () => window.clearTimeout(timer);
+      const holdTimer = window.setTimeout(() => setPhase("hold"), DRAW_MS);
+      return () => window.clearTimeout(holdTimer);
     }
 
     if (phase === "hold") {
-      const timer = window.setTimeout(() => setPhase("exit"), HOLD_MS);
-      return () => window.clearTimeout(timer);
+      const exitTimer = window.setTimeout(() => setPhase("exit"), REST_MS);
+      return () => window.clearTimeout(exitTimer);
     }
 
     return undefined;
@@ -68,14 +81,13 @@ export function SiteIntro() {
     if (phase !== "exit") return;
     dispatchBrandIntroComplete();
 
-    const fallback = window.setTimeout(complete, EXIT_MS + 120);
+    const fallback = window.setTimeout(complete, EXIT_MS + 60);
     return () => window.clearTimeout(fallback);
   }, [phase]);
 
   if (!show) return null;
 
-  const drawing = phase === "draw";
-  const filled = phase === "hold" || phase === "exit";
+  const drawing = phase === "draw" && !filled;
   const exiting = phase === "exit";
 
   return (
@@ -83,12 +95,8 @@ export function SiteIntro() {
       role="presentation"
       aria-hidden
       className={exiting ? "site-intro site-intro--exiting" : "site-intro"}
-      initial={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-      animate={
-        exiting
-          ? { opacity: 0, scale: 1.06, filter: "blur(14px)" }
-          : { opacity: 1, scale: 1, filter: "blur(0px)" }
-      }
+      initial={false}
+      animate={exiting ? { opacity: 0, scale: 1.03 } : { opacity: 1, scale: 1 }}
       transition={{ duration: EXIT_MS / 1000, ease: EXIT_EASE }}
       onAnimationComplete={() => {
         if (exiting) complete();
@@ -96,16 +104,11 @@ export function SiteIntro() {
     >
       <div className="site-intro__glow" aria-hidden />
       <motion.div
+        key={filled ? "logo-filled" : "logo-drawing"}
         className="site-intro__logo-wrap"
-        animate={
-          phase === "hold"
-            ? {
-                scale: [1, 1.07, 1],
-                filter: ["blur(5px)", "blur(0px)", "blur(0px)"]
-              }
-            : { scale: 1, filter: "blur(0px)" }
-        }
-        transition={{ duration: IMPACT_S, ease: IMPACT_EASE }}
+        initial={{ scale: 1 }}
+        animate={filled ? { scale: [1, 1.045, 1] } : { scale: 1 }}
+        transition={{ duration: 0.32, ease: IMPACT_EASE }}
       >
         <SiteIntroLogoDraw drawing={drawing} filled={filled} />
       </motion.div>
