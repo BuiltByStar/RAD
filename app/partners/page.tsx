@@ -9,8 +9,7 @@ import {
   CardGrid,
   CardTitle,
   PageRail,
-  PageRailSection,
-  SectionHeading
+  PageRailSection
 } from "@/components/ui";
 import { partners } from "@/lib/site-data";
 
@@ -19,59 +18,17 @@ export const metadata: Metadata = {
   description: "Partnership opportunities, campaigns, and branded work for RAD."
 };
 
-const processSteps = [
-  {
-    label: "01 // Brief",
-    title: "Find the fit.",
-    description:
-      "The best work starts with a brand, audience, and competitive angle that make sense together."
-  },
-  {
-    label: "02 // Concept",
-    title: "Build the idea.",
-    description:
-      "RAD packages competition, content, and community into a campaign people can actually feel."
-  },
-  {
-    label: "03 // Launch",
-    title: "Launch it clean.",
-    description:
-      "Campaigns should move through roster, media, social, and community without feeling forced."
-  }
-];
-
 export default function PartnersPage() {
   return (
     <PageShell
       variant="partners"
+      compact
       eyebrow="Partners"
       title="Partners"
-      description="RAD is open to partner work that fits the team, the audience, and the brand."
-      heroImage="/assets/rad-bg-white.png"
-      status="Open to partners"
+      description="Campaigns and activations that fit RAD's team and audience."
     >
       <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection>
-          <SectionHeading
-            eyebrow="Process"
-            title="How We Work"
-            description="Clear partner work from brief to launch."
-            actionHref="/contact"
-            actionLabel="Contact RAD"
-          />
-          <CardGrid cols={3}>
-            {processSteps.map((step) => (
-              <Card key={step.title} accent={false} className="min-h-[220px]">
-                <CardEyebrow>{step.label}</CardEyebrow>
-                <CardTitle size="sm">{step.title}</CardTitle>
-                <CardBody>{step.description}</CardBody>
-              </Card>
-            ))}
-          </CardGrid>
-        </PageRailSection>
-
-        <PageRailSection borderTop>
-          <SectionHeading eyebrow="Partner Lanes" title="Opportunities" />
+        <PageRailSection className="py-8 md:py-10">
           <CardGrid cols={3}>
             {partners.map((partner) => (
               <Card key={partner.name} tone="tall" accent={false} className="flex flex-col">
@@ -82,7 +39,7 @@ export default function PartnersPage() {
                   href={partner.href}
                   className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)] transition-opacity hover:opacity-70"
                 >
-                  Start the conversation
+                  Contact
                   <span aria-hidden>→</span>
                 </Link>
               </Card>

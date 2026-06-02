@@ -33,14 +33,13 @@ export default function PrivacyPage() {
   return (
     <PageShell
       variant="legal"
+      compact
       eyebrow="Legal"
       title="Privacy"
       description="How RAD handles information shared through the site."
-      heroImage="/assets/rad-bg-red.png"
-      status="Current"
     >
       <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection>
+        <PageRailSection className="py-8 md:py-10">
           <CardGrid cols={1} className="max-w-3xl">
             {privacyBlocks.map((block) => (
               <LegalCard key={block.title} label={block.label} title={block.title} copy={block.copy} />

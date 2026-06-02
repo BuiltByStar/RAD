@@ -12,6 +12,7 @@ export { SenButton } from "./sen-button";
 export { LegalCard } from "./legal-card";
 export { MatchCard, type MatchStatus } from "./match-card";
 export { NoteStack } from "./note-stack";
+export { PageHeader } from "./page-header";
 export { PageRail, PageRailSection } from "./page-rail";
 export { Section } from "./section";
 export { SectionDivider } from "./section-divider";

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { PageReadySignal } from "@/components/page-ready-signal";
 import { PageShellHero } from "@/components/page-shell-hero";
+import { PageHeader } from "@/components/ui/page-header";
 
 type Variant =
   | "default"
@@ -17,7 +18,7 @@ type Variant =
 type PageShellProps = {
   title: string;
   eyebrow: string;
-  description: string;
+  description?: string;
   heroImage?: string;
   heroVideo?: string;
   status?: string;
@@ -25,6 +26,8 @@ type PageShellProps = {
   variant?: Variant;
   route?: string;
   hideHero?: boolean;
+  /** Short title block instead of full hero (image, status, tags). */
+  compact?: boolean;
   children: ReactNode;
 };
 
@@ -96,6 +99,7 @@ export function PageShell({
   variant = "default",
   route,
   hideHero = false,
+  compact = false,
   children
 }: PageShellProps) {
   const readyRoute =
@@ -104,11 +108,14 @@ export function PageShell({
   return (
     <main className="relative isolate overflow-x-hidden bg-black text-white">
       <PageReadySignal route={readyRoute} delayMs={32} />
-      {!hideHero ? (
+      {!hideHero && compact ? (
+        <PageHeader title={title} eyebrow={eyebrow} description={description} />
+      ) : null}
+      {!hideHero && !compact ? (
         <PageShellHero
           title={title}
           eyebrow={eyebrow}
-          description={description}
+          description={description ?? ""}
           heroImage={heroImage}
           heroVideo={heroVideo}
           status={status}

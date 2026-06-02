@@ -7,8 +7,6 @@ import {
   CardEyebrow,
   CardGrid,
   CardTitle,
-  Chip,
-  ChipRow,
   PageRail,
   PageRailSection,
   SectionHeading
@@ -27,58 +25,39 @@ export default function StaffPage() {
   return (
     <PageShell
       variant="staff"
+      compact
       eyebrow="Staff"
       title="Staff"
-      description="The people behind RAD's competition, content, and day-to-day work."
-      heroImage="/assets/rad-brand-board.png"
-      status="Support team"
+      description="People behind competition, content, and operations."
     >
       <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection>
-          <SectionHeading eyebrow="Brand & Media" title="Brand Team" />
+        <PageRailSection className="py-8 md:py-10">
+          <SectionHeading title="Brand" compact className="mb-6" />
           <CardGrid cols={3}>
             {brandStaff.map((member) => (
-              <Card key={member.slug} accent={false} className="min-h-[240px]">
+              <Card key={member.slug} accent={false}>
                 <CardEyebrow>{member.group}</CardEyebrow>
                 <CardTitle size="sm">{member.name}</CardTitle>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-blood)]">
                   {member.role}
                 </p>
                 <CardBody>{member.bio ?? member.descriptor}</CardBody>
-                {member.tags?.length ? (
-                  <ChipRow>
-                    {member.tags.map((tag) => (
-                      <Chip key={tag}>{tag}</Chip>
-                    ))}
-                  </ChipRow>
-                ) : null}
               </Card>
             ))}
           </CardGrid>
         </PageRailSection>
 
-        <PageRailSection borderTop>
-          <SectionHeading
-            eyebrow="Operations & Performance"
-            title="Performance Team"
-            description="Management, analytics, and coaching support."
-          />
+        <PageRailSection borderTop className="py-8 md:py-10">
+          <SectionHeading title="Operations" compact className="mb-6" />
           <CardGrid cols={3}>
             {operationsStaff.map((member) => (
-              <Card key={member.slug} accent={false} className="min-h-[240px]">
+              <Card key={member.slug} accent={false}>
                 <CardEyebrow>{member.group}</CardEyebrow>
                 <CardTitle size="sm">{member.name}</CardTitle>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-blood)]">
                   {member.role}
                 </p>
                 <CardBody>{member.bio ?? member.descriptor}</CardBody>
-                {member.tags?.length ? (
-                  <ChipRow>
-                    {member.tags.map((tag) => (
-                      <Chip key={tag}>{tag}</Chip>
-                    ))}
-                  </ChipRow>
-                ) : null}
               </Card>
             ))}
           </CardGrid>

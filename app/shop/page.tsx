@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
 import { ShopPageClient } from "@/components/shop/shop-page-client";
 import { PageRail } from "@/components/ui";
-import { merchCollection, merchItems } from "@/lib/site-data";
+import { merchItems } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -14,11 +14,10 @@ export default function ShopPage() {
   return (
     <PageShell
       variant="merch"
+      compact
       eyebrow="Merch"
       title="Shop"
-      description="Official RAD Esports gear and player-kit concepts built for competition, content, and the wild."
-      heroImage="/assets/rad-bg-red.png"
-      status={merchCollection.status}
+      description="Official RAD gear — jerseys, hoodies, and more."
       route="/shop"
     >
       <PageRail className="pb-14 sm:pb-16">

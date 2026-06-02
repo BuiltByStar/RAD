@@ -33,14 +33,13 @@ export default function TermsPage() {
   return (
     <PageShell
       variant="legal"
+      compact
       eyebrow="Legal"
       title="Terms"
-      description="The rules for using RAD's public website and connected services."
-      heroImage="/assets/rad-bg-red.png"
-      status="Active"
+      description="Rules for using RAD's public website and connected services."
     >
       <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection>
+        <PageRailSection className="py-8 md:py-10">
           <CardGrid cols={1} className="max-w-3xl">
             {termsBlocks.map((block) => (
               <LegalCard key={block.title} label={block.label} title={block.title} copy={block.copy} />

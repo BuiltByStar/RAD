@@ -33,14 +33,13 @@ export default function CookiesPage() {
   return (
     <PageShell
       variant="legal"
+      compact
       eyebrow="Legal"
       title="Cookies"
       description="How RAD uses cookies and similar tools across the site."
-      heroImage="/assets/rad-bg-red.png"
-      status="Published"
     >
       <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection>
+        <PageRailSection className="py-8 md:py-10">
           <CardGrid cols={1} className="max-w-3xl">
             {cookieBlocks.map((block) => (
               <LegalCard key={block.title} label={block.label} title={block.title} copy={block.copy} />
