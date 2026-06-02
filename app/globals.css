@@ -645,6 +645,37 @@ p { margin: 0; }
     text-shadow: 0 0 14px rgba(88, 101, 242, 0.38);
   }
 
+  .rad-community-discord {
+    padding: 0.9rem 1.55rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #5865f2;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 0 1px rgba(88, 101, 242, 0.25);
+    transition:
+      background var(--transition-ui),
+      border-color var(--transition-ui),
+      box-shadow var(--transition-ui),
+      transform var(--transition-ui);
+  }
+
+  .rad-community-discord:hover {
+    background: #6f7bf5;
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow:
+      0 0 0 1px rgba(88, 101, 242, 0.45),
+      0 8px 28px rgba(88, 101, 242, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .rad-community-discord:active {
+    transform: translateY(0);
+    background: #4f5bd6;
+  }
+
 @keyframes rad-header-brand-shift {
   0%,
   100% {
@@ -3864,7 +3895,7 @@ body:has(.shop-modal) main {
   }
 }
 
-/* ─── Site intro — lion eyes, mouth open, fast pull ─────────────────────────── */
+/* ─── Site intro — logo line draw + brand copy ─────────────────────────────── */
 html.site-intro-active {
   overflow: hidden;
 }
@@ -3882,221 +3913,162 @@ html.site-intro-active body {
   overflow: hidden;
   background: #000;
   pointer-events: auto;
-  backface-visibility: hidden;
+}
+
+.site-intro--exit {
+  animation-name: site-intro-exit;
+  animation-timing-function: cubic-bezier(0.33, 0, 0.2, 1);
+  animation-fill-mode: forwards;
 }
 
 .site-intro__glow {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 62% 48% at 50% 46%, rgba(229, 6, 47, 0.24) 0%, transparent 68%),
-    radial-gradient(ellipse 95% 80% at 50% 50%, transparent 42%, #000 88%);
+    radial-gradient(ellipse 58% 44% at 50% 42%, rgba(229, 6, 47, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 90% 75% at 50% 50%, transparent 40%, #000 90%);
   pointer-events: none;
 }
 
-.site-intro__stage {
+.site-intro__brand {
   position: relative;
   z-index: 1;
-  width: min(72vw, 19rem);
-  transform-origin: 50% 62%;
-  backface-visibility: hidden;
-  animation: site-intro-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.35rem;
+  padding: 1.5rem;
 }
 
-.site-intro__lion-wrap {
+.site-intro__brand--ready .site-intro__copy {
+  animation: site-intro-copy-in 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.site-intro__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  opacity: 0;
+  transform: translateY(14px);
+  text-align: center;
+}
+
+.site-intro__name {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.65rem, 5vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+
+.site-intro__name-rad {
+  color: var(--color-blood);
+}
+
+.site-intro__tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.site-intro-logo-draw {
   position: relative;
+  width: min(58vw, 11.5rem);
   line-height: 0;
 }
 
-.site-intro__lion {
+.site-intro-logo-draw__svg {
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 0 36px rgba(229, 6, 47, 0.38));
-}
-
-/* White eyes in the logo’s upper negative-space sockets */
-.site-intro__eye {
-  position: absolute;
-  z-index: 3;
-  width: 7.5%;
-  height: 5.5%;
-  opacity: 0;
-  background: linear-gradient(165deg, #fff 0%, #e8e8e8 55%, #cfcfcf 100%);
-  box-shadow:
-    0 0 12px rgba(255, 255, 255, 0.55),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  animation-duration: 0.32s;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  animation-delay: 0.28s;
-  animation-fill-mode: forwards;
-}
-
-.site-intro__eye--left {
-  left: 33.5%;
-  top: 26.5%;
-  clip-path: polygon(18% 8%, 100% 22%, 82% 100%, 0 78%);
-  transform: rotate(-10deg) skewX(-8deg);
-}
-
-.site-intro__eye--right {
-  right: 33.5%;
-  top: 26.5%;
-  clip-path: polygon(0 22%, 82% 8%, 100% 78%, 18% 100%);
-  transform: rotate(10deg) skewX(8deg);
-}
-
-/* Mouth rig — jaws split open, then tunnel pulls you in */
-.site-intro__maw {
-  position: absolute;
-  left: 50%;
-  top: 61%;
-  z-index: 4;
-  width: 12.5%;
-  height: 19%;
   overflow: visible;
-  transform: translate(-50%, -42%);
+}
+
+.site-intro-logo-draw__strokes path {
+  fill: none;
+  stroke: #e5062f;
+  stroke-width: 2.5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.95;
+}
+
+.site-intro-logo-draw--drawing .site-intro-logo-draw__strokes path {
+  animation: site-intro-stroke-draw 0.42s cubic-bezier(0.45, 0.05, 0.2, 1) forwards;
+}
+
+.site-intro-logo-draw__fills {
+  opacity: 0;
+}
+
+.site-intro-logo-draw__fills path {
+  fill: #e5062f;
+  stroke: none;
+}
+
+.site-intro-logo-draw--filled .site-intro-logo-draw__fills {
+  animation: site-intro-fill-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.site-intro-logo-draw--filled .site-intro-logo-draw__strokes {
+  animation: site-intro-strokes-out 0.28s ease-out forwards;
+}
+
+.site-intro-logo-draw__mark {
+  position: absolute;
+  inset: 2% 8% 8%;
+  width: 84%;
+  height: auto;
+  margin: auto;
+  object-fit: contain;
+  opacity: 0;
+  filter: drop-shadow(0 0 32px rgba(229, 6, 47, 0.42));
   pointer-events: none;
 }
 
-.site-intro__tunnel {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  z-index: 0;
-  width: 72%;
-  height: 58%;
-  border-radius: 46% 46% 52% 52%;
-  background: #000;
-  transform: translate(-50%, -50%) scale(0.45);
-  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.9);
+.site-intro-logo-draw--filled .site-intro-logo-draw__mark {
+  animation: site-intro-mark-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
 }
 
-.site-intro__jaw {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  background: #e5062f;
+@keyframes site-intro-stroke-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.site-intro__jaw--top {
-  top: 0;
-  height: 54%;
-  transform-origin: 50% 100%;
-  clip-path: polygon(6% 0, 94% 0, 76% 100%, 24% 100%);
-}
-
-.site-intro__jaw--bottom {
-  bottom: 0;
-  height: 54%;
-  transform-origin: 50% 0%;
-  clip-path: polygon(24% 0, 76% 0, 94% 100%, 6% 100%);
-}
-
-.site-intro--pull .site-intro__jaw--top {
-  animation: site-intro-jaw-top 0.16s cubic-bezier(0.33, 1.15, 0.55, 1) forwards;
-}
-
-.site-intro--pull .site-intro__jaw--bottom {
-  animation: site-intro-jaw-bottom 0.16s cubic-bezier(0.33, 1.15, 0.55, 1) forwards;
-}
-
-.site-intro--pull .site-intro__tunnel {
-  animation: site-intro-tunnel-grow 0.52s cubic-bezier(0.48, 0.04, 0.12, 1) 0.1s forwards;
-}
-
-.site-intro--pull .site-intro__stage {
-  animation-name: site-intro-mouth-zoom;
-  animation-timing-function: cubic-bezier(0.52, 0.03, 0.12, 1);
-  animation-delay: 0.12s;
-  animation-fill-mode: forwards;
-}
-
-.site-intro--pull {
-  animation-name: site-intro-fade;
-  animation-timing-function: cubic-bezier(0.33, 0, 0.2, 1);
-  animation-fill-mode: forwards;
-}
-
-@keyframes site-intro-enter {
-  from {
+@keyframes site-intro-strokes-out {
+  to {
     opacity: 0;
-    transform: scale(0.95) translateZ(0);
   }
+}
 
+@keyframes site-intro-fill-in {
   to {
     opacity: 1;
-    transform: scale(1) translateZ(0);
   }
 }
 
-.site-intro__eye--left {
-  animation-name: site-intro-eyes-in-left;
-}
-
-.site-intro__eye--right {
-  animation-name: site-intro-eyes-in-right;
-}
-
-@keyframes site-intro-eyes-in-left {
-  from {
-    opacity: 0;
-    transform: rotate(-10deg) skewX(-8deg) scale(0.55);
-  }
-
+@keyframes site-intro-mark-in {
   to {
-    opacity: 1;
-    transform: rotate(-10deg) skewX(-8deg) scale(1);
-  }
-}
-
-@keyframes site-intro-eyes-in-right {
-  from {
-    opacity: 0;
-    transform: rotate(10deg) skewX(8deg) scale(0.55);
-  }
-
-  to {
-    opacity: 1;
-    transform: rotate(10deg) skewX(8deg) scale(1);
-  }
-}
-
-@keyframes site-intro-jaw-top {
-  to {
-    transform: translateY(-125%) rotate(-22deg);
-  }
-}
-
-@keyframes site-intro-jaw-bottom {
-  to {
-    transform: translateY(125%) rotate(20deg);
-  }
-}
-
-@keyframes site-intro-tunnel-grow {
-  to {
-    transform: translate(-50%, -50%) scale(14);
     opacity: 1;
   }
 }
 
-@keyframes site-intro-mouth-zoom {
-  0% {
+@keyframes site-intro-copy-in {
+  to {
     opacity: 1;
-    transform: scale(1) translateZ(0);
-    filter: blur(0);
-  }
-
-  100% {
-    opacity: 0.95;
-    transform: scale(9) translateZ(0);
-    filter: blur(1px);
+    transform: translateY(0);
   }
 }
 
-@keyframes site-intro-fade {
+@keyframes site-intro-exit {
   from {
     opacity: 1;
   }
@@ -4107,25 +4079,43 @@ html.site-intro-active body {
   }
 }
 
+.site-intro--exit .site-intro__brand {
+  animation: site-intro-brand-exit 0.52s cubic-bezier(0.45, 0.05, 0.2, 1) forwards;
+}
+
+@keyframes site-intro-brand-exit {
+  to {
+    opacity: 0;
+    transform: scale(1.04) translateY(-10px);
+    filter: blur(3px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .site-intro__eye,
-  .site-intro__jaw,
-  .site-intro__tunnel {
+  .site-intro-logo-draw__strokes path,
+  .site-intro-logo-draw__fills,
+  .site-intro-logo-draw__mark,
+  .site-intro__copy,
+  .site-intro__brand {
     animation: none !important;
+  }
+
+  .site-intro-logo-draw__strokes {
+    opacity: 0;
+  }
+
+  .site-intro-logo-draw__fills,
+  .site-intro-logo-draw__mark {
     opacity: 1;
   }
 
-  .site-intro__stage {
-    animation: site-intro-enter 0.22s ease-out both !important;
+  .site-intro__copy {
+    opacity: 1;
+    transform: none;
   }
 
-  .site-intro--pull .site-intro__stage {
-    animation: none !important;
-  }
-
-  .site-intro--pull {
-    animation: site-intro-fade 0.3s ease-out forwards !important;
-    animation-delay: 0s !important;
+  .site-intro--exit {
+    animation: site-intro-exit 0.28s ease-out forwards !important;
   }
 }
 

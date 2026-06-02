@@ -1,20 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/components/ui/cn";
+import { SiteIntroLogoDraw } from "@/components/site-intro-logo-draw";
 import {
   dispatchBrandIntroComplete,
   hasSeenBrandIntro,
   markBrandIntroSeen
 } from "@/lib/brand-intro";
-import { assets } from "@/lib/assets";
 
-const HOLD_MS = 420;
-const PULL_ZOOM_MS = 580;
-const PULL_FADE_MS = 280;
-const PULL_FADE_DELAY_MS = 340;
+const DRAW_MS = 1150;
+const HOLD_MS = 720;
+const EXIT_MS = 520;
 
 export function SiteIntro() {
   const reducedMotion = useRef(
@@ -23,10 +21,10 @@ export function SiteIntro() {
   );
   const introRef = useRef<HTMLDivElement>(null);
   const finishedRef = useRef(false);
-  const [phase, setPhase] = useState<"hold" | "pull" | "done">(() => {
+  const [phase, setPhase] = useState<"draw" | "hold" | "exit" | "done">(() => {
     if (typeof window === "undefined") return "done";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "done";
-    return hasSeenBrandIntro() ? "done" : "hold";
+    return hasSeenBrandIntro() ? "done" : "draw";
   });
 
   function finishIntro() {
@@ -50,29 +48,35 @@ export function SiteIntro() {
       return;
     }
 
-    if (phase !== "hold") return;
+    if (phase === "draw") {
+      const holdTimer = window.setTimeout(() => setPhase("hold"), DRAW_MS);
+      return () => window.clearTimeout(holdTimer);
+    }
 
-    const pullTimer = window.setTimeout(() => {
-      finishedRef.current = false;
-      setPhase("pull");
-    }, HOLD_MS);
+    if (phase === "hold") {
+      const exitTimer = window.setTimeout(() => {
+        finishedRef.current = false;
+        setPhase("exit");
+      }, HOLD_MS);
+      return () => window.clearTimeout(exitTimer);
+    }
 
-    return () => window.clearTimeout(pullTimer);
+    return undefined;
   }, [phase]);
 
   useEffect(() => {
-    if (phase !== "pull") return;
+    if (phase !== "exit") return;
 
-    const fallback = window.setTimeout(finishIntro, PULL_FADE_DELAY_MS + PULL_FADE_MS + 100);
+    const fallback = window.setTimeout(finishIntro, EXIT_MS + 80);
     return () => window.clearTimeout(fallback);
   }, [phase]);
 
   useEffect(() => {
     const node = introRef.current;
-    if (!node || phase !== "pull") return;
+    if (!node || phase !== "exit") return;
 
     const onEnd = (event: AnimationEvent) => {
-      if (event.target !== node || event.animationName !== "site-intro-fade") return;
+      if (event.target !== node || event.animationName !== "site-intro-exit") return;
       finishIntro();
     };
 
@@ -82,44 +86,27 @@ export function SiteIntro() {
 
   if (phase === "done") return null;
 
-  const pulling = phase === "pull";
+  const drawing = phase === "draw";
+  const filled = phase === "hold" || phase === "exit";
+  const showCopy = phase === "hold" || phase === "exit";
+  const exiting = phase === "exit";
 
   return (
     <div
       ref={introRef}
       role="presentation"
       aria-hidden
-      className={cn("site-intro", pulling && "site-intro--pull")}
-      style={
-        pulling
-          ? {
-              animationDuration: `${PULL_FADE_MS}ms`,
-              animationDelay: `${PULL_FADE_DELAY_MS}ms`
-            }
-          : undefined
-      }
+      className={cn("site-intro", exiting && "site-intro--exit")}
+      style={exiting ? { animationDuration: `${EXIT_MS}ms` } : undefined}
     >
       <div className="site-intro__glow" aria-hidden />
-      <div
-        className="site-intro__stage"
-        style={pulling ? { animationDuration: `${PULL_ZOOM_MS}ms` } : undefined}
-      >
-        <div className="site-intro__lion-wrap">
-          <span className="site-intro__eye site-intro__eye--left" aria-hidden />
-          <span className="site-intro__eye site-intro__eye--right" aria-hidden />
-          <Image
-            src={assets.logoMark}
-            alt=""
-            width={320}
-            height={320}
-            priority
-            className="site-intro__lion"
-          />
-          <div className="site-intro__maw" aria-hidden>
-            <span className="site-intro__tunnel" />
-            <span className="site-intro__jaw site-intro__jaw--top" />
-            <span className="site-intro__jaw site-intro__jaw--bottom" />
-          </div>
+      <div className={cn("site-intro__brand", showCopy && "site-intro__brand--ready")}>
+        <SiteIntroLogoDraw drawing={drawing} filled={filled} />
+        <div className="site-intro__copy">
+          <p className="site-intro__name">
+            <span className="site-intro__name-rad">RAD</span> Esports
+          </p>
+          <p className="site-intro__tag">#GoWild</p>
         </div>
       </div>
     </div>
