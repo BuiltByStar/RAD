@@ -10,7 +10,7 @@ import {
   markBrandIntroSeen
 } from "@/lib/brand-intro";
 
-const DRAW_MS = 1150;
+const DRAW_MS = 1200;
 const HOLD_MS = 720;
 const EXIT_MS = 520;
 

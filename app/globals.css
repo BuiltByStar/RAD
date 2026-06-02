@@ -3992,16 +3992,15 @@ html.site-intro-active body {
 .site-intro-logo-draw__strokes path {
   fill: none;
   stroke: #e5062f;
-  stroke-width: 2.5;
-  stroke-linecap: square;
-  stroke-linejoin: miter;
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  opacity: 0.95;
 }
 
 .site-intro-logo-draw--drawing .site-intro-logo-draw__strokes path {
-  animation: site-intro-stroke-draw 0.42s cubic-bezier(0.45, 0.05, 0.2, 1) forwards;
+  animation: site-intro-stroke-draw 0.48s cubic-bezier(0.45, 0.05, 0.18, 1) forwards;
 }
 
 .site-intro-logo-draw__fills {
@@ -4013,28 +4012,12 @@ html.site-intro-active body {
   stroke: none;
 }
 
-.site-intro-logo-draw--filled .site-intro-logo-draw__fills {
-  animation: site-intro-fill-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
 .site-intro-logo-draw--filled .site-intro-logo-draw__strokes {
-  animation: site-intro-strokes-out 0.28s ease-out forwards;
+  animation: site-intro-strokes-out 0.22s ease-out forwards;
 }
 
-.site-intro-logo-draw__mark {
-  position: absolute;
-  inset: 2% 8% 8%;
-  width: 84%;
-  height: auto;
-  margin: auto;
-  object-fit: contain;
-  opacity: 0;
-  filter: drop-shadow(0 0 32px rgba(229, 6, 47, 0.42));
-  pointer-events: none;
-}
-
-.site-intro-logo-draw--filled .site-intro-logo-draw__mark {
-  animation: site-intro-mark-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+.site-intro-logo-draw--filled .site-intro-logo-draw__fills path {
+  animation: site-intro-fill-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
 }
 
 @keyframes site-intro-stroke-draw {
@@ -4050,12 +4033,6 @@ html.site-intro-active body {
 }
 
 @keyframes site-intro-fill-in {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes site-intro-mark-in {
   to {
     opacity: 1;
   }
@@ -4094,7 +4071,6 @@ html.site-intro-active body {
 @media (prefers-reduced-motion: reduce) {
   .site-intro-logo-draw__strokes path,
   .site-intro-logo-draw__fills,
-  .site-intro-logo-draw__mark,
   .site-intro__copy,
   .site-intro__brand {
     animation: none !important;
@@ -4104,8 +4080,7 @@ html.site-intro-active body {
     opacity: 0;
   }
 
-  .site-intro-logo-draw__fills,
-  .site-intro-logo-draw__mark {
+  .site-intro-logo-draw__fills {
     opacity: 1;
   }
 
