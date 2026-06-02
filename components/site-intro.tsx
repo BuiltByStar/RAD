@@ -11,8 +11,9 @@ import {
 } from "@/lib/brand-intro";
 
 const DRAW_MS = 1900;
-const HOLD_MS = 650;
-const EXIT_MS = 850;
+const HOLD_MS = 380;
+const EXIT_MS = 520;
+const IMPACT_S = 0.36;
 
 const EXIT_EASE = [0.76, 0, 0.24, 1] as const;
 const IMPACT_EASE = [0.16, 1, 0.3, 1] as const;
@@ -104,7 +105,7 @@ export function SiteIntro() {
               }
             : { scale: 1, filter: "blur(0px)" }
         }
-        transition={{ duration: 0.55, ease: IMPACT_EASE }}
+        transition={{ duration: IMPACT_S, ease: IMPACT_EASE }}
       >
         <SiteIntroLogoDraw drawing={drawing} filled={filled} />
       </motion.div>
