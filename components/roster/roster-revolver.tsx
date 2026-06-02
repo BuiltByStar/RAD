@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 import { Chip, ChipRow, cn } from "@/components/ui";
@@ -17,6 +17,9 @@ const DRAG_THRESHOLD = 72;
 const REVOLVER_EASE = [0.22, 1, 0.36, 1] as const;
 const TRANSITION_MS = 920;
 const STAGE_DEPTH = 4;
+
+const controlButtonClass =
+  "flex h-10 w-10 shrink-0 items-center justify-center border border-neutral-800 bg-black text-neutral-400 transition-colors hover:border-[var(--color-blood)] hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)] disabled:pointer-events-none disabled:opacity-30";
 
 function wrapIndex(index: number, length: number) {
   return ((index % length) + length) % length;
@@ -42,7 +45,6 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [direction, setDirection] = useState<1 | -1>(1);
   const [transitioning, setTransitioning] = useState(false);
   const releaseTimerRef = useRef<number | null>(null);
 
@@ -59,20 +61,8 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
   }, [active, players]);
 
   const goTo = useCallback(
-    (index: number, nextDirection?: 1 | -1) => {
+    (index: number) => {
       if (!players.length || transitioning) return;
-      const target = wrapIndex(index, players.length);
-      const rawDelta = target - active;
-      const shortestDelta =
-        Math.abs(rawDelta) > players.length / 2
-          ? rawDelta > 0
-            ? rawDelta - players.length
-            : rawDelta + players.length
-          : rawDelta;
-
-      const resolvedDirection = nextDirection ?? (shortestDelta >= 0 ? 1 : -1);
-
-      setDirection(resolvedDirection);
       setTransitioning(true);
       if (releaseTimerRef.current) {
         window.clearTimeout(releaseTimerRef.current);
@@ -90,14 +80,13 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
     [active, players.length, reduced, transitioning]
   );
 
-  const goNext = useCallback(() => goTo(active + 1, 1), [active, goTo]);
-  const goPrev = useCallback(() => goTo(active - 1, -1), [active, goTo]);
+  const goNext = useCallback(() => goTo(active + 1), [active, goTo]);
+  const goPrev = useCallback(() => goTo(active - 1), [active, goTo]);
 
   useEffect(() => {
     if (reduced || paused || transitioning || players.length < 2) return;
 
     const interval = window.setInterval(() => {
-      setDirection(1);
       setActive((current) => wrapIndex(current + 1, players.length));
       setTransitioning(true);
       if (releaseTimerRef.current) {
@@ -124,63 +113,53 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
 
   return (
     <div
-      className="relative overflow-hidden px-0 py-5 sm:py-7"
+      className="relative"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <span
-        aria-hidden
-        className="absolute left-1/2 top-[55%] h-px w-[78%] bg-gradient-to-r from-transparent via-[#dc143c]/32 to-transparent transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-        style={{ transform: `translate(calc(-50% + ${direction * 10}px), -50%)` }}
-      />
-
-      <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff6f88]">Player focus</p>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activePlayer.slug}
-              initial={reduced ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? undefined : { opacity: 0, y: -12 }}
-              transition={{ duration: 0.52, ease: REVOLVER_EASE }}
-            >
-              <h3 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.7rem,6vw,6.2rem)] font-extrabold uppercase leading-[0.78] tracking-normal text-white">
-                {activePlayer.name}
-              </h3>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/62 sm:text-base">
-                {activePlayer.bio ?? activePlayer.descriptor}
-              </p>
-            </motion.div>
-          </AnimatePresence>
+      <div className="mb-6 flex items-end justify-between gap-4 border-b border-neutral-900 pb-4">
+        <div className="min-w-0">
+          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-neutral-500">
+            {String(active + 1).padStart(2, "0")} / {String(players.length).padStart(2, "0")}
+          </p>
+          <p className="mt-1 truncate font-[family-name:var(--font-display)] text-xl font-extrabold uppercase text-white sm:text-2xl">
+            {activePlayer.name}
+          </p>
+          <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)]">
+            {activePlayer.role}
+          </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={goPrev}
             disabled={transitioning}
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
+            className={controlButtonClass}
             aria-label="Previous player"
           >
-            <span aria-hidden>&larr;</span>
+            <span aria-hidden className="text-lg leading-none">
+              &larr;
+            </span>
           </button>
           <button
             type="button"
             onClick={goNext}
             disabled={transitioning}
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
+            className={controlButtonClass}
             aria-label="Next player"
           >
-            <span aria-hidden>&rarr;</span>
+            <span aria-hidden className="text-lg leading-none">
+              &rarr;
+            </span>
           </button>
         </div>
       </div>
 
       <motion.div
-        className="relative z-10 mt-7 h-[520px] touch-pan-y overflow-hidden sm:h-[560px] lg:h-[610px]"
+        className="relative h-[520px] touch-pan-y overflow-hidden sm:h-[560px] lg:h-[610px]"
         drag={players.length > 1 && !transitioning ? "x" : false}
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.12}
@@ -197,10 +176,10 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
             <motion.article
               key={player.slug}
               className={cn(
-                "roster-revolver-card absolute top-2 h-[480px] origin-center overflow-hidden rounded-[1.45rem] border bg-[#070709] shadow-[0_34px_90px_-52px_rgba(0,0,0,1)] sm:h-[515px] lg:h-[560px]",
+                "absolute top-2 h-[480px] origin-center overflow-hidden border bg-[#070709] shadow-[0_24px_64px_-48px_rgba(0,0,0,1)] sm:h-[515px] lg:h-[560px]",
                 offset === 0
-                  ? "roster-revolver-card--active z-30 border-[#dc143c]/62"
-                  : "z-10 border-[#dc143c]/16"
+                  ? "z-30 border-[var(--color-blood)]"
+                  : "z-10 border-neutral-800"
               )}
               animate={{
                 x:
@@ -265,31 +244,29 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                       ease: REVOLVER_EASE
                     }
               }
-              style={{
-                left: "calc((100% - min(calc(100% - 3rem), clamp(260px, 54vw, 370px))) / 2)",
-                width: "min(calc(100% - 3rem), clamp(260px, 54vw, 370px))",
-                zIndex:
-                  offset === 0
-                    ? 40
-                    : Math.abs(offset) === 1
-                      ? 30
-                    : Math.abs(offset) === 2
-                      ? 20
-                      : 10
-              } as CSSProperties}
+              style={
+                {
+                  left: "calc((100% - min(calc(100% - 3rem), clamp(260px, 54vw, 370px))) / 2)",
+                  width: "min(calc(100% - 3rem), clamp(260px, 54vw, 370px))",
+                  zIndex:
+                    offset === 0
+                      ? 40
+                      : Math.abs(offset) === 1
+                        ? 30
+                        : Math.abs(offset) === 2
+                          ? 20
+                          : 10
+                } as CSSProperties
+              }
             >
-              <span aria-hidden className="absolute inset-y-0 left-0 z-20 w-px bg-gradient-to-b from-transparent via-[#dc143c] to-transparent opacity-80" />
-              <span aria-hidden className="absolute inset-y-0 right-0 z-20 w-px bg-gradient-to-b from-transparent via-white/28 to-transparent" />
-              <span aria-hidden className="absolute left-[-30%] top-[18%] z-20 h-16 w-[150%] rotate-[-10deg] bg-[linear-gradient(90deg,transparent,rgba(220,20,60,0.34),rgba(255,255,255,0.1),transparent)] opacity-60" />
-
-              <div className="relative h-[66%] overflow-hidden border-b border-white/10 bg-black">
+              <div className="relative h-[66%] overflow-hidden border-b border-neutral-900 bg-black">
                 {player.image ? (
                   <Image
                     src={player.image}
                     alt={`${player.name} profile image`}
                     fill
                     sizes="(max-width: 768px) 78vw, 390px"
-                    className="object-cover opacity-90"
+                    className="object-cover"
                   />
                 ) : (
                   <>
@@ -298,33 +275,38 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                       alt=""
                       fill
                       sizes="(max-width: 768px) 78vw, 390px"
-                      className="object-cover opacity-25 grayscale"
+                      className="object-cover opacity-20 grayscale"
                     />
                     <div className="absolute inset-0 grid place-items-center">
-                      <span className="font-[family-name:var(--font-display)] text-[6rem] font-black uppercase leading-none text-white/86 sm:text-[7rem]">
+                      <span className="font-[family-name:var(--font-display)] text-[6rem] font-black uppercase leading-none text-white/80 sm:text-[7rem]">
                         {getInitials(player.name)}
                       </span>
                     </div>
                   </>
                 )}
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.24)_42%,#050506_100%),radial-gradient(circle_at_50%_12%,rgba(220,20,60,0.34),transparent_46%)]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#070709] via-transparent to-transparent" />
 
-                <div className="absolute left-4 right-4 top-4 flex items-start gap-3">
-                  <span className="rounded-full border border-[#dc143c]/38 bg-[#dc143c]/16 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-xl">
+                <div className="absolute left-4 right-4 top-4">
+                  <span className="inline-block border border-neutral-800 bg-black/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-300">
                     {player.role}
                   </span>
                 </div>
               </div>
 
               <div className="relative flex h-[34%] flex-col p-4 sm:p-5">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#ff6f88]">
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500">
                   {player.descriptor}
                 </p>
-                <h4 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-extrabold uppercase leading-none text-white">
+                <h4 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl">
                   {player.name}
                 </h4>
+                {player.bio ? (
+                  <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-neutral-500 sm:text-sm">
+                    {player.bio}
+                  </p>
+                ) : null}
                 {player.specialties?.length ? (
-                  <ChipRow>
+                  <ChipRow className="mt-3">
                     {player.specialties.slice(0, 3).map((specialty) => (
                       <Chip key={specialty}>{specialty}</Chip>
                     ))}
@@ -338,7 +320,7 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 transition hover:border-[#dc143c]/38 hover:bg-white/[0.09] hover:text-white"
+                        className="border border-neutral-800 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-400 transition hover:border-[var(--color-blood)] hover:text-white"
                       >
                         {social.label}
                       </a>
@@ -351,19 +333,16 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         </div>
       </motion.div>
 
-      <div className="relative z-10 mt-4 flex flex-wrap justify-center gap-2">
+      <div className="mt-5 flex flex-wrap justify-center gap-1.5">
         {players.map((player, index) => (
           <button
             key={player.slug}
             type="button"
-            onClick={() => {
-              const offset = getShortestOffset(index, active, players.length);
-              goTo(index, offset >= 0 ? 1 : -1);
-            }}
+            onClick={() => goTo(index)}
             disabled={transitioning}
             className={cn(
-              "h-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]",
-              index === active ? "w-10 bg-[#dc143c]" : "w-4 bg-white/24 hover:bg-white/52"
+              "h-1 transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)]",
+              index === active ? "w-8 bg-[var(--color-blood)]" : "w-4 bg-neutral-800 hover:bg-neutral-600"
             )}
             aria-label={`Show ${player.name}`}
             aria-current={index === active ? "true" : undefined}
