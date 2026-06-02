@@ -3805,7 +3805,7 @@ body:has(.shop-modal) main {
   }
 }
 
-/* ─── Site intro — logo draw + flash reveal ────────────────────────────────── */
+/* ─── Site intro — logo draw + smooth reveal ───────────────────────────────── */
 html.site-intro-active {
   overflow: hidden;
 }
@@ -3825,11 +3825,8 @@ html.site-intro-active body {
   pointer-events: auto;
 }
 
-.site-intro--flash {
+.site-intro--exiting {
   pointer-events: none;
-  animation-name: site-intro-shell-flash;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  animation-fill-mode: forwards;
 }
 
 .site-intro__glow {
@@ -3845,52 +3842,14 @@ html.site-intro-active body {
   position: relative;
   z-index: 1;
   padding: 1.5rem;
-  will-change: transform, opacity, filter;
-}
-
-.site-intro__logo-wrap--filled {
-  filter: drop-shadow(0 0 28px rgba(229, 6, 47, 0.35));
-}
-
-.site-intro--flash .site-intro__logo-wrap {
-  animation: site-intro-logo-flash 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.site-intro__flash {
-  position: absolute;
-  left: 50%;
-  top: 44%;
-  z-index: 2;
-  width: 120vmax;
-  height: 120vmax;
-  margin-left: -60vmax;
-  margin-top: -60vmax;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    #fff 0%,
-    rgba(255, 255, 255, 0.94) 14%,
-    rgba(229, 6, 47, 0.72) 36%,
-    rgba(229, 6, 47, 0.18) 52%,
-    transparent 68%
-  );
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.site-intro--flash .site-intro__flash {
-  animation: site-intro-flash-burst 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.site-intro--flash .site-intro__glow {
-  animation: site-intro-glow-flash 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, filter;
 }
 
 .site-intro-logo-draw {
   position: relative;
   width: min(58vw, 11.5rem);
   line-height: 0;
+  filter: drop-shadow(0 0 24px rgba(229, 6, 47, 0.28));
 }
 
 .site-intro-logo-draw__svg {
@@ -3911,7 +3870,7 @@ html.site-intro-active body {
 }
 
 .site-intro-logo-draw--drawing .site-intro-logo-draw__strokes path {
-  animation: site-intro-stroke-draw 0.64s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: site-intro-stroke-draw 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .site-intro-logo-draw__fills {
@@ -3924,11 +3883,11 @@ html.site-intro-active body {
 }
 
 .site-intro-logo-draw--filled .site-intro-logo-draw__strokes {
-  animation: site-intro-strokes-out 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: site-intro-strokes-out 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .site-intro-logo-draw--filled .site-intro-logo-draw__fills path {
-  animation: site-intro-fill-in 0.48s cubic-bezier(0.22, 1, 0.36, 1) 0.06s forwards;
+  animation: site-intro-fill-in 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.04s forwards;
 }
 
 @keyframes site-intro-stroke-draw {
@@ -3949,98 +3908,9 @@ html.site-intro-active body {
   }
 }
 
-@keyframes site-intro-shell-flash {
-  0% {
-    background: #000;
-    opacity: 1;
-  }
-
-  30% {
-    background: #fff;
-    opacity: 1;
-  }
-
-  58% {
-    background: #fff;
-    opacity: 1;
-  }
-
-  100% {
-    background: #fff;
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@keyframes site-intro-flash-burst {
-  0% {
-    opacity: 0;
-    transform: scale(0.35);
-  }
-
-  32% {
-    opacity: 0.98;
-    transform: scale(1.75);
-  }
-
-  52% {
-    opacity: 0.55;
-    transform: scale(2.35);
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(3.1);
-  }
-}
-
-@keyframes site-intro-logo-flash {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-    filter: brightness(1) drop-shadow(0 0 28px rgba(229, 6, 47, 0.35));
-  }
-
-  26% {
-    opacity: 1;
-    transform: scale(1.07);
-    filter: brightness(3) drop-shadow(0 0 48px rgba(255, 255, 255, 0.95));
-  }
-
-  48% {
-    opacity: 0.4;
-    transform: scale(1.12);
-    filter: brightness(5);
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.16);
-    filter: brightness(6);
-  }
-}
-
-@keyframes site-intro-glow-flash {
-  0% {
-    opacity: 1;
-  }
-
-  35% {
-    opacity: 1;
-    background:
-      radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255, 255, 255, 0.95) 0%, transparent 62%),
-      radial-gradient(ellipse 90% 75% at 50% 50%, transparent 40%, #fff 90%);
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .site-intro-logo-draw__strokes path,
-  .site-intro-logo-draw__fills,
-  .site-intro__logo-wrap {
+  .site-intro-logo-draw__fills {
     animation: none !important;
   }
 
@@ -4050,10 +3920,6 @@ html.site-intro-active body {
 
   .site-intro-logo-draw__fills {
     opacity: 1;
-  }
-
-  .site-intro--flash {
-    animation: site-intro-shell-flash 0.28s ease-out forwards !important;
   }
 }
 

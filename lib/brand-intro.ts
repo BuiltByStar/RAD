@@ -1,4 +1,4 @@
-export const BRAND_INTRO_SESSION_KEY = "rad-site-intro-v2";
+export const BRAND_INTRO_SESSION_KEY = "rad-site-intro-v3";
 
 export const BRAND_INTRO_COMPLETE_EVENT = "rad:brand-intro-complete";
 
@@ -12,6 +12,8 @@ export function hasSeenBrandIntro() {
   try {
     return (
       sessionStorage.getItem(BRAND_INTRO_SESSION_KEY) === "1" ||
+      sessionStorage.getItem("rad-site-intro-v2") === "1" ||
+      sessionStorage.getItem("rad-site-intro-v1") === "1" ||
       sessionStorage.getItem("rad-home-brand-intro-v1") === "1"
     );
   } catch {

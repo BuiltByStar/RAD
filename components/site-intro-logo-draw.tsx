@@ -6,8 +6,8 @@ type SiteIntroLogoDrawProps = {
   filled: boolean;
 };
 
-const STROKE_STAGGER_S = 0.13;
-const STROKE_DRAW_S = 0.64;
+const STROKE_STAGGER_S = 0.14;
+const STROKE_DRAW_S = 0.72;
 
 export function SiteIntroLogoDraw({ drawing, filled }: SiteIntroLogoDrawProps) {
   return (
