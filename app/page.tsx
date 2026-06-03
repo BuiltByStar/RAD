@@ -1,5 +1,5 @@
 import { HomeCommunityBanner } from "@/components/home/home-community-banner";
-import { HomeNewsSection } from "@/components/home/home-news-section";
+import { HomeSocialsSection } from "@/components/home/home-socials-section";
 import { HomeProductCarousel } from "@/components/home/home-product-carousel";
 import { HomeTeamsBanner } from "@/components/home/home-teams-banner";
 import { HomeVideosSection } from "@/components/home/home-videos-section";
@@ -16,7 +16,7 @@ export default async function HomePage() {
       <HomeCommunityBanner />
       <HomeTeamsBanner />
       <HomeVideosSection items={contentItems} />
-      <HomeNewsSection items={contentItems} />
+      <HomeSocialsSection />
     </main>
   );
 }

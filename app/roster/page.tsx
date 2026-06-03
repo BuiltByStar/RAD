@@ -3,16 +3,17 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
 import { RosterRevolver } from "@/components/roster/roster-revolver";
 import { PageRail, PageRailSection } from "@/components/ui";
-import { players, teams } from "@/lib/site-data";
+import { getManagedRosterState } from "@/lib/roster-data.server";
+import { teams } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Team",
   description: "RAD competitive lineup, player profiles, and championship roster."
 };
 
-export default function RosterPage() {
+export default async function RosterPage() {
   const team = teams[0];
-  const teamRoster = players.filter((player) => player.group === team.name);
+  const { players: teamRoster } = await getManagedRosterState(team.name);
 
   return (
     <PageShell
@@ -34,7 +35,11 @@ export default function RosterPage() {
     >
       <PageRail className="pb-14 sm:pb-16">
         <PageRailSection className="py-8 md:py-10">
-          <RosterRevolver players={teamRoster} />
+          <RosterRevolver
+            players={teamRoster}
+            game={team.game}
+            teamStatus={team.status}
+          />
         </PageRailSection>
       </PageRail>
     </PageShell>

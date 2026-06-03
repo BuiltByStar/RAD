@@ -2,53 +2,25 @@ import type { Metadata } from "next";
 
 import { MilestoneWheel, type WheelMilestone } from "@/components/about/milestone-wheel";
 import { PageShell } from "@/components/page-shell";
-import { Card, CardBody, PageRail, PageRailSection } from "@/components/ui";
-import { igniteSchedule } from "@/lib/site-data";
+import { PageRail, PageRailSection } from "@/components/ui";
+import { igniteSchedule, orgTimeline } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "About",
   description: "Identity, milestones, and the operating standard behind RAD Esports."
 };
 
-const milestones: WheelMilestone[] = [
-  {
-    date: "Sept 2023",
-    title: "RAD Founded",
-    description: "The org launches with a competitive-first direction.",
-    kind: "history"
-  },
-  {
-    date: "Dec 2024",
-    title: "Competitive roster",
-    description: "RAD enters the scene with a roster built around pressure and pace.",
-    kind: "history"
-  },
-  {
-    date: "Aug 2025",
-    title: "World Champions",
-    description: "RAD wins the inaugural Marvel Rivals Ignite: Mid-Season title.",
-    kind: "history"
-  },
-  {
-    date: "March 2026",
-    title: "EMEA Champions",
-    description: "The team adds a regional title and proves the system can repeat.",
-    kind: "history"
-  },
-  {
-    date: "2026",
-    title: "Next Stage",
-    description: "RAD starts building the structure for content, activations, and growth.",
-    kind: "history"
-  }
-];
-
 const milestoneWheelItems: WheelMilestone[] = [
-  ...milestones,
+  ...orgTimeline.map((item) => ({
+    date: item.date,
+    title: item.title,
+    description: item.description,
+    kind: "history" as const
+  })),
   ...igniteSchedule.map((item) => ({
     date: item.dates,
     title: item.stage,
-    description: `Upcoming season stage: ${item.dates}.`,
+    description: `Upcoming season stage — ${item.dates}.`,
     kind: "future" as const
   }))
 ];
@@ -59,20 +31,25 @@ export default function AboutPage() {
       variant="about"
       compact
       eyebrow="About"
-      title="About RAD"
-      description="Competitive esports org — Marvel Rivals world and EMEA champions."
+      title="World & EMEA champions since 2023"
     >
-      <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection className="py-8 md:py-10">
-          <Card tone="lead" accent={false} className="border border-neutral-900 bg-black">
-            <CardBody className="mt-0 text-base leading-relaxed text-neutral-400 sm:text-lg">
-              RAD has been turning heads since 2023. The org became the inaugural Marvel Rivals Ignite:
-              Mid-Season World Champions and later secured the Season 6 EMEA PC title.
-            </CardBody>
-          </Card>
+      <PageRail className="pb-14 sm:pb-20">
+        <PageRailSection className="py-6 md:py-8">
+          <p className="max-w-2xl text-base leading-[1.8] text-neutral-400 sm:text-lg sm:leading-[1.75]">
+            RAD has been turning heads since 2023 — inaugural Marvel Rivals Ignite Mid-Season World
+            Champions, then Season 6 EMEA PC title holders in March 2026.
+          </p>
+          <blockquote className="mt-8 max-w-3xl border-l-2 border-[var(--color-blood)] pl-5 sm:pl-6">
+            <p className="font-[family-name:var(--font-display)] text-[clamp(1.35rem,3.2vw,2rem)] font-extrabold uppercase leading-[1.05] tracking-normal text-white">
+              Untamed, unstoppable, never by the book.
+            </p>
+            <footer className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-blood)]">
+              #GoWild
+            </footer>
+          </blockquote>
         </PageRailSection>
 
-        <PageRailSection borderTop className="py-8 md:py-10">
+        <PageRailSection borderTop className="py-8 md:py-12">
           <MilestoneWheel items={milestoneWheelItems} />
         </PageRailSection>
       </PageRail>

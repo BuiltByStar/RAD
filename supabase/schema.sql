@@ -57,7 +57,15 @@ create table if not exists public.roster_entries (
   twitch_url text,
   featured boolean not null default false,
   role_order text not null default 'Starter'
-    check (role_order in ('Starter', 'Sub', 'Coach', 'Manager'))
+    check (role_order in ('Starter', 'Sub', 'Coach', 'Manager')),
+  slug text,
+  descriptor text,
+  specialties text[] not null default '{}'::text[],
+  tags text[] not null default '{}'::text[],
+  rank text,
+  jersey_number integer,
+  instagram_url text,
+  youtube_url text
 );
 
 create table if not exists public.staff_entries (
@@ -72,7 +80,11 @@ create table if not exists public.staff_entries (
   section text not null default 'General Staff'
     check (section in ('Leadership', 'Content + Social Media', 'General Staff')),
   leadership boolean not null default false,
-  image_url text
+  image_url text,
+  slug text,
+  descriptor text,
+  tags text[] not null default '{}'::text[],
+  group_name text
 );
 
 create table if not exists public.partner_entries (
@@ -127,6 +139,8 @@ create table if not exists public.site_settings (
 create index if not exists profiles_role_idx on public.profiles(role);
 create index if not exists contact_inquiries_submitted_at_idx on public.contact_inquiries(submitted_at desc);
 create index if not exists roster_entries_display_order_idx on public.roster_entries(display_order);
+create index if not exists roster_entries_slug_idx on public.roster_entries(slug);
+create index if not exists staff_entries_slug_idx on public.staff_entries(slug);
 create index if not exists staff_entries_display_order_idx on public.staff_entries(display_order);
 create index if not exists partner_entries_display_order_idx on public.partner_entries(display_order);
 create index if not exists news_posts_published_order_idx on public.news_posts(published, display_order, date desc);

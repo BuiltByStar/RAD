@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/components/ui";
 
@@ -16,13 +16,20 @@ type MilestoneWheelProps = {
   items: WheelMilestone[];
 };
 
-const AUTO_DELAY_MS = 10000;
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+function yearFromDate(date: string): string {
+  const match = date.match(/\b(20\d{2})\b/);
+  if (match) return match[1];
+  const trimmed = date.trim();
+  if (/^\d{4}$/.test(trimmed)) return trimmed;
+  return trimmed.split(/\s+/).pop() ?? trimmed;
+}
 
 export function MilestoneWheel({ items }: MilestoneWheelProps) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const activeItem = items[active];
   const historyItems = useMemo(() => items.filter((item) => item.kind === "history"), [items]);
@@ -31,128 +38,121 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
   const goTo = useCallback(
     (index: number) => {
       if (!items.length) return;
-      setActive(index < 0 ? items.length - 1 : index % items.length);
+      const next = index < 0 ? items.length - 1 : index % items.length;
+      setActive(next);
+      rowRefs.current[next]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
     },
-    [items.length]
+    [items.length, reduced]
   );
 
   useEffect(() => {
-    if (reduced || paused || items.length < 2) return;
+    if (reduced || items.length < 2) return;
 
-    const intervalId = window.setInterval(() => {
-      setActive((current) => (current + 1) % items.length);
-    }, AUTO_DELAY_MS);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const index = Number((entry.target as HTMLElement).dataset.index);
+          if (!Number.isNaN(index)) setActive(index);
+        }
+      },
+      { rootMargin: "-35% 0px -50% 0px", threshold: 0 }
+    );
 
-    return () => window.clearInterval(intervalId);
-  }, [items.length, paused, reduced]);
+    rowRefs.current.forEach((node) => {
+      if (node) observer.observe(node);
+    });
+
+    return () => observer.disconnect();
+  }, [items, reduced]);
 
   if (!activeItem) return null;
 
-  const renderTrack = (label: string, trackItems: WheelMilestone[]) => (
-    <div className="space-y-3">
-      <div className="flex items-center gap-3">
-        <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-[#ff5a5a]/60 to-transparent" />
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/34">{label}</p>
-      </div>
-      <div className="space-y-2">
-        {trackItems.map((item) => {
-          const index = items.findIndex((entry) => entry.date === item.date && entry.title === item.title);
-          const isActive = index === active;
+  const stickyYear = yearFromDate(activeItem.date);
 
-          return (
-            <button
-              key={`${item.date}-${item.title}`}
-              type="button"
-              onClick={() => goTo(index)}
+  const renderTimeline = (label: string, trackItems: WheelMilestone[]) => (
+    <div className="space-y-1">
+      <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-600">{label}</p>
+      {trackItems.map((item) => {
+        const index = items.findIndex((entry) => entry.date === item.date && entry.title === item.title);
+        const isActive = index === active;
+
+        return (
+          <button
+            key={`${item.date}-${item.title}`}
+            ref={(node) => {
+              rowRefs.current[index] = node;
+            }}
+            type="button"
+            data-index={index}
+            onClick={() => goTo(index)}
+            className={cn(
+              "group relative w-full py-5 pl-8 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black",
+              isActive ? "text-white" : "text-neutral-500 hover:text-neutral-300"
+            )}
+          >
+            <span
+              aria-hidden
               className={cn(
-                "grid w-full grid-cols-[88px_1fr] items-start gap-3 rounded-[1.2rem] border px-3 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]",
+                "absolute left-0 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border-2 transition",
                 isActive
-                  ? "border-[#ff7a7a]/28 bg-[linear-gradient(145deg,rgba(255,94,94,0.14),rgba(255,255,255,0.04))] text-white shadow-[0_14px_38px_-24px_rgba(255,70,70,0.72)]"
-                  : "border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.018))] text-white/62 hover:border-white/16 hover:bg-white/[0.045]"
+                  ? "border-[var(--color-blood)] bg-[var(--color-blood)] shadow-[0_0_12px_rgba(229,6,47,0.55)]"
+                  : "border-neutral-800 bg-black group-hover:border-neutral-600"
+              )}
+            />
+            <span
+              className={cn(
+                "text-[10px] font-semibold uppercase tracking-[0.18em]",
+                isActive ? "text-[var(--color-blood)]" : "text-neutral-600"
               )}
             >
-              <span className={cn("text-[10px] font-semibold uppercase tracking-[0.18em]", isActive ? "text-[#ff6666]" : "text-white/35")}>
-                {item.date}
-              </span>
-              <span className="min-w-0">
-                <span className="block font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-none text-white">
-                  {item.title}
-                </span>
-                <span className="mt-1 block text-sm leading-relaxed text-white/48">
-                  {isActive ? item.description : item.kind === "future" ? "Upcoming stage." : "Key org moment."}
-                </span>
-              </span>
-            </button>
-          );
-        })}
-      </div>
+              {item.date}
+            </span>
+            <span className="mt-1 block font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-none sm:text-2xl">
+              {item.title}
+            </span>
+            {isActive ? (
+              <motion.p
+                initial={reduced ? false : { opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base sm:leading-[1.7]"
+              >
+                {item.description}
+              </motion.p>
+            ) : null}
+          </button>
+        );
+      })}
     </div>
   );
 
   return (
-    <div
-      className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#09090b]/92 p-4 shadow-[0_34px_120px_-74px_rgba(255,0,0,0.46)] sm:p-6 lg:p-7"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
-    >
-      <div aria-hidden className="absolute inset-0 bg-[radial-gradient(62%_46%_at_78%_24%,rgba(255,72,72,0.16),transparent_58%),radial-gradient(52%_42%_at_18%_82%,rgba(160,32,32,0.12),transparent_58%),linear-gradient(180deg,rgba(255,255,255,0.025),transparent_22%,transparent_78%,rgba(255,90,90,0.06))]" />
-      <div aria-hidden className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(to_right,rgba(255,255,255,0.8)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.8)_1px,transparent_1px)] [background-size:52px_52px]" />
-
-      <div className="relative z-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ff4040]">Milestones</p>
-            <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/44">
-              Guided track
-            </span>
-          </div>
-          {renderTrack("Past", historyItems)}
-          {futureItems.length ? renderTrack("Next", futureItems) : null}
-        </div>
-
-        <motion.div
-          key={`${activeItem.date}-${activeItem.title}`}
-          initial={reduced ? false : { opacity: 0, y: 18 }}
+    <div className="grid gap-10 lg:grid-cols-[minmax(7rem,9rem)_1fr] lg:gap-14 xl:grid-cols-[10rem_1fr]">
+      <div className="lg:sticky lg:top-28 lg:self-start">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-600">Timeline</p>
+        <motion.p
+          key={stickyYear}
+          initial={reduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: EASE }}
-          className="relative overflow-hidden rounded-[1.25rem] border border-white/12 bg-[linear-gradient(145deg,rgba(255,255,255,0.07),rgba(255,90,90,0.045),rgba(255,255,255,0.02))] p-5 sm:p-6"
+          transition={{ duration: 0.4, ease: EASE }}
+          className="mt-2 font-[family-name:var(--font-display)] text-[clamp(3.5rem,8vw,5.5rem)] font-extrabold leading-none tabular-nums text-[var(--color-blood)]"
+          aria-live="polite"
         >
-          <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff6a6a] to-transparent" />
-          <div aria-hidden className="absolute inset-y-5 left-5 w-px bg-gradient-to-b from-[#ff6a6a]/0 via-[#ff6a6a]/70 to-[#ff6a6a]/0" />
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-full border border-[#dc143c]/28 bg-[#dc143c]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/78">
-              {activeItem.kind === "future" ? "Next stage" : "Past milestone"}
-            </span>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/42">{activeItem.date}</span>
-          </div>
-          <h3 className="mt-5 pl-6 font-[family-name:var(--font-display)] text-[clamp(2.6rem,5vw,5.2rem)] font-extrabold uppercase leading-[0.86] text-white">
-            {activeItem.title}
-          </h3>
-          <p className="mt-5 max-w-2xl pl-6 text-sm leading-relaxed text-white/66 sm:text-base">
-            {activeItem.description}
-          </p>
+          {stickyYear}
+        </motion.p>
+        <p className="mt-2 text-xs uppercase tracking-[0.16em] text-neutral-600">{activeItem.date}</p>
+        <p className="mt-4 hidden max-w-[9rem] font-[family-name:var(--font-display)] text-sm font-bold uppercase leading-tight text-white lg:block">
+          {activeItem.title}
+        </p>
+      </div>
 
-          <div className="mt-8 flex gap-3 pl-6">
-            <button
-              type="button"
-              onClick={() => goTo(active - 1)}
-              className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
-              aria-label="Previous milestone"
-            >
-              <span aria-hidden>&uarr;</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => goTo(active + 1)}
-              className="grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-white/[0.05] text-xl text-white/72 transition hover:border-[#dc143c]/42 hover:bg-white/[0.09] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#dc143c]"
-              aria-label="Next milestone"
-            >
-              <span aria-hidden>&darr;</span>
-            </button>
-          </div>
-        </motion.div>
+      <div className="relative min-w-0 border-t border-neutral-900 pt-2 lg:border-t-0 lg:pt-0">
+        <div aria-hidden className="absolute bottom-0 left-[5px] top-0 w-px bg-neutral-900" />
+        {renderTimeline("History", historyItems)}
+        {futureItems.length ? (
+          <div className="mt-10 border-t border-neutral-900 pt-8">{renderTimeline("Season ahead", futureItems)}</div>
+        ) : null}
       </div>
     </div>
   );

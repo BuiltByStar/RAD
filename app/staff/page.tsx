@@ -11,14 +11,15 @@ import {
   PageRailSection,
   SectionHeading
 } from "@/components/ui";
-import { staff } from "@/lib/site-data";
+import { getManagedStaffState } from "@/lib/staff-data.server";
 
 export const metadata: Metadata = {
   title: "Staff",
   description: "The creative, operational, and competitive support structure behind RAD."
 };
 
-export default function StaffPage() {
+export default async function StaffPage() {
+  const { staff } = await getManagedStaffState();
   const brandStaff = staff.filter((member) => member.group === "Brand");
   const operationsStaff = staff.filter((member) => member.group !== "Brand");
 

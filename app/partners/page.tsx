@@ -1,50 +1,42 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
+import { PartnerWall } from "@/components/partners/partner-wall";
 import { PageShell } from "@/components/page-shell";
-import {
-  Card,
-  CardBody,
-  CardEyebrow,
-  CardGrid,
-  CardTitle,
-  PageRail,
-  PageRailSection
-} from "@/components/ui";
-import { partners } from "@/lib/site-data";
+import { Button, PageRail, PageRailSection } from "@/components/ui";
+import { getManagedPartnersState } from "@/lib/partners-data.server";
 
 export const metadata: Metadata = {
   title: "Partners",
-  description: "Partnership opportunities, campaigns, and branded work for RAD."
+  description: "RAD partner wall — logos, tiers, and partnership slots."
 };
 
-export default function PartnersPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PartnersPage() {
+  const { partners } = await getManagedPartnersState();
+
   return (
     <PageShell
       variant="partners"
       compact
       eyebrow="Partners"
       title="Partners"
-      description="Campaigns and activations that fit RAD's team and audience."
+      description="Brand partners and open activation slots."
     >
       <PageRail className="pb-14 sm:pb-16">
         <PageRailSection className="py-8 md:py-10">
-          <CardGrid cols={3}>
-            {partners.map((partner) => (
-              <Card key={partner.name} tone="tall" accent={false} className="flex flex-col">
-                <CardEyebrow>{partner.tier}</CardEyebrow>
-                <CardTitle size="sm">{partner.name}</CardTitle>
-                <CardBody>{partner.description}</CardBody>
-                <Link
-                  href={partner.href}
-                  className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)] transition-opacity hover:opacity-70"
-                >
-                  Contact
-                  <span aria-hidden>→</span>
-                </Link>
-              </Card>
-            ))}
-          </CardGrid>
+          <PartnerWall partners={partners} />
+
+          <div className="mt-10 border-t border-neutral-900 pt-8 md:mt-12 md:pt-10">
+            <p className="max-w-xl text-sm text-neutral-500">
+              Launch-era visibility across competitive content, roster storytelling, and community activations.
+            </p>
+            <div className="mt-5">
+              <Button href="/contact" size="sm">
+                Partner with RAD
+              </Button>
+            </div>
+          </div>
         </PageRailSection>
       </PageRail>
     </PageShell>

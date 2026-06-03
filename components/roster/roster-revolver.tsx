@@ -6,11 +6,14 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 
 import { Chip, ChipRow, cn } from "@/components/ui";
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
+import { RosterGameBrand } from "@/components/roster/roster-game-brand";
 import { assets } from "@/lib/assets";
 import type { Person } from "@/lib/site-data";
 
 type RosterRevolverProps = {
   players: Person[];
+  game?: string;
+  teamStatus?: string;
 };
 
 const AUTO_DELAY_MS = 10000;
@@ -42,7 +45,7 @@ function getShortestOffset(index: number, active: number, length: number) {
   return offset;
 }
 
-export function RosterRevolver({ players }: RosterRevolverProps) {
+export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProps) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -241,6 +244,10 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
           </AnimatePresence>
         </div>
       </div>
+
+      {game && teamStatus ? (
+        <RosterGameBrand game={game} status={teamStatus} />
+      ) : null}
 
       <motion.div
         className="relative h-[520px] touch-pan-y overflow-hidden sm:h-[560px] lg:h-[610px]"
@@ -460,75 +467,104 @@ export function RosterRevolver({ players }: RosterRevolverProps) {
         </div>
       </motion.div>
 
-      <div className="mt-6 overflow-x-auto pb-1">
-        <div className="flex min-w-min gap-px border border-neutral-900 bg-neutral-900">
-          {players.map((player, index) => {
-            const isActive = index === active;
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <div className="w-full overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-800">
+          <div className="mx-auto w-fit max-w-full px-1">
+            <div
+              className={cn(
+                "relative flex gap-px overflow-hidden border border-neutral-800/90 bg-neutral-900",
+                "shadow-[0_0_48px_-16px_rgba(229,6,47,0.18)]",
+                "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:z-10 before:h-px",
+                "before:bg-[linear-gradient(90deg,transparent,rgba(229,6,47,0.45),transparent)]"
+              )}
+            >
+              {players.map((player, index) => {
+                const isActive = index === active;
 
-            return (
-              <button
-                key={player.slug}
-                type="button"
-                onClick={() => goTo(index)}
-                disabled={transitioning}
-                className={cn(
-                  "group relative flex w-[4.75rem] shrink-0 flex-col items-center gap-2 px-2 py-3 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)] sm:w-20",
-                  isActive ? "bg-neutral-950" : "bg-black hover:bg-neutral-950/80"
-                )}
-                aria-label={`Show ${player.name}`}
-                aria-current={isActive ? "true" : undefined}
-              >
-                {isActive ? (
-                  <motion.span
-                    layoutId="roster-player-indicator"
-                    className="absolute inset-x-0 top-0 h-0.5 bg-[var(--color-blood)]"
-                    transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
-                  />
-                ) : null}
+                return (
+                  <motion.button
+                    key={player.slug}
+                    type="button"
+                    onClick={() => goTo(index)}
+                    disabled={transitioning}
+                    whileHover={
+                      reduced || transitioning ? undefined : { y: -3, transition: { duration: 0.2 } }
+                    }
+                    whileTap={reduced || transitioning ? undefined : { scale: 0.97 }}
+                    className={cn(
+                      "group relative flex w-[5rem] shrink-0 flex-col items-center gap-2.5 px-3 py-3.5 transition-[background-color,box-shadow] duration-300",
+                      "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)] sm:w-[5.25rem]",
+                      isActive
+                        ? "bg-neutral-950 shadow-[inset_0_0_28px_rgba(229,6,47,0.1)]"
+                        : "bg-black hover:bg-neutral-950/90"
+                    )}
+                    aria-label={`Show ${player.name}`}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    {isActive ? (
+                      <motion.span
+                        layoutId="roster-player-indicator"
+                        className="absolute inset-x-3 top-0 h-[3px] rounded-full bg-[linear-gradient(90deg,rgba(229,6,47,0.35),var(--color-blood),rgba(229,6,47,0.35))] shadow-[0_0_14px_rgba(229,6,47,0.9)]"
+                        transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.75 }}
+                      />
+                    ) : null}
 
-                <div
-                  className={cn(
-                    "relative h-10 w-10 overflow-hidden border bg-black transition-colors sm:h-11 sm:w-11",
-                    isActive
-                      ? "border-[var(--color-blood)]"
-                      : "border-neutral-800 group-hover:border-neutral-600"
-                  )}
-                >
-                  {player.image ? (
-                    <Image
-                      src={player.image}
-                      alt=""
-                      fill
-                      sizes="44px"
+                    <motion.div
                       className={cn(
-                        "object-cover transition duration-300",
-                        isActive ? "opacity-100" : "opacity-70 group-hover:opacity-90"
+                        "relative overflow-hidden border bg-black transition-[border-color,box-shadow] duration-300",
+                        isActive
+                          ? "h-12 w-12 border-[var(--color-blood)] shadow-[0_0_22px_rgba(229,6,47,0.4)] sm:h-[3.25rem] sm:w-[3.25rem]"
+                          : "h-10 w-10 border-neutral-800 group-hover:border-neutral-600 group-hover:shadow-[0_10px_24px_-14px_rgba(0,0,0,0.95)] sm:h-11 sm:w-11"
                       )}
-                    />
-                  ) : (
-                    <span className="grid h-full place-items-center font-[family-name:var(--font-display)] text-xs font-extrabold uppercase text-white/70">
-                      {getInitials(player.name)}
+                      animate={reduced ? undefined : { scale: isActive ? 1.06 : 1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                    >
+                      {player.image ? (
+                        <Image
+                          src={player.image}
+                          alt=""
+                          fill
+                          sizes="52px"
+                          className={cn(
+                            "object-cover transition duration-300",
+                            isActive ? "opacity-100" : "opacity-65 group-hover:opacity-90"
+                          )}
+                        />
+                      ) : (
+                        <span
+                          className={cn(
+                            "grid h-full place-items-center font-[family-name:var(--font-display)] font-extrabold uppercase tracking-tight",
+                            isActive
+                              ? "bg-[linear-gradient(165deg,rgba(229,6,47,0.32)_0%,#12080c_55%,#070709_100%)] text-sm text-white shadow-[inset_0_0_20px_rgba(229,6,47,0.15)]"
+                              : "bg-[linear-gradient(165deg,#222228_0%,#0d0d10_100%)] text-xs text-white/60 group-hover:text-white/85"
+                          )}
+                        >
+                          {getInitials(player.name)}
+                        </span>
+                      )}
+                    </motion.div>
+
+                    <span
+                      className={cn(
+                        "max-w-full truncate text-[9px] font-bold uppercase tracking-[0.12em] transition-colors duration-300",
+                        isActive
+                          ? "text-white drop-shadow-[0_0_8px_rgba(229,6,47,0.35)]"
+                          : "text-neutral-600 group-hover:text-neutral-400"
+                      )}
+                    >
+                      {player.name}
                     </span>
-                  )}
-                </div>
-
-                <span
-                  className={cn(
-                    "max-w-full truncate text-[9px] font-bold uppercase tracking-[0.12em]",
-                    isActive ? "text-white" : "text-neutral-600 group-hover:text-neutral-400"
-                  )}
-                >
-                  {player.name}
-                </span>
-              </button>
-            );
-          })}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
 
-      <p className="mt-4 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-700">
-        Drag, arrow keys, or tap a player
-      </p>
+        <p className="text-center text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">
+          <span className="text-neutral-700">Drag, arrow keys, or tap a player</span>
+        </p>
+      </div>
     </motion.div>
   );
 }

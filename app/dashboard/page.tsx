@@ -1,14 +1,25 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { DashboardTabs } from "@/components/dashboard-tabs";
+import {
+  buttonClass,
+  dangerButtonClass,
+  formCardClass,
+  inputClass,
+  labelClass,
+  rowCardClass,
+  uploadHintClass
+} from "@/components/dashboard/dashboard-styles";
+import { Check, DeleteForm, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
+import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { PartnersSection, type PartnerRow } from "@/components/dashboard/partners-section";
+import { RosterSection, type RosterRow } from "@/components/dashboard/roster-section";
+import { StaffSection, type StaffRow } from "@/components/dashboard/staff-section";
 import { PageShell } from "@/components/page-shell";
 import {
   Card,
   CardBody,
   CardEyebrow,
-  CardGrid,
-  CardMetric,
   CardTitle,
   Container,
   Section,
@@ -21,18 +32,12 @@ import {
   createNewsPost,
   deleteContentItem,
   deleteNewsPost,
-  deletePartnerEntry,
-  deleteRosterEntry,
-  deleteStaffEntry,
   exportLocalDashboardData,
-  seedLocalDashboardData,
+  seedDashboardFromSite,
   updateInquiryStatus,
   updateMaintenanceSetting,
   updateNewsPost,
-  upsertContentItem,
-  upsertPartnerEntry,
-  upsertRosterEntry,
-  upsertStaffEntry
+  upsertContentItem
 } from "./actions";
 
 export const metadata: Metadata = {
@@ -55,45 +60,6 @@ type NewsPostRow = {
   featured: boolean;
   published: boolean;
   display_order: number;
-};
-
-type RosterRow = {
-  id: string;
-  display_order: number;
-  handle: string;
-  real_name: string | null;
-  player_role: string;
-  roster_header: string;
-  region: string | null;
-  bio: string | null;
-  image_url: string | null;
-  x_url: string | null;
-  twitch_url: string | null;
-  featured: boolean;
-  role_order: string;
-};
-
-type StaffRow = {
-  id: string;
-  display_order: number;
-  name: string;
-  title: string;
-  bio: string | null;
-  x_url: string | null;
-  section: string;
-  leadership: boolean;
-  image_url: string | null;
-};
-
-type PartnerRow = {
-  id: string;
-  display_order: number;
-  name: string | null;
-  tier: string | null;
-  description: string | null;
-  logo_url: string | null;
-  url: string | null;
-  is_open_slot: boolean;
 };
 
 type ContentItemRow = {
@@ -125,17 +91,6 @@ type SiteSettingRow = {
   value: { enabled?: boolean } | null;
 };
 
-const inputClass =
-  "w-full rounded-md border border-white/10 bg-black/45 px-3 py-2 text-sm text-white outline-none transition focus:border-[color:var(--color-rad)]";
-const labelClass = "grid gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/48";
-const formCardClass = "rounded-lg border border-white/10 bg-white/[0.035] p-4";
-const rowCardClass = "rounded-lg border border-white/10 bg-black/30 p-4";
-const buttonClass =
-  "inline-flex rounded-md border border-[color:var(--color-rad)]/40 bg-[color:var(--color-rad)]/14 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[color:var(--color-rad)]/24";
-const dangerButtonClass =
-  "inline-flex rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60 transition hover:border-[color:var(--color-rad)]/40 hover:text-white";
-const uploadHintClass = "text-[10px] leading-relaxed text-white/38";
-
 async function readTable<T>(query: PromiseLike<{ data: unknown; error: { message: string } | null }>) {
   const { data, error } = await query;
   return {
@@ -144,107 +99,23 @@ async function readTable<T>(query: PromiseLike<{ data: unknown; error: { message
   };
 }
 
-function Field({
-  label,
-  name,
-  defaultValue,
-  type = "text",
-  required = false
-}: {
-  label: string;
-  name: string;
-  defaultValue?: string | number | null;
-  type?: string;
-  required?: boolean;
-}) {
+function ContentItemForm({ row }: { row?: ContentItemRow }) {
   return (
-    <label className={labelClass}>
-      {label}
-      <input
-        className={inputClass}
-        name={name}
-        type={type}
-        required={required}
-        defaultValue={defaultValue ?? ""}
-      />
-    </label>
-  );
-}
-
-function TextArea({
-  label,
-  name,
-  defaultValue,
-  rows = 4
-}: {
-  label: string;
-  name: string;
-  defaultValue?: string | null;
-  rows?: number;
-}) {
-  return (
-    <label className={labelClass}>
-      {label}
-      <textarea className={inputClass} name={name} rows={rows} defaultValue={defaultValue ?? ""} />
-    </label>
-  );
-}
-
-function FileField({ label, name }: { label: string; name: string }) {
-  return (
-    <label className={labelClass}>
-      {label}
-      <input
-        className={`${inputClass} file:mr-3 file:rounded-md file:border-0 file:bg-[color:var(--color-rad)]/18 file:px-3 file:py-2 file:text-xs file:font-semibold file:uppercase file:tracking-[0.12em] file:text-white`}
-        name={name}
-        type="file"
-        accept="image/png,image/jpeg,image/webp,image/gif"
-      />
-    </label>
-  );
-}
-
-function Check({ label, name, defaultChecked }: { label: string; name: string; defaultChecked?: boolean }) {
-  return (
-    <label className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/58">
-      <input name={name} type="checkbox" defaultChecked={defaultChecked} className="h-4 w-4 accent-[#dc143c]" />
-      {label}
-    </label>
-  );
-}
-
-function Select({
-  label,
-  name,
-  defaultValue,
-  options
-}: {
-  label: string;
-  name: string;
-  defaultValue?: string | null;
-  options: string[];
-}) {
-  return (
-    <label className={labelClass}>
-      {label}
-      <select className={inputClass} name={name} defaultValue={defaultValue ?? options[0]}>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}
-
-function DeleteForm({ action, id, label = "Delete" }: { action: (formData: FormData) => void | Promise<void>; id: string; label?: string }) {
-  return (
-    <form action={action}>
-      <input type="hidden" name="id" value={id} />
-      <button className={dangerButtonClass} type="submit">
-        {label}
-      </button>
+    <form action={upsertContentItem} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
+      {row ? <input type="hidden" name="id" value={row.id} /> : null}
+      <Field label="Title" name="title" defaultValue={row?.title} required />
+      <Field label="URL" name="url" defaultValue={row?.url ?? "https://www.youtube.com/@RadEsport"} required />
+      <Field label="Thumbnail URL" name="thumbnail" defaultValue={row?.thumbnail ?? "/assets/rad-bg-red.png"} required />
+      <Select label="Type" name="type" defaultValue={row?.type} options={["video", "article", "clip"]} />
+      <Field label="Tags" name="tags" defaultValue={row?.tags?.join(", ")} />
+      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
+      <TextArea label="Description" name="description" defaultValue={row?.description} />
+      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
+        <Check label="Featured" name="featured" defaultChecked={row?.featured} />
+        <button className={buttonClass} type="submit">
+          {row ? "Save Card" : "Create Card"}
+        </button>
+      </div>
     </form>
   );
 }
@@ -317,22 +188,13 @@ export default async function DashboardPage() {
             .order("date", { ascending: false })
         ),
         readTable<RosterRow>(
-          realAccess!.supabase
-            .from("roster_entries")
-            .select("*")
-            .order("display_order", { ascending: true })
+          realAccess!.supabase.from("roster_entries").select("*").order("display_order", { ascending: true })
         ),
         readTable<StaffRow>(
-          realAccess!.supabase
-            .from("staff_entries")
-            .select("*")
-            .order("display_order", { ascending: true })
+          realAccess!.supabase.from("staff_entries").select("*").order("display_order", { ascending: true })
         ),
         readTable<PartnerRow>(
-          realAccess!.supabase
-            .from("partner_entries")
-            .select("*")
-            .order("display_order", { ascending: true })
+          realAccess!.supabase.from("partner_entries").select("*").order("display_order", { ascending: true })
         ),
         readTable<ContentItemRow>(
           realAccess!.supabase
@@ -351,106 +213,87 @@ export default async function DashboardPage() {
       ]);
 
   const maintenance = settings.rows.find((setting) => setting.key === "maintenance")?.value?.enabled ?? false;
-  const defaultDashboardTab =
-    news.rows.length > 0
-      ? "news"
-      : roster.rows.length > 0
-        ? "roster"
-        : staff.rows.length > 0
-          ? "staff"
-          : partners.rows.length > 0
-            ? "partners"
-            : contentItems.rows.length > 0
-              ? "latest-content"
-              : inquiries.rows.length > 0
-                ? "inquiries"
-                : "settings";
+  const defaultDashboardTab = "roster";
+  const hasPeopleData = roster.rows.length > 0 || staff.rows.length > 0 || partners.rows.length > 0;
+
+  const seedBanner = (
+    <div className="mb-6 flex flex-wrap items-center gap-3 rounded-lg border border-white/10 bg-black/30 p-4">
+      <form action={seedDashboardFromSite} className="flex flex-wrap items-center gap-3">
+        <button className={buttonClass} type="submit">
+          Import from site-data
+        </button>
+        <Check label="Replace existing" name="force" />
+      </form>
+      {localAdminBypassEnabled ? (
+        <form action={exportLocalDashboardData}>
+          <button className={buttonClass} type="submit">
+            Export JSON
+          </button>
+        </form>
+      ) : null}
+      <p className="max-w-2xl text-xs leading-relaxed text-white/46">
+        Seeds players, staff, and partners from <code>lib/site-data.ts</code> when tables are empty.
+        {localAdminBypassEnabled ? (
+          <>
+            {" "}
+            Local export path: <code>{localSupabaseExportPath}</code>
+          </>
+        ) : (
+          " Requires applied migration for extended roster/staff fields."
+        )}
+      </p>
+    </div>
+  );
 
   return (
     <PageShell
       variant="default"
       eyebrow="Dashboard"
-      title="RAD Admin."
-      description="Manage news, roster, staff, partners, inquiries, and core site settings from one protected panel."
+      title="RAD Admin"
+      description="Manage roster, staff, partners, content, and site settings."
       heroImage="/assets/rad-bg-red.png"
-      status={`Signed in as ${viewer?.role ?? "developer"}`}
+      status={`${viewer?.role ?? "developer"} · ${viewer?.email ?? ""}`}
     >
       <Section padding="sm">
         <Container>
-          <SectionHeading eyebrow="Overview" title="CMS core." />
-
           {localAdminBypassEnabled ? (
             <div className="mb-6 rounded-lg border border-[color:var(--color-rad)]/28 bg-[color:var(--color-rad)]/10 p-4 text-sm leading-relaxed text-white/72">
-              Local simulated admin session is active. Dashboard changes now save into a local JSON store so you can
-              test create, edit, delete, and maintenance controls without real Supabase auth.
+              Local admin bypass is active. Changes save to the local JSON store and public pages read from it when
+              populated.
             </div>
           ) : null}
 
-          {localAdminBypassEnabled ? (
-            <div className="mb-6 flex flex-wrap gap-3 rounded-lg border border-white/10 bg-black/30 p-4">
-              <form action={seedLocalDashboardData}>
-                <button className={buttonClass} type="submit">
-                  Seed From Current Site
-                </button>
-              </form>
-              <form action={exportLocalDashboardData}>
-                <button className={buttonClass} type="submit">
-                  Export Supabase JSON
-                </button>
-              </form>
-              <p className="max-w-2xl text-xs leading-relaxed text-white/46">
-                Export writes a migration-ready snapshot to <code>{localSupabaseExportPath}</code>. Seed fills local
-                news, roster, staff, and partner records from the current RAD content.
-              </p>
-            </div>
-          ) : null}
-
-          <CardGrid cols={4}>
-            <Card tone="metric">
-              <CardMetric>{String(news.rows.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">News Posts</CardEyebrow>
-            </Card>
-            <Card tone="metric">
-              <CardMetric>{String(roster.rows.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">Roster Rows</CardEyebrow>
-            </Card>
-            <Card tone="metric">
-              <CardMetric>{String(staff.rows.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">Staff Rows</CardEyebrow>
-            </Card>
-            <Card tone="metric">
-              <CardMetric>{String(contentItems.rows.length).padStart(2, "0")}</CardMetric>
-              <CardEyebrow className="mt-2">Latest Cards</CardEyebrow>
-            </Card>
-            <Card tone="metric">
-              <CardMetric>{maintenance ? "ON" : "OK"}</CardMetric>
-              <CardEyebrow className="mt-2">Maintenance</CardEyebrow>
-            </Card>
-          </CardGrid>
-
-          <DashboardTabs
-            tabs={[
-              { id: "news", label: "News" },
-              { id: "roster", label: "Roster" },
-              { id: "staff", label: "Staff" },
-              { id: "partners", label: "Partners" },
-              { id: "latest-content", label: "Latest Content" },
-              { id: "inquiries", label: "Inquiries" },
-              { id: "settings", label: "Settings" }
-            ]}
+          <DashboardShell
             defaultTabId={defaultDashboardTab}
+            header={
+              <>
+                {seedBanner}
+                {!hasPeopleData && !localAdminBypassEnabled ? (
+                  <p className="mb-4 text-sm text-white/55">
+                    No roster, staff, or partner rows yet — use Import from site-data to sync static content.
+                  </p>
+                ) : null}
+              </>
+            }
+            nav={[
+              { id: "roster", label: "Roster", group: "People" },
+              { id: "staff", label: "Staff", group: "People" },
+              { id: "partners", label: "Partners", group: "People" },
+              { id: "news", label: "News", group: "Content" },
+              { id: "latest-content", label: "Latest", group: "Content" },
+              { id: "inquiries", label: "Inquiries", group: "Ops" },
+              { id: "settings", label: "Settings", group: "Ops" }
+            ]}
           >
-            <div id="news" className="grid gap-5">
-              <SectionHeading
-                eyebrow="News"
-                title="One posts collection."
-                description="Feature and archive are display choices. The admin edits the same news_posts table."
-              />
+            <RosterSection rows={roster.rows} error={roster.error} />
+            <StaffSection rows={staff.rows} error={staff.error} />
+            <PartnersSection rows={partners.rows} error={partners.error} />
 
+            <div className="grid gap-5">
+              <SectionHeading eyebrow="News" title="Posts" description="Edit the news_posts collection." />
               {news.error ? (
                 <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{news.error}</p>
               ) : null}
-
               <form action={createNewsPost} className={`${formCardClass} grid gap-4 md:grid-cols-2`}>
                 <Field label="Title" name="title" required />
                 <Field label="Slug" name="slug" />
@@ -467,10 +310,9 @@ export default async function DashboardPage() {
                   <button className={buttonClass} type="submit">
                     Create Post
                   </button>
-                  <span className={uploadHintClass}>Uploading an image overrides the cover URL in local mode.</span>
+                  <span className={uploadHintClass}>Upload overrides cover URL when provided.</span>
                 </div>
               </form>
-
               <div className="grid gap-4">
                 {news.rows.map((post) => (
                   <div key={post.id} className={rowCardClass}>
@@ -501,59 +343,12 @@ export default async function DashboardPage() {
               </div>
             </div>
 
-            <div id="roster" className="grid gap-5">
-              <SectionHeading eyebrow="Roster" title="Manage player records." />
-              <RosterForm />
-              <div className="grid gap-4">
-                {roster.rows.map((player) => (
-                  <div key={player.id} className={rowCardClass}>
-                    <RosterForm row={player} />
-                    <div className="mt-3">
-                      <DeleteForm action={deleteRosterEntry} id={player.id} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div id="staff" className="grid gap-5">
-              <SectionHeading eyebrow="Staff" title="Manage staff records." />
-              <StaffForm />
-              <div className="grid gap-4">
-                {staff.rows.map((member) => (
-                  <div key={member.id} className={rowCardClass}>
-                    <StaffForm row={member} />
-                    <div className="mt-3">
-                      <DeleteForm action={deleteStaffEntry} id={member.id} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div id="partners" className="grid gap-5">
-              <SectionHeading eyebrow="Partners" title="Manage partner lanes." />
-              <PartnerForm />
-              <div className="grid gap-4">
-                {partners.rows.map((partner) => (
-                  <div key={partner.id} className={rowCardClass}>
-                    <PartnerForm row={partner} />
-                    <div className="mt-3">
-                      <DeleteForm action={deletePartnerEntry} id={partner.id} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div id="latest-content" className="grid gap-5">
-              <SectionHeading
-                eyebrow="Latest Content"
-                title="Manage fallback media cards."
-                description="These cards feed the latest content library when YouTube data is unavailable and support direct outbound links."
-              />
+            <div className="grid gap-5">
+              <SectionHeading eyebrow="Latest" title="Fallback media cards" />
               {contentItems.error ? (
-                <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{contentItems.error}</p>
+                <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">
+                  {contentItems.error}
+                </p>
               ) : null}
               <ContentItemForm />
               <div className="grid gap-4">
@@ -568,8 +363,8 @@ export default async function DashboardPage() {
               </div>
             </div>
 
-            <div id="inquiries" className="grid gap-5">
-              <SectionHeading eyebrow="Inquiries" title="Review contact submissions." />
+            <div className="grid gap-5">
+              <SectionHeading eyebrow="Inquiries" title="Contact submissions" />
               {inquiries.error ? (
                 <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{inquiries.error}</p>
               ) : null}
@@ -584,17 +379,27 @@ export default async function DashboardPage() {
                         <p className="mt-1 text-sm text-white/58">
                           {inquiry.inquiry_type} · {inquiry.email}
                         </p>
-                        {inquiry.organization ? <p className="mt-1 text-sm text-white/45">{inquiry.organization}</p> : null}
+                        {inquiry.organization ? (
+                          <p className="mt-1 text-sm text-white/45">{inquiry.organization}</p>
+                        ) : null}
                         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/62">{inquiry.message}</p>
                       </div>
                       <form action={updateInquiryStatus} className="flex flex-wrap items-end gap-3">
                         <input type="hidden" name="id" value={inquiry.id} />
-                        <Select
-                          label="Status"
-                          name="status"
-                          defaultValue={inquiry.status}
-                          options={["new", "reviewing", "replied", "closed"]}
-                        />
+                        <label className={labelClass}>
+                          Status
+                          <select
+                            className={inputClass}
+                            name="status"
+                            defaultValue={inquiry.status}
+                          >
+                            {["new", "reviewing", "replied", "closed"].map((status) => (
+                              <option key={status} value={status}>
+                                {status}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
                         <button className={buttonClass} type="submit">
                           Update
                         </button>
@@ -605,8 +410,8 @@ export default async function DashboardPage() {
               </div>
             </div>
 
-            <div id="settings" className="grid gap-5">
-              <SectionHeading eyebrow="Settings" title="Site controls." />
+            <div className="grid gap-5">
+              <SectionHeading eyebrow="Settings" title="Site controls" />
               <form action={updateMaintenanceSetting} className={`${formCardClass} flex flex-wrap items-center gap-4`}>
                 <Check label="Maintenance mode" name="enabled" defaultChecked={maintenance} />
                 <button className={buttonClass} type="submit">
@@ -614,104 +419,9 @@ export default async function DashboardPage() {
                 </button>
               </form>
             </div>
-          </DashboardTabs>
+          </DashboardShell>
         </Container>
       </Section>
     </PageShell>
-  );
-}
-
-function RosterForm({ row }: { row?: RosterRow }) {
-  return (
-    <form action={upsertRosterEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
-      {row ? <input type="hidden" name="id" value={row.id} /> : null}
-      <Field label="Handle" name="handle" defaultValue={row?.handle} required />
-      <Field label="Real Name" name="real_name" defaultValue={row?.real_name} />
-      <Field label="Player Role" name="player_role" defaultValue={row?.player_role ?? "DPS"} />
-      <Field label="Roster Header" name="roster_header" defaultValue={row?.roster_header ?? "Marvel Rivals"} />
-      <Field label="Region" name="region" defaultValue={row?.region} />
-      <Field label="Image URL" name="image_url" defaultValue={row?.image_url} />
-      <FileField label="Image Upload" name="image_file" />
-      <Field label="X URL" name="x_url" defaultValue={row?.x_url} />
-      <Field label="Twitch URL" name="twitch_url" defaultValue={row?.twitch_url} />
-      <Select label="Role Order" name="role_order" defaultValue={row?.role_order} options={["Starter", "Sub", "Coach", "Manager"]} />
-      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
-      <TextArea label="Bio" name="bio" defaultValue={row?.bio} />
-      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
-        <Check label="Featured" name="featured" defaultChecked={row?.featured} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Player" : "Create Player"}
-        </button>
-      </div>
-    </form>
-  );
-}
-
-function StaffForm({ row }: { row?: StaffRow }) {
-  return (
-    <form action={upsertStaffEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
-      {row ? <input type="hidden" name="id" value={row.id} /> : null}
-      <Field label="Name" name="name" defaultValue={row?.name} required />
-      <Field label="Title" name="title" defaultValue={row?.title} required />
-      <Field label="Image URL" name="image_url" defaultValue={row?.image_url} />
-      <FileField label="Image Upload" name="image_file" />
-      <Field label="X URL" name="x_url" defaultValue={row?.x_url} />
-      <Select
-        label="Section"
-        name="section"
-        defaultValue={row?.section}
-        options={["Leadership", "Content + Social Media", "General Staff"]}
-      />
-      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
-      <TextArea label="Bio" name="bio" defaultValue={row?.bio} />
-      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
-        <Check label="Leadership" name="leadership" defaultChecked={row?.leadership} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Staff" : "Create Staff"}
-        </button>
-      </div>
-    </form>
-  );
-}
-
-function PartnerForm({ row }: { row?: PartnerRow }) {
-  return (
-    <form action={upsertPartnerEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
-      {row ? <input type="hidden" name="id" value={row.id} /> : null}
-      <Field label="Name" name="name" defaultValue={row?.name} />
-      <Field label="Tier" name="tier" defaultValue={row?.tier ?? "Open Slot"} />
-      <Field label="Logo URL" name="logo_url" defaultValue={row?.logo_url} />
-      <FileField label="Logo Upload" name="logo_file" />
-      <Field label="URL" name="url" defaultValue={row?.url} />
-      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
-      <TextArea label="Description" name="description" defaultValue={row?.description} />
-      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
-        <Check label="Open Slot" name="is_open_slot" defaultChecked={row?.is_open_slot} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Partner" : "Create Partner"}
-        </button>
-      </div>
-    </form>
-  );
-}
-
-function ContentItemForm({ row }: { row?: ContentItemRow }) {
-  return (
-    <form action={upsertContentItem} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
-      {row ? <input type="hidden" name="id" value={row.id} /> : null}
-      <Field label="Title" name="title" defaultValue={row?.title} required />
-      <Field label="URL" name="url" defaultValue={row?.url ?? "https://www.youtube.com/@RadEsport"} required />
-      <Field label="Thumbnail URL" name="thumbnail" defaultValue={row?.thumbnail ?? "/assets/rad-bg-red.png"} required />
-      <Select label="Type" name="type" defaultValue={row?.type} options={["video", "article", "clip"]} />
-      <Field label="Tags" name="tags" defaultValue={row?.tags?.join(", ")} />
-      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
-      <TextArea label="Description" name="description" defaultValue={row?.description} />
-      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
-        <Check label="Featured" name="featured" defaultChecked={row?.featured} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Card" : "Create Card"}
-        </button>
-      </div>
-    </form>
   );
 }

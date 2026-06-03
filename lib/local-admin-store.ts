@@ -26,6 +26,7 @@ export type LocalRosterRow = {
   id: string;
   display_order: number;
   handle: string;
+  slug?: string | null;
   real_name: string | null;
   player_role: string;
   roster_header: string;
@@ -34,8 +35,15 @@ export type LocalRosterRow = {
   image_url: string | null;
   x_url: string | null;
   twitch_url: string | null;
+  instagram_url?: string | null;
+  youtube_url?: string | null;
   featured: boolean;
   role_order: string;
+  descriptor?: string | null;
+  specialties?: string[];
+  tags?: string[];
+  rank?: string | null;
+  jersey_number?: number | null;
 };
 
 export type LocalStaffRow = {
@@ -48,6 +56,10 @@ export type LocalStaffRow = {
   section: string;
   leadership: boolean;
   image_url: string | null;
+  slug?: string | null;
+  descriptor?: string | null;
+  tags?: string[];
+  group_name?: string | null;
 };
 
 export type LocalPartnerRow = {

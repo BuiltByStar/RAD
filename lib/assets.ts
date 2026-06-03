@@ -9,6 +9,8 @@ export const assets = {
   pfpWhite: "/assets/rad-pfp-white.png",
   pfpWhiteAlt: "/assets/rad-pfp-white-alt.png",
   wordmark: "/assets/rad-wordmark.png",
+  /** Drop official or custom game logo here (PNG/SVG); typographic lockup shows until present. */
+  marvelRivalsLogo: "/assets/marvel-rivals-logo.png",
   shop: {
     jerseyFront: "/assets/shop/rad-jersey-front.png",
     jerseyBack: "/assets/shop/rad-jersey-back.png",

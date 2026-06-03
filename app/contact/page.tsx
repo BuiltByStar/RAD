@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 
-import { ContactForm } from "@/components/contact-form";
+import { ContactSocialSection } from "@/components/contact/contact-social-section";
 import { PageShell } from "@/components/page-shell";
-import { ContactGrid, PageRail, PageRailSection, SectionHeading } from "@/components/ui";
-import { hasSupabaseServiceEnv } from "@/lib/env";
-import { contactChannels } from "@/lib/site-data";
+import { PageRail, PageRailSection } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Direct contact and structured inquiry intake for RAD Esports."
+  description: "Reach RAD via Discord ticket or team email — partnerships, talent, media, and business inquiries."
 };
 
 export default function ContactPage() {
@@ -18,21 +16,11 @@ export default function ContactPage() {
       compact
       eyebrow="Contact"
       title="Contact"
-      description="Partnership, talent, media, and business inquiries."
+      description="Discord ticket or team email — we respond fastest in-server."
     >
       <PageRail className="pb-14 sm:pb-16">
         <PageRailSection className="py-8 md:py-10">
-          <div className="grid gap-px border border-neutral-900 bg-neutral-900 lg:grid-cols-2">
-            <div className="bg-black p-5 sm:p-6 md:p-8">
-              <SectionHeading title="Inquiry" compact className="mb-6" />
-              <ContactForm enabled={hasSupabaseServiceEnv()} />
-            </div>
-
-            <div className="bg-black p-5 sm:p-6 md:p-8">
-              <SectionHeading title="Direct" compact className="mb-4" />
-              <ContactGrid channels={contactChannels} />
-            </div>
-          </div>
+          <ContactSocialSection />
         </PageRailSection>
       </PageRail>
     </PageShell>

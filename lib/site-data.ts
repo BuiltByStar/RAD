@@ -40,7 +40,9 @@ export type Partner = {
   name: string;
   tier: string;
   href: string;
-  description: string;
+  description?: string;
+  logo?: string;
+  isOpenSlot?: boolean;
 };
 
 export type MerchItem = {
@@ -59,6 +61,15 @@ export type MerchItem = {
 export type ContactChannel = {
   label: string;
   value: string;
+  href: string;
+};
+
+export type OrgSocialPlatform = "discord" | "youtube" | "x" | "twitch" | "instagram" | "tiktok";
+
+export type OrgSocialChannel = {
+  platform: OrgSocialPlatform;
+  label: string;
+  handle: string;
   href: string;
 };
 
@@ -307,27 +318,14 @@ export const staff: Person[] = [
 ];
 
 export const partners: Partner[] = [
-  {
-    name: "Open for Activations",
-    tier: "Now Booking",
-    href: "/contact",
-    description:
-      "RAD is currently opening the door for activation partners who want launch-era visibility and long-term brand alignment."
-  },
-  {
-    name: "Category Sponsors",
-    tier: "Growth Ready",
-    href: "/contact",
-    description:
-      "Apparel, peripherals, energy, and campaign partners can plug into a structure designed for competitive storytelling and media rollout."
-  },
-  {
-    name: "Content Campaigns",
-    tier: "Available",
-    href: "/contact",
-    description:
-      "RAD can support launch announcements, creator-facing campaigns, community activations, and branded competitive content."
-  }
+  { name: "Primary", tier: "Primary", href: "/contact", isOpenSlot: true },
+  { name: "Primary", tier: "Primary", href: "/contact", isOpenSlot: true },
+  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
+  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
+  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
+  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
+  { name: "Supporting", tier: "Supporting", href: "/contact", isOpenSlot: true },
+  { name: "Supporting", tier: "Supporting", href: "/contact", isOpenSlot: true }
 ];
 
 export const merchCollection = {
@@ -485,6 +483,32 @@ export const contactChannels: ContactChannel[] = [
     href: "https://x.com/RADesport"
   }
 ];
+
+const orgSocialPlatformByLabel: Record<string, OrgSocialPlatform> = {
+  Discord: "discord",
+  YouTube: "youtube",
+  X: "x",
+  Twitch: "twitch",
+  Instagram: "instagram",
+  TikTok: "tiktok"
+};
+
+/** Org-facing social links (excludes email). Sourced from contactChannels. */
+export const orgSocialChannels: OrgSocialChannel[] = contactChannels
+  .filter((channel) => channel.href.startsWith("http"))
+  .flatMap((channel) => {
+    const platform = orgSocialPlatformByLabel[channel.label];
+    if (!platform) return [];
+
+    return [
+      {
+        platform,
+        label: channel.label,
+        handle: channel.value,
+        href: channel.href
+      }
+    ];
+  });
 
 // ─── Organization Timeline ───────────────────────────────────────────────────
 

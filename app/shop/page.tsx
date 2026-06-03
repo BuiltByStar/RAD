@@ -21,7 +21,7 @@ export default function ShopPage() {
       route="/shop"
     >
       <PageRail className="pb-14 sm:pb-16">
-        <ShopPageClient items={merchItems} compact />
+        <ShopPageClient items={merchItems} />
       </PageRail>
     </PageShell>
   );

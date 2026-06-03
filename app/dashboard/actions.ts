@@ -3,10 +3,16 @@
 import { revalidatePath } from "next/cache";
 
 import { requireAdminAccess } from "@/lib/admin";
+import { resolveAdminImageUpload } from "@/lib/admin-media";
+import {
+  buildPartnerSeedRows,
+  buildRosterSeedRows,
+  buildStaffSeedRows,
+  slugifyHandle
+} from "@/lib/dashboard-seed";
 import {
   createLocalId,
   readLocalDashboardData,
-  saveLocalAdminUpload,
   writeLocalDashboardData,
   writeLocalSupabaseExport
 } from "@/lib/local-admin-store";
@@ -40,11 +46,54 @@ function readFile(formData: FormData, key: string) {
 }
 
 function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 80);
+  return slugifyHandle(value);
+}
+
+function readCommaList(formData: FormData, key: string) {
+  return readText(formData, key)
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function readOptionalNumber(formData: FormData, key: string) {
+  const raw = readText(formData, key);
+  if (!raw.length) return null;
+  const value = Number(raw);
+  return Number.isFinite(value) ? value : null;
+}
+
+type OrderedRow = { id: string; display_order: number };
+
+function swapOrderedRows<T extends OrderedRow>(rows: T[], id: string, direction: "up" | "down") {
+  const sorted = [...rows].sort((a, b) => a.display_order - b.display_order);
+  const index = sorted.findIndex((row) => row.id === id);
+  if (index < 0) return rows;
+
+  const targetIndex = direction === "up" ? index - 1 : index + 1;
+  if (targetIndex < 0 || targetIndex >= sorted.length) return rows;
+
+  const current = sorted[index];
+  const neighbor = sorted[targetIndex];
+
+  return rows.map((row) => {
+    if (row.id === current.id) return { ...row, display_order: neighbor.display_order };
+    if (row.id === neighbor.id) return { ...row, display_order: current.display_order };
+    return row;
+  });
+}
+
+async function persistOrderUpdates(
+  supabase: NonNullable<Awaited<ReturnType<typeof getAdminSupabase>>>,
+  table: "roster_entries" | "staff_entries" | "partner_entries",
+  rows: OrderedRow[]
+) {
+  const updates = await Promise.all(
+    rows.map((row) => supabase.from(table).update({ display_order: row.display_order }).eq("id", row.id))
+  );
+
+  const error = updates.find((result) => result.error)?.error;
+  if (error) throw new Error(error.message);
 }
 
 async function getAdminSupabase() {
@@ -71,7 +120,7 @@ export async function createNewsPost(formData: FormData) {
   const title = readText(formData, "title", "Untitled RAD update");
   const slug = slugify(readText(formData, "slug", title));
   const uploadedCover = readFile(formData, "cover_file");
-  const localCover = uploadedCover ? await saveLocalAdminUpload(uploadedCover, "news") : null;
+  const localCover = uploadedCover ? await resolveAdminImageUpload(uploadedCover, "news", supabase) : null;
 
   if (!supabase) {
     const data = await readLocalDashboardData();
@@ -116,7 +165,7 @@ export async function updateNewsPost(formData: FormData) {
   const title = readText(formData, "title", "Untitled RAD update");
   const slug = slugify(readText(formData, "slug", title));
   const uploadedCover = readFile(formData, "cover_file");
-  const localCover = uploadedCover ? await saveLocalAdminUpload(uploadedCover, "news") : null;
+  const localCover = uploadedCover ? await resolveAdminImageUpload(uploadedCover, "news", supabase) : null;
 
   if (!supabase) {
     const data = await readLocalDashboardData();
@@ -179,28 +228,45 @@ export async function deleteNewsPost(formData: FormData) {
   revalidatePublic(["/content"]);
 }
 
-export async function upsertRosterEntry(formData: FormData) {
-  const supabase = await getAdminSupabase();
-  const id = readText(formData, "id");
-  const uploadedImage = readFile(formData, "image_file");
-  const localImage = uploadedImage ? await saveLocalAdminUpload(uploadedImage, "roster") : null;
-  const payload = {
-    handle: readText(formData, "handle"),
+function buildRosterPayload(formData: FormData, imageUrl: string | null | undefined, displayOrder: number) {
+  const handle = readText(formData, "handle");
+  return {
+    handle,
+    slug: slugify(readText(formData, "slug", handle)),
     real_name: readOptionalText(formData, "real_name"),
     player_role: readText(formData, "player_role", "Player"),
     roster_header: readText(formData, "roster_header", "Marvel Rivals"),
     region: readOptionalText(formData, "region"),
+    descriptor: readOptionalText(formData, "descriptor"),
     bio: readOptionalText(formData, "bio"),
-    image_url: localImage ?? readOptionalText(formData, "image_url"),
+    image_url: imageUrl ?? readOptionalText(formData, "image_url"),
     x_url: readOptionalText(formData, "x_url"),
     twitch_url: readOptionalText(formData, "twitch_url"),
+    instagram_url: readOptionalText(formData, "instagram_url"),
+    youtube_url: readOptionalText(formData, "youtube_url"),
     featured: readBoolean(formData, "featured"),
     role_order: readText(formData, "role_order", "Starter"),
-    display_order: readNumber(formData, "display_order")
+    specialties: readCommaList(formData, "specialties"),
+    tags: readCommaList(formData, "tags"),
+    rank: readOptionalText(formData, "rank"),
+    jersey_number: readOptionalNumber(formData, "jersey_number"),
+    display_order: displayOrder
   };
+}
+
+export async function upsertRosterEntry(formData: FormData) {
+  const supabase = await getAdminSupabase();
+  const id = readText(formData, "id");
+  const uploadedImage = readFile(formData, "image_file");
+  const uploadedUrl = uploadedImage ? await resolveAdminImageUpload(uploadedImage, "roster", supabase) : null;
 
   if (!supabase) {
     const data = await readLocalDashboardData();
+    const nextOrder = data.roster_entries.length
+      ? Math.max(...data.roster_entries.map((entry) => entry.display_order)) + 1
+      : 0;
+    const existing = id ? data.roster_entries.find((entry) => entry.id === id) : null;
+    const payload = buildRosterPayload(formData, uploadedUrl, existing?.display_order ?? nextOrder);
     data.roster_entries = id
       ? data.roster_entries.map((entry) => (entry.id === id ? { ...entry, ...payload } : entry))
       : [{ id: createLocalId(), ...payload }, ...data.roster_entries];
@@ -209,12 +275,46 @@ export async function upsertRosterEntry(formData: FormData) {
     return;
   }
 
+  const { data: existingRows } = await supabase.from("roster_entries").select("display_order").eq("id", id).maybeSingle();
+  const { data: maxRow } = await supabase
+    .from("roster_entries")
+    .select("display_order")
+    .order("display_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const nextOrder = (maxRow?.display_order ?? -1) + 1;
+  const payload = buildRosterPayload(
+    formData,
+    uploadedUrl,
+    existingRows?.display_order ?? nextOrder
+  );
+
   const query = id
     ? supabase.from("roster_entries").update(payload).eq("id", id)
     : supabase.from("roster_entries").insert(payload);
   const { error } = await query;
 
   if (error) throw new Error(error.message);
+  revalidatePublic(["/roster"]);
+}
+
+export async function reorderRosterEntry(formData: FormData) {
+  const supabase = await getAdminSupabase();
+  const id = readText(formData, "id");
+  const direction = readText(formData, "direction") === "down" ? "down" : "up";
+
+  if (!supabase) {
+    const data = await readLocalDashboardData();
+    data.roster_entries = swapOrderedRows(data.roster_entries, id, direction);
+    await writeLocalDashboardData(data);
+    revalidatePublic(["/roster"]);
+    return;
+  }
+
+  const { data: rows, error } = await supabase.from("roster_entries").select("id, display_order");
+  if (error) throw new Error(error.message);
+  const updated = swapOrderedRows((rows ?? []) as OrderedRow[], id, direction);
+  await persistOrderUpdates(supabase, "roster_entries", updated);
   revalidatePublic(["/roster"]);
 }
 
@@ -235,24 +335,37 @@ export async function deleteRosterEntry(formData: FormData) {
   revalidatePublic(["/roster"]);
 }
 
+function buildStaffPayload(formData: FormData, imageUrl: string | null | undefined, displayOrder: number) {
+  const name = readText(formData, "name");
+  return {
+    name,
+    slug: slugify(readText(formData, "slug", name)),
+    title: readText(formData, "title"),
+    descriptor: readOptionalText(formData, "descriptor"),
+    bio: readOptionalText(formData, "bio"),
+    x_url: readOptionalText(formData, "x_url"),
+    section: readText(formData, "section", "General Staff"),
+    group_name: readOptionalText(formData, "group_name"),
+    leadership: readBoolean(formData, "leadership"),
+    image_url: imageUrl ?? readOptionalText(formData, "image_url"),
+    tags: readCommaList(formData, "tags"),
+    display_order: displayOrder
+  };
+}
+
 export async function upsertStaffEntry(formData: FormData) {
   const supabase = await getAdminSupabase();
   const id = readText(formData, "id");
   const uploadedImage = readFile(formData, "image_file");
-  const localImage = uploadedImage ? await saveLocalAdminUpload(uploadedImage, "staff") : null;
-  const payload = {
-    name: readText(formData, "name"),
-    title: readText(formData, "title"),
-    bio: readOptionalText(formData, "bio"),
-    x_url: readOptionalText(formData, "x_url"),
-    section: readText(formData, "section", "General Staff"),
-    leadership: readBoolean(formData, "leadership"),
-    image_url: localImage ?? readOptionalText(formData, "image_url"),
-    display_order: readNumber(formData, "display_order")
-  };
+  const uploadedUrl = uploadedImage ? await resolveAdminImageUpload(uploadedImage, "staff", supabase) : null;
 
   if (!supabase) {
     const data = await readLocalDashboardData();
+    const nextOrder = data.staff_entries.length
+      ? Math.max(...data.staff_entries.map((entry) => entry.display_order)) + 1
+      : 0;
+    const existing = id ? data.staff_entries.find((entry) => entry.id === id) : null;
+    const payload = buildStaffPayload(formData, uploadedUrl, existing?.display_order ?? nextOrder);
     data.staff_entries = id
       ? data.staff_entries.map((entry) => (entry.id === id ? { ...entry, ...payload } : entry))
       : [{ id: createLocalId(), ...payload }, ...data.staff_entries];
@@ -261,12 +374,42 @@ export async function upsertStaffEntry(formData: FormData) {
     return;
   }
 
+  const { data: existingRows } = await supabase.from("staff_entries").select("display_order").eq("id", id).maybeSingle();
+  const { data: maxRow } = await supabase
+    .from("staff_entries")
+    .select("display_order")
+    .order("display_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const nextOrder = (maxRow?.display_order ?? -1) + 1;
+  const payload = buildStaffPayload(formData, uploadedUrl, existingRows?.display_order ?? nextOrder);
+
   const query = id
     ? supabase.from("staff_entries").update(payload).eq("id", id)
     : supabase.from("staff_entries").insert(payload);
   const { error } = await query;
 
   if (error) throw new Error(error.message);
+  revalidatePublic(["/staff"]);
+}
+
+export async function reorderStaffEntry(formData: FormData) {
+  const supabase = await getAdminSupabase();
+  const id = readText(formData, "id");
+  const direction = readText(formData, "direction") === "down" ? "down" : "up";
+
+  if (!supabase) {
+    const data = await readLocalDashboardData();
+    data.staff_entries = swapOrderedRows(data.staff_entries, id, direction);
+    await writeLocalDashboardData(data);
+    revalidatePublic(["/staff"]);
+    return;
+  }
+
+  const { data: rows, error } = await supabase.from("staff_entries").select("id, display_order");
+  if (error) throw new Error(error.message);
+  const updated = swapOrderedRows((rows ?? []) as OrderedRow[], id, direction);
+  await persistOrderUpdates(supabase, "staff_entries", updated);
   revalidatePublic(["/staff"]);
 }
 
@@ -287,23 +430,31 @@ export async function deleteStaffEntry(formData: FormData) {
   revalidatePublic(["/staff"]);
 }
 
+function buildPartnerPayload(formData: FormData, logoUrl: string | null | undefined, displayOrder: number) {
+  return {
+    name: readOptionalText(formData, "name"),
+    tier: readOptionalText(formData, "tier"),
+    description: readOptionalText(formData, "description"),
+    logo_url: logoUrl ?? readOptionalText(formData, "logo_url"),
+    url: readOptionalText(formData, "url"),
+    is_open_slot: readBoolean(formData, "is_open_slot"),
+    display_order: displayOrder
+  };
+}
+
 export async function upsertPartnerEntry(formData: FormData) {
   const supabase = await getAdminSupabase();
   const id = readText(formData, "id");
   const uploadedLogo = readFile(formData, "logo_file");
-  const localLogo = uploadedLogo ? await saveLocalAdminUpload(uploadedLogo, "partners") : null;
-  const payload = {
-    name: readOptionalText(formData, "name"),
-    tier: readOptionalText(formData, "tier"),
-    description: readOptionalText(formData, "description"),
-    logo_url: localLogo ?? readOptionalText(formData, "logo_url"),
-    url: readOptionalText(formData, "url"),
-    is_open_slot: readBoolean(formData, "is_open_slot"),
-    display_order: readNumber(formData, "display_order")
-  };
+  const uploadedUrl = uploadedLogo ? await resolveAdminImageUpload(uploadedLogo, "partners", supabase) : null;
 
   if (!supabase) {
     const data = await readLocalDashboardData();
+    const nextOrder = data.partner_entries.length
+      ? Math.max(...data.partner_entries.map((entry) => entry.display_order)) + 1
+      : 0;
+    const existing = id ? data.partner_entries.find((entry) => entry.id === id) : null;
+    const payload = buildPartnerPayload(formData, uploadedUrl, existing?.display_order ?? nextOrder);
     data.partner_entries = id
       ? data.partner_entries.map((entry) => (entry.id === id ? { ...entry, ...payload } : entry))
       : [{ id: createLocalId(), ...payload }, ...data.partner_entries];
@@ -312,12 +463,42 @@ export async function upsertPartnerEntry(formData: FormData) {
     return;
   }
 
+  const { data: existingRows } = await supabase.from("partner_entries").select("display_order").eq("id", id).maybeSingle();
+  const { data: maxRow } = await supabase
+    .from("partner_entries")
+    .select("display_order")
+    .order("display_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const nextOrder = (maxRow?.display_order ?? -1) + 1;
+  const payload = buildPartnerPayload(formData, uploadedUrl, existingRows?.display_order ?? nextOrder);
+
   const query = id
     ? supabase.from("partner_entries").update(payload).eq("id", id)
     : supabase.from("partner_entries").insert(payload);
   const { error } = await query;
 
   if (error) throw new Error(error.message);
+  revalidatePublic(["/partners"]);
+}
+
+export async function reorderPartnerEntry(formData: FormData) {
+  const supabase = await getAdminSupabase();
+  const id = readText(formData, "id");
+  const direction = readText(formData, "direction") === "down" ? "down" : "up";
+
+  if (!supabase) {
+    const data = await readLocalDashboardData();
+    data.partner_entries = swapOrderedRows(data.partner_entries, id, direction);
+    await writeLocalDashboardData(data);
+    revalidatePublic(["/partners"]);
+    return;
+  }
+
+  const { data: rows, error } = await supabase.from("partner_entries").select("id, display_order");
+  if (error) throw new Error(error.message);
+  const updated = swapOrderedRows((rows ?? []) as OrderedRow[], id, direction);
+  await persistOrderUpdates(supabase, "partner_entries", updated);
   revalidatePublic(["/partners"]);
 }
 
@@ -440,82 +621,117 @@ export async function updateMaintenanceSetting(formData: FormData) {
   revalidatePublic(["/dashboard", "/"]);
 }
 
-export async function seedLocalDashboardData() {
-  if (process.env.LOCAL_ADMIN_BYPASS !== "1") {
-    throw new Error("Local seed is only available in local admin bypass mode.");
+export async function seedDashboardFromSite(formData?: FormData) {
+  const force = formData ? readBoolean(formData, "force") : false;
+  const supabase = await getAdminSupabase();
+  const posts = await getPostMeta();
+  const rosterSeed = buildRosterSeedRows(players);
+  const staffSeed = buildStaffSeedRows(staff);
+  const partnerSeed = buildPartnerSeedRows(partners);
+
+  if (!supabase) {
+    const existing = await readLocalDashboardData();
+    const data = {
+      ...existing,
+      news_posts:
+        force || !existing.news_posts.length
+          ? posts.map((post, index) => ({
+              id: createLocalId(),
+              title: post.title,
+              slug: post.slug,
+              date: post.date,
+              summary: post.summary,
+              category: post.category,
+              cover: post.cover,
+              body: `${post.summary}\n\nSeeded from site content.`,
+              featured: Boolean(post.featured),
+              published: true,
+              display_order: index
+            }))
+          : existing.news_posts,
+      roster_entries:
+        force || !existing.roster_entries.length
+          ? rosterSeed.map((row) => ({ id: createLocalId(), ...row }))
+          : existing.roster_entries,
+      staff_entries:
+        force || !existing.staff_entries.length
+          ? staffSeed.map((row) => ({ id: createLocalId(), ...row }))
+          : existing.staff_entries,
+      partner_entries:
+        force || !existing.partner_entries.length
+          ? partnerSeed.map((row) => ({ id: createLocalId(), ...row }))
+          : existing.partner_entries,
+      content_items:
+        force || !existing.content_items.length
+          ? fallbackContent.map((item, index) => ({
+              id: createLocalId(),
+              title: item.title,
+              description: item.description ?? null,
+              url: item.url,
+              thumbnail: item.thumbnail,
+              type: item.type,
+              tags: item.tags,
+              featured: Boolean(item.featured),
+              display_order: index
+            }))
+          : existing.content_items,
+      contact_inquiries: existing.contact_inquiries,
+      site_settings: existing.site_settings
+    };
+
+    await writeLocalDashboardData(data);
+    revalidatePublic(["/dashboard", "/content", "/roster", "/staff", "/partners"]);
+    return;
   }
 
-  const existing = await readLocalDashboardData();
-  const posts = await getPostMeta();
+  const [{ count: rosterCount }, { count: staffCount }, { count: partnerCount }] = await Promise.all([
+    supabase.from("roster_entries").select("*", { count: "exact", head: true }),
+    supabase.from("staff_entries").select("*", { count: "exact", head: true }),
+    supabase.from("partner_entries").select("*", { count: "exact", head: true })
+  ]);
 
-  const data = {
-    ...existing,
-    news_posts: posts.map((post, index) => ({
-      id: createLocalId(),
-      title: post.title,
-      slug: post.slug,
-      date: post.date,
-      summary: post.summary,
-      category: post.category,
-      cover: post.cover,
-      body: `${post.summary}\n\nThis seeded local post mirrors the current site content and can be edited from the RAD dashboard.`,
-      featured: Boolean(post.featured),
-      published: true,
-      display_order: index
-    })),
-    roster_entries: players.map((player, index) => ({
-      id: createLocalId(),
-      display_order: index,
-      handle: player.name,
-      real_name: player.realName ?? null,
-      player_role: player.role,
-      roster_header: player.group,
-      region: null,
-      bio: player.bio ?? null,
-      image_url: null,
-      x_url: player.socials?.find((social) => social.label === "X")?.href ?? null,
-      twitch_url: player.socials?.find((social) => social.label === "Twitch")?.href ?? null,
-      featured: Boolean(player.featured),
-      role_order: player.tags?.includes("Substitute") ? "Sub" : "Starter"
-    })),
-    staff_entries: staff.map((member, index) => ({
-      id: createLocalId(),
-      display_order: index,
-      name: member.name,
-      title: member.role,
-      bio: member.bio ?? null,
-      x_url: member.socials?.find((social) => social.label === "X")?.href ?? null,
-      section: member.group === "Brand" ? "Content + Social Media" : "General Staff",
-      leadership: false,
-      image_url: null
-    })),
-    partner_entries: partners.map((partner, index) => ({
-      id: createLocalId(),
-      display_order: index,
-      name: partner.name,
-      tier: partner.tier,
-      description: partner.description,
-      logo_url: null,
-      url: partner.href,
-      is_open_slot: false
-    })),
-    content_items: fallbackContent.map((item, index) => ({
-      id: createLocalId(),
-      title: item.title,
-      description: item.description ?? null,
-      url: item.url,
-      thumbnail: item.thumbnail,
-      type: item.type,
-      tags: item.tags,
-      featured: Boolean(item.featured),
-      display_order: index
-    })),
-    contact_inquiries: existing.contact_inquiries,
-    site_settings: existing.site_settings
-  };
+  if (!force && (rosterCount ?? 0) > 0 && (staffCount ?? 0) > 0 && (partnerCount ?? 0) > 0) {
+    throw new Error("Dashboard tables already have data. Check “Replace existing” to force a re-seed.");
+  }
 
-  await writeLocalDashboardData(data);
+  if (force) {
+    await Promise.all([
+      supabase.from("roster_entries").delete().neq("id", "00000000-0000-0000-0000-000000000000"),
+      supabase.from("staff_entries").delete().neq("id", "00000000-0000-0000-0000-000000000000"),
+      supabase.from("partner_entries").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+    ]);
+  } else {
+    if ((rosterCount ?? 0) === 0) {
+      const { error } = await supabase.from("roster_entries").insert(rosterSeed);
+      if (error) throw new Error(error.message);
+    }
+    if ((staffCount ?? 0) === 0) {
+      const { error } = await supabase.from("staff_entries").insert(staffSeed);
+      if (error) throw new Error(error.message);
+    }
+    if ((partnerCount ?? 0) === 0) {
+      const { error } = await supabase.from("partner_entries").insert(partnerSeed);
+      if (error) throw new Error(error.message);
+    }
+  }
+
+  if (force) {
+    const [{ error: rosterError }, { error: staffError }, { error: partnerError }] = await Promise.all([
+      supabase.from("roster_entries").insert(rosterSeed),
+      supabase.from("staff_entries").insert(staffSeed),
+      supabase.from("partner_entries").insert(partnerSeed)
+    ]);
+    if (rosterError) throw new Error(rosterError.message);
+    if (staffError) throw new Error(staffError.message);
+    if (partnerError) throw new Error(partnerError.message);
+  }
+
   revalidatePublic(["/dashboard", "/content", "/roster", "/staff", "/partners"]);
+}
+
+/** @deprecated Use seedDashboardFromSite */
+export async function seedLocalDashboardData() {
+  return seedDashboardFromSite();
 }
 
 export async function exportLocalDashboardData() {

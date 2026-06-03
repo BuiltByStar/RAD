@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { SocialIcon } from "@/components/icons/social-icons";
 import { FluidContainer } from "@/components/ui/fluid-container";
 import { assets } from "@/lib/assets";
-import { contactChannels, discordInviteUrl } from "@/lib/site-data";
+import { orgSocialChannels } from "@/lib/site-data";
 
 type FooterLinkProps = { href: string; label: string; external?: boolean };
 
@@ -25,7 +26,7 @@ function FooterLink({ href, label, external }: FooterLinkProps) {
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noreferrer" className={className}>
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
         {inner}
       </a>
     );
@@ -38,8 +39,6 @@ function FooterLink({ href, label, external }: FooterLinkProps) {
   );
 }
 
-const socials = contactChannels.filter((c) => c.href.startsWith("http"));
-
 export function SiteFooter() {
   return (
     <footer className="bg-black">
@@ -50,26 +49,20 @@ export function SiteFooter() {
               <Image src={assets.logoMark} alt="RAD Esports" width={48} height={48} className="h-10 w-10" />
             </Link>
             <p className="text-sm text-neutral-500">© {new Date().getFullYear()} RAD Esports. All rights reserved.</p>
-            <div className="flex flex-wrap items-center gap-3">
-              {socials.map((channel) => (
+            <div className="flex flex-wrap items-center gap-2">
+              {orgSocialChannels.map((channel) => (
                 <a
-                  key={channel.label}
+                  key={channel.platform}
                   href={channel.href}
                   target="_blank"
-                  rel="noreferrer"
-                  className="text-sm font-semibold uppercase tracking-wider text-[var(--color-blood)] transition-colors hover:text-[#ff4d63]"
+                  rel="noopener noreferrer"
+                  aria-label={`Follow RAD on ${channel.label}`}
+                  title={channel.label}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-neutral-800 text-neutral-500 transition-all hover:border-[var(--color-blood)]/50 hover:text-[var(--color-blood)] hover:shadow-[0_0_16px_rgba(229,6,47,0.15)]"
                 >
-                  {channel.label}
+                  <SocialIcon platform={channel.platform} className="h-3.5 w-3.5" />
                 </a>
               ))}
-              <a
-                href={discordInviteUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm font-semibold uppercase tracking-wider text-[var(--color-blood)] transition-colors hover:text-[#ff4d63]"
-              >
-                Discord
-              </a>
             </div>
           </div>
 
