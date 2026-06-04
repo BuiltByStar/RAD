@@ -23,12 +23,15 @@ export function PartnerLogoWall({ partners }: { partners: PartnerDisplay[] }) {
             className="group flex h-32 w-44 items-center justify-center border border-neutral-900 bg-black px-5 transition-colors hover:border-neutral-700 hover:bg-neutral-950 sm:h-36 sm:w-52"
           >
             {isOpen ? (
-              <span className="flex flex-col items-center gap-1 text-center">
-                <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-600">
-                  {partner.tier}
+              <span className="flex flex-col items-center gap-2 text-center">
+                <span
+                  aria-hidden
+                  className="text-xl font-light text-neutral-700 transition-colors group-hover:text-[var(--color-blood)]"
+                >
+                  +
                 </span>
-                <span className="text-xs font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors group-hover:text-neutral-300">
-                  Available
+                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-500 transition-colors group-hover:text-neutral-300">
+                  Available for partner
                 </span>
               </span>
             ) : (

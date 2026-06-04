@@ -318,14 +318,9 @@ export const staff: Person[] = [
 ];
 
 export const partners: Partner[] = [
-  { name: "Primary", tier: "Primary", href: "/contact", isOpenSlot: true },
-  { name: "Primary", tier: "Primary", href: "/contact", isOpenSlot: true },
-  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
-  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
-  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
-  { name: "Official", tier: "Official", href: "/contact", isOpenSlot: true },
-  { name: "Supporting", tier: "Supporting", href: "/contact", isOpenSlot: true },
-  { name: "Supporting", tier: "Supporting", href: "/contact", isOpenSlot: true }
+  { name: "Partner", tier: "Partner", href: "/contact", isOpenSlot: true },
+  { name: "Partner", tier: "Partner", href: "/contact", isOpenSlot: true },
+  { name: "Partner", tier: "Partner", href: "/contact", isOpenSlot: true }
 ];
 
 export const merchCollection = {
