@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui";
+import { SenButton } from "@/components/ui/sen-button";
 import { cn } from "@/components/ui/cn";
 import type { MerchItem } from "@/lib/site-data";
 import { discordInviteUrl, merchCollection } from "@/lib/site-data";
@@ -41,15 +42,6 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-function ExternalIcon({ className }: { className?: string }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 16 16" className={cn("size-3.5 shrink-0 fill-current", className)}>
-      <path d="M5 3.25H3.5A1.5 1.5 0 0 0 2 4.75v7.75A1.5 1.5 0 0 0 3.5 14h7.75a1.5 1.5 0 0 0 1.5-1.5V11h-1.5v1.5H3.5V4.75H5v-1.5Z" />
-      <path d="M8 2v1.5h3.44L6.72 8.22l1.06 1.06 4.72-4.72V8H14V2H8Z" />
-    </svg>
-  );
-}
-
 function CloseIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 16 16" className="size-4 fill-current">
@@ -59,33 +51,23 @@ function CloseIcon() {
   );
 }
 
-const externalLinkClass =
-  "inline-flex min-h-10 items-center justify-center gap-2 border border-[var(--color-blood)]/60 bg-[var(--color-blood)]/10 px-4 text-[10px] font-bold uppercase tracking-[0.14em] text-white transition-[transform,background,border-color] duration-200 hover:-translate-y-0.5 hover:border-white/50 hover:bg-[var(--color-blood)]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-not-allowed disabled:border-white/15 disabled:bg-white/[0.06] disabled:text-white/45 disabled:hover:translate-y-0";
-
 function ShopAction({
   item,
   className = "",
-  children = "Shop external"
+  children = "Shop external",
+  size = "md"
 }: {
   item?: MerchItem | null;
   className?: string;
   children?: string;
+  size?: "sm" | "md";
 }) {
   const href = shopHrefForItem(item);
 
-  if (!href) {
-    return (
-      <button type="button" disabled className={cn(externalLinkClass, className)}>
-        <span>Shop link pending</span>
-      </button>
-    );
-  }
-
   return (
-    <a href={href} target="_blank" rel="noreferrer" className={cn(externalLinkClass, className)}>
-      <span>{children}</span>
-      <ExternalIcon />
-    </a>
+    <SenButton href={href ?? undefined} disabled={!href} className={className} size={size}>
+      {href ? children : "Shop link pending"}
+    </SenButton>
   );
 }
 
@@ -194,7 +176,7 @@ function FeaturedDropHero({
             <Button href="#shop-drop" size="lg">
               View collection
             </Button>
-            <ShopAction item={featuredItem} className="min-h-12 px-5" />
+            <ShopAction item={featuredItem} className="max-w-xs" />
           </div>
         </div>
 
@@ -360,16 +342,17 @@ function ProductTile({
         </div>
       </button>
 
-      <div className="flex flex-1 flex-col border-t border-neutral-900 p-4 sm:p-5">
+      <div className="flex flex-1 flex-col gap-4 border-t border-neutral-900 p-4 sm:gap-5 sm:p-5">
         <h3 className="font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-[0.92] tracking-tight text-white sm:text-2xl">
           {item.name}
         </h3>
-        <p className="mt-2 flex-1 text-xs leading-relaxed text-white/50 sm:text-sm">{item.description}</p>
-        <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/8 pt-4">
-          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-rad-soft)]">
-            {item.status}
-          </span>
-          <ShopAction item={item} className="min-h-9 px-3 text-[9px]" />
+        <p className="flex-1 text-xs leading-relaxed text-white/50 sm:text-sm">{item.description}</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-rad-soft)]">
+          {item.accent}
+        </p>
+        <div className="flex flex-col gap-4 border-t border-white/8 pt-4 sm:flex-row sm:items-center sm:justify-between">
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">{item.status}</span>
+          <ShopAction item={item} size="sm" className="w-full sm:max-w-[12rem]" />
         </div>
       </div>
     </article>
@@ -440,7 +423,7 @@ function ProductModal({
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <ShopAction item={item} className="w-full" />
+            <ShopAction item={item} className="w-full max-w-md" />
             <Button href={discordInviteUrl} variant="outline" className="w-full">
               Drop alerts
             </Button>
@@ -477,7 +460,7 @@ function StickyShopBar({
           <Button href="#shop-drop" size="sm" variant="ghost" className="hidden sm:inline-flex">
             Browse
           </Button>
-          <ShopAction item={featuredItem} className="min-h-9 px-3 text-[9px]" />
+          <ShopAction item={featuredItem} size="sm" className="max-w-[11rem]" />
         </div>
       </div>
     </div>

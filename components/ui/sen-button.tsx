@@ -3,33 +3,78 @@ import type { AnchorHTMLAttributes, ReactNode } from "react";
 
 import { cn } from "./cn";
 
+type SenButtonSize = "sm" | "md";
+
 type SenButtonProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
-  href: string;
+  href?: string;
   children: ReactNode;
   className?: string;
+  disabled?: boolean;
+  size?: SenButtonSize;
 };
 
-export function SenButton({ href, children, className, ...rest }: SenButtonProps) {
-  const isExternal = /^https?:\/\//.test(href);
+export function SenButton({
+  href,
+  children,
+  className,
+  disabled = false,
+  size = "md",
+  ...rest
+}: SenButtonProps) {
+  const isExternal = href ? /^https?:\/\//.test(href) : false;
+  const sideWidth = size === "sm" ? "w-4" : "w-5";
+  const clipSize = size === "sm" ? "h-2.5 w-2.5 group-hover:h-4 group-hover:w-4" : "h-3 w-3 group-hover:h-5 group-hover:w-5";
+  const labelClass =
+    size === "sm"
+      ? "py-2 text-[10px] font-bold uppercase tracking-[0.12em]"
+      : "py-2.5 text-sm font-bold uppercase tracking-wide";
 
   const inner = (
-    <div className="group flex w-full max-w-md items-stretch">
-      <div className="relative isolate w-5 shrink-0 bg-[var(--color-blood)] transition-colors duration-300 group-disabled:bg-neutral-900">
-        <div className="clip-top absolute left-0 top-0 h-3 w-3 bg-black transition-all duration-300 group-hover:h-5 group-hover:w-5" />
+    <div className="group flex w-full items-stretch">
+      <div
+        className={cn(
+          "relative isolate shrink-0 bg-[var(--color-blood)] transition-colors duration-300 group-disabled:bg-neutral-900",
+          sideWidth
+        )}
+      >
+        <div className={cn("clip-top absolute left-0 top-0 bg-black transition-all duration-300", clipSize)} />
       </div>
-      <div className="flex flex-1 items-center justify-center gap-2 border-y border-neutral-900 bg-neutral-950 py-2.5 text-sm font-bold uppercase tracking-wide">
+      <div
+        className={cn(
+          "flex flex-1 items-center justify-center gap-2 border-y border-neutral-900 bg-neutral-950",
+          labelClass
+        )}
+      >
         {children}
         <span aria-hidden className="text-xs">
           ↗
         </span>
       </div>
-      <div className="relative isolate w-5 shrink-0 bg-[var(--color-blood)] transition-colors duration-300 group-disabled:bg-neutral-900">
-        <div className="clip-bottom absolute bottom-0 right-0 h-3 w-3 bg-black transition-all duration-300 group-hover:h-5 group-hover:w-5" />
+      <div
+        className={cn(
+          "relative isolate shrink-0 bg-[var(--color-blood)] transition-colors duration-300 group-disabled:bg-neutral-900",
+          sideWidth
+        )}
+      >
+        <div className={cn("clip-bottom absolute bottom-0 right-0 bg-black transition-all duration-300", clipSize)} />
       </div>
     </div>
   );
 
-  const cls = cn("inline-block w-full max-w-md text-white transition-opacity hover:opacity-90", className);
+  const cls = cn(
+    "rad-sen-button",
+    size === "sm" && "rad-sen-button--sm",
+    disabled && "rad-sen-button--disabled",
+    className
+  );
+
+  if (disabled || !href) {
+    return (
+      <span className={cls} aria-disabled="true">
+        {inner}
+      </span>
+    );
+  }
 
   if (isExternal) {
     return (

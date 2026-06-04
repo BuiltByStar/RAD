@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Button, Container } from "@/components/ui";
+import { SenButton } from "@/components/ui/sen-button";
 import { merchItems, radShopUrl } from "@/lib/site-data";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -112,9 +113,15 @@ export function HomeMerchSpotlight() {
                 <Button href="/shop" size="sm">
                   View full shop
                 </Button>
-                <Button href={radShopUrl ?? "/shop#shop-drop"} variant="outline" size="sm">
-                  {radShopUrl ? "Shop external" : "Link pending"}
-                </Button>
+                {radShopUrl ? (
+                  <SenButton href={radShopUrl} size="sm" className="max-w-[12rem]">
+                    Shop external
+                  </SenButton>
+                ) : (
+                  <SenButton disabled size="sm" className="max-w-[12rem]">
+                    Link pending
+                  </SenButton>
+                )}
               </div>
             </div>
           </div>

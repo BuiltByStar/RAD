@@ -259,13 +259,13 @@ export function HomeProductCarousel() {
               </CarouselJerseyPanel>
             </div>
 
-            <div className="flex flex-col justify-center gap-6 p-4 md:gap-10 md:p-8 lg:p-12">
+            <div className="flex flex-col justify-center gap-8 p-4 md:gap-12 md:p-8 lg:p-12">
               <CarouselGlitchPanel
                 slideKey={slideKey}
                 reducedMotion={reducedMotion}
-                className="flex flex-col gap-6 md:gap-10"
+                className="flex flex-col gap-8 md:gap-10"
               >
-                <div className="flex flex-col gap-2 lg:gap-4">
+                <div className="flex flex-col gap-5 lg:gap-7">
                   <p className="max-w-md text-sm leading-relaxed text-neutral-400 md:text-base">{active.description}</p>
                   <p className="text-lg font-bold uppercase tracking-wide text-[var(--color-blood)] md:text-xl">
                     {active.accent}

@@ -294,6 +294,46 @@ p { margin: 0; }
     clip-path: polygon(101% 101%, -1% 101%, 101% -1%);
   }
 
+  .rad-sen-button {
+    display: inline-block;
+    width: 100%;
+    max-width: 28rem;
+    color: #fff;
+    filter: drop-shadow(0 0 10px rgba(229, 6, 47, 0.32)) drop-shadow(0 0 24px rgba(229, 6, 47, 0.14));
+    transition:
+      filter var(--transition-ui),
+      transform var(--transition-ui),
+      opacity var(--transition-ui);
+  }
+
+  .rad-sen-button:hover {
+    filter: drop-shadow(0 0 16px rgba(229, 6, 47, 0.52)) drop-shadow(0 0 36px rgba(229, 6, 47, 0.28));
+    opacity: 1;
+  }
+
+  .rad-sen-button:active {
+    transform: translateY(1px);
+    filter: drop-shadow(0 0 12px rgba(229, 6, 47, 0.42));
+  }
+
+  .rad-sen-button--disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.45;
+    filter: none;
+  }
+
+  .rad-sen-button--sm {
+    max-width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rad-sen-button:hover,
+    .rad-sen-button:active {
+      transform: none;
+    }
+  }
+
   .rad-header {
     position: relative;
     border-bottom: 1px solid var(--border);

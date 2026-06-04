@@ -8,7 +8,7 @@ import { FluidContainer } from "@/components/ui/fluid-container";
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
 import { cn } from "@/components/ui/cn";
 import { assets } from "@/lib/assets";
-import { discordInviteUrl } from "@/lib/site-data";
+import { discordInviteUrl, discordWidgetUrl } from "@/lib/site-data";
 
 const perks = [
   { label: "Match nights", detail: "Live watch-alongs" },
@@ -103,8 +103,7 @@ export function HomeCommunityBanner() {
                   </h2>
 
                   <p className="mt-4 max-w-lg text-sm leading-relaxed text-neutral-400 md:text-base">
-                    Discord is where match nights, roster drops, and supporter gear updates land first — not a
-                    generic fan club link.
+                    Discord is where match nights, roster drops, and supporter gear updates land first.
                   </p>
 
                   <div className="mt-6 grid gap-px border border-neutral-900 bg-neutral-900 sm:grid-cols-3">
@@ -126,24 +125,34 @@ export function HomeCommunityBanner() {
                   </div>
                 </div>
 
-                <div className="relative flex flex-col justify-between bg-black/80 p-6 backdrop-blur-[2px] md:p-8 lg:p-10">
-                  <div aria-hidden className="pointer-events-none absolute right-4 top-4 text-[#5865f2]/15">
-                    <DiscordIcon className="h-28 w-28 md:h-36 md:w-36" />
+                <div className="relative flex flex-col justify-between gap-6 bg-black/80 p-6 backdrop-blur-[2px] md:p-8 lg:p-10">
+                  <div className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-600">
+                        Official server
+                      </p>
+                      <p className="mt-2 font-[family-name:var(--font-display)] text-2xl font-extrabold uppercase leading-tight text-white md:text-3xl">
+                        #GoWild
+                      </p>
+                      <p className="mt-2 max-w-xs text-xs leading-relaxed text-neutral-500">
+                        Pull up for live comms, drop alerts, and the same energy as match day.
+                      </p>
+                    </div>
+
+                    <div className="mx-auto w-full max-w-[280px] shrink-0 overflow-hidden border border-neutral-800 bg-[#2b2d31] sm:mx-0">
+                      <iframe
+                        src={discordWidgetUrl}
+                        title="RAD Discord server"
+                        width="280"
+                        height="320"
+                        allowTransparency
+                        sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                        className="block h-[320px] w-full border-0"
+                      />
+                    </div>
                   </div>
 
-                  <div className="relative">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-600">
-                      Official server
-                    </p>
-                    <p className="mt-2 font-[family-name:var(--font-display)] text-2xl font-extrabold uppercase leading-tight text-white md:text-3xl">
-                      #GoWild
-                    </p>
-                    <p className="mt-2 max-w-xs text-xs leading-relaxed text-neutral-500">
-                      Pull up for live comms, drop alerts, and the same energy as match day.
-                    </p>
-                  </div>
-
-                  <div className="relative mt-8 lg:mt-10">
+                  <div>
                     <Link
                       href={discordInviteUrl}
                       target="_blank"
