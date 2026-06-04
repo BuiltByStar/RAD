@@ -60,8 +60,8 @@ export function HomeCommunityBanner() {
                 className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:48px_48px]"
               />
 
-              <div className="relative grid gap-px bg-neutral-900 lg:grid-cols-[1fr_1fr] lg:min-h-[400px]">
-                <div className="flex flex-col justify-center bg-black/75 px-6 py-8 backdrop-blur-[2px] md:px-10 md:py-10 lg:px-12 lg:py-12">
+              <div className="relative grid lg:grid-cols-[1fr_1fr] lg:min-h-[400px]">
+                <div className="flex flex-col justify-center bg-black/75 px-6 py-8 backdrop-blur-[2px] md:px-10 md:py-10 lg:border-r lg:border-neutral-900/80 lg:px-12 lg:py-12">
                   <p className="text-sm font-bold uppercase tracking-widest text-[var(--color-blood)]">
                     RAD community
                   </p>
@@ -90,14 +90,20 @@ export function HomeCommunityBanner() {
                   </div>
                 </div>
 
-                <div className="relative min-h-[360px] bg-[#2b2d31] lg:min-h-0">
-                  <iframe
-                    src={discordWidgetUrl}
-                    title="RAD Discord server"
-                    allowTransparency
-                    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-                    className="absolute inset-0 h-full w-full border-0"
-                  />
+                <div className="relative flex min-h-[360px] items-center bg-black/75 px-5 py-8 backdrop-blur-[2px] md:px-8 md:py-10 lg:px-10 lg:py-12">
+                  <div className="relative h-full min-h-[320px] w-full overflow-hidden rounded-2xl border border-neutral-800/80 bg-[#1a1b1e] shadow-[0_24px_48px_-32px_rgba(0,0,0,0.9),inset_0_0_0_1px_rgba(255,255,255,0.04)] lg:min-h-[340px] lg:rounded-[1.25rem]">
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-black/50 to-transparent"
+                    />
+                    <iframe
+                      src={discordWidgetUrl}
+                      title="RAD Discord server"
+                      allowTransparency
+                      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                      className="absolute inset-0 h-full w-full border-0 [color-scheme:dark]"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
