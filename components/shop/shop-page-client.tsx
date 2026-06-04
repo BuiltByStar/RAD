@@ -172,11 +172,16 @@ function FeaturedDropHero({
             </div>
           </dl>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-            <Button href="#shop-drop" size="lg" variant="outline" className="w-full sm:w-auto">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <Button
+              href="#shop-drop"
+              size="lg"
+              variant="outline"
+              className="w-full justify-center sm:w-56"
+            >
               View collection
             </Button>
-            <ShopAction item={featuredItem} className="w-full sm:max-w-[16rem]" />
+            <ShopAction item={featuredItem} className="w-full sm:w-56" />
           </div>
         </div>
 
