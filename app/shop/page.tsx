@@ -6,8 +6,14 @@ import { PageRail } from "@/components/ui";
 import { merchItems } from "@/lib/site-data";
 
 export const metadata: Metadata = {
-  title: "Shop",
-  description: "RAD Esports merch storefront with jersey, hoodie, sweatshirt, and tee previews linking to external checkout."
+  title: "Shop | RAD Esports",
+  description:
+    "Official RAD Esports merch — team jerseys, hoodies, sweatshirts, and tees. Browse the full lineup and check out securely on Emerge Apparel.",
+  openGraph: {
+    title: "Shop | RAD Esports",
+    description: "Official RAD Esports merch — jerseys, hoodies, and tees, shipped from Emerge Apparel.",
+    type: "website"
+  }
 };
 
 export default function ShopPage() {

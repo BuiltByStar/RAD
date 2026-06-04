@@ -58,7 +58,7 @@ export function Button({ variant = "primary", size = "md", className, children, 
         <a
           href={href}
           target={anchorProps.target ?? "_blank"}
-          rel={anchorProps.rel ?? "noreferrer"}
+          rel={anchorProps.rel ?? "noopener noreferrer"}
           className={cls}
           {...anchorProps}
         >

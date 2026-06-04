@@ -76,29 +76,34 @@ function ProductImage({
   item,
   priority = false,
   image = item.frontImage,
+  view = "front",
   className,
   imageClassName,
-  sizes
+  sizes,
+  showFade = true
 }: {
   item: MerchItem;
   priority?: boolean;
   image?: string;
+  view?: "front" | "back";
   className?: string;
   imageClassName?: string;
   sizes?: string;
+  showFade?: boolean;
 }) {
+  const alt = `${item.name} — ${view} view`;
   return (
     <div
       className={cn(
-        "relative overflow-hidden bg-[#050505]",
-        "bg-[radial-gradient(circle_at_50%_18%,rgba(229,6,47,0.18),transparent_42%)]",
+        "relative overflow-hidden bg-[#0a0a0a]",
+        "bg-[radial-gradient(circle_at_50%_22%,rgba(229,6,47,0.12),transparent_55%)]",
         className
       )}
     >
       {image ? (
         <Image
           src={image}
-          alt={item.name}
+          alt={alt}
           fill
           priority={priority}
           sizes={sizes ?? "(max-width: 768px) 86vw, 24vw"}
@@ -109,10 +114,12 @@ function ProductImage({
           RAD
         </span>
       )}
-      <div
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(0,0,0,0.72)_100%)]"
-        aria-hidden
-      />
+      {showFade ? (
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.35)_100%)]"
+          aria-hidden
+        />
+      ) : null}
     </div>
   );
 }
@@ -146,7 +153,7 @@ function FeaturedDropHero({
         aria-hidden
       />
 
-      <div className="relative grid min-h-[min(88vh,52rem)] grid-cols-1 items-end gap-8 px-4 pb-10 pt-6 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-12 lg:px-8 lg:pb-14 lg:pt-10">
+      <div className="relative grid min-h-[min(78vh,46rem)] grid-cols-1 items-end gap-8 px-4 pb-8 pt-6 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-12 lg:px-8 lg:pb-10 lg:pt-10">
         <div className="flex flex-col justify-end lg:py-8">
           <p className="rad-kicker">Featured drop</p>
           <h2 className="mt-4 max-w-[12ch] font-[family-name:var(--font-display)] text-[clamp(2.75rem,8vw,5.5rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.03em] text-white">
@@ -158,17 +165,18 @@ function FeaturedDropHero({
 
           <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-6 text-[10px] font-bold uppercase tracking-[0.16em] text-white/45">
             <div>
-              <dt className="sr-only">Proof count</dt>
+              <dt className="sr-only">Item count</dt>
               <dd>
-                <span className="text-[var(--color-rad-soft)]">{itemCount}</span> proofs
+                <span className="text-[var(--color-rad-soft)]">{itemCount}</span>{" "}
+                {itemCount === 1 ? "product" : "products"}
               </dd>
             </div>
             <div>
-              <dt className="sr-only">Kit views</dt>
+              <dt className="sr-only">Views included</dt>
               <dd>Front + back</dd>
             </div>
             <div>
-              <dt className="sr-only">Status</dt>
+              <dt className="sr-only">Availability</dt>
               <dd className="text-white/70">{merchCollection.status}</dd>
             </div>
           </dl>
@@ -189,8 +197,8 @@ function FeaturedDropHero({
         <button
           type="button"
           onClick={onPreview}
-          className="group relative mx-auto aspect-[4/5] w-full max-w-xl cursor-pointer border-0 bg-transparent p-0 text-left lg:max-w-none lg:justify-self-end"
-          aria-label={`Preview ${featuredItem.name}`}
+          className="group relative mx-auto aspect-[4/5] w-full max-w-xl cursor-pointer border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-4 focus-visible:ring-offset-black lg:max-w-none lg:justify-self-end"
+          aria-label={`Open ${featuredItem.name} preview`}
         >
           <span
             className={cn(
@@ -201,6 +209,7 @@ function FeaturedDropHero({
             <ProductImage
               item={featuredItem}
               priority
+              view="front"
               sizes="(max-width: 1024px) 90vw, 520px"
               className="h-full min-h-[20rem] sm:min-h-[26rem] lg:min-h-[32rem]"
             />
@@ -215,6 +224,7 @@ function FeaturedDropHero({
               <ProductImage
                 item={featuredItem}
                 image={featuredItem.backImage}
+                view="back"
                 priority
                 sizes="(max-width: 1024px) 90vw, 520px"
                 className="h-full min-h-[20rem] sm:min-h-[26rem] lg:min-h-[32rem]"
@@ -227,7 +237,7 @@ function FeaturedDropHero({
               {featuredItem.accent}
             </span>
             <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--color-rad-soft)]">
-              Open preview
+              Quick view
             </span>
           </span>
         </button>
@@ -246,47 +256,53 @@ function LookbookRail({
   if (items.length === 0) return null;
 
   return (
-    <section className="border-b border-white/10 py-10 sm:py-12" aria-labelledby="shop-lookbook-heading">
-      <div className="mb-6 flex items-end justify-between gap-4">
+    <section className="border-b border-white/10 py-8 sm:py-10" aria-labelledby="shop-lookbook-heading">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div>
           <p className="rad-kicker">Lookbook</p>
           <h2
             id="shop-lookbook-heading"
             className="mt-2 font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase tracking-tight text-white sm:text-4xl"
           >
-            Light / dark
+            Gear lookbook
           </h2>
         </div>
-        <p className="hidden max-w-xs text-right text-xs leading-relaxed text-white/45 sm:block">
-          Scroll the rack — tap any piece for front and back preview.
+        <p className="max-w-xs text-xs leading-relaxed text-white/50 sm:text-right">
+          Tap any piece for a closer look. Checkout opens on Emerge.
         </p>
       </div>
 
-      <div className="-mx-4 flex gap-px overflow-x-auto overscroll-x-contain bg-neutral-900 px-4 pb-1 [scrollbar-width:thin] sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      <ul
+        className="-mx-4 flex gap-3 overflow-x-auto overscroll-x-contain px-4 pb-2 [scrollbar-width:thin] sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
+        role="list"
+      >
         {items.map((item) => (
-          <button
-            key={item.name}
-            type="button"
-            onClick={() => onSelect(item)}
-            className="group relative w-[min(72vw,16rem)] shrink-0 snap-start border-0 bg-black text-left transition-[transform,box-shadow] duration-300 hover:z-10 hover:shadow-[0_0_0_1px_var(--color-blood)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black motion-safe:hover:-translate-y-1"
-          >
-            <ProductImage
-              item={item}
-              className="aspect-[3/4] w-full"
-              sizes="16rem"
-              imageClassName="opacity-90 transition-[transform,opacity] duration-500 group-hover:scale-105 group-hover:opacity-100"
-            />
-            <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent px-4 pb-4 pt-16">
-              <span className="block font-[family-name:var(--font-display)] text-lg font-extrabold uppercase leading-tight tracking-tight text-white">
-                {item.name}
+          <li key={item.name} className="shrink-0 snap-start">
+            <button
+              type="button"
+              onClick={() => onSelect(item)}
+              className="group relative block w-[min(72vw,16rem)] border border-white/8 bg-black text-left transition-[transform,border-color] duration-300 hover:z-10 hover:border-[var(--color-blood)]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black motion-safe:hover:-translate-y-1"
+              aria-label={`Open ${item.name} preview`}
+            >
+              <ProductImage
+                item={item}
+                showFade={false}
+                className="aspect-[3/4] w-full"
+                sizes="16rem"
+                imageClassName="opacity-95 transition-[transform,opacity] duration-500 group-hover:scale-105 group-hover:opacity-100"
+              />
+              <span className="block border-t border-white/8 px-4 py-3">
+                <span className="block font-[family-name:var(--font-display)] text-base font-extrabold uppercase leading-tight tracking-tight text-white">
+                  {item.name}
+                </span>
+                <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">
+                  {categoryForItem(item)}
+                </span>
               </span>
-              <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">
-                {categoryForItem(item)}
-              </span>
-            </span>
-          </button>
+            </button>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }
@@ -314,11 +330,12 @@ function ProductTile({
         type="button"
         onClick={onPreview}
         className="relative block w-full overflow-hidden border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-blood)]"
-        aria-label={`Preview ${item.name}`}
+        aria-label={`Open ${item.name} preview`}
       >
         <div className="relative aspect-[3/4] w-full overflow-hidden">
           <ProductImage
             item={item}
+            view="front"
             className="absolute inset-0 h-full w-full"
             imageClassName={cn(
               "transition-opacity duration-500",
@@ -330,6 +347,7 @@ function ProductTile({
             <ProductImage
               item={item}
               image={item.backImage}
+              view="back"
               className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:opacity-0 motion-reduce:group-hover:opacity-0"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
@@ -340,25 +358,29 @@ function ProductTile({
               {categoryForItem(item)}
             </span>
             {item.backImage ? (
-              <span className="border border-white/10 bg-black/55 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/55 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100 motion-reduce:opacity-100">
-                Back view
+              <span
+                aria-hidden
+                className="border border-white/10 bg-black/55 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/55 backdrop-blur-sm"
+              >
+                <span className="group-hover:hidden">Hover to flip</span>
+                <span className="hidden group-hover:inline">Back view</span>
               </span>
             ) : null}
           </div>
         </div>
       </button>
 
-      <div className="flex flex-1 flex-col gap-3 border-t border-neutral-900 p-4 sm:gap-4 sm:p-5">
-        <h3 className="font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-[0.92] tracking-tight text-white sm:text-2xl">
+      <div className="flex flex-1 flex-col gap-3 border-t border-white/8 p-4 sm:gap-4 sm:p-5">
+        <h3 className="font-[family-name:var(--font-display)] text-lg font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-xl">
           {item.name}
         </h3>
-        <p className="text-xs leading-relaxed text-white/50 sm:text-sm">{item.description}</p>
+        <p className="text-xs leading-relaxed text-white/55 sm:text-sm">{item.description}</p>
         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-rad-soft)]">
           {item.accent}
         </p>
-        <div className="mt-2 flex flex-col gap-4 border-t border-white/8 pt-4 sm:mt-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-auto flex flex-col gap-3 border-t border-white/8 pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">{item.status}</span>
-          <ShopAction item={item} size="sm" className="w-full sm:max-w-[12rem]" />
+          <ShopAction item={item} size="sm" className="w-full sm:w-[12rem]" />
         </div>
       </div>
     </article>
@@ -386,20 +408,34 @@ function ProductModal({
         onClick={(event) => event.stopPropagation()}
       >
         <div className={cn("grid min-h-[18rem] bg-black", item.backImage && "sm:grid-cols-2")}>
-          <ProductImage
-            item={item}
-            className="min-h-[16rem] sm:min-h-[24rem]"
-            imageClassName="object-contain p-4 sm:p-6"
-            sizes="(max-width: 768px) 92vw, 480px"
-          />
-          {item.backImage ? (
+          <figure className="relative">
             <ProductImage
               item={item}
-              image={item.backImage}
-              className="min-h-[16rem] border-t border-white/10 sm:min-h-[24rem] sm:border-l sm:border-t-0"
+              view="front"
+              showFade={false}
+              className="min-h-[16rem] sm:min-h-[24rem]"
               imageClassName="object-contain p-4 sm:p-6"
               sizes="(max-width: 768px) 92vw, 480px"
             />
+            <figcaption className="absolute left-3 top-3 border border-white/10 bg-black/60 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/70 backdrop-blur-sm">
+              Front
+            </figcaption>
+          </figure>
+          {item.backImage ? (
+            <figure className="relative border-t border-white/10 sm:border-l sm:border-t-0">
+              <ProductImage
+                item={item}
+                image={item.backImage}
+                view="back"
+                showFade={false}
+                className="min-h-[16rem] sm:min-h-[24rem]"
+                imageClassName="object-contain p-4 sm:p-6"
+                sizes="(max-width: 768px) 92vw, 480px"
+              />
+              <figcaption className="absolute left-3 top-3 border border-white/10 bg-black/60 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/70 backdrop-blur-sm">
+                Back
+              </figcaption>
+            </figure>
           ) : null}
         </div>
 
@@ -429,8 +465,13 @@ function ProductModal({
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <ShopAction item={item} className="w-full max-w-md" />
-            <Button href={discordInviteUrl} variant="outline" className="w-full">
+            <ShopAction item={item} className="w-full" />
+            <Button
+              href={discordInviteUrl}
+              variant="outline"
+              className="w-full"
+              aria-label="Join the RAD Discord for drop alerts (opens in a new tab)"
+            >
               Drop alerts
             </Button>
           </div>
@@ -536,7 +577,7 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
 
         <LookbookRail items={lookbookItems} onSelect={setSelectedItem} />
 
-        <section id="shop-drop" className="scroll-mt-24 py-12 sm:py-16" aria-labelledby="shop-drop-heading">
+        <section id="shop-drop" className="scroll-mt-24 py-10 sm:py-14" aria-labelledby="shop-drop-heading">
           <div className="mb-8 grid gap-6 lg:grid-cols-[minmax(0,0.75fr)_minmax(16rem,0.55fr)] lg:items-end">
             <div>
               <p className="rad-kicker">Collection</p>
@@ -544,11 +585,20 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
                 id="shop-drop-heading"
                 className="mt-2 font-[family-name:var(--font-display)] text-[clamp(2.25rem,6vw,4.5rem)] font-extrabold uppercase leading-[0.88] tracking-tight text-white"
               >
-                Gear rack
+                Shop the lineup
               </h2>
             </div>
             <p className="text-sm leading-relaxed text-white/55 lg:text-right">
-              Embedded proofs on-site — every tile routes to external checkout when the storefront is live.
+              Browse the full RAD lineup. Selecting an item takes you to checkout on{" "}
+              <a
+                href={merchCollection.shopUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/80 underline decoration-white/30 underline-offset-2 transition-colors hover:text-white"
+              >
+                Emerge Apparel
+              </a>
+              .
             </p>
           </div>
 
@@ -576,7 +626,7 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
             })}
           </div>
 
-          <div className="grid grid-cols-1 gap-px border border-neutral-800 bg-neutral-800 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-px border border-white/8 bg-white/[0.06] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredItems.map((item, index) => (
               <ProductTile
                 key={item.name}

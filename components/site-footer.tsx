@@ -68,33 +68,29 @@ export function SiteFooter() {
 
           <div className="order-1 col-span-12 grid grid-cols-2 gap-y-8 md:order-2 md:col-span-8 md:flex md:justify-between">
             <div className="flex flex-col gap-5 text-xs lg:text-sm">
-              <span className="uppercase tracking-widest">About</span>
+              <span className="uppercase tracking-widest">Organization</span>
               <div className="flex flex-col gap-2">
-                <FooterLink href="/about" label="Who we are" />
-                <FooterLink href="/roster" label="Championships" />
+                <FooterLink href="/about" label="About RAD" />
+                <FooterLink href="/staff" label="Staff" />
                 <FooterLink href="/partners" label="Partners" />
-                <FooterLink href="/staff" label="Management team" />
+                <FooterLink href="/contact" label="Contact" />
               </div>
             </div>
 
             <div className="flex flex-col gap-5 text-xs lg:text-sm">
-              <span className="uppercase tracking-widest">Company</span>
+              <span className="uppercase tracking-widest">Compete</span>
               <div className="flex flex-col gap-2">
-                <FooterLink href="/roster" label="Teams" />
-                <FooterLink href="/content" label="Creators" />
-                <FooterLink href="/contact" label="Community" />
-                <FooterLink href="/about" label="History" />
-                <FooterLink href="/content" label="News" />
+                <FooterLink href="/roster" label="Roster" />
+                <FooterLink href="/content" label="Content" />
+                <FooterLink href="/shop" label="Shop" />
               </div>
             </div>
 
             <div className="col-span-2 flex flex-col gap-5 text-xs lg:col-span-1 lg:text-sm">
-              <span className="uppercase tracking-widest">Terms & policies</span>
+              <span className="uppercase tracking-widest">Legal</span>
               <div className="flex flex-col gap-2">
-                <FooterLink href="/privacy" label="Privacy" />
-                <FooterLink href="/terms" label="Terms & conditions" />
-                <FooterLink href="/shop" label="Shop" />
-                <FooterLink href="/contact" label="Contact" />
+                <FooterLink href="/privacy" label="Privacy policy" />
+                <FooterLink href="/terms" label="Terms of service" />
               </div>
             </div>
           </div>

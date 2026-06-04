@@ -95,7 +95,7 @@ export const discordServerId = "1363584103479513198";
 export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId}&theme=dark`;
 export const radShopUrl =
   process.env.NEXT_PUBLIC_RAD_SHOP_URL || "https://emergeapparel.gg/collections/rad-esports";
-const merchItemStatus = "External checkout";
+const merchItemStatus = "Available now";
 
 const emergeProduct = (handle: string) => `https://emergeapparel.gg/products/${handle}`;
 
@@ -330,7 +330,7 @@ export const merchCollection = {
   title: "RAD Shop",
   eyebrow: "Merch",
   description: "Official RAD Esports gear and player-kit concepts built around the red, black, and white identity.",
-  status: radShopUrl ? "External shop live" : "Shop link pending",
+  status: radShopUrl ? "Available now" : "Coming soon",
   conceptImage: assets.shop.jerseyFront,
   frontImage: assets.shop.jerseyFront,
   backImage: assets.shop.jerseyBack,

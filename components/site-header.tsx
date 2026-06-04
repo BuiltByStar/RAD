@@ -239,14 +239,20 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center border border-neutral-800 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center border border-neutral-800 text-neutral-400 transition-colors hover:border-neutral-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               aria-expanded={menuOpen}
               aria-controls="mobile-rad-nav"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
             >
-              <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
-                <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
+              {menuOpen ? (
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                  <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              ) : (
+                <svg width="18" height="14" viewBox="0 0 16 12" fill="none" aria-hidden>
+                  <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              )}
             </button>
             <div className="rad-header-brand rad-header-brand--mobile">{renderBrandLink()}</div>
           </div>
@@ -271,8 +277,9 @@ export function SiteHeader() {
                 <Link
                   href={discordInviteUrl}
                   target="_blank"
-                  rel="noreferrer"
-                  className="rad-discord-link px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em]"
+                  rel="noopener noreferrer"
+                  aria-label="Join RAD Esports Discord server"
+                  className="rad-discord-link px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
                   Discord
                 </Link>
@@ -300,23 +307,14 @@ export function SiteHeader() {
               <div className="rad-border-trace rad-border-trace--offset grid border border-neutral-900">
                 {headerOrgLinks.map((link) => renderNavLink(link, "mobile"))}
               </div>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <div className="mt-4 flex">
                 <Link
                   href={discordInviteUrl}
                   target="_blank"
-                  rel="noreferrer"
-                  className="rad-discord-link flex items-center justify-center border border-[#5865f2]/25 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em]"
+                  rel="noopener noreferrer"
+                  className="rad-discord-link flex w-full items-center justify-center border border-[#5865f2]/25 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
-                  Discord
-                </Link>
-                <Link
-                  href="/shop"
-                  onClick={(event) =>
-                    handleNavClick(event, { href: "/shop", label: "Shop" }, isActive(pathname, "/shop"))
-                  }
-                  className="bg-[var(--color-blood)] py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] text-black"
-                >
-                  Shop
+                  Join Discord
                 </Link>
               </div>
               <div className="mt-4 border-t border-neutral-900 pt-4">

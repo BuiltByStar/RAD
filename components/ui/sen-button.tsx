@@ -45,7 +45,8 @@ export function SenButton({
           labelClass
         )}
       >
-        {children}
+        <span>{children}</span>
+        {isExternal ? <span className="sr-only">(opens in a new tab)</span> : null}
         <span aria-hidden className="text-xs">
           ↗
         </span>
@@ -78,7 +79,7 @@ export function SenButton({
 
   if (isExternal) {
     return (
-      <a href={href} className={cls} target="_blank" rel="noreferrer" {...rest}>
+      <a href={href} className={cls} target="_blank" rel="noopener noreferrer" {...rest}>
         {inner}
       </a>
     );

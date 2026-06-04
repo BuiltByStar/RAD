@@ -916,12 +916,13 @@ p { margin: 0; }
 }
 
 /* ─── Scrollbar ────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar             { width: 5px; }
-::-webkit-scrollbar-track       { background: #020202; }
-::-webkit-scrollbar-thumb       { background: rgba(255, 0, 0, 0.5); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--red); }
+::-webkit-scrollbar             { width: 8px; height: 8px; }
+::-webkit-scrollbar-track       { background: #050505; }
+::-webkit-scrollbar-thumb       { background: rgba(255, 255, 255, 0.08); border-radius: 4px; border: 2px solid #050505; }
+::-webkit-scrollbar-thumb:hover { background: rgba(229, 6, 47, 0.5); }
+* { scrollbar-color: rgba(255, 255, 255, 0.12) #050505; scrollbar-width: thin; }
 
-::selection { background: rgba(255, 0, 0, 0.34); color: white; }
+::selection { background: rgba(229, 6, 47, 0.32); color: white; }
 
 /* ─── Layout ───────────────────────────────────────────────────────────────── */
 .container { width: var(--container); margin: 0 auto; }
@@ -1688,12 +1689,13 @@ h1, h2, h3, h4 {
 p { margin: 0; }
 
 /* ─── Scrollbar ────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar             { width: 5px; }
-::-webkit-scrollbar-track       { background: #020202; }
-::-webkit-scrollbar-thumb       { background: rgba(255, 0, 0, 0.5); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--red); }
+::-webkit-scrollbar             { width: 8px; height: 8px; }
+::-webkit-scrollbar-track       { background: #050505; }
+::-webkit-scrollbar-thumb       { background: rgba(255, 255, 255, 0.08); border-radius: 4px; border: 2px solid #050505; }
+::-webkit-scrollbar-thumb:hover { background: rgba(229, 6, 47, 0.5); }
+* { scrollbar-color: rgba(255, 255, 255, 0.12) #050505; scrollbar-width: thin; }
 
-::selection { background: rgba(255, 0, 0, 0.34); color: white; }
+::selection { background: rgba(229, 6, 47, 0.32); color: white; }
 
 /* ─── Layout ───────────────────────────────────────────────────────────────── */
 .container { width: var(--container); margin: 0 auto; }
