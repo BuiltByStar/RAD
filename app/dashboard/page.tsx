@@ -3,14 +3,12 @@ import { redirect } from "next/navigation";
 
 import {
   buttonClass,
-  dangerButtonClass,
   formCardClass,
   inputClass,
   labelClass,
-  rowCardClass,
-  uploadHintClass
+  rowCardClass
 } from "@/components/dashboard/dashboard-styles";
-import { Check, DeleteForm, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
+import { Check, Field } from "@/components/dashboard/dashboard-fields";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { PartnersSection, type PartnerRow } from "@/components/dashboard/partners-section";
 import { RosterSection, type RosterRow } from "@/components/dashboard/roster-section";
@@ -29,50 +27,19 @@ import { requireAdminAccess } from "@/lib/admin";
 import { localSupabaseExportPath, readLocalDashboardData } from "@/lib/local-admin-store";
 
 import {
-  createNewsPost,
-  deleteContentItem,
-  deleteNewsPost,
   exportLocalDashboardData,
   seedDashboardFromSite,
   updateInquiryStatus,
-  updateMaintenanceSetting,
-  updateNewsPost,
-  upsertContentItem
+  updateMaintenanceSetting
 } from "./actions";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "RAD's restricted admin dashboard for website operations."
+  description: "RAD admin dashboard for roster and staff management."
 };
 
 export const dynamic = "force-dynamic";
 const localAdminBypassEnabled = process.env.LOCAL_ADMIN_BYPASS === "1";
-
-type NewsPostRow = {
-  id: string;
-  title: string;
-  slug: string;
-  date: string;
-  summary: string;
-  category: string;
-  cover: string;
-  body: string;
-  featured: boolean;
-  published: boolean;
-  display_order: number;
-};
-
-type ContentItemRow = {
-  id: string;
-  title: string;
-  description: string | null;
-  url: string;
-  thumbnail: string;
-  type: "video" | "article" | "clip";
-  tags: string[];
-  featured: boolean;
-  display_order: number;
-};
 
 type InquiryRow = {
   id: string;
@@ -97,27 +64,6 @@ async function readTable<T>(query: PromiseLike<{ data: unknown; error: { message
     rows: error ? [] : ((data ?? []) as T[]),
     error: error?.message ?? null
   };
-}
-
-function ContentItemForm({ row }: { row?: ContentItemRow }) {
-  return (
-    <form action={upsertContentItem} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
-      {row ? <input type="hidden" name="id" value={row.id} /> : null}
-      <Field label="Title" name="title" defaultValue={row?.title} required />
-      <Field label="URL" name="url" defaultValue={row?.url ?? "https://www.youtube.com/@RadEsport"} required />
-      <Field label="Thumbnail URL" name="thumbnail" defaultValue={row?.thumbnail ?? "/assets/rad-bg-red.png"} required />
-      <Select label="Type" name="type" defaultValue={row?.type} options={["video", "article", "clip"]} />
-      <Field label="Tags" name="tags" defaultValue={row?.tags?.join(", ")} />
-      <Field label="Order" name="display_order" type="number" defaultValue={row?.display_order ?? 0} />
-      <TextArea label="Description" name="description" defaultValue={row?.description} />
-      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
-        <Check label="Featured" name="featured" defaultChecked={row?.featured} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Card" : "Create Card"}
-        </button>
-      </div>
-    </form>
-  );
 }
 
 export default async function DashboardPage() {
@@ -166,27 +112,18 @@ export default async function DashboardPage() {
       : null;
   const realAccess = access.ok ? access : null;
 
-  const [news, roster, staff, partners, contentItems, inquiries, settings] = localAdminBypassEnabled
+  const [roster, staff, partners, inquiries, settings] = localAdminBypassEnabled
     ? await (async () => {
         const data = await readLocalDashboardData();
         return [
-          { rows: data.news_posts as NewsPostRow[], error: null },
           { rows: data.roster_entries as RosterRow[], error: null },
           { rows: data.staff_entries as StaffRow[], error: null },
           { rows: data.partner_entries as PartnerRow[], error: null },
-          { rows: data.content_items as ContentItemRow[], error: null },
           { rows: data.contact_inquiries as InquiryRow[], error: null },
           { rows: data.site_settings as SiteSettingRow[], error: null }
         ] as const;
       })()
     : await Promise.all([
-        readTable<NewsPostRow>(
-          realAccess!.supabase
-            .from("news_posts")
-            .select("*")
-            .order("display_order", { ascending: true })
-            .order("date", { ascending: false })
-        ),
         readTable<RosterRow>(
           realAccess!.supabase.from("roster_entries").select("*").order("display_order", { ascending: true })
         ),
@@ -195,12 +132,6 @@ export default async function DashboardPage() {
         ),
         readTable<PartnerRow>(
           realAccess!.supabase.from("partner_entries").select("*").order("display_order", { ascending: true })
-        ),
-        readTable<ContentItemRow>(
-          realAccess!.supabase
-            .from("content_items")
-            .select("*")
-            .order("display_order", { ascending: true })
         ),
         readTable<InquiryRow>(
           realAccess!.supabase
@@ -213,8 +144,7 @@ export default async function DashboardPage() {
       ]);
 
   const maintenance = settings.rows.find((setting) => setting.key === "maintenance")?.value?.enabled ?? false;
-  const defaultDashboardTab = "roster";
-  const hasPeopleData = roster.rows.length > 0 || staff.rows.length > 0 || partners.rows.length > 0;
+  const hasPeopleData = roster.rows.length > 0 || staff.rows.length > 0;
 
   const seedBanner = (
     <div className="mb-6 flex flex-wrap items-center gap-3 rounded-lg border border-white/10 bg-black/30 p-4">
@@ -250,7 +180,7 @@ export default async function DashboardPage() {
       variant="default"
       eyebrow="Dashboard"
       title="RAD Admin"
-      description="Manage roster, staff, partners, content, and site settings."
+      description="Manage roster, staff, partners, and site settings."
       heroImage="/assets/rad-bg-red.png"
       status={`${viewer?.role ?? "developer"} · ${viewer?.email ?? ""}`}
     >
@@ -264,13 +194,13 @@ export default async function DashboardPage() {
           ) : null}
 
           <DashboardShell
-            defaultTabId={defaultDashboardTab}
+            defaultTabId="roster"
             header={
               <>
                 {seedBanner}
                 {!hasPeopleData && !localAdminBypassEnabled ? (
                   <p className="mb-4 text-sm text-white/55">
-                    No roster, staff, or partner rows yet — use Import from site-data to sync static content.
+                    No roster or staff rows yet — use Import from site-data to sync static content.
                   </p>
                 ) : null}
               </>
@@ -278,9 +208,7 @@ export default async function DashboardPage() {
             nav={[
               { id: "roster", label: "Roster", group: "People" },
               { id: "staff", label: "Staff", group: "People" },
-              { id: "partners", label: "Partners", group: "People" },
-              { id: "news", label: "News", group: "Content" },
-              { id: "latest-content", label: "Latest", group: "Content" },
+              { id: "partners", label: "Partners", group: "Secondary" },
               { id: "inquiries", label: "Inquiries", group: "Ops" },
               { id: "settings", label: "Settings", group: "Ops" }
             ]}
@@ -288,80 +216,6 @@ export default async function DashboardPage() {
             <RosterSection rows={roster.rows} error={roster.error} />
             <StaffSection rows={staff.rows} error={staff.error} />
             <PartnersSection rows={partners.rows} error={partners.error} />
-
-            <div className="grid gap-5">
-              <SectionHeading eyebrow="News" title="Posts" description="Edit the news_posts collection." />
-              {news.error ? (
-                <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{news.error}</p>
-              ) : null}
-              <form action={createNewsPost} className={`${formCardClass} grid gap-4 md:grid-cols-2`}>
-                <Field label="Title" name="title" required />
-                <Field label="Slug" name="slug" />
-                <Field label="Date" name="date" type="date" defaultValue={new Date().toISOString().slice(0, 10)} />
-                <Field label="Category" name="category" defaultValue="Org Update" />
-                <Field label="Cover URL" name="cover" defaultValue="/assets/rad-bg-red.png" />
-                <FileField label="Cover Upload" name="cover_file" />
-                <Field label="Order" name="display_order" type="number" defaultValue={0} />
-                <TextArea label="Summary" name="summary" />
-                <TextArea label="Body" name="body" />
-                <div className="flex flex-wrap items-center gap-4 md:col-span-2">
-                  <Check label="Featured" name="featured" />
-                  <Check label="Published" name="published" defaultChecked />
-                  <button className={buttonClass} type="submit">
-                    Create Post
-                  </button>
-                  <span className={uploadHintClass}>Upload overrides cover URL when provided.</span>
-                </div>
-              </form>
-              <div className="grid gap-4">
-                {news.rows.map((post) => (
-                  <div key={post.id} className={rowCardClass}>
-                    <form action={updateNewsPost} className="grid gap-4 md:grid-cols-2">
-                      <input type="hidden" name="id" value={post.id} />
-                      <Field label="Title" name="title" defaultValue={post.title} required />
-                      <Field label="Slug" name="slug" defaultValue={post.slug} required />
-                      <Field label="Date" name="date" type="date" defaultValue={post.date} />
-                      <Field label="Category" name="category" defaultValue={post.category} />
-                      <Field label="Cover URL" name="cover" defaultValue={post.cover} />
-                      <FileField label="Cover Upload" name="cover_file" />
-                      <Field label="Order" name="display_order" type="number" defaultValue={post.display_order} />
-                      <TextArea label="Summary" name="summary" defaultValue={post.summary} />
-                      <TextArea label="Body" name="body" defaultValue={post.body} rows={7} />
-                      <div className="flex flex-wrap items-center gap-4 md:col-span-2">
-                        <Check label="Featured" name="featured" defaultChecked={post.featured} />
-                        <Check label="Published" name="published" defaultChecked={post.published} />
-                        <button className={buttonClass} type="submit">
-                          Save Post
-                        </button>
-                      </div>
-                    </form>
-                    <div className="mt-3">
-                      <DeleteForm action={deleteNewsPost} id={post.id} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-5">
-              <SectionHeading eyebrow="Latest" title="Fallback media cards" />
-              {contentItems.error ? (
-                <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">
-                  {contentItems.error}
-                </p>
-              ) : null}
-              <ContentItemForm />
-              <div className="grid gap-4">
-                {contentItems.rows.map((item) => (
-                  <div key={item.id} className={rowCardClass}>
-                    <ContentItemForm row={item} />
-                    <div className="mt-3">
-                      <DeleteForm action={deleteContentItem} id={item.id} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             <div className="grid gap-5">
               <SectionHeading eyebrow="Inquiries" title="Contact submissions" />
@@ -388,11 +242,7 @@ export default async function DashboardPage() {
                         <input type="hidden" name="id" value={inquiry.id} />
                         <label className={labelClass}>
                           Status
-                          <select
-                            className={inputClass}
-                            name="status"
-                            defaultValue={inquiry.status}
-                          >
+                          <select className={inputClass} name="status" defaultValue={inquiry.status}>
                             {["new", "reviewing", "replied", "closed"].map((status) => (
                               <option key={status} value={status}>
                                 {status}

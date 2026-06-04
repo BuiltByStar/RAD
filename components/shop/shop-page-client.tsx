@@ -155,7 +155,7 @@ function FeaturedDropHero({
             {featuredItem.description}
           </p>
 
-          <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/45">
+          <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-6 text-[10px] font-bold uppercase tracking-[0.16em] text-white/45">
             <div>
               <dt className="sr-only">Proof count</dt>
               <dd>
@@ -172,11 +172,11 @@ function FeaturedDropHero({
             </div>
           </dl>
 
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Button href="#shop-drop" size="lg">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+            <Button href="#shop-drop" size="lg" variant="outline" className="w-full sm:w-auto">
               View collection
             </Button>
-            <ShopAction item={featuredItem} className="max-w-xs" />
+            <ShopAction item={featuredItem} className="w-full sm:max-w-[16rem]" />
           </div>
         </div>
 
@@ -342,15 +342,15 @@ function ProductTile({
         </div>
       </button>
 
-      <div className="flex flex-1 flex-col gap-4 border-t border-neutral-900 p-4 sm:gap-5 sm:p-5">
+      <div className="flex flex-1 flex-col gap-3 border-t border-neutral-900 p-4 sm:gap-4 sm:p-5">
         <h3 className="font-[family-name:var(--font-display)] text-xl font-extrabold uppercase leading-[0.92] tracking-tight text-white sm:text-2xl">
           {item.name}
         </h3>
-        <p className="flex-1 text-xs leading-relaxed text-white/50 sm:text-sm">{item.description}</p>
+        <p className="text-xs leading-relaxed text-white/50 sm:text-sm">{item.description}</p>
         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-rad-soft)]">
           {item.accent}
         </p>
-        <div className="flex flex-col gap-4 border-t border-white/8 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-2 flex flex-col gap-4 border-t border-white/8 pt-4 sm:mt-3 sm:flex-row sm:items-center sm:justify-between">
           <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">{item.status}</span>
           <ShopAction item={item} size="sm" className="w-full sm:max-w-[12rem]" />
         </div>
@@ -587,38 +587,6 @@ export function ShopPageClient({ items }: ShopPageClientProps) {
               No items in this category yet.
             </p>
           ) : null}
-        </section>
-
-        <section className="border-t border-white/10 py-12 sm:py-14" aria-label="Shop notes">
-          <div className="grid gap-px border border-neutral-800 bg-neutral-800 sm:grid-cols-3">
-            {[
-              {
-                num: "01",
-                title: "Embedded proofs",
-                copy: "Merch assets live inside RAD so supporters inspect kit before checkout."
-              },
-              {
-                num: "02",
-                title: "External checkout",
-                copy: "One shop URL powers every product tile when the storefront goes live."
-              },
-              {
-                num: "03",
-                title: "Mobile ready",
-                copy: "Large tiles, horizontal lookbook, and sticky shop CTA on every screen."
-              }
-            ].map((note) => (
-              <div key={note.num} className="bg-black p-5 sm:p-6">
-                <span className="font-[family-name:var(--font-display)] text-2xl font-black text-[var(--color-rad-soft)]">
-                  {note.num}
-                </span>
-                <strong className="mt-3 block font-[family-name:var(--font-display)] text-lg font-extrabold uppercase leading-tight text-white sm:text-xl">
-                  {note.title}
-                </strong>
-                <p className="mt-2 text-sm leading-relaxed text-white/50">{note.copy}</p>
-              </div>
-            ))}
-          </div>
         </section>
       </div>
 

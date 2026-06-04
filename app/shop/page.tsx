@@ -12,14 +12,7 @@ export const metadata: Metadata = {
 
 export default function ShopPage() {
   return (
-    <PageShell
-      variant="merch"
-      compact
-      eyebrow="Merch"
-      title="Shop"
-      description="Official RAD gear — jerseys, hoodies, and more."
-      route="/shop"
-    >
+    <PageShell variant="merch" hideHero eyebrow="Merch" title="Shop" route="/shop">
       <PageRail className="pb-14 sm:pb-16">
         <ShopPageClient items={merchItems} />
       </PageRail>

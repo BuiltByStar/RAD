@@ -1,3 +1,5 @@
+"use client";
+
 import { inputClass, labelClass } from "@/components/dashboard/dashboard-styles";
 
 export function Field({
@@ -100,20 +102,31 @@ export function Select({
 export function DeleteForm({
   action,
   id,
-  label = "Delete"
+  label = "Delete",
+  confirmMessage = "Delete this entry? This cannot be undone."
 }: {
   action: (formData: FormData) => void | Promise<void>;
   id: string;
   label?: string;
+  confirmMessage?: string;
 }) {
   return (
-    <form action={action}>
+    <form
+      action={action}
+      onSubmit={(event) => {
+        if (!window.confirm(confirmMessage)) {
+          event.preventDefault();
+        }
+      }}
+    >
       <input type="hidden" name="id" value={id} />
       <button
-        className="inline-flex rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60 transition hover:border-[color:var(--color-rad)]/40 hover:text-white"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/[0.03] text-[11px] text-white/55 transition hover:border-[color:var(--color-rad)]/40 hover:text-white"
         type="submit"
+        aria-label={label}
+        title={label}
       >
-        {label}
+        ✕
       </button>
     </form>
   );

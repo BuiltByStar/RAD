@@ -61,6 +61,7 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
     return players
       .map((player, index) => ({
         player,
+        index,
         offset: getShortestOffset(index, active, players.length)
       }))
       .filter(({ offset }) => Math.abs(offset) <= STAGE_DEPTH);
@@ -263,14 +264,34 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
         }}
       >
         <div className="absolute inset-0 [perspective:1300px]">
-          {stagedPlayers.map(({ player, offset }) => (
+          {stagedPlayers.map(({ player, index, offset }) => (
             <motion.article
               key={player.slug}
+              role={offset !== 0 ? "button" : undefined}
+              tabIndex={offset !== 0 && !transitioning ? 0 : undefined}
+              aria-label={offset !== 0 ? `Show ${player.name}` : undefined}
+              onClick={
+                offset !== 0 && !transitioning
+                  ? () => {
+                      goTo(index);
+                    }
+                  : undefined
+              }
+              onKeyDown={
+                offset !== 0 && !transitioning
+                  ? (event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        goTo(index);
+                      }
+                    }
+                  : undefined
+              }
               className={cn(
                 "absolute top-2 h-[480px] origin-center overflow-hidden border bg-[#070709] shadow-[0_24px_64px_-48px_rgba(0,0,0,1)] sm:h-[515px] lg:h-[560px]",
                 offset === 0
-                  ? "z-30 border-[var(--color-blood)]"
-                  : "z-10 border-neutral-800"
+                  ? "z-30 border-[var(--color-blood)] pointer-events-none"
+                  : "z-10 cursor-pointer border-neutral-800 pointer-events-auto transition-[border-color] duration-300 hover:border-neutral-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)]"
               )}
               initial={
                 reduced
@@ -447,13 +468,14 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
                   </ChipRow>
                 ) : null}
                 {player.socials?.length ? (
-                  <div className="mt-auto flex flex-wrap gap-2 pt-4">
+                  <div className="pointer-events-auto mt-auto flex flex-wrap gap-2 pt-4">
                     {player.socials.map((social) => (
                       <a
                         key={social.label}
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(event) => event.stopPropagation()}
                         className="border border-neutral-800 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-400 transition hover:border-[var(--color-blood)] hover:text-white"
                       >
                         {social.label}
@@ -562,7 +584,7 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
         </div>
 
         <p className="text-center text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">
-          <span className="text-neutral-700">Drag, arrow keys, or tap a player</span>
+          <span className="text-neutral-700">Drag, tap adjacent cards, arrow keys, or pick a player below</span>
         </p>
       </div>
     </motion.div>

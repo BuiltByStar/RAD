@@ -2761,7 +2761,8 @@ html.site-intro-pending .rad-site-chrome {
 }
 
 .home-carousel-glitch-target--text .home-carousel-glitch-body {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 

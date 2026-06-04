@@ -82,8 +82,7 @@ function CarouselGlitchPanel({
       key={slideKey}
       className={cn(
         "home-carousel-glitch-target home-carousel-glitch-target--text",
-        animate && "home-carousel-glitch-target--animate",
-        className
+        animate && "home-carousel-glitch-target--animate"
       )}
     >
       {animate ? (
@@ -91,7 +90,7 @@ function CarouselGlitchPanel({
           <CarouselGlitchFx active />
         </span>
       ) : null}
-      <div className="home-carousel-glitch-body relative z-[1]">{children}</div>
+      <div className={cn("home-carousel-glitch-body relative z-[1]", className)}>{children}</div>
     </div>
   );
 }
@@ -263,15 +262,13 @@ export function HomeProductCarousel() {
               <CarouselGlitchPanel
                 slideKey={slideKey}
                 reducedMotion={reducedMotion}
-                className="flex flex-col gap-8 md:gap-10"
+                className="flex flex-col gap-4 md:gap-5"
               >
-                <div className="flex flex-col gap-5 lg:gap-7">
-                  <p className="max-w-md text-sm leading-relaxed text-neutral-400 md:text-base">{active.description}</p>
-                  <p className="text-lg font-bold uppercase tracking-wide text-[var(--color-blood)] md:text-xl">
-                    {active.accent}
-                  </p>
-                </div>
-                <SenButton href={productHref} className="max-w-md">
+                <p className="max-w-md text-sm leading-relaxed text-neutral-400 md:text-base">{active.description}</p>
+                <p className="text-lg font-bold uppercase tracking-wide text-[var(--color-blood)] md:text-xl">
+                  {active.accent}
+                </p>
+                <SenButton href={productHref} className="mt-2 max-w-md md:mt-3">
                   {active.ctaLabel ?? "View product"}
                 </SenButton>
               </CarouselGlitchPanel>

@@ -108,7 +108,7 @@ export function PageShell({
     route ?? (variant === "default" ? "/" : variant === "merch" ? "/shop" : `/${variant}`);
 
   return (
-    <main className="relative isolate overflow-x-hidden bg-black text-white">
+    <main className="relative isolate overflow-x-clip bg-black text-white">
       <PageReadySignal route={readyRoute} delayMs={32} />
       {!hideHero && compact ? (
         <PageHeader

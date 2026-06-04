@@ -1,10 +1,7 @@
+import { CreatePanel } from "@/components/dashboard/create-panel";
+import { EntryCard } from "@/components/dashboard/entry-card";
 import { ReorderControls } from "@/components/dashboard/reorder-controls";
-import {
-  buttonClass,
-  formCardClass,
-  rowCardClass,
-  uploadHintClass
-} from "@/components/dashboard/dashboard-styles";
+import { buttonClass, uploadHintClass } from "@/components/dashboard/dashboard-styles";
 import { Check, DeleteForm, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
 import {
   deleteRosterEntry,
@@ -37,9 +34,81 @@ export type RosterRow = {
   jersey_number?: number | null;
 };
 
+function RosterAvatar({ imageUrl }: { imageUrl?: string | null }) {
+  if (imageUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={imageUrl} alt="" className="h-12 w-12 shrink-0 rounded-md border border-white/10 object-cover" />
+    );
+  }
+
+  return (
+    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-md border border-dashed border-white/15 text-[10px] text-white/35">
+      PFP
+    </div>
+  );
+}
+
+function DetailField({ label, value }: { label: string; value?: string | number | null }) {
+  if (value === null || value === undefined || value === "") return null;
+
+  return (
+    <div>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/32">{label}</p>
+      <p className="mt-1 text-sm text-white/72">{value}</p>
+    </div>
+  );
+}
+
+function RosterDetail({ row }: { row: RosterRow }) {
+  const socials = [
+    row.x_url ? { label: "X", value: row.x_url } : null,
+    row.twitch_url ? { label: "Twitch", value: row.twitch_url } : null,
+    row.instagram_url ? { label: "Instagram", value: row.instagram_url } : null,
+    row.youtube_url ? { label: "YouTube", value: row.youtube_url } : null
+  ].filter(Boolean) as { label: string; value: string }[];
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <DetailField label="Real Name" value={row.real_name} />
+      <DetailField label="Player Role" value={row.player_role} />
+      <DetailField label="Roster / Game" value={row.roster_header} />
+      <DetailField label="Region" value={row.region} />
+      <DetailField label="Rank" value={row.rank} />
+      <DetailField label="Jersey #" value={row.jersey_number} />
+      <DetailField label="Role Order" value={row.role_order} />
+      <DetailField label="Descriptor" value={row.descriptor} />
+      <DetailField label="Specialties" value={row.specialties?.join(", ")} />
+      <DetailField label="Tags" value={row.tags?.join(", ")} />
+      <DetailField label="Slug" value={row.slug} />
+      <DetailField label="Featured" value={row.featured ? "Yes" : "No"} />
+      {row.bio ? (
+        <div className="md:col-span-2">
+          <DetailField label="Bio" value={row.bio} />
+        </div>
+      ) : null}
+      {socials.length ? (
+        <div className="md:col-span-2">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/32">Socials</p>
+          <ul className="mt-2 grid gap-1 text-sm text-white/62">
+            {socials.map((link) => (
+              <li key={link.label}>
+                <span className="text-white/40">{link.label} · </span>
+                <a href={link.value} className="break-all underline-offset-2 hover:underline">
+                  {link.value}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function RosterForm({ row }: { row?: RosterRow }) {
   return (
-    <form action={upsertRosterEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
+    <form action={upsertRosterEntry} className="grid gap-4 md:grid-cols-2">
       {row ? <input type="hidden" name="id" value={row.id} /> : null}
       <Field label="Handle" name="handle" defaultValue={row?.handle} required />
       <Field label="Slug" name="slug" defaultValue={row?.slug} placeholder="url-hash-id" />
@@ -88,51 +157,50 @@ export function RosterSection({ rows, error }: { rows: RosterRow[]; error: strin
     <div className="grid gap-5">
       <SectionHeading
         eyebrow="Roster"
-        title="Player cards"
-        description="Handles, roles, bios, specialties, and profile images sync to the public roster revolver."
+        title="Players"
+        description="Manage player cards for the public roster revolver — create, edit, reorder, or remove entries."
       />
       {error ? (
         <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{error}</p>
       ) : null}
-      <RosterForm />
-      <div className="grid gap-3">
-        {sorted.map((player, index) => (
-          <div key={player.id} className={rowCardClass}>
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-white/8 pb-3">
-              <div className="flex items-center gap-3">
-                {player.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={player.image_url}
-                    alt=""
-                    className="h-12 w-12 rounded-md border border-white/10 object-cover"
-                  />
-                ) : (
-                  <div className="grid h-12 w-12 place-items-center rounded-md border border-dashed border-white/15 text-[10px] text-white/35">
-                    PFP
-                  </div>
-                )}
-                <div>
-                  <p className="font-[family-name:var(--font-display)] text-xl uppercase text-white">{player.handle}</p>
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-white/45">
-                    #{player.display_order} · {player.player_role}
-                  </p>
-                </div>
-              </div>
-              <ReorderControls
-                id={player.id}
-                action={reorderRosterEntry}
-                canMoveUp={index > 0}
-                canMoveDown={index < sorted.length - 1}
-              />
-            </div>
-            <RosterForm row={player} />
-            <div className="mt-3">
-              <DeleteForm action={deleteRosterEntry} id={player.id} />
-            </div>
-          </div>
-        ))}
-      </div>
+
+      <CreatePanel label="Add Player" count={sorted.length}>
+        <RosterForm />
+      </CreatePanel>
+
+      {sorted.length === 0 ? (
+        <p className="rounded-lg border border-dashed border-white/12 bg-black/20 p-6 text-sm text-white/50">
+          No players yet. Import from site-data or add your first player above.
+        </p>
+      ) : (
+        <div className="grid gap-2">
+          {sorted.map((player, index) => (
+            <EntryCard
+              key={player.id}
+              title={player.handle}
+              subtitle={`#${player.display_order} · ${player.player_role}${player.role_order ? ` · ${player.role_order}` : ""}`}
+              image={<RosterAvatar imageUrl={player.image_url} />}
+              reorder={
+                <ReorderControls
+                  id={player.id}
+                  action={reorderRosterEntry}
+                  canMoveUp={index > 0}
+                  canMoveDown={index < sorted.length - 1}
+                />
+              }
+              detail={<RosterDetail row={player} />}
+              editForm={<RosterForm row={player} />}
+              deleteForm={
+                <DeleteForm
+                  action={deleteRosterEntry}
+                  id={player.id}
+                  confirmMessage={`Remove ${player.handle} from the roster?`}
+                />
+              }
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

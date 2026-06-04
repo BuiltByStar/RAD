@@ -128,8 +128,8 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
   );
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[minmax(7rem,9rem)_1fr] lg:gap-14 xl:grid-cols-[10rem_1fr]">
-      <div className="lg:sticky lg:top-28 lg:self-start">
+    <div className="grid gap-10 md:grid-cols-[minmax(6.5rem,8.5rem)_1fr] md:gap-10 lg:gap-14 xl:grid-cols-[10rem_1fr]">
+      <div className="z-10 md:sticky md:top-[5.25rem] md:self-start md:bg-black md:pb-6 md:pr-4 lg:pr-6">
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-600">Timeline</p>
         <motion.p
           key={stickyYear}
@@ -141,13 +141,20 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
         >
           {stickyYear}
         </motion.p>
-        <p className="mt-2 text-xs uppercase tracking-[0.16em] text-neutral-600">{activeItem.date}</p>
-        <p className="mt-4 hidden max-w-[9rem] font-[family-name:var(--font-display)] text-sm font-bold uppercase leading-tight text-white lg:block">
-          {activeItem.title}
-        </p>
+        <motion.div
+          key={`${activeItem.date}-${activeItem.title}`}
+          initial={reduced ? false : { opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: EASE }}
+        >
+          <p className="mt-2 text-xs uppercase tracking-[0.16em] text-neutral-600">{activeItem.date}</p>
+          <p className="mt-4 max-w-[9rem] font-[family-name:var(--font-display)] text-sm font-bold uppercase leading-tight text-white">
+            {activeItem.title}
+          </p>
+        </motion.div>
       </div>
 
-      <div className="relative min-w-0 border-t border-neutral-900 pt-2 lg:border-t-0 lg:pt-0">
+      <div className="relative min-w-0 border-t border-neutral-900 pt-2 md:border-t-0 md:pt-0">
         <div aria-hidden className="absolute bottom-0 left-[5px] top-0 w-px bg-neutral-900" />
         {renderTimeline("History", historyItems)}
         {futureItems.length ? (

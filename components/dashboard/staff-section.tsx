@@ -1,5 +1,7 @@
+import { CreatePanel } from "@/components/dashboard/create-panel";
+import { EntryCard } from "@/components/dashboard/entry-card";
 import { ReorderControls } from "@/components/dashboard/reorder-controls";
-import { buttonClass, formCardClass, rowCardClass } from "@/components/dashboard/dashboard-styles";
+import { buttonClass } from "@/components/dashboard/dashboard-styles";
 import { Check, DeleteForm, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
 import { deleteStaffEntry, reorderStaffEntry, upsertStaffEntry } from "@/app/dashboard/actions";
 import { SectionHeading } from "@/components/ui";
@@ -20,9 +22,62 @@ export type StaffRow = {
   group_name?: string | null;
 };
 
+function StaffAvatar({ imageUrl }: { imageUrl?: string | null }) {
+  if (imageUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={imageUrl} alt="" className="h-12 w-12 shrink-0 rounded-md border border-white/10 object-cover" />
+    );
+  }
+
+  return (
+    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-md border border-dashed border-white/15 text-[10px] text-white/35">
+      IMG
+    </div>
+  );
+}
+
+function DetailField({ label, value }: { label: string; value?: string | number | null }) {
+  if (value === null || value === undefined || value === "") return null;
+
+  return (
+    <div>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/32">{label}</p>
+      <p className="mt-1 text-sm text-white/72">{value}</p>
+    </div>
+  );
+}
+
+function StaffDetail({ row }: { row: StaffRow }) {
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <DetailField label="Title / Role" value={row.title} />
+      <DetailField label="Section" value={row.section} />
+      <DetailField label="Group" value={row.group_name} />
+      <DetailField label="Descriptor" value={row.descriptor} />
+      <DetailField label="Tags" value={row.tags?.join(", ")} />
+      <DetailField label="Slug" value={row.slug} />
+      <DetailField label="Leadership" value={row.leadership ? "Yes" : "No"} />
+      {row.bio ? (
+        <div className="md:col-span-2">
+          <DetailField label="Bio" value={row.bio} />
+        </div>
+      ) : null}
+      {row.x_url ? (
+        <div className="md:col-span-2">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/32">X</p>
+          <a href={row.x_url} className="mt-1 block break-all text-sm text-white/62 underline-offset-2 hover:underline">
+            {row.x_url}
+          </a>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function StaffForm({ row }: { row?: StaffRow }) {
   return (
-    <form action={upsertStaffEntry} className={`${row ? "" : formCardClass} grid gap-4 md:grid-cols-2`}>
+    <form action={upsertStaffEntry} className="grid gap-4 md:grid-cols-2">
       {row ? <input type="hidden" name="id" value={row.id} /> : null}
       <Field label="Name" name="name" defaultValue={row?.name} required />
       <Field label="Slug" name="slug" defaultValue={row?.slug} />
@@ -55,35 +110,52 @@ export function StaffSection({ rows, error }: { rows: StaffRow[]; error: string 
 
   return (
     <div className="grid gap-5">
-      <SectionHeading eyebrow="Staff" title="Staff cards" description="Name, role, bio, group, tags, and images for /staff." />
+      <SectionHeading
+        eyebrow="Staff"
+        title="Team"
+        description="Manage staff cards for the public staff page — create, edit, reorder, or remove entries."
+      />
       {error ? (
         <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{error}</p>
       ) : null}
-      <StaffForm />
-      <div className="grid gap-3">
-        {sorted.map((member, index) => (
-          <div key={member.id} className={rowCardClass}>
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-white/8 pb-3">
-              <div>
-                <p className="font-[family-name:var(--font-display)] text-xl uppercase text-white">{member.name}</p>
-                <p className="text-[10px] uppercase tracking-[0.14em] text-white/45">
-                  #{member.display_order} · {member.title}
-                </p>
-              </div>
-              <ReorderControls
-                id={member.id}
-                action={reorderStaffEntry}
-                canMoveUp={index > 0}
-                canMoveDown={index < sorted.length - 1}
-              />
-            </div>
-            <StaffForm row={member} />
-            <div className="mt-3">
-              <DeleteForm action={deleteStaffEntry} id={member.id} />
-            </div>
-          </div>
-        ))}
-      </div>
+
+      <CreatePanel label="Add Staff" count={sorted.length}>
+        <StaffForm />
+      </CreatePanel>
+
+      {sorted.length === 0 ? (
+        <p className="rounded-lg border border-dashed border-white/12 bg-black/20 p-6 text-sm text-white/50">
+          No staff yet. Import from site-data or add your first staff member above.
+        </p>
+      ) : (
+        <div className="grid gap-2">
+          {sorted.map((member, index) => (
+            <EntryCard
+              key={member.id}
+              title={member.name}
+              subtitle={`#${member.display_order} · ${member.title}${member.section ? ` · ${member.section}` : ""}`}
+              image={<StaffAvatar imageUrl={member.image_url} />}
+              reorder={
+                <ReorderControls
+                  id={member.id}
+                  action={reorderStaffEntry}
+                  canMoveUp={index > 0}
+                  canMoveDown={index < sorted.length - 1}
+                />
+              }
+              detail={<StaffDetail row={member} />}
+              editForm={<StaffForm row={member} />}
+              deleteForm={
+                <DeleteForm
+                  action={deleteStaffEntry}
+                  id={member.id}
+                  confirmMessage={`Remove ${member.name} from staff?`}
+                />
+              }
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
