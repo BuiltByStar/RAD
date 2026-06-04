@@ -54,7 +54,7 @@ function CloseIcon() {
 function ShopAction({
   item,
   className = "",
-  children = "Shop external",
+  children,
   size = "md"
 }: {
   item?: MerchItem | null;
@@ -63,10 +63,11 @@ function ShopAction({
   size?: "sm" | "md";
 }) {
   const href = shopHrefForItem(item);
+  const label = children ?? item?.ctaLabel ?? "Shop on Emerge";
 
   return (
     <SenButton href={href ?? undefined} disabled={!href} className={className} size={size}>
-      {href ? children : "Shop link pending"}
+      {href ? label : "Shop link pending"}
     </SenButton>
   );
 }

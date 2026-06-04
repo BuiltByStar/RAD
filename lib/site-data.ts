@@ -93,8 +93,11 @@ export const aboutSummary =
 export const discordInviteUrl = "https://discord.com/invite/radgg";
 export const discordServerId = "1363584103479513198";
 export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId}&theme=dark`;
-export const radShopUrl = process.env.NEXT_PUBLIC_RAD_SHOP_URL || undefined;
-const merchItemStatus = radShopUrl ? "External checkout" : "Shop link pending";
+export const radShopUrl =
+  process.env.NEXT_PUBLIC_RAD_SHOP_URL || "https://emergeapparel.gg/collections/rad-esports";
+const merchItemStatus = "External checkout";
+
+const emergeProduct = (handle: string) => `https://emergeapparel.gg/products/${handle}`;
 
 export const headerCompeteLinks: HeaderNavLink[] = [
   { href: "/roster", label: "Team", zone: "compete" },
@@ -337,116 +340,71 @@ export const merchCollection = {
 
 export const merchItems: MerchItem[] = [
   {
-    name: "RAD Player Jersey",
+    name: "RAD Elite Crew Neck Jersey",
     category: "Jerseys",
-    description: "Black and red match jersey with front RAD wordmark, wolf-mark patterning, and custom gamer-tag back.",
-    accent: "Front + back proof",
+    description: "Official RAD team jersey — 100% polyester, moisture-wicking, drop-cut. Add your gamer tag.",
+    accent: "Custom gamer tag",
     status: merchItemStatus,
     frontImage: assets.shop.jerseyFront,
     backImage: assets.shop.jerseyBack,
     featured: true,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
+    externalUrl: emergeProduct("rad-elite-crewneck"),
+    ctaLabel: "Shop on Emerge"
   },
   {
-    name: "Light Pro SS Tee",
+    name: "RAD Pro S/S Crew Neck Tee",
     category: "Light Gear",
-    description: "White short-sleeve performance tee with a centered red RAD mark.",
-    accent: "Short sleeve",
+    description: "Champion short-sleeve cotton tee with the red RAD mark — available in black or white.",
+    accent: "Short sleeve · 2 colors",
     status: merchItemStatus,
     frontImage: assets.shop.lightSsTshirt,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
+    backImage: assets.shop.darkSsTshirt,
+    externalUrl: emergeProduct("rad-pro-s-s-crew-neck-t"),
+    ctaLabel: "Shop on Emerge"
   },
   {
-    name: "Dark Pro SS Tee",
-    category: "Dark Gear",
-    description: "Black short-sleeve performance tee with a centered red RAD mark.",
-    accent: "Short sleeve",
-    status: merchItemStatus,
-    frontImage: assets.shop.darkSsTshirt,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
-  },
-  {
-    name: "Light Pro LS Tee",
+    name: "RAD Pro L/S Crew Neck Tee",
     category: "Light Gear",
-    description: "White long-sleeve performance tee for a cleaner supporter-kit look.",
-    accent: "Long sleeve",
+    description: "Champion long-sleeve cotton tee with the red RAD mark — available in white or black.",
+    accent: "Long sleeve · 2 colors",
     status: merchItemStatus,
     frontImage: assets.shop.lightLsTshirt,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
+    backImage: assets.shop.darkLsTshirt,
+    externalUrl: emergeProduct("rad-pro-l-s-crew-neck"),
+    ctaLabel: "Shop on Emerge"
   },
   {
-    name: "Dark Pro LS Tee",
-    category: "Dark Gear",
-    description: "Black long-sleeve performance tee with the red RAD mark on the chest.",
-    accent: "Long sleeve",
-    status: merchItemStatus,
-    frontImage: assets.shop.darkLsTshirt,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
-  },
-  {
-    name: "Light Pro Sweatshirt",
+    name: "RAD Pro Crewneck Sweatshirt",
     category: "Light Gear",
-    description: "White crewneck sweatshirt with the red RAD mark and a clean arena-ready profile.",
-    accent: "Crewneck",
+    description: "Champion Powerblend crewneck sweatshirt with the red RAD mark — available in black or white.",
+    accent: "Crewneck · 2 colors",
     status: merchItemStatus,
     frontImage: assets.shop.lightSweatshirt,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
+    backImage: assets.shop.darkSweatshirt,
+    externalUrl: emergeProduct("rad-pro-crewneck-sweatshirt-copy"),
+    ctaLabel: "Shop on Emerge"
   },
   {
-    name: "Dark Pro Sweatshirt",
+    name: "RAD Pro Hoodie",
     category: "Dark Gear",
-    description: "Black crewneck sweatshirt with a red RAD mark and heavyweight visual presence.",
-    accent: "Crewneck",
-    status: merchItemStatus,
-    frontImage: assets.shop.darkSweatshirt,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
-  },
-  {
-    name: "Light Pro Hoodie",
-    category: "Light Gear",
-    description: "White hoodie with front pouch, tonal drawcords, and the red RAD mark.",
-    accent: "Hoodie",
+    description: "Champion Powerblend pullover hoodie with the red RAD mark — available in white or black.",
+    accent: "Hoodie · 2 colors",
     status: merchItemStatus,
     frontImage: assets.shop.lightHoodie,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
+    backImage: assets.shop.darkHoodie,
+    externalUrl: emergeProduct("rad-pro-hoodie"),
+    ctaLabel: "Shop on Emerge"
   },
   {
-    name: "Dark Pro Hoodie",
-    category: "Dark Gear",
-    description: "Black hoodie with tonal drawcords and a red RAD mark built for colder match days.",
-    accent: "Hoodie",
-    status: merchItemStatus,
-    frontImage: assets.shop.darkHoodie,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
-  },
-  {
-    name: "Light Women's SS Tee",
+    name: "RAD S/S Ladies Tri-Blend Tee",
     category: "Women",
-    description: "White women's triblend short-sleeve tee with the red RAD mark.",
-    accent: "Women's fit",
+    description: "Next Level tri-blend women's tee with the red RAD mark — available in white or black.",
+    accent: "Women's fit · 2 colors",
     status: merchItemStatus,
     frontImage: assets.shop.lightWomensSsTriblend,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
-  },
-  {
-    name: "Dark Women's SS Tee",
-    category: "Women",
-    description: "Black women's triblend short-sleeve tee with the red RAD mark.",
-    accent: "Women's fit",
-    status: merchItemStatus,
-    frontImage: assets.shop.darkWomensSsTriblend,
-    externalUrl: radShopUrl,
-    ctaLabel: "Shop external"
+    backImage: assets.shop.darkWomensSsTriblend,
+    externalUrl: emergeProduct("rad-ss-ladies-tri-blend-t-shirt"),
+    ctaLabel: "Shop on Emerge"
   }
 ];
 
