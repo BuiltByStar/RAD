@@ -11,15 +11,9 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <PageShell
-      variant="contact"
-      compact
-      eyebrow="Contact"
-      title="Contact"
-      description="Discord ticket or team email — we respond fastest in-server."
-    >
-      <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection className="py-8 md:py-10">
+    <PageShell variant="contact" hideHero eyebrow="Contact" title="Contact" route="/contact">
+      <PageRail className="pb-16 sm:pb-20">
+        <PageRailSection className="flex min-h-[70vh] items-center justify-center py-16 md:py-20">
           <ContactSocialSection />
         </PageRailSection>
       </PageRail>
