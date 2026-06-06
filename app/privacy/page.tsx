@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/page-shell";
-import { CardGrid, LegalCard, PageRail, PageRailSection } from "@/components/ui";
+import { PageRail, PageRailSection } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Privacy",
@@ -38,13 +38,21 @@ export default function PrivacyPage() {
       title="Privacy"
       description="How RAD handles information shared through the site."
     >
-      <PageRail className="pb-14 sm:pb-16">
-        <PageRailSection className="py-8 md:py-10">
-          <CardGrid cols={1} className="max-w-3xl">
+      <PageRail className="pb-20 sm:pb-28">
+        <PageRailSection className="py-12 md:py-16">
+          <div className="mx-auto max-w-2xl space-y-12 sm:space-y-14">
             {privacyBlocks.map((block) => (
-              <LegalCard key={block.title} label={block.label} title={block.title} copy={block.copy} />
+              <section key={block.title}>
+                <p className="rad-kicker">{block.label}</p>
+                <h2 className="mt-4 font-[family-name:var(--font-display)] text-xl uppercase leading-[1.1] tracking-normal text-white sm:text-2xl">
+                  {block.title}
+                </h2>
+                <p className="mt-4 text-base leading-[1.7] text-neutral-400 sm:text-[1.0625rem]">
+                  {block.copy}
+                </p>
+              </section>
             ))}
-          </CardGrid>
+          </div>
         </PageRailSection>
       </PageRail>
     </PageShell>
