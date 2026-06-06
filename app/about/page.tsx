@@ -35,11 +35,7 @@ export default function AboutPage() {
     >
       <PageRail className="pb-14 sm:pb-20">
         <PageRailSection className="py-6 md:py-8">
-          <p className="max-w-2xl text-base leading-[1.8] text-neutral-400 sm:text-lg sm:leading-[1.75]">
-            RAD has been turning heads since 2023 — inaugural Marvel Rivals Ignite Mid-Season World
-            Champions, then Season 6 EMEA PC title holders in March 2026.
-          </p>
-          <blockquote className="mt-8 max-w-3xl border-l-2 border-[var(--color-blood)] pl-5 sm:pl-6">
+          <blockquote className="max-w-3xl border-l-2 border-[var(--color-blood)] pl-5 sm:pl-6">
             <p className="font-[family-name:var(--font-display)] text-[clamp(1.35rem,3.2vw,2rem)] font-extrabold uppercase leading-[1.05] tracking-normal text-white">
               Untamed, unstoppable, never by the book.
             </p>
