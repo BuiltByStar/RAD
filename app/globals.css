@@ -327,6 +327,139 @@ p { margin: 0; }
     max-width: 100%;
   }
 
+  .rad-glow-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.95rem 1.6rem;
+    background: linear-gradient(180deg, #f0143a 0%, #c00524 100%);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.78rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 0 0 1px rgba(229, 6, 47, 0.45),
+      0 0 22px rgba(229, 6, 47, 0.45),
+      0 0 56px rgba(229, 6, 47, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -10px 22px rgba(0, 0, 0, 0.32);
+    overflow: hidden;
+    isolation: isolate;
+    transform: translateZ(0);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease;
+    animation: rad-glow-cta-pulse 2.6s ease-in-out infinite;
+  }
+
+  .rad-glow-cta::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(120deg, rgba(229, 6, 47, 0.55), rgba(229, 6, 47, 0) 38%, rgba(229, 6, 47, 0) 62%, rgba(229, 6, 47, 0.55));
+    filter: blur(14px);
+    opacity: 0.85;
+  }
+
+  .rad-glow-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.22) 50%, transparent 62%);
+    transform: translateX(-120%);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .rad-glow-cta:hover {
+    transform: translateY(-1px) scale(1.015);
+    box-shadow:
+      0 0 0 1px rgba(229, 6, 47, 0.6),
+      0 0 32px rgba(229, 6, 47, 0.6),
+      0 0 78px rgba(229, 6, 47, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      inset 0 -10px 22px rgba(0, 0, 0, 0.4);
+  }
+
+  .rad-glow-cta:hover::after {
+    transform: translateX(120%);
+  }
+
+  .rad-glow-cta:active {
+    transform: translateY(0) scale(0.99);
+  }
+
+  .rad-glow-cta:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px #000,
+      0 0 0 4px rgba(229, 6, 47, 0.9),
+      0 0 32px rgba(229, 6, 47, 0.6);
+  }
+
+  @keyframes rad-glow-cta-pulse {
+    0%, 100% {
+      box-shadow:
+        0 0 0 1px rgba(229, 6, 47, 0.45),
+        0 0 22px rgba(229, 6, 47, 0.45),
+        0 0 56px rgba(229, 6, 47, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -10px 22px rgba(0, 0, 0, 0.32);
+    }
+    50% {
+      box-shadow:
+        0 0 0 1px rgba(229, 6, 47, 0.65),
+        0 0 36px rgba(229, 6, 47, 0.65),
+        0 0 88px rgba(229, 6, 47, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        inset 0 -10px 22px rgba(0, 0, 0, 0.36);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rad-glow-cta {
+      animation: none;
+    }
+    .rad-glow-cta:hover {
+      transform: none;
+    }
+  }
+
+  .rad-roster-strip {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .rad-roster-strip__track {
+    display: flex;
+    width: max-content;
+    animation: rad-roster-strip-run 28s linear infinite;
+  }
+
+  .rad-roster-strip:hover .rad-roster-strip__track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rad-roster-strip__track {
+      animation: none;
+    }
+  }
+
+  @keyframes rad-roster-strip-run {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .rad-sen-button:hover,
     .rad-sen-button:active {
@@ -781,10 +914,11 @@ p { margin: 0; }
   }
 
   .rad-community-marquee__item::after {
-    content: "◆";
+    content: "·";
     margin-left: 1.35rem;
-    color: rgba(229, 6, 47, 0.55);
-    font-size: 0.45rem;
+    color: rgba(255, 255, 255, 0.22);
+    font-size: 1rem;
+    line-height: 1;
     vertical-align: middle;
   }
 

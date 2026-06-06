@@ -6,7 +6,6 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Chip, ChipRow } from "@/components/ui/chip";
 import { FluidContainer } from "@/components/ui/fluid-container";
-import { SenButton } from "@/components/ui/sen-button";
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
 import { assets } from "@/lib/assets";
 import { players, stats, teams } from "@/lib/site-data";
@@ -28,7 +27,7 @@ export function HomeTeamsBanner() {
   const reduced = useReducedMotion();
   const team = teams[0];
   const roster = players.filter((player) => player.group === team.name);
-  const preview = roster.slice(0, 6);
+  const stripPlayers = roster.length > 0 ? [...roster, ...roster] : [];
 
   return (
     <section className="overflow-hidden bg-black">
@@ -99,8 +98,26 @@ export function HomeTeamsBanner() {
                     <Chip>{roster.length} players</Chip>
                   </ChipRow>
 
-                  <motion.div {...fadeUp(reduced, 0.18)} className="mt-10 w-full max-w-md">
-                    <SenButton href="/roster">View roster</SenButton>
+                  <motion.div {...fadeUp(reduced, 0.18)} className="mt-10">
+                    <Link href="/roster" className="rad-glow-cta" aria-label="View the full RAD team roster">
+                      <span>See the full team</span>
+                      <svg
+                        aria-hidden
+                        width="14"
+                        height="10"
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        className="translate-y-px"
+                      >
+                        <path
+                          d="M1 5h11.5M8.5 1l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Link>
                   </motion.div>
                 </div>
 
@@ -128,38 +145,66 @@ export function HomeTeamsBanner() {
                     ))}
                   </div>
 
-                  <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
-                      Active lineup
-                    </p>
-
-                    <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
-                      {preview.map((player, index) => (
-                        <Link
-                          key={player.slug}
-                          href={`/roster#${player.slug}`}
-                          className="group relative aspect-square overflow-hidden border border-neutral-900 bg-neutral-950 transition-colors hover:border-[var(--color-blood)]/45"
-                        >
-                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(229,6,47,0.22),transparent_68%)] opacity-0 transition-opacity group-hover:opacity-100" />
-                          <div className="relative flex h-full flex-col items-center justify-center gap-1 p-2">
-                            <span className="font-[family-name:var(--font-display)] text-lg font-extrabold uppercase leading-none text-white/88 sm:text-xl">
-                              {player.name.slice(0, 2)}
-                            </span>
-                            <span className="max-w-full truncate text-[8px] font-semibold uppercase tracking-[0.12em] text-neutral-500 group-hover:text-neutral-400">
-                              {player.name}
-                            </span>
-                          </div>
-                          <span
-                            aria-hidden
-                            className="absolute right-1.5 top-1.5 font-[family-name:var(--font-display)] text-[10px] font-extrabold tabular-nums text-white/12 transition-colors group-hover:text-[var(--color-blood)]/55"
-                          >
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                        </Link>
-                      ))}
+                  <div className="flex flex-1 flex-col justify-between gap-4 p-4 sm:p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
+                        Active lineup
+                      </p>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-600">
+                        {roster.length} starters
+                      </p>
                     </div>
 
-                    <p className="mt-5 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-600">
+                    {stripPlayers.length > 0 ? (
+                      <div className="rad-roster-strip -mx-4 sm:-mx-5">
+                        <div className="rad-roster-strip__track gap-2 sm:gap-3">
+                          {stripPlayers.map((player, index) => (
+                            <Link
+                              key={`${player.slug}-${index}`}
+                              href={`/roster#${player.slug}`}
+                              aria-label={`View ${player.name}'s profile`}
+                              className="group relative flex w-[88px] shrink-0 flex-col items-stretch border border-neutral-900 bg-neutral-950 transition-colors first:ml-4 last:mr-4 hover:border-[var(--color-blood)]/55 sm:w-[96px] sm:first:ml-5 sm:last:mr-5"
+                            >
+                              <div className="relative aspect-square w-full overflow-hidden bg-neutral-900">
+                                {player.image ? (
+                                  <Image
+                                    src={player.image}
+                                    alt=""
+                                    fill
+                                    sizes="96px"
+                                    className="object-cover opacity-90 transition-opacity duration-300 group-hover:opacity-100"
+                                  />
+                                ) : (
+                                  <span className="absolute inset-0 grid place-items-center font-[family-name:var(--font-display)] text-lg font-extrabold uppercase text-white/75">
+                                    {player.name.slice(0, 2)}
+                                  </span>
+                                )}
+                                <div
+                                  aria-hidden
+                                  className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(0,0,0,0.78)_100%)]"
+                                />
+                                <span
+                                  aria-hidden
+                                  className="absolute left-1.5 top-1.5 font-[family-name:var(--font-display)] text-[10px] font-extrabold tabular-nums text-white/35 transition-colors group-hover:text-[var(--color-blood)]/85"
+                                >
+                                  {String((index % roster.length) + 1).padStart(2, "0")}
+                                </span>
+                              </div>
+                              <div className="flex flex-col gap-0.5 border-t border-neutral-900 px-2 py-2">
+                                <span className="truncate font-[family-name:var(--font-display)] text-[11px] font-extrabold uppercase leading-none text-white">
+                                  {player.name}
+                                </span>
+                                <span className="truncate text-[8px] font-semibold uppercase tracking-[0.14em] text-neutral-500 group-hover:text-neutral-400">
+                                  {player.role}
+                                </span>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <p className="text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-600">
                       Marvel Rivals · {team.game}
                     </p>
                   </div>
