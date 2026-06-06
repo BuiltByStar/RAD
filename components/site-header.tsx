@@ -6,16 +6,25 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 import { AuthWidget } from "@/components/auth-widget";
 import { BrandLockup } from "@/components/brand-lockup";
+import { SocialIcon } from "@/components/icons/social-icons";
 import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { cn } from "@/components/ui/cn";
 import { BRAND_INTRO_COMPLETE_EVENT, hasSeenBrandIntro } from "@/lib/brand-intro";
 import {
-  discordInviteUrl,
   headerCompeteLinks,
   headerNavLinks,
   headerOrgLinks,
-  type HeaderNavLink
+  orgSocialChannels,
+  type HeaderNavLink,
+  type OrgSocialPlatform
 } from "@/lib/site-data";
+
+const HEADER_SOCIAL_PLATFORMS: OrgSocialPlatform[] = ["discord", "youtube", "x"];
+
+const headerSocialLinks = HEADER_SOCIAL_PLATFORMS.flatMap((platform) => {
+  const channel = orgSocialChannels.find((entry) => entry.platform === platform);
+  return channel ? [channel] : [];
+});
 
 const NAV_PUSH_DELAY_MS = 90;
 const NAV_GLITCH_OUTRO_MS = 320;
@@ -273,16 +282,24 @@ export function SiteHeader() {
               <nav aria-label="Organization" className="rad-nav-cluster rad-border-trace rad-border-trace--offset shrink-0">
                 {headerOrgLinks.map((link) => renderNavLink(link, "bar"))}
               </nav>
-              <div className="ml-auto flex shrink-0 items-center gap-2">
-                <Link
-                  href={discordInviteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Join RAD Esports Discord server"
-                  className="rad-discord-link px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                >
-                  Discord
-                </Link>
+              <div className="ml-auto flex shrink-0 items-center gap-4">
+                {headerSocialLinks.length > 0 ? (
+                  <ul className="flex items-center gap-3">
+                    {headerSocialLinks.map((channel) => (
+                      <li key={channel.platform}>
+                        <a
+                          href={channel.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Follow RAD on ${channel.label} (opens in a new tab)`}
+                          className="inline-flex h-8 w-8 items-center justify-center text-neutral-500 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                        >
+                          <SocialIcon platform={channel.platform} className="h-4 w-4" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
                 <AuthWidget />
               </div>
             </div>
@@ -307,16 +324,23 @@ export function SiteHeader() {
               <div className="rad-border-trace rad-border-trace--offset grid border border-neutral-900">
                 {headerOrgLinks.map((link) => renderNavLink(link, "mobile"))}
               </div>
-              <div className="mt-4 flex">
-                <Link
-                  href={discordInviteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rad-discord-link flex w-full items-center justify-center border border-[#5865f2]/25 py-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5865f2]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                >
-                  Join Discord
-                </Link>
-              </div>
+              {headerSocialLinks.length > 0 ? (
+                <ul className="mt-5 flex items-center justify-center gap-5">
+                  {headerSocialLinks.map((channel) => (
+                    <li key={channel.platform}>
+                      <a
+                        href={channel.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Follow RAD on ${channel.label} (opens in a new tab)`}
+                        className="inline-flex h-10 w-10 items-center justify-center text-neutral-500 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                      >
+                        <SocialIcon platform={channel.platform} className="h-5 w-5" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
               <div className="mt-4 border-t border-neutral-900 pt-4">
                 <AuthWidget />
               </div>

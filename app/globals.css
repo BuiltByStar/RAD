@@ -794,30 +794,6 @@ p { margin: 0; }
       0 0 22px rgba(229, 6, 47, 0.14);
   }
 
-  .rad-discord-link {
-    color: #8b93e8;
-    text-shadow: 0 0 10px rgba(88, 101, 242, 0.22);
-    transition:
-      color var(--transition-ui),
-      text-shadow var(--transition-ui),
-      border-color var(--transition-ui);
-  }
-
-  .rad-discord-link:hover {
-    color: #b8bff5;
-    text-shadow: 0 0 12px rgba(88, 101, 242, 0.35);
-  }
-
-  .rad-discord-link--cta {
-    color: #9aa3ef;
-    text-shadow: 0 0 10px rgba(88, 101, 242, 0.28);
-  }
-
-  .rad-discord-link--cta:hover {
-    color: #c5cbfa;
-    text-shadow: 0 0 14px rgba(88, 101, 242, 0.38);
-  }
-
   .rad-community-discord {
     padding: 0.95rem 1.65rem;
     font-size: 11px;
