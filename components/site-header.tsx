@@ -26,6 +26,18 @@ const headerSocialLinks = HEADER_SOCIAL_PLATFORMS.flatMap((platform) => {
   return channel ? [channel] : [];
 });
 
+const HEADER_SOCIAL_HOVER: Record<OrgSocialPlatform, string> = {
+  discord: "hover:text-[#5865f2] hover:drop-shadow-[0_0_12px_rgba(88,101,242,0.6)]",
+  youtube: "hover:text-[#ff0033] hover:drop-shadow-[0_0_12px_rgba(255,0,51,0.6)]",
+  x: "hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]",
+  twitch: "hover:text-[#9146ff] hover:drop-shadow-[0_0_12px_rgba(145,70,255,0.6)]",
+  instagram: "hover:text-[#e1306c] hover:drop-shadow-[0_0_12px_rgba(225,48,108,0.55)]",
+  tiktok: "hover:text-white hover:drop-shadow-[0_0_10px_rgba(0,242,234,0.5)]"
+};
+
+const HEADER_SOCIAL_BASE =
+  "group inline-flex items-center justify-center text-neutral-500 transition-[color,transform,filter] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black motion-reduce:transform-none motion-reduce:transition-none";
+
 const NAV_PUSH_DELAY_MS = 90;
 const NAV_GLITCH_OUTRO_MS = 320;
 const NAV_READY_FALLBACK_MS = 950;
@@ -292,9 +304,12 @@ export function SiteHeader() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Follow RAD on ${channel.label} (opens in a new tab)`}
-                          className="inline-flex h-8 w-8 items-center justify-center text-neutral-500 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                          className={cn(HEADER_SOCIAL_BASE, "h-8 w-8", HEADER_SOCIAL_HOVER[channel.platform])}
                         >
-                          <SocialIcon platform={channel.platform} className="h-4 w-4" />
+                          <SocialIcon
+                            platform={channel.platform}
+                            className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[-6deg] motion-reduce:group-hover:rotate-0"
+                          />
                         </a>
                       </li>
                     ))}
@@ -333,9 +348,12 @@ export function SiteHeader() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`Follow RAD on ${channel.label} (opens in a new tab)`}
-                        className="inline-flex h-10 w-10 items-center justify-center text-neutral-500 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                        className={cn(HEADER_SOCIAL_BASE, "h-10 w-10", HEADER_SOCIAL_HOVER[channel.platform])}
                       >
-                        <SocialIcon platform={channel.platform} className="h-5 w-5" />
+                        <SocialIcon
+                          platform={channel.platform}
+                          className="h-5 w-5 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[-6deg] motion-reduce:group-hover:rotate-0"
+                        />
                       </a>
                     </li>
                   ))}
