@@ -41,6 +41,8 @@ export function buildRosterSeedRows(players: Person[]) {
     twitch_url: socialHref(player, "Twitch"),
     instagram_url: socialHref(player, "Instagram"),
     youtube_url: socialHref(player, "YouTube"),
+    discord_url: socialHref(player, "Discord"),
+    tiktok_url: socialHref(player, "TikTok"),
     featured: Boolean(player.featured),
     role_order: mapRoleOrder(player.tags),
     specialties: player.specialties ?? [],

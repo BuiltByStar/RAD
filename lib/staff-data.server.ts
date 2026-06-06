@@ -36,7 +36,7 @@ function mapStaffRow(row: StaffRow): StaffMember {
     bio: row.bio?.trim() || undefined,
     image: row.image_url?.trim() || undefined,
     tags: row.tags?.length ? row.tags : undefined,
-    socials: row.x_url ? [{ label: "X", href: row.x_url }] : undefined,
+    socials: row.x_url ? [{ label: "X", href: row.x_url, platform: "x" }] : undefined,
     featured: row.leadership
   };
 }

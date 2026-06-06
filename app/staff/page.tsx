@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import { SocialIcon } from "@/components/icons/social-icons";
 import { PageShell } from "@/components/page-shell";
 import { PageRail, PageRailSection } from "@/components/ui";
 import { cn } from "@/components/ui/cn";
-import type { OrgSocialPlatform } from "@/lib/site-data";
+import { SocialIconLink } from "@/components/ui/social-icon-link";
+import { inferSocialPlatform, PLATFORM_LABEL, type OrgSocialPlatform } from "@/lib/site-data";
 import { getManagedStaffState, type StaffMember } from "@/lib/staff-data.server";
 
 export const dynamic = "force-dynamic";
@@ -31,34 +31,6 @@ function getInitials(name: string) {
   if (parts.length === 0) return "RAD";
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
-
-function platformFromLabel(label: string): OrgSocialPlatform | null {
-  const l = label.trim().toLowerCase();
-  if (l === "x" || l === "twitter") return "x";
-  if (l.includes("youtube")) return "youtube";
-  if (l.includes("twitch")) return "twitch";
-  if (l.includes("discord")) return "discord";
-  if (l.includes("instagram") || l === "ig") return "instagram";
-  if (l.includes("tiktok") || l.includes("tik tok")) return "tiktok";
-  return null;
-}
-
-function platformDisplayName(platform: OrgSocialPlatform): string {
-  switch (platform) {
-    case "x":
-      return "X";
-    case "youtube":
-      return "YouTube";
-    case "twitch":
-      return "Twitch";
-    case "discord":
-      return "Discord";
-    case "instagram":
-      return "Instagram";
-    case "tiktok":
-      return "TikTok";
-  }
 }
 
 function StaffCardImage({ member }: { member: StaffMember }) {
@@ -95,28 +67,31 @@ function StaffCardImage({ member }: { member: StaffMember }) {
 function StaffSocials({ member }: { member: StaffMember }) {
   if (!member.socials?.length) return null;
 
-  const known = member.socials
+  const entries = member.socials
     .map((social) => {
-      const platform = platformFromLabel(social.label);
-      return platform ? { platform, href: social.href } : null;
+      const platform: OrgSocialPlatform | undefined =
+        social.platform ?? inferSocialPlatform(social.label, social.href);
+      return { social, platform };
     })
-    .filter((entry): entry is { platform: OrgSocialPlatform; href: string } => entry !== null);
+    .filter((entry) => Boolean(entry.platform)) as {
+    social: NonNullable<StaffMember["socials"]>[number];
+    platform: OrgSocialPlatform;
+  }[];
 
-  if (known.length === 0) return null;
+  if (entries.length === 0) return null;
 
   return (
-    <div className="mt-4 flex items-center gap-3 border-t border-white/8 pt-3">
-      {known.map(({ platform, href }) => (
-        <a
-          key={platform}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Follow ${member.name} on ${platformDisplayName(platform)}`}
-          className="inline-flex size-7 items-center justify-center text-white/55 transition-colors hover:text-[var(--color-blood)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-        >
-          <SocialIcon platform={platform} className="size-4" />
-        </a>
+    <div className="mt-4 flex items-center gap-2 border-t border-white/8 pt-3">
+      {entries.map(({ social, platform }) => (
+        <SocialIconLink
+          key={`${platform}-${social.href}`}
+          href={social.href}
+          platform={platform}
+          label={social.label}
+          ariaLabel={`Follow ${member.name} on ${PLATFORM_LABEL[platform]}`}
+          sizeClass="h-7 w-7"
+          iconClass="h-4 w-4"
+        />
       ))}
     </div>
   );

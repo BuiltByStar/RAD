@@ -65,7 +65,9 @@ create table if not exists public.roster_entries (
   rank text,
   jersey_number integer,
   instagram_url text,
-  youtube_url text
+  youtube_url text,
+  discord_url text,
+  tiktok_url text
 );
 
 create table if not exists public.staff_entries (

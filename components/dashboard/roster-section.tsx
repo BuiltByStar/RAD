@@ -25,6 +25,8 @@ export type RosterRow = {
   twitch_url?: string | null;
   instagram_url?: string | null;
   youtube_url?: string | null;
+  discord_url?: string | null;
+  tiktok_url?: string | null;
   featured: boolean;
   role_order: string;
   descriptor?: string | null;
@@ -65,7 +67,9 @@ function RosterDetail({ row }: { row: RosterRow }) {
     row.x_url ? { label: "X", value: row.x_url } : null,
     row.twitch_url ? { label: "Twitch", value: row.twitch_url } : null,
     row.instagram_url ? { label: "Instagram", value: row.instagram_url } : null,
-    row.youtube_url ? { label: "YouTube", value: row.youtube_url } : null
+    row.youtube_url ? { label: "YouTube", value: row.youtube_url } : null,
+    row.discord_url ? { label: "Discord", value: row.discord_url } : null,
+    row.tiktok_url ? { label: "TikTok", value: row.tiktok_url } : null
   ].filter(Boolean) as { label: string; value: string }[];
 
   return (
@@ -125,6 +129,8 @@ function RosterForm({ row }: { row?: RosterRow }) {
       <Field label="Twitch URL" name="twitch_url" defaultValue={row?.twitch_url} />
       <Field label="Instagram URL" name="instagram_url" defaultValue={row?.instagram_url} />
       <Field label="YouTube URL" name="youtube_url" defaultValue={row?.youtube_url} />
+      <Field label="Discord URL" name="discord_url" defaultValue={row?.discord_url} />
+      <Field label="TikTok URL" name="tiktok_url" defaultValue={row?.tiktok_url} />
       <Field
         label="Specialties"
         name="specialties"

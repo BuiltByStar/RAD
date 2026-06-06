@@ -6,9 +6,9 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 import { AuthWidget } from "@/components/auth-widget";
 import { BrandLockup } from "@/components/brand-lockup";
-import { SocialIcon } from "@/components/icons/social-icons";
 import { NavGlitchOverlay } from "@/components/nav-glitch-overlay";
 import { cn } from "@/components/ui/cn";
+import { SocialIconLink } from "@/components/ui/social-icon-link";
 import { BRAND_INTRO_COMPLETE_EVENT, hasSeenBrandIntro } from "@/lib/brand-intro";
 import {
   headerCompeteLinks,
@@ -25,18 +25,6 @@ const headerSocialLinks = HEADER_SOCIAL_PLATFORMS.flatMap((platform) => {
   const channel = orgSocialChannels.find((entry) => entry.platform === platform);
   return channel ? [channel] : [];
 });
-
-const HEADER_SOCIAL_HOVER: Record<OrgSocialPlatform, string> = {
-  discord: "hover:text-[#5865f2] hover:drop-shadow-[0_0_12px_rgba(88,101,242,0.6)]",
-  youtube: "hover:text-[#ff0033] hover:drop-shadow-[0_0_12px_rgba(255,0,51,0.6)]",
-  x: "hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]",
-  twitch: "hover:text-[#9146ff] hover:drop-shadow-[0_0_12px_rgba(145,70,255,0.6)]",
-  instagram: "hover:text-[#e1306c] hover:drop-shadow-[0_0_12px_rgba(225,48,108,0.55)]",
-  tiktok: "hover:text-white hover:drop-shadow-[0_0_10px_rgba(0,242,234,0.5)]"
-};
-
-const HEADER_SOCIAL_BASE =
-  "group inline-flex items-center justify-center text-neutral-500 transition-[color,transform,filter] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-2 focus-visible:ring-offset-black motion-reduce:transform-none motion-reduce:transition-none";
 
 const NAV_PUSH_DELAY_MS = 90;
 const NAV_GLITCH_OUTRO_MS = 320;
@@ -299,18 +287,14 @@ export function SiteHeader() {
                   <ul className="flex items-center gap-3">
                     {headerSocialLinks.map((channel) => (
                       <li key={channel.platform}>
-                        <a
+                        <SocialIconLink
                           href={channel.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Follow RAD on ${channel.label} (opens in a new tab)`}
-                          className={cn(HEADER_SOCIAL_BASE, "h-8 w-8", HEADER_SOCIAL_HOVER[channel.platform])}
-                        >
-                          <SocialIcon
-                            platform={channel.platform}
-                            className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[-6deg] motion-reduce:group-hover:rotate-0"
-                          />
-                        </a>
+                          platform={channel.platform}
+                          label={channel.label}
+                          ariaLabel={`Follow RAD on ${channel.label} (opens in a new tab)`}
+                          sizeClass="h-8 w-8"
+                          iconClass="h-4 w-4"
+                        />
                       </li>
                     ))}
                   </ul>
@@ -343,18 +327,14 @@ export function SiteHeader() {
                 <ul className="mt-5 flex items-center justify-center gap-5">
                   {headerSocialLinks.map((channel) => (
                     <li key={channel.platform}>
-                      <a
+                      <SocialIconLink
                         href={channel.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Follow RAD on ${channel.label} (opens in a new tab)`}
-                        className={cn(HEADER_SOCIAL_BASE, "h-10 w-10", HEADER_SOCIAL_HOVER[channel.platform])}
-                      >
-                        <SocialIcon
-                          platform={channel.platform}
-                          className="h-5 w-5 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-[-6deg] motion-reduce:group-hover:rotate-0"
-                        />
-                      </a>
+                        platform={channel.platform}
+                        label={channel.label}
+                        ariaLabel={`Follow RAD on ${channel.label} (opens in a new tab)`}
+                        sizeClass="h-10 w-10"
+                        iconClass="h-5 w-5"
+                      />
                     </li>
                   ))}
                 </ul>

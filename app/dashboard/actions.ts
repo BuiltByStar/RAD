@@ -131,6 +131,8 @@ function buildRosterPayload(formData: FormData, imageUrl: string | null | undefi
     twitch_url: readOptionalText(formData, "twitch_url"),
     instagram_url: readOptionalText(formData, "instagram_url"),
     youtube_url: readOptionalText(formData, "youtube_url"),
+    discord_url: readOptionalText(formData, "discord_url"),
+    tiktok_url: readOptionalText(formData, "tiktok_url"),
     featured: readBoolean(formData, "featured"),
     role_order: readText(formData, "role_order", "Starter"),
     specialties: readCommaList(formData, "specialties"),

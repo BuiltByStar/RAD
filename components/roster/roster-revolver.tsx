@@ -4,11 +4,12 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
-import { Chip, ChipRow, cn } from "@/components/ui";
+import { cn } from "@/components/ui";
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
+import { SocialIconLink } from "@/components/ui/social-icon-link";
 import { RosterGameBrand } from "@/components/roster/roster-game-brand";
 import { assets } from "@/lib/assets";
-import type { Person } from "@/lib/site-data";
+import { inferSocialPlatform, type Person } from "@/lib/site-data";
 
 type RosterRevolverProps = {
   players: Person[];
@@ -460,27 +461,23 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
                     {player.bio}
                   </p>
                 ) : null}
-                {player.specialties?.length ? (
-                  <ChipRow className="mt-3">
-                    {player.specialties.slice(0, 3).map((specialty) => (
-                      <Chip key={specialty}>{specialty}</Chip>
-                    ))}
-                  </ChipRow>
-                ) : null}
                 {player.socials?.length ? (
-                  <div className="pointer-events-auto mt-auto flex flex-wrap gap-2 pt-4">
-                    {player.socials.map((social) => (
-                      <a
-                        key={social.label}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(event) => event.stopPropagation()}
-                        className="border border-neutral-800 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-400 transition hover:border-[var(--color-blood)] hover:text-white"
-                      >
-                        {social.label}
-                      </a>
-                    ))}
+                  <div className="pointer-events-auto mt-auto flex flex-wrap items-center gap-1 pt-4">
+                    {player.socials.map((social) => {
+                      const platform = social.platform ?? inferSocialPlatform(social.label, social.href);
+                      return (
+                        <SocialIconLink
+                          key={`${social.label}-${social.href}`}
+                          href={social.href}
+                          platform={platform}
+                          label={social.label}
+                          ariaLabel={`${player.name} on ${social.label}`}
+                          sizeClass="h-8 w-8"
+                          iconClass="h-4 w-4"
+                          onClick={(event) => event.stopPropagation()}
+                        />
+                      );
+                    })}
                   </div>
                 ) : null}
               </div>

@@ -1,6 +1,6 @@
 import { hasSupabaseBrowserEnv } from "./env";
 import { readLocalDashboardData } from "./local-admin-store";
-import { players as fallbackPlayers, type Person } from "./site-data";
+import { players as fallbackPlayers, type Person, type PersonSocial } from "./site-data";
 import { createSupabaseServerClient } from "./supabase/server";
 
 type RosterRow = {
@@ -18,6 +18,8 @@ type RosterRow = {
   twitch_url: string | null;
   instagram_url: string | null;
   youtube_url: string | null;
+  discord_url: string | null;
+  tiktok_url: string | null;
   featured: boolean;
   role_order: string;
   descriptor: string | null;
@@ -33,11 +35,13 @@ export type RosterPlayer = Person & {
 };
 
 function mapSocials(row: RosterRow): Person["socials"] {
-  const socials: NonNullable<Person["socials"]> = [];
-  if (row.x_url) socials.push({ label: "X", href: row.x_url });
-  if (row.twitch_url) socials.push({ label: "Twitch", href: row.twitch_url });
-  if (row.instagram_url) socials.push({ label: "Instagram", href: row.instagram_url });
-  if (row.youtube_url) socials.push({ label: "YouTube", href: row.youtube_url });
+  const socials: PersonSocial[] = [];
+  if (row.x_url) socials.push({ label: "X", href: row.x_url, platform: "x" });
+  if (row.twitch_url) socials.push({ label: "Twitch", href: row.twitch_url, platform: "twitch" });
+  if (row.instagram_url) socials.push({ label: "Instagram", href: row.instagram_url, platform: "instagram" });
+  if (row.youtube_url) socials.push({ label: "YouTube", href: row.youtube_url, platform: "youtube" });
+  if (row.discord_url) socials.push({ label: "Discord", href: row.discord_url, platform: "discord" });
+  if (row.tiktok_url) socials.push({ label: "TikTok", href: row.tiktok_url, platform: "tiktok" });
   return socials.length ? socials : undefined;
 }
 

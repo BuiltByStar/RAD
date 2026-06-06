@@ -19,6 +19,12 @@ export type Team = {
   featured: boolean;
 };
 
+export type PersonSocial = {
+  label: string;
+  href: string;
+  platform?: OrgSocialPlatform;
+};
+
 export type Person = {
   name: string;
   slug: string;
@@ -32,7 +38,7 @@ export type Person = {
   rank?: string;
   tags?: string[];
   number?: number;
-  socials?: { label: string; href: string }[];
+  socials?: PersonSocial[];
   featured?: boolean;
 };
 
@@ -146,17 +152,19 @@ export const teams: Team[] = [
   }
 ];
 
-function createXSocial(handle: string) {
+function createXSocial(handle: string): PersonSocial {
   return {
     label: "X",
-    href: `https://x.com/${handle.replace(/^@/, "")}`
+    href: `https://x.com/${handle.replace(/^@/, "")}`,
+    platform: "x"
   };
 }
 
-function createTwitchSocial(handle: string) {
+function createTwitchSocial(handle: string): PersonSocial {
   return {
     label: "Twitch",
-    href: `https://www.twitch.tv/${handle}`
+    href: `https://www.twitch.tv/${handle}`,
+    platform: "twitch"
   };
 }
 
@@ -536,3 +544,56 @@ export function getPersonBySlug(slug: string): Person | undefined {
 export function getAllPersonSlugs(): string[] {
   return [...players, ...staff].map((p) => p.slug);
 }
+
+const platformByLabel: Record<string, OrgSocialPlatform> = {
+  x: "x",
+  twitter: "x",
+  youtube: "youtube",
+  yt: "youtube",
+  twitch: "twitch",
+  discord: "discord",
+  instagram: "instagram",
+  ig: "instagram",
+  tiktok: "tiktok",
+  "tik tok": "tiktok"
+};
+
+const platformByHostname: { match: RegExp; platform: OrgSocialPlatform }[] = [
+  { match: /(^|\.)x\.com$/i, platform: "x" },
+  { match: /(^|\.)twitter\.com$/i, platform: "x" },
+  { match: /(^|\.)youtube\.com$/i, platform: "youtube" },
+  { match: /(^|\.)youtu\.be$/i, platform: "youtube" },
+  { match: /(^|\.)twitch\.tv$/i, platform: "twitch" },
+  { match: /(^|\.)discord\.gg$/i, platform: "discord" },
+  { match: /(^|\.)discord\.com$/i, platform: "discord" },
+  { match: /(^|\.)instagram\.com$/i, platform: "instagram" },
+  { match: /(^|\.)tiktok\.com$/i, platform: "tiktok" }
+];
+
+/** Best-effort map a label or URL to one of OrgSocialPlatform. */
+export function inferSocialPlatform(label?: string | null, href?: string | null): OrgSocialPlatform | undefined {
+  const normalizedLabel = (label ?? "").trim().toLowerCase();
+  if (normalizedLabel && platformByLabel[normalizedLabel]) return platformByLabel[normalizedLabel];
+
+  if (href) {
+    try {
+      const url = new URL(href);
+      for (const { match, platform } of platformByHostname) {
+        if (match.test(url.hostname)) return platform;
+      }
+    } catch {
+      // Not a valid absolute URL; fall through.
+    }
+  }
+
+  return undefined;
+}
+
+export const PLATFORM_LABEL: Record<OrgSocialPlatform, string> = {
+  discord: "Discord",
+  youtube: "YouTube",
+  x: "X",
+  twitch: "Twitch",
+  instagram: "Instagram",
+  tiktok: "TikTok"
+};

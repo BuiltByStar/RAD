@@ -37,6 +37,8 @@ export type LocalRosterRow = {
   twitch_url: string | null;
   instagram_url?: string | null;
   youtube_url?: string | null;
+  discord_url?: string | null;
+  tiktok_url?: string | null;
   featured: boolean;
   role_order: string;
   descriptor?: string | null;
