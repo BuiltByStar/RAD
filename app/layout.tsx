@@ -6,9 +6,9 @@ import { RadShellAmbient } from "@/components/rad-shell-ambient";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SiteIntro } from "@/components/site-intro";
-import { assets } from "@/lib/assets";
 import { BRAND_INTRO_BLOCKING_SCRIPT } from "@/lib/brand-intro";
 import { getPublicSiteUrl } from "@/lib/env";
+import { RAD_OG_IMAGE, RAD_TWITTER_IMAGE } from "@/lib/social-metadata";
 
 import "./globals.css";
 
@@ -36,20 +36,28 @@ export const metadata: Metadata = {
   metadataBase: new URL(getPublicSiteUrl()),
   title: {
     default: "RAD Esports",
-    template: "%s | RAD Esports"
+    template: "%s — RAD Esports"
   },
   description:
-    "The home of champions — RAD Esports competes in Marvel Rivals with world and EMEA titles.",
+    "RAD Esports — competitive Marvel Rivals roster, content, and community. World and EMEA champions since 2023.",
+  applicationName: "RAD Esports",
+  keywords: ["RAD Esports", "Marvel Rivals", "esports", "RAD", "competitive gaming", "Marvel Rivals roster"],
   openGraph: {
+    type: "website",
+    siteName: "RAD Esports",
     title: "RAD Esports",
     description: "Built around players. Remembered through history. Welcome to the wild.",
-    images: [assets.bgRed],
-    type: "website"
+    locale: "en_US",
+    url: "/",
+    images: RAD_OG_IMAGE
   },
   twitter: {
     card: "summary_large_image",
+    title: "RAD Esports",
+    description: "Built around players. Remembered through history.",
     site: "@RADesport",
-    creator: "@RADesport"
+    creator: "@RADesport",
+    images: RAD_TWITTER_IMAGE
   }
 };
 

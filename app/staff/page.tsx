@@ -6,19 +6,29 @@ import { PageRail, PageRailSection } from "@/components/ui";
 import { cn } from "@/components/ui/cn";
 import { SocialIconLink } from "@/components/ui/social-icon-link";
 import { inferSocialPlatform, PLATFORM_LABEL, type OrgSocialPlatform } from "@/lib/site-data";
+import { RAD_OG_IMAGE, RAD_TWITTER_IMAGE } from "@/lib/social-metadata";
 import { getManagedStaffState, type StaffMember } from "@/lib/staff-data.server";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Staff | RAD Esports",
+  title: "Staff",
   description:
     "The people behind RAD Esports — leadership, coaching, and content.",
   openGraph: {
-    title: "Staff | RAD Esports",
+    type: "website",
+    siteName: "RAD Esports",
+    title: "Staff — RAD Esports",
     description:
       "The people behind RAD Esports — leadership, coaching, and content.",
-    type: "website"
+    images: RAD_OG_IMAGE
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Staff — RAD Esports",
+    description:
+      "The people behind RAD Esports — leadership, coaching, and content.",
+    images: RAD_TWITTER_IMAGE
   }
 };
 

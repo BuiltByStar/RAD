@@ -1,8 +1,16 @@
+"use client";
+
+import { useCallback, useState } from "react";
+
+import type { ActionResult } from "@/app/dashboard/action-types";
 import { CreatePanel } from "@/components/dashboard/create-panel";
+import { DeleteButton } from "@/components/dashboard/delete-button";
 import { EntryCard } from "@/components/dashboard/entry-card";
 import { ReorderControls } from "@/components/dashboard/reorder-controls";
-import { buttonClass, uploadHintClass } from "@/components/dashboard/dashboard-styles";
-import { Check, DeleteForm, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
+import { SubmitButton } from "@/components/dashboard/submit-button";
+import { ToastForm } from "@/components/dashboard/toast-form";
+import { uploadHintClass } from "@/components/dashboard/dashboard-styles";
+import { Check, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
 import {
   deleteRosterEntry,
   reorderRosterEntry,
@@ -110,9 +118,20 @@ function RosterDetail({ row }: { row: RosterRow }) {
   );
 }
 
-function RosterForm({ row }: { row?: RosterRow }) {
+function RosterForm({
+  row,
+  onSuccess
+}: {
+  row?: RosterRow;
+  onSuccess?: (result: ActionResult) => void;
+}) {
   return (
-    <form action={upsertRosterEntry} className="grid gap-4 md:grid-cols-2">
+    <ToastForm
+      action={upsertRosterEntry}
+      className="grid gap-4 md:grid-cols-2"
+      resetOnSuccess={!row}
+      onSuccess={onSuccess}
+    >
       {row ? <input type="hidden" name="id" value={row.id} /> : null}
       <Field label="Handle" name="handle" defaultValue={row?.handle} required />
       <Field label="Slug" name="slug" defaultValue={row?.slug} placeholder="url-hash-id" />
@@ -147,17 +166,28 @@ function RosterForm({ row }: { row?: RosterRow }) {
       <TextArea label="Bio" name="bio" defaultValue={row?.bio} rows={5} />
       <div className="flex flex-wrap items-center gap-4 md:col-span-2">
         <Check label="Featured" name="featured" defaultChecked={row?.featured} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Player" : "Add Player"}
-        </button>
+        <SubmitButton
+          label={row ? "Save Player" : "Add Player"}
+          pendingLabel={row ? "Saving Player..." : "Creating Player..."}
+        />
         {!row ? <span className={uploadHintClass}>Upload overrides image URL when provided.</span> : null}
       </div>
-    </form>
+    </ToastForm>
   );
 }
 
 export function RosterSection({ rows, error }: { rows: RosterRow[]; error: string | null }) {
   const sorted = [...rows].sort((a, b) => a.display_order - b.display_order);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [justChanged, setJustChanged] = useState<{ id: string; key: number } | null>(null);
+
+  const markChanged = useCallback((result: ActionResult) => {
+    if (!result.id) return;
+    setJustChanged((current) => ({
+      id: result.id!,
+      key: current && current.id === result.id ? current.key + 1 : 1
+    }));
+  }, []);
 
   return (
     <div className="grid gap-5">
@@ -170,8 +200,13 @@ export function RosterSection({ rows, error }: { rows: RosterRow[]; error: strin
         <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{error}</p>
       ) : null}
 
-      <CreatePanel label="Add Player" count={sorted.length}>
-        <RosterForm />
+      <CreatePanel label="Add Player" count={sorted.length} open={createOpen} onOpenChange={setCreateOpen}>
+        <RosterForm
+          onSuccess={(result) => {
+            setCreateOpen(false);
+            markChanged(result);
+          }}
+        />
       </CreatePanel>
 
       {sorted.length === 0 ? (
@@ -183,6 +218,7 @@ export function RosterSection({ rows, error }: { rows: RosterRow[]; error: strin
           {sorted.map((player, index) => (
             <EntryCard
               key={player.id}
+              entryId={player.id}
               title={player.handle}
               subtitle={`#${player.display_order} · ${player.player_role}${player.role_order ? ` · ${player.role_order}` : ""}`}
               image={<RosterAvatar imageUrl={player.image_url} />}
@@ -192,17 +228,31 @@ export function RosterSection({ rows, error }: { rows: RosterRow[]; error: strin
                   action={reorderRosterEntry}
                   canMoveUp={index > 0}
                   canMoveDown={index < sorted.length - 1}
+                  noun="Player"
+                  onMoved={markChanged}
                 />
               }
               detail={<RosterDetail row={player} />}
-              editForm={<RosterForm row={player} />}
+              renderEditForm={(api) => (
+                <RosterForm
+                  row={player}
+                  onSuccess={(result) => {
+                    api.close();
+                    markChanged(result);
+                  }}
+                />
+              )}
               deleteForm={
-                <DeleteForm
+                <DeleteButton
                   action={deleteRosterEntry}
                   id={player.id}
                   confirmMessage={`Remove ${player.handle} from the roster?`}
+                  label={`Delete Player ${player.handle}`}
+                  noun="Player"
                 />
               }
+              justChanged={justChanged?.id === player.id}
+              highlightKey={justChanged?.key}
             />
           ))}
         </div>

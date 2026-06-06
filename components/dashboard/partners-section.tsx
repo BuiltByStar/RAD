@@ -1,8 +1,15 @@
+"use client";
+
+import { useCallback, useState } from "react";
+
+import type { ActionResult } from "@/app/dashboard/action-types";
 import { CreatePanel } from "@/components/dashboard/create-panel";
+import { DeleteButton } from "@/components/dashboard/delete-button";
 import { EntryCard } from "@/components/dashboard/entry-card";
 import { ReorderControls } from "@/components/dashboard/reorder-controls";
-import { buttonClass } from "@/components/dashboard/dashboard-styles";
-import { Check, DeleteForm, Field, FileField, TextArea } from "@/components/dashboard/dashboard-fields";
+import { SubmitButton } from "@/components/dashboard/submit-button";
+import { ToastForm } from "@/components/dashboard/toast-form";
+import { Check, Field, FileField, TextArea } from "@/components/dashboard/dashboard-fields";
 import { deletePartnerEntry, reorderPartnerEntry, upsertPartnerEntry } from "@/app/dashboard/actions";
 import { SectionHeading } from "@/components/ui";
 
@@ -63,9 +70,20 @@ function PartnerDetail({ row }: { row: PartnerRow }) {
   );
 }
 
-function PartnerForm({ row }: { row?: PartnerRow }) {
+function PartnerForm({
+  row,
+  onSuccess
+}: {
+  row?: PartnerRow;
+  onSuccess?: (result: ActionResult) => void;
+}) {
   return (
-    <form action={upsertPartnerEntry} className="grid gap-4 md:grid-cols-2">
+    <ToastForm
+      action={upsertPartnerEntry}
+      className="grid gap-4 md:grid-cols-2"
+      resetOnSuccess={!row}
+      onSuccess={onSuccess}
+    >
       {row ? <input type="hidden" name="id" value={row.id} /> : null}
       <Field label="Name" name="name" defaultValue={row?.name} />
       <Field label="Tier" name="tier" defaultValue={row?.tier ?? "Official"} />
@@ -75,16 +93,27 @@ function PartnerForm({ row }: { row?: PartnerRow }) {
       <TextArea label="Description" name="description" defaultValue={row?.description} />
       <div className="flex flex-wrap items-center gap-4 md:col-span-2">
         <Check label="Open Slot" name="is_open_slot" defaultChecked={row?.is_open_slot} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Partner" : "Add Partner"}
-        </button>
+        <SubmitButton
+          label={row ? "Save Partner slot" : "Add Partner slot"}
+          pendingLabel={row ? "Saving Partner slot..." : "Creating Partner slot..."}
+        />
       </div>
-    </form>
+    </ToastForm>
   );
 }
 
 export function PartnersSection({ rows, error }: { rows: PartnerRow[]; error: string | null }) {
   const sorted = [...rows].sort((a, b) => a.display_order - b.display_order);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [justChanged, setJustChanged] = useState<{ id: string; key: number } | null>(null);
+
+  const markChanged = useCallback((result: ActionResult) => {
+    if (!result.id) return;
+    setJustChanged((current) => ({
+      id: result.id!,
+      key: current && current.id === result.id ? current.key + 1 : 1
+    }));
+  }, []);
 
   return (
     <div className="grid gap-5">
@@ -97,8 +126,13 @@ export function PartnersSection({ rows, error }: { rows: PartnerRow[]; error: st
         <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{error}</p>
       ) : null}
 
-      <CreatePanel label="Add Partner" count={sorted.length}>
-        <PartnerForm />
+      <CreatePanel label="Add Partner slot" count={sorted.length} open={createOpen} onOpenChange={setCreateOpen}>
+        <PartnerForm
+          onSuccess={(result) => {
+            setCreateOpen(false);
+            markChanged(result);
+          }}
+        />
       </CreatePanel>
 
       {sorted.length === 0 ? (
@@ -110,6 +144,7 @@ export function PartnersSection({ rows, error }: { rows: PartnerRow[]; error: st
           {sorted.map((partner, index) => (
             <EntryCard
               key={partner.id}
+              entryId={partner.id}
               title={partner.name ?? "Open slot"}
               subtitle={`#${partner.display_order}${partner.tier ? ` · ${partner.tier}` : ""}`}
               image={<PartnerLogo logoUrl={partner.logo_url} />}
@@ -119,17 +154,31 @@ export function PartnersSection({ rows, error }: { rows: PartnerRow[]; error: st
                   action={reorderPartnerEntry}
                   canMoveUp={index > 0}
                   canMoveDown={index < sorted.length - 1}
+                  noun="Partner slot"
+                  onMoved={markChanged}
                 />
               }
               detail={<PartnerDetail row={partner} />}
-              editForm={<PartnerForm row={partner} />}
+              renderEditForm={(api) => (
+                <PartnerForm
+                  row={partner}
+                  onSuccess={(result) => {
+                    api.close();
+                    markChanged(result);
+                  }}
+                />
+              )}
               deleteForm={
-                <DeleteForm
+                <DeleteButton
                   action={deletePartnerEntry}
                   id={partner.id}
                   confirmMessage={`Remove ${partner.name ?? "this partner slot"}?`}
+                  label={`Delete Partner slot ${partner.name ?? "Open slot"}`}
+                  noun="Partner slot"
                 />
               }
+              justChanged={justChanged?.id === partner.id}
+              highlightKey={justChanged?.key}
             />
           ))}
         </div>

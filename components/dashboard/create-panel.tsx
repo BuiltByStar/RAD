@@ -7,11 +7,22 @@ import { buttonClass, formCardClass, ghostButtonClass } from "@/components/dashb
 type CreatePanelProps = {
   label: string;
   count: number;
+  /** When provided, the panel becomes controlled (parent owns open state). */
+  open?: boolean;
+  /** Called whenever the user toggles the panel or the parent closes it on success. */
+  onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 };
 
-export function CreatePanel({ label, count, children }: CreatePanelProps) {
-  const [open, setOpen] = useState(false);
+export function CreatePanel({ label, count, open, onOpenChange, children }: CreatePanelProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = open !== undefined;
+  const value = isControlled ? Boolean(open) : internalOpen;
+
+  const setValue = (next: boolean) => {
+    if (!isControlled) setInternalOpen(next);
+    onOpenChange?.(next);
+  };
 
   return (
     <div className="grid gap-4">
@@ -21,13 +32,14 @@ export function CreatePanel({ label, count, children }: CreatePanelProps) {
         </p>
         <button
           type="button"
-          className={open ? ghostButtonClass : buttonClass}
-          onClick={() => setOpen((value) => !value)}
+          className={value ? ghostButtonClass : buttonClass}
+          onClick={() => setValue(!value)}
+          aria-expanded={value}
         >
-          {open ? "Cancel" : label}
+          {value ? "Cancel" : label}
         </button>
       </div>
-      {open ? <div className={formCardClass}>{children}</div> : null}
+      {value ? <div className={formCardClass}>{children}</div> : null}
     </div>
   );
 }

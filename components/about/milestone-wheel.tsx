@@ -79,6 +79,7 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
       {trackItems.map((item) => {
         const index = items.findIndex((entry) => entry.date === item.date && entry.title === item.title);
         const isActive = index === active;
+        const isCompleted = index <= active;
 
         return (
           <button
@@ -94,19 +95,37 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
               isActive ? "text-white" : "text-neutral-500 hover:text-neutral-300"
             )}
           >
+            {index > 0 ? (
+              <span
+                aria-hidden
+                className={cn(
+                  "absolute left-[5px] top-0 h-1/2 w-px -translate-x-1/2 bg-neutral-900 transition-colors",
+                  isCompleted && "bg-[var(--color-blood)]"
+                )}
+              />
+            ) : null}
             <span
               aria-hidden
               className={cn(
-                "absolute left-0 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border-2 transition",
+                "absolute bottom-0 left-[5px] top-1/2 w-px -translate-x-1/2 bg-neutral-900 transition-colors",
+                index < active && "bg-[var(--color-blood)]"
+              )}
+            />
+            <span
+              aria-hidden
+              className={cn(
+                "absolute left-0 top-1/2 z-10 h-2.5 w-2.5 -translate-y-1/2 rounded-full border-2 transition",
                 isActive
                   ? "border-[var(--color-blood)] bg-[var(--color-blood)] shadow-[0_0_12px_rgba(229,6,47,0.55)]"
-                  : "border-neutral-800 bg-black group-hover:border-neutral-600"
+                  : isCompleted
+                    ? "border-[var(--color-blood)] bg-[var(--color-blood)]"
+                    : "border-neutral-800 bg-black group-hover:border-neutral-600"
               )}
             />
             <span
               className={cn(
                 "text-[10px] font-semibold uppercase tracking-[0.18em]",
-                isActive ? "text-[var(--color-blood)]" : "text-neutral-600"
+                isCompleted ? "text-[var(--color-blood)]" : "text-neutral-600"
               )}
             >
               {item.date}
@@ -140,10 +159,10 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE }}
           className={cn(
-            "mt-2 font-[family-name:var(--font-display)] font-extrabold leading-none text-[var(--color-blood)] [hyphens:auto] [word-break:break-word]",
+            "mt-2 max-w-full whitespace-nowrap font-[family-name:var(--font-display)] font-extrabold leading-none text-[var(--color-blood)]",
             isNumericYear
-              ? "tabular-nums text-[clamp(3rem,7vw,4.75rem)]"
-              : "text-[clamp(1.75rem,3.6vw,2.5rem)]"
+              ? "tabular-nums text-[clamp(2.35rem,5.4vw,4rem)]"
+              : "overflow-hidden text-ellipsis text-[clamp(1.5rem,3vw,2.15rem)]"
           )}
           aria-live="polite"
         >

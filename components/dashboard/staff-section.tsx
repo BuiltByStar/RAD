@@ -1,8 +1,15 @@
+"use client";
+
+import { useCallback, useState } from "react";
+
+import type { ActionResult } from "@/app/dashboard/action-types";
 import { CreatePanel } from "@/components/dashboard/create-panel";
+import { DeleteButton } from "@/components/dashboard/delete-button";
 import { EntryCard } from "@/components/dashboard/entry-card";
 import { ReorderControls } from "@/components/dashboard/reorder-controls";
-import { buttonClass } from "@/components/dashboard/dashboard-styles";
-import { Check, DeleteForm, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
+import { SubmitButton } from "@/components/dashboard/submit-button";
+import { ToastForm } from "@/components/dashboard/toast-form";
+import { Check, Field, FileField, Select, TextArea } from "@/components/dashboard/dashboard-fields";
 import { deleteStaffEntry, reorderStaffEntry, upsertStaffEntry } from "@/app/dashboard/actions";
 import { SectionHeading } from "@/components/ui";
 
@@ -75,9 +82,20 @@ function StaffDetail({ row }: { row: StaffRow }) {
   );
 }
 
-function StaffForm({ row }: { row?: StaffRow }) {
+function StaffForm({
+  row,
+  onSuccess
+}: {
+  row?: StaffRow;
+  onSuccess?: (result: ActionResult) => void;
+}) {
   return (
-    <form action={upsertStaffEntry} className="grid gap-4 md:grid-cols-2">
+    <ToastForm
+      action={upsertStaffEntry}
+      className="grid gap-4 md:grid-cols-2"
+      resetOnSuccess={!row}
+      onSuccess={onSuccess}
+    >
       {row ? <input type="hidden" name="id" value={row.id} /> : null}
       <Field label="Name" name="name" defaultValue={row?.name} required />
       <Field label="Slug" name="slug" defaultValue={row?.slug} />
@@ -97,16 +115,27 @@ function StaffForm({ row }: { row?: StaffRow }) {
       <TextArea label="Bio" name="bio" defaultValue={row?.bio} rows={5} />
       <div className="flex flex-wrap items-center gap-4 md:col-span-2">
         <Check label="Leadership" name="leadership" defaultChecked={row?.leadership} />
-        <button className={buttonClass} type="submit">
-          {row ? "Save Staff" : "Add Staff"}
-        </button>
+        <SubmitButton
+          label={row ? "Save Staff member" : "Add Staff member"}
+          pendingLabel={row ? "Saving Staff member..." : "Creating Staff member..."}
+        />
       </div>
-    </form>
+    </ToastForm>
   );
 }
 
 export function StaffSection({ rows, error }: { rows: StaffRow[]; error: string | null }) {
   const sorted = [...rows].sort((a, b) => a.display_order - b.display_order);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [justChanged, setJustChanged] = useState<{ id: string; key: number } | null>(null);
+
+  const markChanged = useCallback((result: ActionResult) => {
+    if (!result.id) return;
+    setJustChanged((current) => ({
+      id: result.id!,
+      key: current && current.id === result.id ? current.key + 1 : 1
+    }));
+  }, []);
 
   return (
     <div className="grid gap-5">
@@ -119,8 +148,13 @@ export function StaffSection({ rows, error }: { rows: StaffRow[]; error: string 
         <p className="rounded-lg border border-white/10 bg-black/35 p-4 text-sm text-white/62">{error}</p>
       ) : null}
 
-      <CreatePanel label="Add Staff" count={sorted.length}>
-        <StaffForm />
+      <CreatePanel label="Add Staff member" count={sorted.length} open={createOpen} onOpenChange={setCreateOpen}>
+        <StaffForm
+          onSuccess={(result) => {
+            setCreateOpen(false);
+            markChanged(result);
+          }}
+        />
       </CreatePanel>
 
       {sorted.length === 0 ? (
@@ -132,6 +166,7 @@ export function StaffSection({ rows, error }: { rows: StaffRow[]; error: string 
           {sorted.map((member, index) => (
             <EntryCard
               key={member.id}
+              entryId={member.id}
               title={member.name}
               subtitle={`#${member.display_order} · ${member.title}${member.section ? ` · ${member.section}` : ""}`}
               image={<StaffAvatar imageUrl={member.image_url} />}
@@ -141,17 +176,31 @@ export function StaffSection({ rows, error }: { rows: StaffRow[]; error: string 
                   action={reorderStaffEntry}
                   canMoveUp={index > 0}
                   canMoveDown={index < sorted.length - 1}
+                  noun="Staff member"
+                  onMoved={markChanged}
                 />
               }
               detail={<StaffDetail row={member} />}
-              editForm={<StaffForm row={member} />}
+              renderEditForm={(api) => (
+                <StaffForm
+                  row={member}
+                  onSuccess={(result) => {
+                    api.close();
+                    markChanged(result);
+                  }}
+                />
+              )}
               deleteForm={
-                <DeleteForm
+                <DeleteButton
                   action={deleteStaffEntry}
                   id={member.id}
                   confirmMessage={`Remove ${member.name} from staff?`}
+                  label={`Delete Staff member ${member.name}`}
+                  noun="Staff member"
                 />
               }
+              justChanged={justChanged?.id === member.id}
+              highlightKey={justChanged?.key}
             />
           ))}
         </div>

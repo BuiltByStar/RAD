@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import {
-  buttonClass,
   formCardClass,
   inputClass,
   labelClass,
   rowCardClass
 } from "@/components/dashboard/dashboard-styles";
-import { Check, Field } from "@/components/dashboard/dashboard-fields";
+import { Check } from "@/components/dashboard/dashboard-fields";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { PartnersSection, type PartnerRow } from "@/components/dashboard/partners-section";
 import { RosterSection, type RosterRow } from "@/components/dashboard/roster-section";
 import { StaffSection, type StaffRow } from "@/components/dashboard/staff-section";
+import { SubmitButton } from "@/components/dashboard/submit-button";
+import { ToastForm } from "@/components/dashboard/toast-form";
 import { PageShell } from "@/components/page-shell";
 import {
   Card,
@@ -148,18 +149,14 @@ export default async function DashboardPage() {
 
   const seedBanner = (
     <div className="mb-6 flex flex-wrap items-center gap-3 rounded-lg border border-white/10 bg-black/30 p-4">
-      <form action={seedDashboardFromSite} className="flex flex-wrap items-center gap-3">
-        <button className={buttonClass} type="submit">
-          Import from site-data
-        </button>
+      <ToastForm action={seedDashboardFromSite} className="flex flex-wrap items-center gap-3">
+        <SubmitButton label="Import from site-data" pendingLabel="Importing…" />
         <Check label="Replace existing" name="force" />
-      </form>
+      </ToastForm>
       {localAdminBypassEnabled ? (
-        <form action={exportLocalDashboardData}>
-          <button className={buttonClass} type="submit">
-            Export JSON
-          </button>
-        </form>
+        <ToastForm action={exportLocalDashboardData}>
+          <SubmitButton label="Export JSON" pendingLabel="Exporting…" />
+        </ToastForm>
       ) : null}
       <p className="max-w-2xl text-xs leading-relaxed text-white/46">
         Seeds players, staff, and partners from <code>lib/site-data.ts</code> when tables are empty.
@@ -238,7 +235,7 @@ export default async function DashboardPage() {
                         ) : null}
                         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/62">{inquiry.message}</p>
                       </div>
-                      <form action={updateInquiryStatus} className="flex flex-wrap items-end gap-3">
+                      <ToastForm action={updateInquiryStatus} className="flex flex-wrap items-end gap-3">
                         <input type="hidden" name="id" value={inquiry.id} />
                         <label className={labelClass}>
                           Status
@@ -250,10 +247,8 @@ export default async function DashboardPage() {
                             ))}
                           </select>
                         </label>
-                        <button className={buttonClass} type="submit">
-                          Update
-                        </button>
-                      </form>
+                        <SubmitButton label="Update" pendingLabel="Updating…" />
+                      </ToastForm>
                     </div>
                   </div>
                 ))}
@@ -262,12 +257,13 @@ export default async function DashboardPage() {
 
             <div className="grid gap-5">
               <SectionHeading eyebrow="Settings" title="Site controls" />
-              <form action={updateMaintenanceSetting} className={`${formCardClass} flex flex-wrap items-center gap-4`}>
+              <ToastForm
+                action={updateMaintenanceSetting}
+                className={`${formCardClass} flex flex-wrap items-center gap-4`}
+              >
                 <Check label="Maintenance mode" name="enabled" defaultChecked={maintenance} />
-                <button className={buttonClass} type="submit">
-                  Save Settings
-                </button>
-              </form>
+                <SubmitButton label="Save Settings" pendingLabel="Saving…" />
+              </ToastForm>
             </div>
           </DashboardShell>
         </Container>

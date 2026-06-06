@@ -4,15 +4,24 @@ import { PageShell } from "@/components/page-shell";
 import { ShopPageClient } from "@/components/shop/shop-page-client";
 import { PageRail } from "@/components/ui";
 import { merchItems } from "@/lib/site-data";
+import { RAD_OG_IMAGE, RAD_TWITTER_IMAGE } from "@/lib/social-metadata";
 
 export const metadata: Metadata = {
-  title: "Shop | RAD Esports",
+  title: "Shop",
   description:
     "Official RAD Esports merch — team jerseys, hoodies, sweatshirts, and tees. Browse the full lineup and check out securely on Emerge Apparel.",
   openGraph: {
-    title: "Shop | RAD Esports",
+    type: "website",
+    siteName: "RAD Esports",
+    title: "Shop — RAD Esports",
     description: "Official RAD Esports merch — jerseys, hoodies, and tees, shipped from Emerge Apparel.",
-    type: "website"
+    images: RAD_OG_IMAGE
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shop — RAD Esports",
+    description: "Official RAD Esports merch — jerseys, hoodies, and tees, shipped from Emerge Apparel.",
+    images: RAD_TWITTER_IMAGE
   }
 };
 

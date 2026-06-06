@@ -996,6 +996,46 @@ p { margin: 0; }
   animation: rad-enter 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Dashboard CRUD feedback — brief red ring that lands the eye on the row
+ * that was just created, edited, or reordered. Toggled by EntryCard via a
+ * useEffect keyed on `justChanged` so it auto-clears after ~1.5s. */
+.rad-dashboard-highlight {
+  position: relative;
+  outline: 1px solid var(--color-blood);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 4px rgba(229, 6, 47, 0.16),
+    0 0 32px rgba(229, 6, 47, 0.22);
+  animation: rad-dashboard-flash 1.6s var(--ease-out-expo);
+  transition:
+    outline-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+@keyframes rad-dashboard-flash {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(229, 6, 47, 0),
+      0 0 0 rgba(229, 6, 47, 0);
+  }
+  18% {
+    box-shadow:
+      0 0 0 6px rgba(229, 6, 47, 0.28),
+      0 0 44px rgba(229, 6, 47, 0.42);
+  }
+  100% {
+    box-shadow:
+      0 0 0 4px rgba(229, 6, 47, 0.16),
+      0 0 32px rgba(229, 6, 47, 0.22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rad-dashboard-highlight {
+    animation: none;
+  }
+}
+
 /* ─── Scrollbar ────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar             { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track       { background: #050505; }
