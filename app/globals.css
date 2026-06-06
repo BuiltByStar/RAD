@@ -2607,6 +2607,20 @@ main, .page-main { min-height: 100vh; position: relative; z-index: 2; }
   }
 }
 
+@keyframes shop-eyebrow-slide {
+  0%,
+  100% {
+    transform: scaleX(0.6);
+    transform-origin: left;
+    opacity: 0.55;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+    opacity: 1;
+  }
+}
+
 /* ─── Site intro — logo draw + smooth reveal ───────────────────────────────── */
 html.site-intro-pending,
 html.site-intro-active {
