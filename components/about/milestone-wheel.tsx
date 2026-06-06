@@ -69,10 +69,13 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
   if (!activeItem) return null;
 
   const stickyYear = yearFromDate(activeItem.date);
+  const isNumericYear = /^\d{4}$/.test(stickyYear);
 
-  const renderTimeline = (label: string, trackItems: WheelMilestone[]) => (
+  const renderTimeline = (label: string | null, trackItems: WheelMilestone[]) => (
     <div className="space-y-1">
-      <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-600">{label}</p>
+      {label ? (
+        <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-600">{label}</p>
+      ) : null}
       {trackItems.map((item) => {
         const index = items.findIndex((entry) => entry.date === item.date && entry.title === item.title);
         const isActive = index === active;
@@ -128,15 +131,20 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
   );
 
   return (
-    <div className="grid gap-10 md:grid-cols-[minmax(6.5rem,8.5rem)_1fr] md:gap-10 lg:gap-14 xl:grid-cols-[10rem_1fr]">
-      <div className="z-10 md:sticky md:top-[5.25rem] md:self-start md:bg-black md:pb-6 md:pr-4 lg:pr-6">
+    <div className="grid gap-10 md:grid-cols-[minmax(7rem,9.5rem)_1fr] md:gap-10 lg:gap-14 xl:grid-cols-[11rem_1fr]">
+      <div className="relative z-10 min-w-0 overflow-hidden md:sticky md:top-[5.25rem] md:self-start md:bg-black md:pb-6 md:pr-6 lg:pr-8">
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-600">Timeline</p>
         <motion.p
           key={stickyYear}
           initial={reduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE }}
-          className="mt-2 font-[family-name:var(--font-display)] text-[clamp(3.5rem,8vw,5.5rem)] font-extrabold leading-none tabular-nums text-[var(--color-blood)]"
+          className={cn(
+            "mt-2 font-[family-name:var(--font-display)] font-extrabold leading-none text-[var(--color-blood)] [hyphens:auto] [word-break:break-word]",
+            isNumericYear
+              ? "tabular-nums text-[clamp(3rem,7vw,4.75rem)]"
+              : "text-[clamp(1.75rem,3.6vw,2.5rem)]"
+          )}
           aria-live="polite"
         >
           {stickyYear}
@@ -148,7 +156,7 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
           transition={{ duration: 0.35, ease: EASE }}
         >
           <p className="mt-2 text-xs uppercase tracking-[0.16em] text-neutral-600">{activeItem.date}</p>
-          <p className="mt-4 max-w-[9rem] font-[family-name:var(--font-display)] text-sm font-bold uppercase leading-tight text-white">
+          <p className="mt-4 font-[family-name:var(--font-display)] text-sm font-bold uppercase leading-tight text-white [hyphens:auto] [word-break:break-word]">
             {activeItem.title}
           </p>
         </motion.div>
@@ -158,7 +166,16 @@ export function MilestoneWheel({ items }: MilestoneWheelProps) {
         <div aria-hidden className="absolute bottom-0 left-[5px] top-0 w-px bg-neutral-900" />
         {renderTimeline("History", historyItems)}
         {futureItems.length ? (
-          <div className="mt-10 border-t border-neutral-900 pt-8">{renderTimeline("Season ahead", futureItems)}</div>
+          <div className="mt-20 border-t border-neutral-700 pt-10 sm:mt-24 sm:pt-12">
+            <div aria-hidden className="mb-5 h-px w-12 bg-[var(--color-blood)]" />
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--color-blood)]">
+              Looking forward
+            </p>
+            <h3 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-4xl">
+              Season ahead
+            </h3>
+            <div className="mt-8">{renderTimeline(null, futureItems)}</div>
+          </div>
         ) : null}
       </div>
     </div>

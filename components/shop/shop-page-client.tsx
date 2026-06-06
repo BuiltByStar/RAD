@@ -153,9 +153,15 @@ function FeaturedDropHero({
         aria-hidden
       />
 
-      <div className="relative grid min-h-[min(78vh,46rem)] grid-cols-1 items-end gap-8 px-4 pb-8 pt-6 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-12 lg:px-8 lg:pb-10 lg:pt-10">
-        <div className="flex flex-col justify-end lg:py-8">
-          <p className="rad-kicker">Featured drop</p>
+      <div className="relative grid min-h-[min(72vh,42rem)] grid-cols-1 items-end gap-8 px-4 pb-8 pt-6 sm:px-6 lg:grid-cols-[minmax(0,0.85fr)_1px_minmax(0,1.15fr)] lg:items-center lg:gap-6 lg:px-8 lg:pb-10 lg:pt-10 xl:gap-8">
+        <div className="flex flex-col justify-end lg:ml-auto lg:max-w-[40rem] lg:py-8 lg:pr-4">
+          <p className="rad-kicker relative inline-block w-fit">
+            <span>Featured drop</span>
+            <span
+              aria-hidden
+              className="absolute -bottom-1 left-0 hidden h-px w-16 bg-gradient-to-r from-[var(--color-blood)] via-[var(--color-blood)]/60 to-transparent motion-safe:animate-[shop-eyebrow-slide_3.6s_ease-in-out_infinite] lg:block"
+            />
+          </p>
           <h2 className="mt-4 max-w-[12ch] font-[family-name:var(--font-display)] text-[clamp(2.75rem,8vw,5.5rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.03em] text-white">
             {featuredItem.name}
           </h2>
@@ -194,15 +200,20 @@ function FeaturedDropHero({
           </div>
         </div>
 
+        <div
+          aria-hidden
+          className="hidden h-full w-px self-stretch bg-gradient-to-b from-transparent via-[var(--color-blood)]/35 to-transparent lg:block"
+        />
+
         <button
           type="button"
           onClick={onPreview}
-          className="group relative mx-auto aspect-[4/5] w-full max-w-xl cursor-pointer border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-4 focus-visible:ring-offset-black lg:max-w-none lg:justify-self-end"
+          className="group relative mx-auto aspect-[4/5] w-full max-w-xl cursor-pointer border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blood)] focus-visible:ring-offset-4 focus-visible:ring-offset-black lg:max-w-none lg:justify-self-stretch"
           aria-label={`Open ${featuredItem.name} preview`}
         >
           <span
             className={cn(
-              "absolute inset-[8%_28%_2%_0] z-[2] overflow-hidden border border-white/15 shadow-[0_32px_80px_rgba(0,0,0,0.65)] transition-[transform,border-color] duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-1 group-hover:border-[var(--color-blood)]/50",
+              "absolute inset-[8%_24%_2%_0] z-[2] overflow-hidden border border-white/15 shadow-[0_32px_80px_rgba(0,0,0,0.65)] transition-[transform,border-color] duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-1 group-hover:border-[var(--color-blood)]/50 lg:inset-[6%_22%_2%_-5%]",
               !reducedMotion && "motion-safe:group-hover:-translate-y-2"
             )}
           >
@@ -217,7 +228,7 @@ function FeaturedDropHero({
           {featuredItem.backImage ? (
             <span
               className={cn(
-                "absolute inset-[0_0_6%_32%] z-[1] rotate-[2deg] overflow-hidden border border-white/10 opacity-85 shadow-[0_24px_64px_rgba(0,0,0,0.5)] transition-[transform,border-color,opacity] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-2 group-hover:-translate-y-1 group-hover:border-white/25",
+                "absolute inset-[0_0_6%_32%] z-[1] rotate-[3.5deg] overflow-hidden border border-white/10 opacity-85 shadow-[0_24px_64px_rgba(0,0,0,0.5)] transition-[transform,border-color,opacity] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-2 group-hover:-translate-y-1 group-hover:border-white/25 lg:inset-[2%_-2%_4%_28%] lg:rotate-[4.5deg]",
                 !reducedMotion && "motion-safe:group-hover:translate-x-3"
               )}
             >
@@ -232,7 +243,7 @@ function FeaturedDropHero({
             </span>
           ) : null}
 
-          <span className="absolute bottom-3 left-3 right-[28%] z-[3] flex items-center justify-between gap-3 border border-white/15 bg-black/60 px-4 py-3 backdrop-blur-md">
+          <span className="absolute bottom-3 left-3 right-[24%] z-[3] flex items-center justify-between gap-3 border border-white/15 bg-black/60 px-4 py-3 backdrop-blur-md lg:left-0 lg:right-[22%]">
             <span className="truncate text-[10px] font-bold uppercase tracking-[0.12em] text-white">
               {featuredItem.accent}
             </span>
@@ -337,35 +348,13 @@ function ProductTile({
             item={item}
             view="front"
             className="absolute inset-0 h-full w-full"
-            imageClassName={cn(
-              "transition-opacity duration-500",
-              item.backImage && "group-hover:opacity-0 motion-reduce:group-hover:opacity-100"
-            )}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
-          {item.backImage ? (
-            <ProductImage
-              item={item}
-              image={item.backImage}
-              view="back"
-              className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:opacity-0 motion-reduce:group-hover:opacity-0"
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            />
-          ) : null}
 
           <div className="absolute inset-x-0 top-0 z-10 flex justify-between gap-2 p-3">
             <span className="border border-white/10 bg-black/55 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/70 backdrop-blur-sm">
               {categoryForItem(item)}
             </span>
-            {item.backImage ? (
-              <span
-                aria-hidden
-                className="border border-white/10 bg-black/55 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/55 backdrop-blur-sm"
-              >
-                <span className="group-hover:hidden">Hover to flip</span>
-                <span className="hidden group-hover:inline">Back view</span>
-              </span>
-            ) : null}
           </div>
         </div>
       </button>
