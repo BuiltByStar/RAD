@@ -430,35 +430,6 @@ p { margin: 0; }
     }
   }
 
-  .rad-roster-strip {
-    overflow: hidden;
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  }
-
-  .rad-roster-strip__track {
-    display: flex;
-    width: max-content;
-    animation: rad-roster-strip-run 28s linear infinite;
-  }
-
-  .rad-roster-strip:hover .rad-roster-strip__track {
-    animation-play-state: paused;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .rad-roster-strip__track {
-      animation: none;
-    }
-  }
-
-  @keyframes rad-roster-strip-run {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .rad-sen-button:hover,
