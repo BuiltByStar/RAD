@@ -504,7 +504,7 @@ function StickyShopBar({
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Button href="#shop-drop" size="sm" variant="ghost" className="hidden sm:inline-flex">
+          <Button href={merchCollection.shopUrl} size="sm" variant="ghost" className="hidden sm:inline-flex">
             Browse
           </Button>
           <ShopAction item={featuredItem} size="sm" className="max-w-[11rem]" />

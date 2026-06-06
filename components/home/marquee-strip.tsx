@@ -9,7 +9,7 @@ const ITEMS = [
   "EMEA Champions",
   "Marvel Rivals",
   "View Roster",
-  "discord.gg/radgg"
+  "discord.gg/Nvq2xJtG73"
 ];
 
 export function MarqueeStrip() {

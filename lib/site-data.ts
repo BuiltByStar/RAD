@@ -90,7 +90,7 @@ export const siteTagline = "Built for pressure, content, and the next stage of c
 export const aboutSummary =
   "RAD has been turning heads since 2023. We didn't wait for an invitation to the top; RAD cemented its place as the inaugural Marvel Rivals Ignite: Mid-Season World Champions and most recently secured the Season 6: EMEA PC title in March 2026. You've seen us do it before, get ready to see it again. Untamed, unstoppable, and never by the book. Welcome to the wild. #GoWild";
 
-export const discordInviteUrl = "https://discord.com/invite/radgg";
+export const discordInviteUrl = "https://discord.gg/Nvq2xJtG73";
 export const discordServerId = "1363584103479513198";
 export const discordWidgetUrl = `https://discord.com/widget?id=${discordServerId}&theme=dark`;
 export const radShopUrl =
@@ -417,7 +417,7 @@ export const stats = [
 export const contactChannels: ContactChannel[] = [
   {
     label: "Discord",
-    value: "discord.com/invite/radgg",
+    value: "discord.gg/Nvq2xJtG73",
     href: discordInviteUrl
   },
   {
