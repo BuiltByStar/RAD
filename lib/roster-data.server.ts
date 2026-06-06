@@ -77,9 +77,19 @@ async function getSupabaseRoster() {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase.from("roster_entries").select("*").order("display_order", { ascending: true });
 
-    if (error) return [];
+    if (error) {
+      console.warn(
+        "[roster-data] Supabase select(roster_entries) failed, falling back to static site-data:",
+        error.message
+      );
+      return [];
+    }
     return ((data ?? []) as RosterRow[]).map(mapRosterRow);
-  } catch {
+  } catch (err) {
+    console.warn(
+      "[roster-data] Supabase client threw, falling back to static site-data:",
+      err instanceof Error ? err.message : err
+    );
     return [];
   }
 }

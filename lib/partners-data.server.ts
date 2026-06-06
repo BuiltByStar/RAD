@@ -54,9 +54,19 @@ async function getSupabasePartners() {
       .select("id, display_order, name, tier, description, logo_url, url, is_open_slot")
       .order("display_order", { ascending: true });
 
-    if (error) return [];
+    if (error) {
+      console.warn(
+        "[partners-data] Supabase select(partner_entries) failed, falling back to static site-data:",
+        error.message
+      );
+      return [];
+    }
     return ((data ?? []) as PartnerRow[]).map(mapPartnerRow);
-  } catch {
+  } catch (err) {
+    console.warn(
+      "[partners-data] Supabase client threw, falling back to static site-data:",
+      err instanceof Error ? err.message : err
+    );
     return [];
   }
 }

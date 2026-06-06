@@ -8,7 +8,7 @@ import { Chip, ChipRow } from "@/components/ui/chip";
 import { FluidContainer } from "@/components/ui/fluid-container";
 import { EASE_OUT_EXPO } from "@/components/ui/motion-tokens";
 import { assets } from "@/lib/assets";
-import { players, teams } from "@/lib/site-data";
+import type { Person } from "@/lib/site-data";
 
 const EASE = EASE_OUT_EXPO;
 const CHAMPIONSHIP_CHIPS = ["Ignite World Champions", "Season 6 EMEA PC"] as const;
@@ -23,11 +23,19 @@ const fadeUp = (reduced: boolean | null, delay = 0) =>
         transition: { duration: 0.55, ease: EASE, delay }
       };
 
-export function HomeTeamsBanner() {
+type HomeTeamsBannerProps = {
+  players: Person[];
+  teamDescription: string;
+  teamStatus: string;
+};
+
+export function HomeTeamsBanner({
+  players,
+  teamDescription,
+  teamStatus
+}: HomeTeamsBannerProps) {
   const reduced = useReducedMotion();
-  const team = teams[0];
-  const roster = players.filter((player) => player.group === team.name);
-  const previewPlayers = roster.slice(0, 6);
+  const previewPlayers = players.slice(0, 6);
 
   return (
     <section className="overflow-hidden bg-black">
@@ -83,19 +91,19 @@ export function HomeTeamsBanner() {
                     {...fadeUp(reduced, 0.1)}
                     className="mt-6 max-w-xl text-base leading-[1.75] tracking-[0.01em] text-neutral-400 sm:max-w-2xl sm:text-lg sm:leading-[1.8]"
                   >
-                    {team.description}
+                    {teamDescription}
                   </motion.p>
 
                   <ChipRow className="mt-7">
                     <Chip className="border-[var(--color-blood)]/35 bg-[var(--color-blood)]/10 text-white/85">
-                      {team.status}
+                      {teamStatus}
                     </Chip>
                     {CHAMPIONSHIP_CHIPS.map((label) => (
                       <Chip key={label} className="text-white/62">
                         {label}
                       </Chip>
                     ))}
-                    <Chip>{roster.length} players</Chip>
+                    <Chip>{players.length} players</Chip>
                   </ChipRow>
 
                   <motion.div {...fadeUp(reduced, 0.18)} className="mt-10">

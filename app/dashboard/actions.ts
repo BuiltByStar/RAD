@@ -141,6 +141,8 @@ function buildRosterPayload(formData: FormData, imageUrl: string | null | undefi
   };
 }
 
+const ROSTER_PUBLIC_PATHS = ["/roster", "/"];
+
 export async function upsertRosterEntry(formData: FormData) {
   const supabase = await getAdminSupabase();
   const id = readText(formData, "id");
@@ -158,11 +160,13 @@ export async function upsertRosterEntry(formData: FormData) {
       ? data.roster_entries.map((entry) => (entry.id === id ? { ...entry, ...payload } : entry))
       : [{ id: createLocalId(), ...payload }, ...data.roster_entries];
     await writeLocalDashboardData(data);
-    revalidatePublic(["/roster"]);
+    revalidatePublic(ROSTER_PUBLIC_PATHS);
     return;
   }
 
-  const { data: existingRows } = await supabase.from("roster_entries").select("display_order").eq("id", id).maybeSingle();
+  const { data: existingRows } = id
+    ? await supabase.from("roster_entries").select("display_order").eq("id", id).maybeSingle()
+    : { data: null };
   const { data: maxRow } = await supabase
     .from("roster_entries")
     .select("display_order")
@@ -182,7 +186,7 @@ export async function upsertRosterEntry(formData: FormData) {
   const { error } = await query;
 
   if (error) throw new Error(error.message);
-  revalidatePublic(["/roster"]);
+  revalidatePublic(ROSTER_PUBLIC_PATHS);
 }
 
 export async function reorderRosterEntry(formData: FormData) {
@@ -194,7 +198,7 @@ export async function reorderRosterEntry(formData: FormData) {
     const data = await readLocalDashboardData();
     data.roster_entries = swapOrderedRows(data.roster_entries, id, direction);
     await writeLocalDashboardData(data);
-    revalidatePublic(["/roster"]);
+    revalidatePublic(ROSTER_PUBLIC_PATHS);
     return;
   }
 
@@ -202,7 +206,7 @@ export async function reorderRosterEntry(formData: FormData) {
   if (error) throw new Error(error.message);
   const updated = swapOrderedRows((rows ?? []) as OrderedRow[], id, direction);
   await persistOrderUpdates(supabase, "roster_entries", updated);
-  revalidatePublic(["/roster"]);
+  revalidatePublic(ROSTER_PUBLIC_PATHS);
 }
 
 export async function deleteRosterEntry(formData: FormData) {
@@ -212,14 +216,14 @@ export async function deleteRosterEntry(formData: FormData) {
     const data = await readLocalDashboardData();
     data.roster_entries = data.roster_entries.filter((entry) => entry.id !== readText(formData, "id"));
     await writeLocalDashboardData(data);
-    revalidatePublic(["/roster"]);
+    revalidatePublic(ROSTER_PUBLIC_PATHS);
     return;
   }
 
   const { error } = await supabase.from("roster_entries").delete().eq("id", readText(formData, "id"));
 
   if (error) throw new Error(error.message);
-  revalidatePublic(["/roster"]);
+  revalidatePublic(ROSTER_PUBLIC_PATHS);
 }
 
 function buildStaffPayload(formData: FormData, imageUrl: string | null | undefined, displayOrder: number) {
@@ -261,7 +265,9 @@ export async function upsertStaffEntry(formData: FormData) {
     return;
   }
 
-  const { data: existingRows } = await supabase.from("staff_entries").select("display_order").eq("id", id).maybeSingle();
+  const { data: existingRows } = id
+    ? await supabase.from("staff_entries").select("display_order").eq("id", id).maybeSingle()
+    : { data: null };
   const { data: maxRow } = await supabase
     .from("staff_entries")
     .select("display_order")
@@ -350,7 +356,9 @@ export async function upsertPartnerEntry(formData: FormData) {
     return;
   }
 
-  const { data: existingRows } = await supabase.from("partner_entries").select("display_order").eq("id", id).maybeSingle();
+  const { data: existingRows } = id
+    ? await supabase.from("partner_entries").select("display_order").eq("id", id).maybeSingle()
+    : { data: null };
   const { data: maxRow } = await supabase
     .from("partner_entries")
     .select("display_order")

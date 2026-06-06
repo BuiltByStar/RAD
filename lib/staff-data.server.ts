@@ -56,9 +56,19 @@ async function getSupabaseStaff() {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase.from("staff_entries").select("*").order("display_order", { ascending: true });
 
-    if (error) return [];
+    if (error) {
+      console.warn(
+        "[staff-data] Supabase select(staff_entries) failed, falling back to static site-data:",
+        error.message
+      );
+      return [];
+    }
     return ((data ?? []) as StaffRow[]).map(mapStaffRow);
-  } catch {
+  } catch (err) {
+    console.warn(
+      "[staff-data] Supabase client threw, falling back to static site-data:",
+      err instanceof Error ? err.message : err
+    );
     return [];
   }
 }

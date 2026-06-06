@@ -8,6 +8,8 @@ import { cn } from "@/components/ui/cn";
 import type { OrgSocialPlatform } from "@/lib/site-data";
 import { getManagedStaffState, type StaffMember } from "@/lib/staff-data.server";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Staff | RAD Esports",
   description:

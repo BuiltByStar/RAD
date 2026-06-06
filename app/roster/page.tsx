@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "RAD competitive lineup, player profiles, and championship roster."
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function RosterPage() {
   const team = teams[0];
   const { players: teamRoster } = await getManagedRosterState(team.name);
