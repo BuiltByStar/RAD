@@ -2,6 +2,9 @@
 
 import { inputClass, labelClass } from "@/components/dashboard/dashboard-styles";
 
+const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
+const MAX_UPLOAD_LABEL = "8MB";
+
 export function Field({
   label,
   name,
@@ -60,7 +63,19 @@ export function FileField({ label, name }: { label: string; name: string }) {
         name={name}
         type="file"
         accept="image/png,image/jpeg,image/webp,image/gif"
+        onChange={(event) => {
+          const file = event.currentTarget.files?.[0];
+          const message =
+            file && file.size > MAX_UPLOAD_BYTES
+              ? `Image must be ${MAX_UPLOAD_LABEL} or smaller.`
+              : "";
+          event.currentTarget.setCustomValidity(message);
+          if (message) event.currentTarget.reportValidity();
+        }}
       />
+      <span className="text-[10px] leading-relaxed text-white/36">
+        PNG, JPG, WebP, or GIF. Max {MAX_UPLOAD_LABEL}.
+      </span>
     </label>
   );
 }
