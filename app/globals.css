@@ -841,6 +841,9 @@ p { margin: 0; }
     display: flex;
     width: max-content;
     animation: rad-community-marquee-run 32s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
   }
 
   .rad-community-marquee__group {
@@ -879,10 +882,10 @@ p { margin: 0; }
 
 @keyframes rad-community-marquee-run {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 

@@ -9,9 +9,9 @@ import { assets } from "@/lib/assets";
 import { discordWidgetUrl } from "@/lib/site-data";
 
 const perks = [
-  { label: "Match nights", detail: "Live watch-alongs" },
-  { label: "Roster drops", detail: "First in the server" },
-  { label: "Gear alerts", detail: "Shop restocks" }
+  { label: "Match nights" },
+  { label: "Roster drops" },
+  { label: "Gear alerts" }
 ];
 
 const tickerItems = [
@@ -79,12 +79,11 @@ export function HomeCommunityBanner() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.45, ease: EASE_OUT_EXPO, delay: reduced ? 0 : index * 0.07 }}
-                        className="bg-black/90 px-3 py-3.5 md:px-4 md:py-4"
+                        className="flex items-center justify-center bg-black/90 px-3 py-4 text-center md:px-4 md:py-5"
                       >
                         <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-blood)]">
                           {perk.label}
                         </p>
-                        <p className="mt-1.5 text-xs text-neutral-500">{perk.detail}</p>
                       </motion.div>
                     ))}
                   </div>
