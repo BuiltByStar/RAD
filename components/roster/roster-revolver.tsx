@@ -52,6 +52,7 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
   const [paused, setPaused] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [expandedBioSlug, setExpandedBioSlug] = useState<string | null>(null);
   const releaseTimerRef = useRef<number | null>(null);
   const hashHandledRef = useRef(false);
 
@@ -90,6 +91,10 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
 
   const goNext = useCallback(() => goTo(active + 1), [active, goTo]);
   const goPrev = useCallback(() => goTo(active - 1), [active, goTo]);
+
+  useEffect(() => {
+    setExpandedBioSlug(null);
+  }, [active]);
 
   useEffect(() => {
     setMounted(true);
@@ -381,6 +386,75 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
                 } as CSSProperties
               }
             >
+              {offset === 0 && expandedBioSlug === player.slug && player.bio ? (
+                <motion.div
+                  className="pointer-events-auto absolute inset-0 z-50 flex flex-col bg-[#070709]/96 p-5 backdrop-blur-md sm:p-6"
+                  initial={reduced ? false : { opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduced ? undefined : { opacity: 0, y: 10 }}
+                  transition={{ duration: 0.28, ease: EASE_OUT_EXPO }}
+                >
+                  <div className="flex items-start justify-between gap-4 border-b border-neutral-900 pb-4">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-blood)]">
+                        Player info
+                      </p>
+                      <h4 className="mt-2 truncate font-[family-name:var(--font-display)] text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl">
+                        {player.name}
+                      </h4>
+                      <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-500">
+                        {player.role}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setExpandedBioSlug(null);
+                      }}
+                      className="grid h-10 w-10 shrink-0 place-items-center border border-neutral-800 bg-black text-neutral-400 transition-colors hover:border-[var(--color-blood)] hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)]"
+                      aria-label={`Close ${player.name} info`}
+                    >
+                      <span aria-hidden>x</span>
+                    </button>
+                  </div>
+
+                  <div className="min-h-0 flex-1 overflow-y-auto py-5 pr-1 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-700">
+                    <p className="text-sm leading-relaxed text-neutral-300 sm:text-base">
+                      {player.bio}
+                    </p>
+                    {player.specialties?.length ? (
+                      <div className="mt-6">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500">
+                          Specialties
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {player.specialties.map((specialty) => (
+                            <span
+                              key={specialty}
+                              className="border border-neutral-800 bg-black px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-300"
+                            >
+                              {specialty}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setExpandedBioSlug(null);
+                    }}
+                    className="mt-auto border border-[var(--color-blood)]/45 bg-[var(--color-blood)]/10 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white transition-colors hover:bg-[var(--color-blood)]/18 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)]"
+                  >
+                    Back to card
+                  </button>
+                </motion.div>
+              ) : null}
+
               {offset === 0 ? (
                 <motion.span
                   aria-hidden
@@ -457,9 +531,24 @@ export function RosterRevolver({ players, game, teamStatus }: RosterRevolverProp
                   </p>
                 ) : null}
                 {player.bio ? (
-                  <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-neutral-500 sm:text-sm">
-                    {player.bio}
-                  </p>
+                  <div className="mt-2">
+                    <p className="line-clamp-2 text-xs leading-relaxed text-neutral-500 sm:text-sm">
+                      {player.bio}
+                    </p>
+                    {offset === 0 ? (
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setExpandedBioSlug(player.slug);
+                        }}
+                        className="pointer-events-auto mt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-blood)] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-blood)]"
+                        aria-label={`View more info about ${player.name}`}
+                      >
+                        View more info
+                      </button>
+                    ) : null}
+                  </div>
                 ) : null}
                 {player.socials?.length ? (
                   <div className="pointer-events-auto mt-auto flex flex-wrap items-center gap-1 pt-4">
