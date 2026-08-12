@@ -33,6 +33,17 @@ SUPABASE_SERVICE_ROLE_KEY=
 MAINTENANCE_MODE=0
 ```
 
+Content / live status (required for `/content` Live badges and featured YouTube):
+
+```bash
+TWITCH_CLIENT_ID=
+TWITCH_CLIENT_SECRET=
+YOUTUBE_API_KEY=
+YOUTUBE_CHANNEL_ID=
+```
+
+Create a Twitch application at https://dev.twitch.tv/console/apps (Client Credentials flow). Without `TWITCH_CLIENT_*`, `/api/twitch/live` cannot query Helix and every creator card stays Offline.
+
 Set the same variables in Vercel for:
 - `Production`
 - `Preview`

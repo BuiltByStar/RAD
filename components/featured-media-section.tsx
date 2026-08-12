@@ -167,6 +167,8 @@ function FeaturedSkeleton() {
   );
 }
 
+const LIVE_POLL_MS = 60_000;
+
 export function FeaturedMediaSection() {
   const [creators, setCreators] = useState<CreatorStatus[]>(fallbackCreators);
   const [video, setVideo] = useState<YouTubeVideo | null>(null);
@@ -175,24 +177,42 @@ export function FeaturedMediaSection() {
   useEffect(() => {
     let mounted = true;
 
-    Promise.all([fetch("/api/twitch/live"), fetch("/api/youtube/latest")])
-      .then(async ([twitchRes, youtubeRes]) => {
-        const [twitchData, youtubeData] = await Promise.all([twitchRes.json(), youtubeRes.json()]);
+    async function loadStatus(isInitial: boolean) {
+      try {
+        const requests = isInitial
+          ? [fetch("/api/twitch/live"), fetch("/api/youtube/latest")]
+          : [fetch("/api/twitch/live")];
+
+        const responses = await Promise.all(requests);
+        const twitchData = await responses[0].json();
         if (!mounted) return;
 
-        setCreators(twitchData.creators?.length ? twitchData.creators : fallbackCreators);
-        setVideo(youtubeData.latestVideo ?? null);
-        setLoading(false);
-      })
-      .catch(() => {
-        if (!mounted) return;
-        setCreators(fallbackCreators);
-        setVideo(null);
-        setLoading(false);
-      });
+        if (Array.isArray(twitchData.creators) && twitchData.creators.length > 0) {
+          setCreators(twitchData.creators);
+        }
+
+        if (isInitial && responses[1]) {
+          const youtubeData = await responses[1].json();
+          if (!mounted) return;
+          setVideo(youtubeData.latestVideo ?? null);
+        }
+      } catch {
+        // Keep the last known creator statuses on transient failures.
+      } finally {
+        if (mounted && isInitial) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadStatus(true);
+    const intervalId = window.setInterval(() => {
+      void loadStatus(false);
+    }, LIVE_POLL_MS);
 
     return () => {
       mounted = false;
+      window.clearInterval(intervalId);
     };
   }, []);
 
