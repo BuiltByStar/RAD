@@ -901,6 +901,28 @@ p { margin: 0; }
   }
 }
 
+@keyframes rad-live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(229, 6, 47, 0.55);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 6px rgba(229, 6, 47, 0);
+  }
+}
+
+@keyframes rad-live-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @keyframes rad-community-discord-shine {
   0%,
   72% {

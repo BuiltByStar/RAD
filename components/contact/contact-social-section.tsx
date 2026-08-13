@@ -13,10 +13,6 @@ export function ContactSocialSection() {
       <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3rem)] font-extrabold uppercase leading-[0.95] text-white">
         Get in touch
       </h1>
-      <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
-        We respond fastest in the RAD Discord. Open a ticket in the support channel, or email the
-        team directly.
-      </p>
 
       <div className="mt-8 flex w-full flex-col items-center gap-3">
         <Link

@@ -430,8 +430,8 @@ export const contactChannels: ContactChannel[] = [
   },
   {
     label: "Email",
-    value: "Radrocketow@gmail.com",
-    href: "mailto:Radrocketow@gmail.com"
+    value: "partnerships@teamrad.gg",
+    href: "mailto:partnerships@teamrad.gg"
   },
   {
     label: "YouTube",
