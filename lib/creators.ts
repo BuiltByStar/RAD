@@ -16,6 +16,8 @@ export const contentCreators: ContentCreator[] = [
   { id: "cr-6", name: "Etsu", twitchLogin: "etsuuuuuuu", role: "Duelist (Sub)" },
   { id: "cr-7", name: "lugiagoat", twitchLogin: "lugiagoat", role: "Tank / Vanguard" },
   { id: "cr-8", name: "Denis", twitchLogin: "rad_denis", role: "Creator" },
-  { id: "cr-9", name: "TeamCaptain", twitchLogin: "teamcaptain001", role: "Creator" },
-  { id: "cr-10", name: "Kikyuu", twitchLogin: "kikyuu", role: "Creator" }
+  { id: "cr-10", name: "Kikyuu", twitchLogin: "kikyuu", role: "Creator" },
+  { id: "cr-12", name: "snowette", twitchLogin: "snowette", role: "Creator" },
+  { id: "cr-13", name: "imkitsuki", twitchLogin: "imkitsuki", role: "Creator" },
+  { id: "cr-14", name: "Dyrani7", twitchLogin: "dyrani7", role: "Creator" }
 ];
